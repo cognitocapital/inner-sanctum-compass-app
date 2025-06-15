@@ -63,8 +63,8 @@ const Prologue = () => {
             </Link>
           </Button>
           <Button asChild>
-            <Link to="/chapter-1">
-              Chapter 1
+            <Link to="/introduction">
+              Introduction
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
