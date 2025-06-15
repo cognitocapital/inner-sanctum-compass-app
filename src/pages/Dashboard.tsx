@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Wind, Thermometer, Brain, BookOpen } from "lucide-react";
+import { ArrowLeft, Wind, Thermometer, Brain, BookOpen, PenTool } from "lucide-react";
 
 const Dashboard = () => {
     return (
@@ -101,8 +101,26 @@ const Dashboard = () => {
               </CardContent>
             </Card>
 
+            {/* Unwritten Chapters */}
+            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-card to-primary/5 border-primary/20 group" style={{animationDelay: '600ms'}}>
+              <CardHeader className="text-center">
+                <div className="mx-auto mb-4 p-3 bg-phoenix-gradient rounded-full w-fit group-hover:animate-glow-pulse transition-all duration-300">
+                  <PenTool className="h-8 w-8 text-white" />
+                </div>
+                <CardTitle className="text-xl font-serif">Unwritten Chapters</CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <p className="text-muted-foreground mb-4">
+                  Share your story and connect with others on their recovery journey
+                </p>
+                <Button asChild className="w-full bg-phoenix-gradient hover:bg-flame-gradient text-white">
+                  <Link to="/unwritten">Share Your Story</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
             {/* Reading */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in md:col-span-2 lg:col-span-3 bg-gradient-to-r from-card to-primary/5 border-primary/20" style={{animationDelay: '600ms'}}>
+            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in md:col-span-2 bg-gradient-to-r from-card to-primary/5 border-primary/20" style={{animationDelay: '800ms'}}>
               <CardHeader className="text-center">
                 <div className="mx-auto mb-4 p-3 bg-flame-gradient rounded-full w-fit">
                   <BookOpen className="h-8 w-8 text-white" />
