@@ -29,17 +29,12 @@ const Index = () => {
                             <div 
                                 className="w-full h-full rounded-full border-4 border-primary/40 shadow-2xl animate-glow-pulse hover:scale-110 transition-all duration-700 cursor-pointer phoenix-image"
                                 style={{
-                                    backgroundImage: `url('/lovable-uploads/87893c50-952e-48f8-9649-a7083c6cffd3.png')`,
+                                    backgroundImage: `url('/lovable-uploads/5d3e9ae0-c18d-4e9a-9d2b-95582494f6bd.png')`,
                                     backgroundSize: 'cover',
                                     backgroundPosition: 'center',
                                     backgroundRepeat: 'no-repeat'
                                 }}
                             />
-                            
-                            {/* Enhanced animated flame rings */}
-                            <div className="absolute inset-0 rounded-full bg-flame-gradient opacity-30 animate-flame-flicker"></div>
-                            <div className="absolute inset-2 rounded-full bg-ember-gradient opacity-20 animate-flame-flicker" style={{animationDelay: '0.5s'}}></div>
-                            <div className="absolute inset-4 rounded-full bg-phoenix-gradient opacity-15 animate-flame-flicker" style={{animationDelay: '1s'}}></div>
                             
                             {/* Enhanced floating flame particles */}
                             <div className="absolute -top-4 -left-4 w-4 h-4 bg-primary rounded-full animate-flame-flicker opacity-90"></div>
