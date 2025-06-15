@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, ArrowLeft } from "lucide-react";
+import { AudiobookPlayer } from "@/components/ui/audiobook-player";
 
 const Dedication = () => {
     return (
@@ -55,9 +56,17 @@ const Dedication = () => {
                                 </div>
                             </div>
                             
-                            <div className="flex justify-center mt-12">
+                            {/* Audiobook Player */}
+                            <div className="mt-12">
+                                <AudiobookPlayer 
+                                    apiKey="" // Add your ElevenLabs API key here
+                                    voiceId="9BWtsMINqrJLrRacOk9x" // Aria voice
+                                />
+                            </div>
+                            
+                            <div className="flex justify-center mt-8">
                                 <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                                    <Link to="/chapter-1">
+                                    <Link to="/prologue">
                                         Start Reading <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                                     </Link>
                                 </Button>

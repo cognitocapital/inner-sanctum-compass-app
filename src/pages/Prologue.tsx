@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { AudioPlayer } from "@/components/ui/audio-player";
 
 const Prologue = () => {
   return (
@@ -66,11 +65,6 @@ const Prologue = () => {
               Prologue
             </h1>
 
-            <AudioPlayer 
-              text="The main purpose for writing this book is to help others navigate the foreign landscape of traumatic brain injury. When I was first injured, it felt like the resources available outside of specialized units, like the Brain Injury Rehabilitation Unit, had huge voids in patient care and guidance on what to expect. Simply being told don't do this and don't do that wasn't very helpful. I needed to know how to live with this injury, how to adapt, how to rebuild, and how to find my way back to myself. This book is my attempt to fill that void, to share what I've learned, and to offer a roadmap for those who may be struggling to find their own way. But this book is about more than just surviving a brain injury. It's about the power of the human spirit to overcome adversity, to adapt to change, and to find meaning in the face of suffering. While my story is rooted in the specific challenges of TBI, the underlying message is universal: we all have the capacity to heal, to grow, and to create a life filled with purpose, even in the face of seemingly insurmountable obstacles."
-              apiKey="" // Add your ElevenLabs API key here
-              voiceId="9BWtsMINqrJLrRacOk9x" // Aria voice
-            />
 
             <p className="text-lg leading-relaxed mb-6">
               The main purpose for writing this book is to help others navigate the foreign landscape of traumatic brain injury (TBI). When I was first injured, it felt like the resources available outside of specialized units, like the Brain Injury Rehabilitation Unit, had huge voids in patient care and guidance on what to expect. Simply being told "don't do this" and "don't do that" wasn't very helpful. I needed to know how to live with this injury, how to adapt, how to rebuild, and how to find my way back to myself. This book is my attempt to fill that void, to share what I've learned, and to offer a roadmap for those who may be struggling to find their own way.

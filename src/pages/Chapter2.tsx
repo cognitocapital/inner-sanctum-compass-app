@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { AudioPlayer } from "@/components/ui/audio-player";
 
 const Chapter2 = () => {
   return (
@@ -73,11 +72,6 @@ const Chapter2 = () => {
               January 26 - February 2, 2024
             </p>
 
-            <AudioPlayer 
-              text="The next few days exist in a haze of sterile hospital corridors, the constant beeping of machines, and the worried faces of family members. The medical team was thorough but cautious—traumatic brain injuries are unpredictable beasts, and no two cases are exactly alike."
-              apiKey="" // Add your ElevenLabs API key here
-              voiceId="9BWtsMINqrJLrRacOk9x" // Aria voice
-            />
 
             <p className="text-lg leading-relaxed mb-6">
               The next few days exist in a haze of sterile hospital corridors, the constant beeping of machines, and the worried faces of family members. The medical team was thorough but cautious—traumatic brain injuries are unpredictable beasts, and no two cases are exactly alike.

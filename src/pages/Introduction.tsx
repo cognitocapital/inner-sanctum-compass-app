@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { AudioPlayer } from "@/components/ui/audio-player";
 
 const Introduction = () => {
   return (
@@ -69,11 +68,6 @@ const Introduction = () => {
               What a Journey
             </h2>
 
-            <AudioPlayer 
-              text="What a journey. It's a term I would often say to my Dad on one of our work days as he would drive me to look at work sites, because I could not drive after my brain injury. We were trying to keep my business going and work progressing for my team of roofing tradesmen. Often while looking out the window of the car, I would be contemplating life. Always after we had one of our Friday morning meetings."
-              apiKey="" // Add your ElevenLabs API key here
-              voiceId="9BWtsMINqrJLrRacOk9x" // Aria voice
-            />
 
             <p className="text-lg leading-relaxed mb-6">
               "What a journey." It's a term I would often say to my Dad on one of our "work days" as he would drive me to look at work sites, because I could not drive after my brain injury. We were trying to keep my business going and work progressing for my team of roofing tradesmen. Often while looking out the window of the car, I would be contemplating life. Always after we had one of our Friday morning "meetings." I use the term meeting loosely, as what we discussed varied massively, as there were so many factors that I had asked my Dad for guidance on. Those Friday brekkie chats at Manly weren't just about work. They were about life—sorting out fears, dreams, failures. If you've ever felt humbled by life's twists, you'll find yourself here. In fact, my exact words to get him to the cafe at Manly that morning were, "Dad, I want you to help me sort my life out." That is a very humbling experience for a 38-year-old man who has a wonderful family and his own business as a roof plumber.
