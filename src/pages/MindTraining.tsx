@@ -6,6 +6,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Play, Pause, Brain, Timer, Flame, Zap, Target, Award } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { PhoenixCompanion } from "@/components/phoenix/PhoenixCompanion";
+import { PhoenixNest } from "@/components/phoenix/PhoenixNest";
+import { HatchingGame } from "@/components/phoenix/games/HatchingGame";
+import { LearningToFlyGame } from "@/components/phoenix/games/LearningToFlyGame";
 
 const MindTraining = () => {
   const [meditationActive, setMeditationActive] = useState(false);
@@ -17,6 +21,8 @@ const MindTraining = () => {
   const [completedGames, setCompletedGames] = useState(0);
   const [phoenixTheme, setPhoenixTheme] = useState('flame');
   const [totalMeditations, setTotalMeditations] = useState(0);
+  const [currentGameType, setCurrentGameType] = useState<'hatching' | 'flying' | 'gathering' | 'transformation'>('hatching');
+  const [phoenixMessage, setPhoenixMessage] = useState("");
   const { toast } = useToast();
 
   // Load progress from localStorage
@@ -311,6 +317,24 @@ const MindTraining = () => {
 
             {/* Phoenix Games Tab */}
             <TabsContent value="cognitive" className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6 mb-6">
+                {/* Phoenix Companion */}
+                <PhoenixCompanion 
+                  phoenixScore={phoenixScore}
+                  gameLevel={gameLevel}
+                  onMessage={setPhoenixMessage}
+                />
+                
+                {/* Phoenix Nest */}
+                <PhoenixNest
+                  phoenixScore={phoenixScore}
+                  totalMeditations={totalMeditations}
+                  completedGames={completedGames}
+                  gameLevel={gameLevel}
+                />
+              </div>
+
+              {/* Stats Cards */}
               <div className="grid md:grid-cols-4 gap-4 mb-6">
                 <Card className="bg-gradient-to-br from-orange-500/20 to-red-500/20 border-orange-500/30">
                   <CardContent className="p-4 text-center">
@@ -342,79 +366,88 @@ const MindTraining = () => {
                 </Card>
               </div>
 
-              <Card className="animate-fade-in bg-gradient-to-br from-orange-500/10 to-red-500/10 border-orange-500/20">
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Brain className="h-5 w-5" />
-                      {cognitiveExercises[currentExercise].title}
-                    </div>
-                    <Badge className="bg-orange-500/20 text-orange-300">
-                      Level {gameLevel} • {cognitiveExercises[currentExercise].phoenixPoints} pts
-                    </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="text-center">
-                    <p className="text-lg mb-4">
-                      {cognitiveExercises[currentExercise].instruction}
-                    </p>
-                    
-                    {cognitiveExercises[currentExercise].type === 'memory' && (
-                      <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 p-6 rounded-lg border border-orange-500/30">
-                        <div className="text-3xl mb-4">🧠 Memory Challenge</div>
-                        <div className="text-2xl tracking-wider space-x-2">
-                          {cognitiveExercises[currentExercise].sequence?.map((num, idx) => (
-                            <span key={idx} className="inline-block w-10 h-10 bg-orange-500/30 rounded text-white leading-10">
-                              {["🔥", "🧡", "💫", "⭐"][num]}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {cognitiveExercises[currentExercise].type === 'pattern' && (
-                      <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-6 rounded-lg border border-blue-500/30">
-                        <div className="text-3xl mb-4">🔮 Pattern Recognition</div>
-                        <div className="text-3xl font-mono tracking-wider">
-                          {cognitiveExercises[currentExercise].pattern}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {cognitiveExercises[currentExercise].type === 'wordFind' && (
-                      <div className="bg-gradient-to-r from-green-500/20 to-teal-500/20 p-6 rounded-lg border border-green-500/30">
-                        <div className="text-3xl mb-4">📝 Word Phoenix</div>
-                        <div className="grid grid-cols-2 gap-4">
-                          {cognitiveExercises[currentExercise].words?.map((word, idx) => (
-                            <div key={idx} className="p-2 bg-green-500/20 rounded text-green-300 font-mono">
-                              {word}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+              {/* Game Selection */}
+              <div className="grid md:grid-cols-4 gap-4 mb-6">
+                <Button 
+                  variant={currentGameType === 'hatching' ? 'default' : 'outline'}
+                  onClick={() => setCurrentGameType('hatching')}
+                  className="h-16 flex-col gap-1"
+                >
+                  <span className="text-2xl">🥚</span>
+                  <span className="text-sm">Hatching</span>
+                </Button>
+                <Button 
+                  variant={currentGameType === 'flying' ? 'default' : 'outline'}
+                  onClick={() => setCurrentGameType('flying')}
+                  className="h-16 flex-col gap-1"
+                >
+                  <span className="text-2xl">🕊️</span>
+                  <span className="text-sm">Learning to Fly</span>
+                </Button>
+                <Button 
+                  variant="outline"
+                  disabled
+                  className="h-16 flex-col gap-1 opacity-50"
+                >
+                  <span className="text-2xl">🔥</span>
+                  <span className="text-sm">Gathering Flames</span>
+                  <span className="text-xs">Coming Soon</span>
+                </Button>
+                <Button 
+                  variant="outline"
+                  disabled
+                  className="h-16 flex-col gap-1 opacity-50"
+                >
+                  <span className="text-2xl">✨</span>
+                  <span className="text-sm">Transformation</span>
+                  <span className="text-xs">Coming Soon</span>
+                </Button>
+              </div>
 
-                    {cognitiveExercises[currentExercise].type === 'navigation' && (
-                      <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-6 rounded-lg border border-purple-500/30">
-                        <div className="text-3xl mb-4">🗺️ Phoenix Path</div>
-                        <div className="text-lg text-purple-300">
-                          Navigate the {cognitiveExercises[currentExercise].mazeSize}x{cognitiveExercises[currentExercise].mazeSize} maze
-                        </div>
-                      </div>
-                    )}
-                  </div>
+              {/* Current Game */}
+              {currentGameType === 'hatching' && (
+                <HatchingGame 
+                  gameLevel={gameLevel}
+                  onComplete={(points) => {
+                    setPhoenixScore(prev => prev + points);
+                    setCompletedGames(prev => prev + 1);
+                    if ((completedGames + 1) % 5 === 0 && gameLevel < 5) {
+                      setGameLevel(prev => prev + 1);
+                      toast({
+                        title: "Phoenix Level Up! 🔥🆙",
+                        description: `You've reached Phoenix Mind Level ${gameLevel + 1}!`,
+                      });
+                    } else {
+                      toast({
+                        title: "Game Complete! 🎯",
+                        description: `You've earned ${points} phoenix points!`,
+                      });
+                    }
+                  }}
+                />
+              )}
 
-                  <div className="text-center space-y-4">
-                    <div className="text-sm text-muted-foreground">
-                      Complete this exercise to earn {cognitiveExercises[currentExercise].phoenixPoints + (gameLevel * 5)} phoenix points
-                    </div>
-                    <Button onClick={completeExercise} size="lg" className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
-                      Complete Phoenix Challenge
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              {currentGameType === 'flying' && (
+                <LearningToFlyGame 
+                  gameLevel={gameLevel}
+                  onComplete={(points) => {
+                    setPhoenixScore(prev => prev + points);
+                    setCompletedGames(prev => prev + 1);
+                    if ((completedGames + 1) % 5 === 0 && gameLevel < 5) {
+                      setGameLevel(prev => prev + 1);
+                      toast({
+                        title: "Phoenix Level Up! 🔥🆙",
+                        description: `You've reached Phoenix Mind Level ${gameLevel + 1}!`,
+                      });
+                    } else {
+                      toast({
+                        title: "Game Complete! 🎯",
+                        description: `You've earned ${points} phoenix points!`,
+                      });
+                    }
+                  }}
+                />
+              )}
             </TabsContent>
 
             {/* Progress Tab */}
