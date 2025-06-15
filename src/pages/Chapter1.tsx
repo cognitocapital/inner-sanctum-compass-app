@@ -18,8 +18,8 @@ const Chapter1 = () => {
       <div className="text-center mb-8">
         <div className="relative mx-auto w-20 h-20 group">
           <img 
-            src="/lovable-uploads/2a13c600-36ec-41bb-bc52-a980190f1d22.png" 
-            alt="Phoenix rising with wings spread" 
+            src="/lovable-uploads/88ab6ebf-1274-49b5-a721-beb766481d52.png" 
+            alt="Dramatic phoenix with wings spread and skateboard" 
             className="w-full h-full rounded-full object-cover border-2 border-primary/30 shadow-lg animate-glow-pulse hover:scale-105 transition-all duration-300 phoenix-image" 
           />
           <div className="absolute inset-0 rounded-full bg-flame-gradient opacity-20 animate-flame-flicker"></div>

@@ -27,8 +27,8 @@ const Index = () => {
                         {/* Dramatic phoenix image with wings spread */}
                         <div className="relative mx-auto w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
                             <img 
-                                src="/lovable-uploads/2a13c600-36ec-41bb-bc52-a980190f1d22.png" 
-                                alt="Phoenix with outstretched wings rising from flames holding a skateboard" 
+                                src="/lovable-uploads/88ab6ebf-1274-49b5-a721-beb766481d52.png" 
+                                alt="Dramatic phoenix with outstretched wings and skateboard surrounded by flames" 
                                 className="w-full h-full rounded-full object-cover border-4 border-primary/40 shadow-2xl animate-glow-pulse hover:scale-110 transition-all duration-700 cursor-pointer phoenix-image" 
                             />
                             
