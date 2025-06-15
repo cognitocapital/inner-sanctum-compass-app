@@ -35,7 +35,23 @@ const ChallengeTracker = () => {
   });
   
   const [showForm, setShowForm] = useState(false);
+  const [showTemplates, setShowTemplates] = useState(false);
   const { toast } = useToast();
+
+  // Predefined dumbbell workout templates
+  const dumbbellWorkouts = [
+    { title: "Dumbbell Deadlift", description: "2-3 sets of 10-15 reps. Targets hamstrings, glutes, lower back.", difficulty: 3 as const, category: 'physical' as const },
+    { title: "Squat to Punch", description: "2-3 sets of 20 punches (10 per arm). Targets quads, glutes, shoulders, core.", difficulty: 4 as const, category: 'physical' as const },
+    { title: "Squat to Shoulder Press", description: "2-3 sets of 10-15 reps. Full body movement from deadlift to overhead press.", difficulty: 4 as const, category: 'physical' as const },
+    { title: "Clean and Press", description: "2-3 sets of 10-15 reps. Full body exercise - floor to overhead.", difficulty: 5 as const, category: 'physical' as const },
+    { title: "Shoulder Press", description: "2-3 sets of 10-15 reps. Targets shoulders and triceps.", difficulty: 2 as const, category: 'physical' as const },
+    { title: "Dumbbell Bench Press", description: "2-3 sets of 10-15 reps. Targets chest, shoulders, triceps.", difficulty: 3 as const, category: 'physical' as const },
+    { title: "Dumbbell Flys", description: "2-3 sets of 10-15 reps. Targets chest and shoulders.", difficulty: 2 as const, category: 'physical' as const },
+    { title: "Dumbbell Rows", description: "2-3 sets of 10-15 reps. Targets back and biceps.", difficulty: 3 as const, category: 'physical' as const },
+    { title: "Dumbbell Curls", description: "2-3 sets of 10-15 reps. Targets biceps.", difficulty: 2 as const, category: 'physical' as const },
+    { title: "Triceps Extensions", description: "2-3 sets of 10-15 reps. Targets triceps.", difficulty: 2 as const, category: 'physical' as const },
+    { title: "Complete Dumbbell Workout", description: "Full workout session with warm-up, all exercises, and cool-down.", difficulty: 5 as const, category: 'physical' as const }
+  ];
 
   // Load data from localStorage
   useEffect(() => {
@@ -87,6 +103,27 @@ const ChallengeTracker = () => {
     toast({
       title: "Phoenix Challenge Added! 🔥",
       description: `Your new challenge is worth ${phoenixPoints} phoenix points when completed.`,
+    });
+  };
+
+  const addTemplateChallenge = (template: typeof dumbbellWorkouts[0]) => {
+    const phoenixPoints = template.difficulty * 10;
+    const challenge: Challenge = {
+      id: Date.now().toString(),
+      title: template.title,
+      description: template.description,
+      date: new Date().toISOString().split('T')[0],
+      completed: false,
+      difficulty: template.difficulty,
+      category: template.category,
+      phoenixPoints
+    };
+
+    setChallenges(prev => [challenge, ...prev]);
+    
+    toast({
+      title: "Dumbbell Challenge Added! 💪",
+      description: `${template.title} added (${phoenixPoints} phoenix points)`,
     });
   };
 
@@ -275,14 +312,21 @@ const ChallengeTracker = () => {
                 </Card>
               </div>
 
-          {/* Add Challenge Button */}
-          <div className="mb-8 animate-fade-in" style={{animationDelay: '200ms'}}>
+          {/* Add Challenge Buttons */}
+          <div className="mb-8 animate-fade-in flex gap-4 flex-wrap" style={{animationDelay: '200ms'}}>
             <Button 
               onClick={() => setShowForm(!showForm)}
-              className="w-full md:w-auto"
+              className="flex-1 md:flex-none"
             >
               <Plus className="mr-2 h-4 w-4" />
               Add New Challenge
+            </Button>
+            <Button 
+              onClick={() => setShowTemplates(!showTemplates)}
+              variant="outline"
+              className="flex-1 md:flex-none"
+            >
+              💪 Dumbbell Workouts
             </Button>
           </div>
 
@@ -345,6 +389,58 @@ const ChallengeTracker = () => {
                 <div className="flex gap-2">
                   <Button onClick={addChallenge}>Add Challenge</Button>
                   <Button variant="outline" onClick={() => setShowForm(false)}>Cancel</Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Dumbbell Workout Templates */}
+          {showTemplates && (
+            <Card className="mb-8 animate-fade-in">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  💪 Dumbbell Workout Templates
+                  <Badge variant="secondary" className="text-xs">
+                    {dumbbellWorkouts.length} exercises
+                  </Badge>
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Quick-add professional dumbbell exercises to your challenge list. Start with 2kg or 4kg weights and progress as you get stronger.
+                </p>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-3">
+                  {dumbbellWorkouts.map((workout, index) => (
+                    <div 
+                      key={index}
+                      className="flex items-center justify-between p-3 bg-muted/30 rounded-lg border hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-semibold text-sm">{workout.title}</h4>
+                          <div className={`w-2 h-2 rounded-full ${getDifficultyColor(workout.difficulty)}`} />
+                          <span className="text-xs text-muted-foreground">
+                            {workout.difficulty * 10} pts
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">{workout.description}</p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => addTemplateChallenge(workout)}
+                        className="ml-4 shrink-0"
+                      >
+                        <Plus className="h-3 w-3 mr-1" />
+                        Add
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 flex justify-center">
+                  <Button variant="ghost" onClick={() => setShowTemplates(false)}>
+                    Close Templates
+                  </Button>
                 </div>
               </CardContent>
             </Card>
