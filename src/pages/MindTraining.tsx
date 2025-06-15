@@ -3,38 +3,97 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Play, Pause, Brain, Timer } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Play, Pause, Brain, Timer, Flame, Zap, Target, Award } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const MindTraining = () => {
   const [meditationActive, setMeditationActive] = useState(false);
   const [meditationTime, setMeditationTime] = useState(300); // 5 minutes
   const [timeLeft, setTimeLeft] = useState(300);
-  const [focusScore, setFocusScore] = useState(0);
+  const [phoenixScore, setPhoenixScore] = useState(0);
   const [currentExercise, setCurrentExercise] = useState(0);
+  const [gameLevel, setGameLevel] = useState(1);
+  const [completedGames, setCompletedGames] = useState(0);
+  const [phoenixTheme, setPhoenixTheme] = useState('flame');
+  const [totalMeditations, setTotalMeditations] = useState(0);
   const { toast } = useToast();
+
+  // Load progress from localStorage
+  useEffect(() => {
+    const savedScore = localStorage.getItem('phoenixMindScore');
+    const savedLevel = localStorage.getItem('phoenixMindLevel');
+    const savedGames = localStorage.getItem('phoenixCompletedGames');
+    const savedMeditations = localStorage.getItem('phoenixMeditations');
+    
+    if (savedScore) setPhoenixScore(parseInt(savedScore));
+    if (savedLevel) setGameLevel(parseInt(savedLevel));
+    if (savedGames) setCompletedGames(parseInt(savedGames));
+    if (savedMeditations) setTotalMeditations(parseInt(savedMeditations));
+  }, []);
+
+  // Save progress to localStorage
+  useEffect(() => {
+    localStorage.setItem('phoenixMindScore', phoenixScore.toString());
+    localStorage.setItem('phoenixMindLevel', gameLevel.toString());
+    localStorage.setItem('phoenixCompletedGames', completedGames.toString());
+    localStorage.setItem('phoenixMeditations', totalMeditations.toString());
+  }, [phoenixScore, gameLevel, completedGames, totalMeditations]);
 
   const cognitiveExercises = [
     {
-      title: "Memory Sequence",
-      instruction: "Remember this sequence and repeat it back",
-      sequence: [1, 4, 7, 2, 9],
-      type: "memory"
+      title: "Phoenix Memory Match",
+      instruction: "Remember the sequence of phoenix flames",
+      sequence: Array.from({length: Math.min(gameLevel + 3, 8)}, () => Math.floor(Math.random() * 4)),
+      type: "memory",
+      phoenixPoints: 25,
+      difficulty: gameLevel
     },
     {
-      title: "Word Association", 
-      instruction: "Think of 5 words related to: RECOVERY",
-      words: ["healing", "progress", "strength", "hope", "growth"],
-      type: "association"
+      title: "Flame Sequence", 
+      instruction: "Continue the phoenix flame pattern",
+      pattern: generateFlamePattern(gameLevel),
+      type: "pattern",
+      phoenixPoints: 30,
+      difficulty: gameLevel
     },
     {
-      title: "Pattern Recognition",
-      instruction: "What comes next in this pattern?",
-      pattern: "A, C, E, G, ?",
-      answer: "I",
-      type: "pattern"
+      title: "Rising Phoenix Words",
+      instruction: "Find words hidden in the ashes",
+      words: generatePhoenixWords(gameLevel),
+      type: "wordFind",
+      phoenixPoints: 20,
+      difficulty: gameLevel
+    },
+    {
+      title: "Phoenix Navigation",
+      instruction: "Guide the phoenix through the maze",
+      mazeSize: Math.min(gameLevel + 2, 6),
+      type: "navigation",
+      phoenixPoints: 35,
+      difficulty: gameLevel
     }
   ];
+
+  function generateFlamePattern(level: number) {
+    const patterns = [
+      "🔥, 🧡, 🔥, 🧡, ?",
+      "🔥, 🔥🔥, 🔥🔥🔥, ?",
+      "🧡, 🔥, 🧡🧡, 🔥🔥, ?",
+      "🔥, 🧡, 💫, 🔥, 🧡, ?",
+    ];
+    return patterns[Math.min(level - 1, patterns.length - 1)];
+  }
+
+  function generatePhoenixWords(level: number) {
+    const wordSets = [
+      ["RISE", "FIRE", "HEAL", "GROW"],
+      ["PHOENIX", "REBIRTH", "STRENGTH", "COURAGE"],
+      ["RESILIENCE", "TRANSFORMATION", "RENEWAL", "RECOVERY"],
+      ["NEUROPLASTICITY", "EMPOWERMENT", "TRANSCENDENCE", "METAMORPHOSIS"]
+    ];
+    return wordSets[Math.min(level - 1, wordSets.length - 1)];
+  }
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -44,9 +103,14 @@ const MindTraining = () => {
       }, 1000);
     } else if (timeLeft === 0 && meditationActive) {
       setMeditationActive(false);
+      const newTotal = totalMeditations + 1;
+      setTotalMeditations(newTotal);
+      const points = Math.floor(meditationTime / 60) * 10; // 10 points per minute
+      setPhoenixScore(prev => prev + points);
+      
       toast({
-        title: "Meditation Complete!",
-        description: "Well done! You've completed your mindfulness session.",
+        title: "Phoenix Meditation Complete! 🧘‍♀️",
+        description: `You've earned ${points} phoenix points! Inner flame grows stronger.`,
       });
     }
     return () => clearInterval(interval);
@@ -73,9 +137,35 @@ const MindTraining = () => {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const nextExercise = () => {
+  const completeExercise = () => {
+    const exercise = cognitiveExercises[currentExercise];
+    const pointsEarned = exercise.phoenixPoints + (gameLevel * 5);
+    
+    setPhoenixScore(prev => prev + pointsEarned);
+    setCompletedGames(prev => prev + 1);
     setCurrentExercise((prev) => (prev + 1) % cognitiveExercises.length);
-    setFocusScore(prev => prev + 10);
+    
+    // Level up every 5 completed exercises
+    if ((completedGames + 1) % 5 === 0 && gameLevel < 5) {
+      setGameLevel(prev => prev + 1);
+      toast({
+        title: "Phoenix Level Up! 🔥🆙",
+        description: `You've reached Phoenix Mind Level ${gameLevel + 1}! Difficulty increased.`,
+      });
+    } else {
+      toast({
+        title: "Exercise Complete! 🎯",
+        description: `You've earned ${pointsEarned} phoenix points!`,
+      });
+    }
+  };
+
+  const getPhoenixRank = () => {
+    if (phoenixScore < 100) return { rank: "Ember", icon: "🔥", color: "text-orange-400" };
+    if (phoenixScore < 300) return { rank: "Flame", icon: "🧡", color: "text-orange-500" };
+    if (phoenixScore < 600) return { rank: "Blaze", icon: "💫", color: "text-yellow-400" };
+    if (phoenixScore < 1000) return { rank: "Phoenix", icon: "🔥", color: "text-red-500" };
+    return { rank: "Phoenix Master", icon: "👑", color: "text-purple-400" };
   };
 
   return (
@@ -92,18 +182,38 @@ const MindTraining = () => {
 
         <div className="max-w-4xl mx-auto">
           <header className="text-center mb-12 animate-fade-in">
+            <div className="relative mb-6 mx-auto w-24 h-24">
+              <div 
+                className="w-full h-full rounded-full border-2 border-primary/40 shadow-xl animate-glow-pulse phoenix-image"
+                style={{
+                  backgroundImage: `url('/lovable-uploads/87893c50-952e-48f8-9649-a7083c6cffd3.png')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat'
+                }}
+              />
+            </div>
             <h1 className="text-4xl font-serif font-bold text-primary mb-4">
-              Mind Training
+              Phoenix Mind Training
             </h1>
             <p className="text-lg text-muted-foreground">
-              Cognitive exercises and meditation to support brain recovery and mental clarity
+              Gamified cognitive exercises and meditation to strengthen your inner phoenix
             </p>
+            <div className="flex justify-center items-center gap-4 mt-4">
+              <Badge className={`${getPhoenixRank().color} bg-primary/20`}>
+                {getPhoenixRank().icon} {getPhoenixRank().rank}
+              </Badge>
+              <span className="text-sm text-muted-foreground">
+                {phoenixScore} Phoenix Points • Level {gameLevel}
+              </span>
+            </div>
           </header>
 
           <Tabs defaultValue="meditation" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="meditation">Mindfulness</TabsTrigger>
-              <TabsTrigger value="cognitive">Cognitive Exercises</TabsTrigger>
+              <TabsTrigger value="cognitive">Phoenix Games</TabsTrigger>
+              <TabsTrigger value="progress">Progress</TabsTrigger>
             </TabsList>
 
             {/* Meditation Tab */}
@@ -199,34 +309,49 @@ const MindTraining = () => {
               </Card>
             </TabsContent>
 
-            {/* Cognitive Exercises Tab */}
+            {/* Phoenix Games Tab */}
             <TabsContent value="cognitive" className="space-y-6">
-              <div className="grid md:grid-cols-3 gap-4 mb-6">
-                <Card>
+              <div className="grid md:grid-cols-4 gap-4 mb-6">
+                <Card className="bg-gradient-to-br from-orange-500/20 to-red-500/20 border-orange-500/30">
                   <CardContent className="p-4 text-center">
-                    <div className="text-2xl font-bold text-primary">{focusScore}</div>
-                    <div className="text-sm text-muted-foreground">Focus Points</div>
+                    <Flame className="h-6 w-6 mx-auto mb-2 text-orange-400" />
+                    <div className="text-2xl font-bold text-primary">{phoenixScore}</div>
+                    <div className="text-sm text-muted-foreground">Phoenix Points</div>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 border-blue-500/30">
                   <CardContent className="p-4 text-center">
-                    <div className="text-2xl font-bold text-primary">{currentExercise + 1}</div>
-                    <div className="text-sm text-muted-foreground">Current Exercise</div>
+                    <Zap className="h-6 w-6 mx-auto mb-2 text-blue-400" />
+                    <div className="text-2xl font-bold text-primary">{gameLevel}</div>
+                    <div className="text-sm text-muted-foreground">Mind Level</div>
                   </CardContent>
                 </Card>
-                <Card>
+                <Card className="bg-gradient-to-br from-green-500/20 to-teal-500/20 border-green-500/30">
                   <CardContent className="p-4 text-center">
-                    <div className="text-2xl font-bold text-primary">{cognitiveExercises.length}</div>
-                    <div className="text-sm text-muted-foreground">Total Exercises</div>
+                    <Target className="h-6 w-6 mx-auto mb-2 text-green-400" />
+                    <div className="text-2xl font-bold text-primary">{completedGames}</div>
+                    <div className="text-sm text-muted-foreground">Games Won</div>
+                  </CardContent>
+                </Card>
+                <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 border-purple-500/30">
+                  <CardContent className="p-4 text-center">
+                    <Award className="h-6 w-6 mx-auto mb-2 text-purple-400" />
+                    <div className="text-2xl font-bold text-primary">{getPhoenixRank().rank}</div>
+                    <div className="text-sm text-muted-foreground">Phoenix Rank</div>
                   </CardContent>
                 </Card>
               </div>
 
-              <Card className="animate-fade-in">
+              <Card className="animate-fade-in bg-gradient-to-br from-orange-500/10 to-red-500/10 border-orange-500/20">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Brain className="h-5 w-5" />
-                    {cognitiveExercises[currentExercise].title}
+                  <CardTitle className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Brain className="h-5 w-5" />
+                      {cognitiveExercises[currentExercise].title}
+                    </div>
+                    <Badge className="bg-orange-500/20 text-orange-300">
+                      Level {gameLevel} • {cognitiveExercises[currentExercise].phoenixPoints} pts
+                    </Badge>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -236,37 +361,126 @@ const MindTraining = () => {
                     </p>
                     
                     {cognitiveExercises[currentExercise].type === 'memory' && (
-                      <div className="bg-muted/50 p-6 rounded-lg">
-                        <div className="text-2xl font-mono tracking-wider">
-                          {cognitiveExercises[currentExercise].sequence?.join(' - ')}
+                      <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 p-6 rounded-lg border border-orange-500/30">
+                        <div className="text-3xl mb-4">🧠 Memory Challenge</div>
+                        <div className="text-2xl tracking-wider space-x-2">
+                          {cognitiveExercises[currentExercise].sequence?.map((num, idx) => (
+                            <span key={idx} className="inline-block w-10 h-10 bg-orange-500/30 rounded text-white leading-10">
+                              {["🔥", "🧡", "💫", "⭐"][num]}
+                            </span>
+                          ))}
                         </div>
                       </div>
                     )}
                     
                     {cognitiveExercises[currentExercise].type === 'pattern' && (
-                      <div className="bg-muted/50 p-6 rounded-lg">
-                        <div className="text-2xl font-mono tracking-wider">
+                      <div className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 p-6 rounded-lg border border-blue-500/30">
+                        <div className="text-3xl mb-4">🔮 Pattern Recognition</div>
+                        <div className="text-3xl font-mono tracking-wider">
                           {cognitiveExercises[currentExercise].pattern}
                         </div>
                       </div>
                     )}
                     
-                    {cognitiveExercises[currentExercise].type === 'association' && (
-                      <div className="bg-muted/50 p-6 rounded-lg">
-                        <div className="text-2xl font-bold text-primary">
-                          RECOVERY
+                    {cognitiveExercises[currentExercise].type === 'wordFind' && (
+                      <div className="bg-gradient-to-r from-green-500/20 to-teal-500/20 p-6 rounded-lg border border-green-500/30">
+                        <div className="text-3xl mb-4">📝 Word Phoenix</div>
+                        <div className="grid grid-cols-2 gap-4">
+                          {cognitiveExercises[currentExercise].words?.map((word, idx) => (
+                            <div key={idx} className="p-2 bg-green-500/20 rounded text-green-300 font-mono">
+                              {word}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {cognitiveExercises[currentExercise].type === 'navigation' && (
+                      <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-6 rounded-lg border border-purple-500/30">
+                        <div className="text-3xl mb-4">🗺️ Phoenix Path</div>
+                        <div className="text-lg text-purple-300">
+                          Navigate the {cognitiveExercises[currentExercise].mazeSize}x{cognitiveExercises[currentExercise].mazeSize} maze
                         </div>
                       </div>
                     )}
                   </div>
 
-                  <div className="text-center">
-                    <Button onClick={nextExercise} size="lg">
-                      Next Exercise
+                  <div className="text-center space-y-4">
+                    <div className="text-sm text-muted-foreground">
+                      Complete this exercise to earn {cognitiveExercises[currentExercise].phoenixPoints + (gameLevel * 5)} phoenix points
+                    </div>
+                    <Button onClick={completeExercise} size="lg" className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
+                      Complete Phoenix Challenge
                     </Button>
                   </div>
                 </CardContent>
               </Card>
+            </TabsContent>
+
+            {/* Progress Tab */}
+            <TabsContent value="progress" className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Phoenix Journey Stats</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex justify-between">
+                        <span>Total Phoenix Points:</span>
+                        <span className="font-bold text-orange-400">{phoenixScore}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Mind Training Level:</span>
+                        <span className="font-bold text-blue-400">Level {gameLevel}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Games Completed:</span>
+                        <span className="font-bold text-green-400">{completedGames}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Meditation Sessions:</span>
+                        <span className="font-bold text-purple-400">{totalMeditations}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Phoenix Rank:</span>
+                        <span className={`font-bold ${getPhoenixRank().color}`}>
+                          {getPhoenixRank().icon} {getPhoenixRank().rank}
+                        </span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Next Level Progress</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div>
+                        <div className="flex justify-between text-sm mb-2">
+                          <span>Games until next level</span>
+                          <span>{5 - (completedGames % 5)}/5</span>
+                        </div>
+                        <div className="w-full bg-muted rounded-full h-3">
+                          <div 
+                            className="bg-gradient-to-r from-blue-500 to-purple-500 h-3 rounded-full transition-all duration-500"
+                            style={{ width: `${((completedGames % 5) / 5) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      
+                      <div className="text-center pt-4">
+                        <div className="text-4xl mb-2">🔥</div>
+                        <p className="text-sm text-muted-foreground">
+                          Your phoenix mind grows stronger with each challenge completed
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </TabsContent>
           </Tabs>
         </div>
