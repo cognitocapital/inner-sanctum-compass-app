@@ -29,7 +29,7 @@ const Index = () => {
                             <img 
                                 src="/lovable-uploads/88ab6ebf-1274-49b5-a721-beb766481d52.png" 
                                 alt="Dramatic phoenix with outstretched wings and skateboard surrounded by flames" 
-                                className="w-full h-full rounded-full object-cover border-4 border-primary/40 shadow-2xl animate-glow-pulse hover:scale-110 transition-all duration-700 cursor-pointer phoenix-image" 
+                                className="w-full h-full rounded-full object-cover object-center border-4 border-primary/40 shadow-2xl animate-glow-pulse hover:scale-110 transition-all duration-700 cursor-pointer phoenix-image" 
                             />
                             
                             {/* Enhanced animated flame rings */}

@@ -28,7 +28,7 @@ const Dashboard = () => {
               <img 
                 src="/lovable-uploads/88ab6ebf-1274-49b5-a721-beb766481d52.png" 
                 alt="Dramatic phoenix with outstretched wings and skateboard" 
-                className="w-full h-full rounded-full object-cover border-2 border-primary/40 shadow-xl animate-glow-pulse hover:scale-110 transition-all duration-500 phoenix-image" 
+                className="w-full h-full rounded-full object-cover object-center border-2 border-primary/40 shadow-xl animate-glow-pulse hover:scale-110 transition-all duration-500 phoenix-image" 
               />
               <div className="absolute inset-0 rounded-full bg-flame-gradient opacity-25 animate-flame-flicker"></div>
               <div className="absolute inset-1 rounded-full bg-ember-gradient opacity-15 animate-flame-flicker" style={{animationDelay: '0.5s'}}></div>
