@@ -90,10 +90,35 @@ const Index = () => {
                             <CardTitle className="text-3xl font-serif text-center text-gray-900">Table of Contents</CardTitle>
                         </CardHeader>
                         <CardContent className="p-8">
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                                {Array.from({ length: totalChapters }, (_, i) => i + 1).map((chapterNum) => {
-                                    const isAvailable = availableChapters.includes(chapterNum);
-                                    return (
+                            {/* Pre-chapter sections */}
+                            <div className="mb-8">
+                                <h3 className="text-xl font-semibold text-gray-700 mb-4">Introduction</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <Button asChild variant="outline" className="h-16 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20">
+                                        <Link to="/dedication" className="flex flex-col items-center justify-center h-full w-full">
+                                            <span className="text-sm text-gray-600">Dedication</span>
+                                        </Link>
+                                    </Button>
+                                    <Button asChild variant="outline" className="h-16 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20">
+                                        <Link to="/prologue" className="flex flex-col items-center justify-center h-full w-full">
+                                            <span className="text-sm text-gray-600">Prologue</span>
+                                        </Link>
+                                    </Button>
+                                    <Button asChild variant="outline" className="h-16 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20">
+                                        <Link to="/introduction" className="flex flex-col items-center justify-center h-full w-full">
+                                            <span className="text-sm text-gray-600">Introduction</span>
+                                        </Link>
+                                    </Button>
+                                </div>
+                            </div>
+                            
+                            {/* Chapters */}
+                            <div>
+                                <h3 className="text-xl font-semibold text-gray-700 mb-4">Chapters</h3>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                    {Array.from({ length: totalChapters }, (_, i) => i + 1).map((chapterNum) => {
+                                        const isAvailable = availableChapters.includes(chapterNum);
+                                        return (
                                         <Button 
                                             key={chapterNum} 
                                             asChild={isAvailable} 
@@ -118,8 +143,9 @@ const Index = () => {
                                                 </div>
                                             )}
                                         </Button>
-                                    );
-                                })}
+                                        );
+                                    })}
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
