@@ -23,6 +23,17 @@ const Dashboard = () => {
           </div>
 
           <header className="text-center mb-12 animate-phoenix-rise">
+            {/* Smaller phoenix image for dashboard */}
+            <div className="relative mb-6 group mx-auto w-24 h-24">
+              <img 
+                src="/lovable-uploads/61737177-dd9d-47dd-a325-27269cef1702.png" 
+                alt="Phoenix rising" 
+                className="w-full h-full rounded-full object-cover border-2 border-primary/40 shadow-xl animate-glow-pulse hover:scale-110 transition-all duration-500" 
+              />
+              <div className="absolute inset-0 rounded-full bg-flame-gradient opacity-25 animate-flame-flicker"></div>
+              <div className="absolute inset-1 rounded-full bg-ember-gradient opacity-15 animate-flame-flicker" style={{animationDelay: '0.5s'}}></div>
+            </div>
+            
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-flame-gradient mb-4 drop-shadow-lg">
               Recovery Tools
             </h1>

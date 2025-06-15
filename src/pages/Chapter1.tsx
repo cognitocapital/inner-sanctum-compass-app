@@ -14,8 +14,20 @@ const Chapter1 = () => {
         </Button>
       </div>
 
+      {/* Phoenix image for chapter header */}
+      <div className="text-center mb-8">
+        <div className="relative mx-auto w-20 h-20 group">
+          <img 
+            src="/lovable-uploads/61737177-dd9d-47dd-a325-27269cef1702.png" 
+            alt="Phoenix rising" 
+            className="w-full h-full rounded-full object-cover border-2 border-primary/30 shadow-lg animate-glow-pulse hover:scale-105 transition-all duration-300" 
+          />
+          <div className="absolute inset-0 rounded-full bg-flame-gradient opacity-20 animate-flame-flicker"></div>
+        </div>
+      </div>
+
       <article className="prose prose-invert prose-lg mx-auto text-foreground">
-        <h1 className="text-4xl font-serif font-bold text-center text-primary mb-2">
+        <h1 className="text-4xl font-serif font-bold text-center text-flame-gradient mb-2">
           Chapter 1
         </h1>
         <h2 className="text-2xl font-serif font-bold text-center text-muted-foreground mt-0 mb-12">

@@ -20,29 +20,53 @@ const Index = () => {
             
             <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
                 <header className="text-center mb-16 animate-phoenix-rise">
-                    <div className="relative mb-6">
-                        <img 
-                            src="/lovable-uploads/61737177-dd9d-47dd-a325-27269cef1702.png" 
-                            alt="A phoenix holding a skateboard, rising from flames" 
-                            className="mx-auto h-32 w-32 rounded-full object-cover border-4 border-primary/30 shadow-2xl animate-glow-pulse" 
-                        />
-                        <div className="absolute inset-0 rounded-full bg-flame-gradient opacity-20 animate-flame-flicker"></div>
+                    <div className="relative mb-8 group">
+                        {/* Main phoenix image with enhanced effects */}
+                        <div className="relative mx-auto w-48 h-48 md:w-56 md:h-56">
+                            <img 
+                                src="/lovable-uploads/61737177-dd9d-47dd-a325-27269cef1702.png" 
+                                alt="A phoenix holding a skateboard, rising from flames" 
+                                className="w-full h-full rounded-full object-cover border-4 border-primary/40 shadow-2xl animate-glow-pulse hover:scale-110 transition-all duration-700 cursor-pointer" 
+                            />
+                            
+                            {/* Animated flame rings */}
+                            <div className="absolute inset-0 rounded-full bg-flame-gradient opacity-30 animate-flame-flicker"></div>
+                            <div className="absolute inset-2 rounded-full bg-ember-gradient opacity-20 animate-flame-flicker" style={{animationDelay: '0.5s'}}></div>
+                            <div className="absolute inset-4 rounded-full bg-phoenix-gradient opacity-15 animate-flame-flicker" style={{animationDelay: '1s'}}></div>
+                            
+                            {/* Floating particles around the phoenix */}
+                            <div className="absolute -top-2 -left-2 w-3 h-3 bg-primary rounded-full animate-flame-flicker opacity-80"></div>
+                            <div className="absolute -top-4 right-8 w-2 h-2 bg-primary rounded-full animate-flame-flicker opacity-60" style={{animationDelay: '0.8s'}}></div>
+                            <div className="absolute top-4 -right-3 w-2.5 h-2.5 bg-primary rounded-full animate-flame-flicker opacity-70" style={{animationDelay: '1.2s'}}></div>
+                            <div className="absolute bottom-8 -left-4 w-1.5 h-1.5 bg-primary rounded-full animate-flame-flicker opacity-50" style={{animationDelay: '0.3s'}}></div>
+                            <div className="absolute -bottom-3 right-6 w-2 h-2 bg-primary rounded-full animate-flame-flicker opacity-65" style={{animationDelay: '1.5s'}}></div>
+                            <div className="absolute bottom-12 -right-2 w-1 h-1 bg-primary rounded-full animate-flame-flicker opacity-40" style={{animationDelay: '0.7s'}}></div>
+                            
+                            {/* Hover effect overlay */}
+                            <div className="absolute inset-0 rounded-full bg-flame-gradient opacity-0 group-hover:opacity-40 transition-opacity duration-500"></div>
+                        </div>
+                        
+                        {/* Additional floating elements */}
+                        <div className="absolute top-0 left-1/4 w-1 h-1 bg-primary rounded-full animate-flame-flicker opacity-30" style={{animationDelay: '2s'}}></div>
+                        <div className="absolute top-8 right-1/4 w-1.5 h-1.5 bg-primary rounded-full animate-flame-flicker opacity-40" style={{animationDelay: '2.5s'}}></div>
+                        <div className="absolute bottom-0 left-1/3 w-1 h-1 bg-primary rounded-full animate-flame-flicker opacity-35" style={{animationDelay: '1.8s'}}></div>
                     </div>
-                    <h1 className="text-5xl md:text-7xl font-serif font-bold text-flame-gradient mb-4 drop-shadow-lg">
+                    
+                    <h1 className="text-5xl md:text-7xl font-serif font-bold text-flame-gradient mb-4 drop-shadow-lg animate-flame-flicker">
                         What a Journey
                     </h1>
                     <p className="text-lg md:text-xl text-muted-foreground mt-4 max-w-3xl mx-auto leading-relaxed">
                         An intimate account of recovering from a traumatic brain injury, finding new strength, and embracing life's unwritten chapters.
                     </p>
                     <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-                        <Button asChild size="lg" className="bg-flame-gradient hover:bg-ember-gradient text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                        <Button asChild size="lg" className="bg-flame-gradient hover:bg-ember-gradient text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
                             <Link to="/chapter-1">
-                                Start Reading <ArrowRight className="ml-2 h-5 w-5" />
+                                Start Reading <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </Button>
-                        <Button asChild variant="outline" size="lg" className="border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300 hover:scale-105">
+                        <Button asChild variant="outline" size="lg" className="border-primary/50 hover:bg-primary/10 hover:border-primary transition-all duration-300 hover:scale-105 group">
                             <Link to="/dashboard">
-                                Interactive Tools <ArrowRight className="ml-2 h-5 w-5" />
+                                Interactive Tools <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </Button>
                     </div>

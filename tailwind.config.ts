@@ -129,10 +129,24 @@ export default {
 				},
 				'glow-pulse': {
 					'0%, 100%': {
-						boxShadow: '0 0 20px hsla(25, 95%, 65%, 0.5)'
+						boxShadow: '0 0 20px hsla(25, 95%, 65%, 0.5), 0 0 40px hsla(25, 95%, 65%, 0.2)'
 					},
 					'50%': {
-						boxShadow: '0 0 40px hsla(25, 95%, 65%, 0.8), 0 0 60px hsla(14, 88%, 55%, 0.4)'
+						boxShadow: '0 0 40px hsla(25, 95%, 65%, 0.8), 0 0 60px hsla(14, 88%, 55%, 0.4), 0 0 80px hsla(39, 100%, 70%, 0.3)'
+					}
+				},
+				'float': {
+					'0%, 100%': {
+						transform: 'translateY(0px) rotate(0deg)'
+					},
+					'25%': {
+						transform: 'translateY(-5px) rotate(1deg)'
+					},
+					'50%': {
+						transform: 'translateY(-10px) rotate(0deg)'
+					},
+					'75%': {
+						transform: 'translateY(-5px) rotate(-1deg)'
 					}
 				}
 			},
@@ -142,7 +156,8 @@ export default {
 				'fade-in': 'fade-in 0.6s ease-out',
 				'flame-flicker': 'flame-flicker 3s ease-in-out infinite',
 				'phoenix-rise': 'phoenix-rise 1.2s ease-out',
-				'glow-pulse': 'glow-pulse 2s ease-in-out infinite'
+				'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+				'float': 'float 4s ease-in-out infinite'
 			}
 		}
 	},
