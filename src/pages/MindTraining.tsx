@@ -10,6 +10,9 @@ import { PhoenixCompanion } from "@/components/phoenix/PhoenixCompanion";
 import { PhoenixNest } from "@/components/phoenix/PhoenixNest";
 import { HatchingGame } from "@/components/phoenix/games/HatchingGame";
 import { LearningToFlyGame } from "@/components/phoenix/games/LearningToFlyGame";
+import { MindfulnessJournal } from "@/components/mindfulness/MindfulnessJournal";
+import { GuidedMeditations } from "@/components/mindfulness/GuidedMeditations";
+import { NarrativePrompts } from "@/components/mindfulness/NarrativePrompts";
 
 const MindTraining = () => {
   const [meditationActive, setMeditationActive] = useState(false);
@@ -215,108 +218,58 @@ const MindTraining = () => {
             </div>
           </header>
 
-          <Tabs defaultValue="meditation" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="meditation">Mindfulness</TabsTrigger>
-              <TabsTrigger value="cognitive">Phoenix Games</TabsTrigger>
+          <Tabs defaultValue="mindfulness" className="space-y-8">
+            <TabsList className="grid w-full grid-cols-5">
+              <TabsTrigger value="mindfulness">Mindfulness</TabsTrigger>
+              <TabsTrigger value="guided">Guided</TabsTrigger>
+              <TabsTrigger value="journal">Journal</TabsTrigger>
+              <TabsTrigger value="games">Phoenix Games</TabsTrigger>
               <TabsTrigger value="progress">Progress</TabsTrigger>
             </TabsList>
 
-            {/* Meditation Tab */}
-            <TabsContent value="meditation" className="space-y-6">
-              <Card className="animate-fade-in">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Timer className="h-5 w-5" />
-                    Guided Meditation
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {!meditationActive && timeLeft === meditationTime && (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <Button 
-                        onClick={() => startMeditation(180)}
-                        variant="outline"
-                        className="h-16"
-                      >
-                        <div className="text-center">
-                          <div className="font-semibold">3 Minutes</div>
-                          <div className="text-sm text-muted-foreground">Quick Reset</div>
-                        </div>
-                      </Button>
-                      <Button 
-                        onClick={() => startMeditation(300)}
-                        variant="outline"
-                        className="h-16"
-                      >
-                        <div className="text-center">
-                          <div className="font-semibold">5 Minutes</div>
-                          <div className="text-sm text-muted-foreground">Standard</div>
-                        </div>
-                      </Button>
-                      <Button 
-                        onClick={() => startMeditation(600)}
-                        variant="outline"
-                        className="h-16"
-                      >
-                        <div className="text-center">
-                          <div className="font-semibold">10 Minutes</div>
-                          <div className="text-sm text-muted-foreground">Deep Practice</div>
-                        </div>
-                      </Button>
-                    </div>
-                  )}
+            {/* Story-Integrated Mindfulness Tab */}
+            <TabsContent value="mindfulness" className="space-y-6">
+              <NarrativePrompts 
+                currentChapter="Chapter 5"
+                storyContext="Phoenix transformation scene"
+                onComplete={(type, duration) => {
+                  const points = Math.floor(duration / 30) * 5; // 5 points per 30 seconds
+                  setPhoenixScore(prev => prev + points);
+                  toast({
+                    title: "Mindful Moment Complete! ✨",
+                    description: `You've earned ${points} phoenix points for your mindful practice.`,
+                  });
+                }}
+              />
+            </TabsContent>
 
-                  {(meditationActive || timeLeft < meditationTime) && (
-                    <div className="text-center space-y-6">
-                      <div className="relative">
-                        <div className="w-48 h-48 mx-auto rounded-full border-4 border-primary/20 flex items-center justify-center">
-                          <div className="text-center">
-                            <div className="text-4xl font-bold text-primary mb-2">
-                              {formatTime(timeLeft)}
-                            </div>
-                            <div className="text-sm text-muted-foreground">
-                              {meditationActive ? 'Meditating...' : 'Paused'}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+            {/* Guided Meditations Tab */}
+            <TabsContent value="guided" className="space-y-6">
+              <GuidedMeditations 
+                onComplete={(duration, theme) => {
+                  const newTotal = totalMeditations + 1;
+                  setTotalMeditations(newTotal);
+                  const points = Math.floor(duration / 60) * 15; // 15 points per minute for guided meditation
+                  setPhoenixScore(prev => prev + points);
+                  
+                  toast({
+                    title: "Guided Meditation Complete! 🧘‍♀️",
+                    description: `You've earned ${points} phoenix points! Theme: ${theme}`,
+                  });
+                }}
+              />
+            </TabsContent>
 
-                      <div className="space-y-4">
-                        <p className="text-lg text-muted-foreground">
-                          {meditationActive 
-                            ? "Focus on your breath. Let thoughts come and go without judgment."
-                            : "Take your time. Resume when you're ready."
-                          }
-                        </p>
-                        
-                        <div className="flex justify-center gap-4">
-                          <Button onClick={toggleMeditation} size="lg">
-                            {meditationActive ? (
-                              <>
-                                <Pause className="mr-2 h-5 w-5" />
-                                Pause
-                              </>
-                            ) : (
-                              <>
-                                <Play className="mr-2 h-5 w-5" />
-                                Resume
-                              </>
-                            )}
-                          </Button>
-                          <Button onClick={resetMeditation} variant="outline" size="lg">
-                            Reset
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
+            {/* Mindfulness Journal Tab */}
+            <TabsContent value="journal" className="space-y-6">
+              <MindfulnessJournal 
+                currentChapter="Chapter 5"
+                storyContext="Phoenix rises from ashes"
+              />
             </TabsContent>
 
             {/* Phoenix Games Tab */}
-            <TabsContent value="cognitive" className="space-y-6">
+            <TabsContent value="games" className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 {/* Phoenix Companion */}
                 <PhoenixCompanion 
