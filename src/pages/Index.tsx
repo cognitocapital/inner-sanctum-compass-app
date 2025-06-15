@@ -60,7 +60,7 @@ const Index = () => {
                     <p className="text-lg md:text-xl text-gray-300 mt-4 max-w-3xl mx-auto leading-relaxed">
                         An intimate account of recovering from a traumatic brain injury, finding new strength, and embracing life's unwritten chapters.
                     </p>
-                    <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                    <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
                         <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
                             <Link to="/dedication">
                                 Dedication <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -79,6 +79,11 @@ const Index = () => {
                         <Button asChild size="lg" className="bg-red-500 hover:bg-red-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
                             <Link to="/gratitude">
                                 Gratitude Journey <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        </Button>
+                        <Button asChild variant="outline" size="lg" className="border-green-500/50 hover:bg-green-500/10 hover:border-green-500 transition-all duration-300 hover:scale-105 group">
+                            <Link to="/resources">
+                                Growth Resources <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </Button>
                     </div>

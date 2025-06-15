@@ -34,6 +34,7 @@ import ChallengeTracker from "./pages/ChallengeTracker";
 import MindTraining from "./pages/MindTraining";
 import GratitudeJourney from "./pages/GratitudeJourney";
 import UnwrittenChapters from "./pages/UnwrittenChapters";
+import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -76,6 +77,7 @@ const App = () => (
           <Route path="/mind" element={<MindTraining />} />
           <Route path="/gratitude" element={<GratitudeJourney />} />
           <Route path="/unwritten" element={<UnwrittenChapters />} />
+          <Route path="/resources" element={<Resources />} />
           {/* More chapter routes will be added as chapters are created */}
           <Route path="*" element={<NotFound />} />
         </Routes>

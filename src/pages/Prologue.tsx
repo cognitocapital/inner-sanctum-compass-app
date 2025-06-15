@@ -82,9 +82,24 @@ const Prologue = () => {
               I won't sugarcoat things. This journey has been the hardest thing I've ever had to navigate. It's been messy, it's been painful, and it's been profoundly humbling. But it's also been transformative. It's forced me to confront my own limitations, to question my assumptions about life, and to ultimately discover a deeper sense of self and purpose. My personal growth was born out of necessity.
             </p>
 
-            <p className="text-lg leading-relaxed mb-8">
+            <p className="text-lg leading-relaxed mb-6">
               I'm not here to preach or to offer easy answers. I'm simply sharing my story, honestly and authentically, in the hope that it might offer some guidance, some solace, some inspiration to those who are also on their own journeys of healing and self-discovery. The tools are all there in front of you. This book offers hope, practical tools, and a sense of community. This is my journey. Perhaps it can help you navigate yours.
             </p>
+
+            <div className="bg-orange-500/10 rounded-lg p-6 border border-orange-500/20 mb-8">
+              <h3 className="text-lg font-semibold text-orange-600 mb-3 flex items-center gap-2">
+                <span>🌱</span> Continue Your Journey
+              </h3>
+              <p className="text-gray-700 mb-4">
+                Ready to explore additional resources from leading experts in TBI recovery, brain resilience, and neuroplasticity? 
+                Discover tools and wisdom from influential voices who can support your path to personal growth.
+              </p>
+              <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white">
+                <Link to="/resources">
+                  Explore Growth Resources
+                </Link>
+              </Button>
+            </div>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">
               <Button asChild variant="outline" className="border-orange-500/50 hover:bg-orange-500/10 hover:border-orange-500 transition-all duration-300">
