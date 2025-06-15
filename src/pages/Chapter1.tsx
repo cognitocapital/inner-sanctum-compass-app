@@ -18,7 +18,7 @@ const Chapter1 = () => {
       <div className="text-center mb-8">
         <div className="relative mx-auto w-20 h-20 group">
           <img 
-            src="/lovable-uploads/88ab6ebf-1274-49b5-a721-beb766481d52.png" 
+            src="/lovable-uploads/87893c50-952e-48f8-9649-a7083c6cffd3.png" 
             alt="Dramatic phoenix with wings spread and skateboard" 
             className="w-full h-full rounded-full object-cover object-center border-2 border-primary/30 shadow-lg animate-glow-pulse hover:scale-105 transition-all duration-300 phoenix-image" 
           />
