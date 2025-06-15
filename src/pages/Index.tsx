@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 const Index = () => {
     // For now, showing planned chapters - will be updated as chapters are added
     const totalChapters = 21;
-    const availableChapters = [1, 2, 3, 4, 5]; // Now have multiple chapters available
+    const availableChapters = Array.from({ length: totalChapters }, (_, i) => i + 1); // All chapters available
 
     return (
         <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
