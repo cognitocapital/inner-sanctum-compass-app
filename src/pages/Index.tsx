@@ -73,6 +73,11 @@ const Index = () => {
                                 Interactive Tools <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </Button>
+                        <Button asChild size="lg" className="bg-wing-gradient hover:opacity-90 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                            <Link to="/gratitude">
+                                Gratitude Journey <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        </Button>
                     </div>
                 </header>
 
