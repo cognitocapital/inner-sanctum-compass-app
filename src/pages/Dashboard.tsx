@@ -26,9 +26,9 @@ const Dashboard = () => {
             {/* Smaller phoenix image for dashboard */}
             <div className="relative mb-6 group mx-auto w-24 h-24">
               <img 
-                src="/lovable-uploads/61737177-dd9d-47dd-a325-27269cef1702.png" 
-                alt="Phoenix rising" 
-                className="w-full h-full rounded-full object-cover border-2 border-primary/40 shadow-xl animate-glow-pulse hover:scale-110 transition-all duration-500" 
+                src="/lovable-uploads/2a13c600-36ec-41bb-bc52-a980190f1d22.png" 
+                alt="Phoenix rising with outstretched wings" 
+                className="w-full h-full rounded-full object-cover border-2 border-primary/40 shadow-xl animate-glow-pulse hover:scale-110 transition-all duration-500 phoenix-image" 
               />
               <div className="absolute inset-0 rounded-full bg-flame-gradient opacity-25 animate-flame-flicker"></div>
               <div className="absolute inset-1 rounded-full bg-ember-gradient opacity-15 animate-flame-flicker" style={{animationDelay: '0.5s'}}></div>
