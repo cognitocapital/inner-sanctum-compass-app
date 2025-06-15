@@ -132,11 +132,28 @@ const UnwrittenChapters = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-32 right-10 w-1.5 h-1.5 bg-primary rounded-full animate-flame-flicker opacity-50"></div>
-        <div className="absolute bottom-40 left-16 w-1 h-1 bg-primary rounded-full animate-flame-flicker opacity-40" style={{animationDelay: '1.5s'}}></div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-foreground relative overflow-hidden">
+      {/* Animated background elements inspired by phoenix flames */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Primary flame particles */}
+        <div className="absolute top-20 left-10 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-80 shadow-lg shadow-orange-500/50"></div>
+        <div className="absolute top-40 right-20 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1s] opacity-60 shadow-lg shadow-orange-500/40"></div>
+        <div className="absolute bottom-60 left-1/4 w-2.5 h-2.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_2s] opacity-70 shadow-lg shadow-orange-500/45"></div>
+        <div className="absolute bottom-40 right-1/3 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_3s] opacity-50 shadow-lg shadow-orange-500/35"></div>
+        <div className="absolute top-1/3 left-1/6 w-1.5 h-1.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.5s] opacity-45 shadow-lg shadow-orange-500/30"></div>
+        <div className="absolute bottom-1/3 right-1/6 w-1 h-1 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_2.5s] opacity-35 shadow-lg shadow-orange-500/25"></div>
+        <div className="absolute top-2/3 right-1/5 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.5s] opacity-55 shadow-lg shadow-orange-500/40"></div>
+        
+        {/* Additional ember particles */}
+        <div className="absolute top-32 left-1/5 w-1 h-1 bg-yellow-400 rounded-full animate-[float_4s_ease-in-out_infinite_4s] opacity-40"></div>
+        <div className="absolute top-56 right-1/4 w-1.5 h-1.5 bg-red-400 rounded-full animate-[float_4s_ease-in-out_infinite_5s] opacity-35"></div>
+        <div className="absolute bottom-72 left-1/3 w-1 h-1 bg-yellow-400 rounded-full animate-[float_4s_ease-in-out_infinite_6s] opacity-30"></div>
+        <div className="absolute bottom-24 right-1/6 w-1.5 h-1.5 bg-orange-500 rounded-full animate-[float_4s_ease-in-out_infinite_7s] opacity-45"></div>
+        <div className="absolute top-1/4 right-1/8 w-1 h-1 bg-red-500 rounded-full animate-[float_4s_ease-in-out_infinite_8s] opacity-40"></div>
+        
+        {/* Subtle flame trails */}
+        <div className="absolute top-16 left-1/2 w-0.5 h-8 bg-gradient-to-t from-orange-500/60 to-transparent animate-[float_3s_ease-in-out_infinite_3.5s] opacity-30"></div>
+        <div className="absolute bottom-32 right-1/2 w-0.5 h-6 bg-gradient-to-t from-orange-500/50 to-transparent animate-[float_3s_ease-in-out_infinite_4.5s] opacity-25"></div>
       </div>
       
       <div className="container mx-auto px-4 py-8 relative z-10 max-w-4xl">
@@ -158,10 +175,10 @@ const UnwrittenChapters = () => {
             <div className="absolute inset-0 rounded-full bg-flame-gradient opacity-25 animate-flame-flicker"></div>
           </div>
           
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-flame-gradient mb-4 drop-shadow-lg">
+          <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-4 drop-shadow-lg">
             Unwritten Chapters
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+          <p className="text-lg md:text-xl text-gray-300 mt-4 max-w-3xl mx-auto leading-relaxed mb-6">
             Your journey continues beyond these pages. Share your story, inspire others, and find strength in our community of resilient souls.
           </p>
           
@@ -169,7 +186,7 @@ const UnwrittenChapters = () => {
             <Button 
               onClick={() => setIsWriting(true)}
               size="lg"
-              className="bg-flame-gradient hover:bg-ember-gradient text-white"
+              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
             >
               <PenTool className="mr-2 h-5 w-5" />
               Write Your Chapter
@@ -179,13 +196,13 @@ const UnwrittenChapters = () => {
 
         {/* Writing Section */}
         {isWriting && (
-          <Card className="mb-8 bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 animate-fade-in">
+          <Card className="mb-8 backdrop-blur-sm bg-white/80 border-orange-500/20 shadow-2xl animate-fade-in">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <PenTool className="h-5 w-5 text-primary" />
+                <PenTool className="h-5 w-5 text-orange-500" />
                 Share Your Story
               </CardTitle>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-gray-600">
                 Your words have power. Share your journey to inspire and connect with others walking similar paths.
               </p>
             </CardHeader>
@@ -233,7 +250,7 @@ const UnwrittenChapters = () => {
                   </Button>
                   <Button 
                     onClick={handleSubmitStory}
-                    className="bg-flame-gradient hover:bg-ember-gradient text-white"
+                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                   >
                     <Share2 className="mr-2 h-4 w-4" />
                     Share Chapter
@@ -252,7 +269,7 @@ const UnwrittenChapters = () => {
               variant={selectedCategory === category.value ? "default" : "outline"}
               size="sm"
               onClick={() => setSelectedCategory(category.value)}
-              className={selectedCategory === category.value ? "bg-flame-gradient text-white" : ""}
+              className={selectedCategory === category.value ? "bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg transition-all duration-300" : "border-orange-500/50 hover:bg-orange-500/10 hover:border-orange-500 transition-all duration-300"}
             >
               {category.label}
             </Button>
@@ -261,10 +278,10 @@ const UnwrittenChapters = () => {
 
         {/* Community Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card className="text-center bg-gradient-to-br from-card to-primary/5">
+          <Card className="text-center backdrop-blur-sm bg-white/80 border-orange-500/20 shadow-xl">
             <CardContent className="pt-6">
-              <div className="text-2xl font-bold text-flame-gradient">{stories.length}</div>
-              <p className="text-sm text-muted-foreground">Shared Stories</p>
+              <div className="text-2xl font-bold text-orange-500">{stories.length}</div>
+              <p className="text-sm text-gray-600">Shared Stories</p>
             </CardContent>
           </Card>
           <Card className="text-center bg-gradient-to-br from-card to-primary/5">
