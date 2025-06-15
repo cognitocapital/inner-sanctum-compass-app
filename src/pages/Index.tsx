@@ -11,14 +11,26 @@ const Index = () => {
     return (
         <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
             {/* Enhanced animated background elements inspired by phoenix flames */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-20 left-10 w-3 h-3 bg-primary rounded-full animate-flame-flicker opacity-80"></div>
-                <div className="absolute top-40 right-20 w-2 h-2 bg-primary rounded-full animate-flame-flicker opacity-60" style={{animationDelay: '1s'}}></div>
-                <div className="absolute bottom-60 left-1/4 w-2.5 h-2.5 bg-primary rounded-full animate-flame-flicker opacity-70" style={{animationDelay: '2s'}}></div>
-                <div className="absolute bottom-40 right-1/3 w-2 h-2 bg-primary rounded-full animate-flame-flicker opacity-50" style={{animationDelay: '3s'}}></div>
-                <div className="absolute top-1/3 left-1/6 w-1.5 h-1.5 bg-primary rounded-full animate-flame-flicker opacity-45" style={{animationDelay: '1.5s'}}></div>
-                <div className="absolute bottom-1/3 right-1/6 w-1 h-1 bg-primary rounded-full animate-flame-flicker opacity-35" style={{animationDelay: '2.5s'}}></div>
-                <div className="absolute top-2/3 right-1/5 w-2 h-2 bg-primary rounded-full animate-flame-flicker opacity-55" style={{animationDelay: '0.5s'}}></div>
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                {/* Primary flame particles */}
+                <div className="absolute top-20 left-10 w-3 h-3 bg-primary rounded-full animate-flame-flicker opacity-80 shadow-lg shadow-primary/50"></div>
+                <div className="absolute top-40 right-20 w-2 h-2 bg-primary rounded-full animate-flame-flicker opacity-60 shadow-lg shadow-primary/40" style={{animationDelay: '1s'}}></div>
+                <div className="absolute bottom-60 left-1/4 w-2.5 h-2.5 bg-primary rounded-full animate-flame-flicker opacity-70 shadow-lg shadow-primary/45" style={{animationDelay: '2s'}}></div>
+                <div className="absolute bottom-40 right-1/3 w-2 h-2 bg-primary rounded-full animate-flame-flicker opacity-50 shadow-lg shadow-primary/35" style={{animationDelay: '3s'}}></div>
+                <div className="absolute top-1/3 left-1/6 w-1.5 h-1.5 bg-primary rounded-full animate-flame-flicker opacity-45 shadow-lg shadow-primary/30" style={{animationDelay: '1.5s'}}></div>
+                <div className="absolute bottom-1/3 right-1/6 w-1 h-1 bg-primary rounded-full animate-flame-flicker opacity-35 shadow-lg shadow-primary/25" style={{animationDelay: '2.5s'}}></div>
+                <div className="absolute top-2/3 right-1/5 w-2 h-2 bg-primary rounded-full animate-flame-flicker opacity-55 shadow-lg shadow-primary/40" style={{animationDelay: '0.5s'}}></div>
+                
+                {/* Additional ember particles for more drama */}
+                <div className="absolute top-32 left-1/5 w-1 h-1 bg-orange-400 rounded-full animate-float opacity-40" style={{animationDelay: '4s'}}></div>
+                <div className="absolute top-56 right-1/4 w-1.5 h-1.5 bg-red-400 rounded-full animate-float opacity-35" style={{animationDelay: '5s'}}></div>
+                <div className="absolute bottom-72 left-1/3 w-1 h-1 bg-yellow-400 rounded-full animate-float opacity-30" style={{animationDelay: '6s'}}></div>
+                <div className="absolute bottom-24 right-1/6 w-1.5 h-1.5 bg-orange-500 rounded-full animate-float opacity-45" style={{animationDelay: '7s'}}></div>
+                <div className="absolute top-1/4 right-1/8 w-1 h-1 bg-red-500 rounded-full animate-float opacity-40" style={{animationDelay: '8s'}}></div>
+                
+                {/* Subtle flame trails */}
+                <div className="absolute top-16 left-1/2 w-0.5 h-8 bg-gradient-to-t from-primary/60 to-transparent animate-flame-flicker opacity-30" style={{animationDelay: '3.5s'}}></div>
+                <div className="absolute bottom-32 right-1/2 w-0.5 h-6 bg-gradient-to-t from-primary/50 to-transparent animate-flame-flicker opacity-25" style={{animationDelay: '4.5s'}}></div>
             </div>
             
             <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
