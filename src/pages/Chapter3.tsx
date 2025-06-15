@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-const Chapter1 = () => {
+const Chapter3 = () => {
   return (
     <div className="max-w-3xl mx-auto animate-fade-in">
       <div className="mb-8">
@@ -32,45 +32,45 @@ const Chapter1 = () => {
 
       <article className="prose prose-invert prose-lg mx-auto text-foreground">
         <h1 className="text-4xl font-serif font-bold text-center text-flame-gradient mb-2">
-          Chapter 1
+          Chapter 3
         </h1>
         <h2 className="text-2xl font-serif font-bold text-center text-muted-foreground mt-0 mb-12">
-          The Day Everything Changed
+          Coming Home
         </h2>
 
         <p className="text-sm text-center text-muted-foreground/80 italic mb-8">
-          Australia Day, January 26, 2024
+          February 2024
         </p>
 
         <p>
-          Australia Day 2024. A date I'll never forget, though I wish I could. It was supposed to be a celebration, a day of joy and national pride. Instead, it became the day my world turned upside down, literally and figuratively.
+          Going home from the hospital should have felt like a victory, but instead it felt like stepping into an alien world. Everything looked the same—our house, our street, our neighborhood—but I felt fundamentally different. It was as if I was seeing my life through someone else's eyes.
         </p>
 
         <p>
-          I remember the morning clearly—too clearly, given what was to come. The sun was shining, the air was warm, and there was that unmistakable buzz of a public holiday. My wife Sarah and I had been looking forward to a relaxing day. We'd planned to spend it with friends, maybe have a barbecue, enjoy the simple pleasures of an Australian summer.
+          The simplest tasks became monumental challenges. Making a cup of coffee required intense concentration. Following a conversation on TV was exhausting. Reading more than a paragraph made my head throb. Sarah tried to create a gentle routine, but even that felt overwhelming.
         </p>
 
         <p>
-          But life, as I've learned, has a way of derailing our best-laid plans.
+          The emotional toll was perhaps harder than the cognitive challenges. I found myself getting frustrated over things that should have been easy, crying at unexpected moments, and feeling like a stranger in my own body. The person I had been before the accident felt like a distant memory.
         </p>
 
         <p>
-          The accident happened so quickly, yet the memory plays in slow motion. One moment I was upright, walking, thinking, being—the next, I was on the ground, my head having made violent contact with concrete. The world went dark, not just literally, but metaphorically too. Everything I thought I knew about myself, about my capabilities, about my future, changed in that instant.
+          My skateboard sat in the garage, collecting dust. Looking at it brought a mixture of emotions—anger at what it had cost me, but also a strange longing for the freedom it once represented. Sarah suggested we move it out of sight, but something made me want to keep it there, a reminder of both what I'd lost and what I was determined to reclaim.
         </p>
 
         <p>
-          They say that traumatic brain injuries are invisible disabilities, and they're right. From the outside, I looked fine. No broken bones, no visible wounds that would make people understand the magnitude of what had happened. But inside my skull, a storm was brewing that would rage for months to come.
+          The doctors had given us a rough timeline for recovery, but everyone was careful to mention that traumatic brain injury recovery isn't linear. Some days would be better than others. Some progress might be permanent, others temporary. The uncertainty was almost harder to bear than the symptoms themselves.
         </p>
 
         <div className="flex justify-between items-center mt-12">
           <Button asChild variant="outline">
-            <Link to="/">
+            <Link to="/chapter-2">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Table of Contents
+              Previous Chapter
             </Link>
           </Button>
           <Button asChild>
-            <Link to="/chapter-2">
+            <Link to="/chapter-4">
               Next Chapter
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
@@ -81,4 +81,4 @@ const Chapter1 = () => {
   );
 };
 
-export default Chapter1;
+export default Chapter3;

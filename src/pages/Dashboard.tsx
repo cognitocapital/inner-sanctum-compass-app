@@ -25,10 +25,14 @@ const Dashboard = () => {
           <header className="text-center mb-12 animate-phoenix-rise">
             {/* Smaller phoenix image for dashboard */}
             <div className="relative mb-6 group mx-auto w-24 h-24">
-              <img 
-                src="/lovable-uploads/87893c50-952e-48f8-9649-a7083c6cffd3.png" 
-                alt="Dramatic phoenix with outstretched wings and skateboard" 
-                className="w-full h-full rounded-full object-cover object-center border-2 border-primary/40 shadow-xl animate-glow-pulse hover:scale-110 transition-all duration-500 phoenix-image" 
+              <div 
+                className="w-full h-full rounded-full border-2 border-primary/40 shadow-xl animate-glow-pulse hover:scale-110 transition-all duration-500 phoenix-image"
+                style={{
+                  backgroundImage: `url('/lovable-uploads/87893c50-952e-48f8-9649-a7083c6cffd3.png')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  backgroundRepeat: 'no-repeat'
+                }}
               />
               <div className="absolute inset-0 rounded-full bg-flame-gradient opacity-25 animate-flame-flicker"></div>
               <div className="absolute inset-1 rounded-full bg-ember-gradient opacity-15 animate-flame-flicker" style={{animationDelay: '0.5s'}}></div>

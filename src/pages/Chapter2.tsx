@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-const Chapter1 = () => {
+const Chapter2 = () => {
   return (
     <div className="max-w-3xl mx-auto animate-fade-in">
       <div className="mb-8">
@@ -32,45 +32,45 @@ const Chapter1 = () => {
 
       <article className="prose prose-invert prose-lg mx-auto text-foreground">
         <h1 className="text-4xl font-serif font-bold text-center text-flame-gradient mb-2">
-          Chapter 1
+          Chapter 2
         </h1>
         <h2 className="text-2xl font-serif font-bold text-center text-muted-foreground mt-0 mb-12">
-          The Day Everything Changed
+          The Hospital Stay
         </h2>
 
         <p className="text-sm text-center text-muted-foreground/80 italic mb-8">
-          Australia Day, January 26, 2024
+          January 26 - February 2, 2024
         </p>
 
         <p>
-          Australia Day 2024. A date I'll never forget, though I wish I could. It was supposed to be a celebration, a day of joy and national pride. Instead, it became the day my world turned upside down, literally and figuratively.
+          The next few days exist in a haze of sterile hospital corridors, the constant beeping of machines, and the worried faces of family members. The medical team was thorough but cautious—traumatic brain injuries are unpredictable beasts, and no two cases are exactly alike.
         </p>
 
         <p>
-          I remember the morning clearly—too clearly, given what was to come. The sun was shining, the air was warm, and there was that unmistakable buzz of a public holiday. My wife Sarah and I had been looking forward to a relaxing day. We'd planned to spend it with friends, maybe have a barbecue, enjoy the simple pleasures of an Australian summer.
+          Sarah barely left my side. I could see the fear in her eyes, though she tried to hide it behind forced smiles and optimistic updates about my progress. The doctors spoke in careful, measured tones about swelling, monitoring, and "wait and see" approaches that did nothing to ease anyone's anxiety.
         </p>
 
         <p>
-          But life, as I've learned, has a way of derailing our best-laid plans.
+          The hardest part wasn't the physical pain—though the headaches were brutal—it was the fog that had settled over my mind. Simple tasks that I'd done thousands of times before suddenly felt impossible. Remembering names, following conversations, even basic problem-solving seemed beyond my reach.
         </p>
 
         <p>
-          The accident happened so quickly, yet the memory plays in slow motion. One moment I was upright, walking, thinking, being—the next, I was on the ground, my head having made violent contact with concrete. The world went dark, not just literally, but metaphorically too. Everything I thought I knew about myself, about my capabilities, about my future, changed in that instant.
+          It was during one of these foggy moments that I first understood the true impact of what had happened. A neurologist explained that my brain was essentially bruised, and like any bruise, it would take time to heal. But unlike a bruised arm or leg, this injury affected everything—my thoughts, my emotions, my very sense of self.
         </p>
 
         <p>
-          They say that traumatic brain injuries are invisible disabilities, and they're right. From the outside, I looked fine. No broken bones, no visible wounds that would make people understand the magnitude of what had happened. But inside my skull, a storm was brewing that would rage for months to come.
+          The skateboard accident that caused all this seemed so random, so preventable. One moment of distraction, one patch of uneven pavement, and everything changed. The irony wasn't lost on me—the very activity that had always been my escape, my way of staying active and free, had become the source of my greatest challenge.
         </p>
 
         <div className="flex justify-between items-center mt-12">
           <Button asChild variant="outline">
-            <Link to="/">
+            <Link to="/chapter-1">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Table of Contents
+              Previous Chapter
             </Link>
           </Button>
           <Button asChild>
-            <Link to="/chapter-2">
+            <Link to="/chapter-3">
               Next Chapter
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
@@ -81,4 +81,4 @@ const Chapter1 = () => {
   );
 };
 
-export default Chapter1;
+export default Chapter2;

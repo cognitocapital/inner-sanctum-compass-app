@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-const Chapter1 = () => {
+const Chapter4 = () => {
   return (
     <div className="max-w-3xl mx-auto animate-fade-in">
       <div className="mb-8">
@@ -32,45 +32,45 @@ const Chapter1 = () => {
 
       <article className="prose prose-invert prose-lg mx-auto text-foreground">
         <h1 className="text-4xl font-serif font-bold text-center text-flame-gradient mb-2">
-          Chapter 1
+          Chapter 4
         </h1>
         <h2 className="text-2xl font-serif font-bold text-center text-muted-foreground mt-0 mb-12">
-          The Day Everything Changed
+          The Long Road to Recovery
         </h2>
 
         <p className="text-sm text-center text-muted-foreground/80 italic mb-8">
-          Australia Day, January 26, 2024
+          March - April 2024
         </p>
 
         <p>
-          Australia Day 2024. A date I'll never forget, though I wish I could. It was supposed to be a celebration, a day of joy and national pride. Instead, it became the day my world turned upside down, literally and figuratively.
+          Recovery, I learned, is not a straight line. It's more like a winding mountain path—sometimes you're climbing steadily upward, other times you're sliding backwards, and occasionally you find yourself on a plateau wondering if you'll ever move forward again.
         </p>
 
         <p>
-          I remember the morning clearly—too clearly, given what was to come. The sun was shining, the air was warm, and there was that unmistakable buzz of a public holiday. My wife Sarah and I had been looking forward to a relaxing day. We'd planned to spend it with friends, maybe have a barbecue, enjoy the simple pleasures of an Australian summer.
+          The rehabilitation program became my new reality. Cognitive therapy sessions where I relearned skills I'd taken for granted. Physical therapy to address the balance issues and coordination problems. Occupational therapy to help me navigate daily tasks that had become foreign territory.
         </p>
 
         <p>
-          But life, as I've learned, has a way of derailing our best-laid plans.
+          But it was the breathing exercises that surprised me the most. My therapist introduced them as a way to manage the anxiety and overwhelm that came with my new limitations. What started as simple breathing techniques gradually became something more—a way to reconnect with my body, to find moments of calm in the storm of recovery.
         </p>
 
         <p>
-          The accident happened so quickly, yet the memory plays in slow motion. One moment I was upright, walking, thinking, being—the next, I was on the ground, my head having made violent contact with concrete. The world went dark, not just literally, but metaphorically too. Everything I thought I knew about myself, about my capabilities, about my future, changed in that instant.
+          Sarah and I also discovered the power of cold exposure therapy. What began as cold showers recommended for inflammation gradually became a shared ritual of resilience. There was something profound about voluntarily stepping into discomfort, about proving to myself that I could still choose to face difficult things.
         </p>
 
         <p>
-          They say that traumatic brain injuries are invisible disabilities, and they're right. From the outside, I looked fine. No broken bones, no visible wounds that would make people understand the magnitude of what had happened. But inside my skull, a storm was brewing that would rage for months to come.
+          These weren't just therapeutic exercises—they were acts of rebellion against the helplessness I often felt. Each cold shower, each focused breath, each small cognitive victory was a declaration that I was still fighting, still growing, still becoming.
         </p>
 
         <div className="flex justify-between items-center mt-12">
           <Button asChild variant="outline">
-            <Link to="/">
+            <Link to="/chapter-3">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Table of Contents
+              Previous Chapter
             </Link>
           </Button>
           <Button asChild>
-            <Link to="/chapter-2">
+            <Link to="/chapter-5">
               Next Chapter
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
@@ -81,4 +81,4 @@ const Chapter1 = () => {
   );
 };
 
-export default Chapter1;
+export default Chapter4;

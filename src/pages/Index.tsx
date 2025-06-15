@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 const Index = () => {
     // For now, showing planned chapters - will be updated as chapters are added
     const totalChapters = 21;
-    const availableChapters = [1]; // Only Chapter 1 is currently available
+    const availableChapters = [1, 2, 3, 4, 5]; // Now have multiple chapters available
 
     return (
         <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
@@ -24,19 +24,22 @@ const Index = () => {
             <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
                 <header className="text-center mb-16 animate-phoenix-rise">
                     <div className="relative mb-8 group">
-                        {/* Dramatic phoenix image with wings spread */}
+                        {/* Dramatic phoenix background image */}
                         <div className="relative mx-auto w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
-                            <img 
-                                src="/lovable-uploads/87893c50-952e-48f8-9649-a7083c6cffd3.png" 
-                                alt="Dramatic phoenix with outstretched wings and skateboard surrounded by flames" 
-                                className="w-full h-full rounded-full object-cover object-center border-4 border-primary/40 shadow-2xl animate-glow-pulse hover:scale-110 transition-all duration-700 cursor-pointer phoenix-image" 
+                            <div 
+                                className="w-full h-full rounded-full border-4 border-primary/40 shadow-2xl animate-glow-pulse hover:scale-110 transition-all duration-700 cursor-pointer phoenix-image"
+                                style={{
+                                    backgroundImage: `url('/lovable-uploads/87893c50-952e-48f8-9649-a7083c6cffd3.png')`,
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: 'center',
+                                    backgroundRepeat: 'no-repeat'
+                                }}
                             />
                             
                             {/* Enhanced animated flame rings */}
-                            <div className="absolute inset-0 rounded-full bg-flame-gradient opacity-40 animate-flame-flicker"></div>
-                            <div className="absolute inset-2 rounded-full bg-ember-gradient opacity-30 animate-flame-flicker" style={{animationDelay: '0.5s'}}></div>
-                            <div className="absolute inset-4 rounded-full bg-phoenix-gradient opacity-25 animate-flame-flicker" style={{animationDelay: '1s'}}></div>
-                            <div className="absolute inset-6 rounded-full bg-wing-gradient opacity-20 animate-flame-flicker" style={{animationDelay: '1.5s'}}></div>
+                            <div className="absolute inset-0 rounded-full bg-flame-gradient opacity-30 animate-flame-flicker"></div>
+                            <div className="absolute inset-2 rounded-full bg-ember-gradient opacity-20 animate-flame-flicker" style={{animationDelay: '0.5s'}}></div>
+                            <div className="absolute inset-4 rounded-full bg-phoenix-gradient opacity-15 animate-flame-flicker" style={{animationDelay: '1s'}}></div>
                             
                             {/* Enhanced floating flame particles */}
                             <div className="absolute -top-4 -left-4 w-4 h-4 bg-primary rounded-full animate-flame-flicker opacity-90"></div>

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-const Chapter1 = () => {
+const Chapter5 = () => {
   return (
     <div className="max-w-3xl mx-auto animate-fade-in">
       <div className="mb-8">
@@ -32,47 +32,47 @@ const Chapter1 = () => {
 
       <article className="prose prose-invert prose-lg mx-auto text-foreground">
         <h1 className="text-4xl font-serif font-bold text-center text-flame-gradient mb-2">
-          Chapter 1
+          Chapter 5
         </h1>
         <h2 className="text-2xl font-serif font-bold text-center text-muted-foreground mt-0 mb-12">
-          The Day Everything Changed
+          Finding My Phoenix
         </h2>
 
         <p className="text-sm text-center text-muted-foreground/80 italic mb-8">
-          Australia Day, January 26, 2024
+          May 2024
         </p>
 
         <p>
-          Australia Day 2024. A date I'll never forget, though I wish I could. It was supposed to be a celebration, a day of joy and national pride. Instead, it became the day my world turned upside down, literally and figuratively.
+          Three months into recovery, I discovered something unexpected—I was not just healing, I was transforming. The person emerging from this experience wasn't just the pre-accident me with a fixed brain. I was becoming someone new, someone who had been through fire and was being reborn from the ashes.
         </p>
 
         <p>
-          I remember the morning clearly—too clearly, given what was to come. The sun was shining, the air was warm, and there was that unmistakable buzz of a public holiday. My wife Sarah and I had been looking forward to a relaxing day. We'd planned to spend it with friends, maybe have a barbecue, enjoy the simple pleasures of an Australian summer.
+          The phoenix metaphor started as a joke. Sarah bought me a small phoenix figurine from a gift shop, saying it reminded her of my journey. But as I looked at that mythical bird, wings spread wide, rising from flames, something clicked. This wasn't just about getting back to who I was—it was about discovering who I could become.
         </p>
 
         <p>
-          But life, as I've learned, has a way of derailing our best-laid plans.
+          My relationship with challenges began to shift. The daily cognitive exercises weren't just rehabilitation anymore; they were training. The breathing techniques weren't just anxiety management; they were meditation practices that connected me to something deeper. The cold showers weren't just inflammation therapy; they were daily rituals of courage.
         </p>
 
         <p>
-          The accident happened so quickly, yet the memory plays in slow motion. One moment I was upright, walking, thinking, being—the next, I was on the ground, my head having made violent contact with concrete. The world went dark, not just literally, but metaphorically too. Everything I thought I knew about myself, about my capabilities, about my future, changed in that instant.
+          One morning, I walked into the garage and looked at my skateboard for the first time since the accident without feeling anger or sadness. Instead, I felt... gratitude. Not for the accident—that would be absurd—but for the journey it had forced me to take. For the depths it had shown me, and for the heights I was now discovering were possible.
         </p>
 
         <p>
-          They say that traumatic brain injuries are invisible disabilities, and they're right. From the outside, I looked fine. No broken bones, no visible wounds that would make people understand the magnitude of what had happened. But inside my skull, a storm was brewing that would rage for months to come.
+          Recovery wasn't about returning to normal. It was about discovering that normal had been too small for me all along. I was a phoenix, and phoenixes don't return to their old nests. They build new ones, higher and stronger than before.
         </p>
 
         <div className="flex justify-between items-center mt-12">
           <Button asChild variant="outline">
-            <Link to="/">
+            <Link to="/chapter-4">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Table of Contents
+              Previous Chapter
             </Link>
           </Button>
           <Button asChild>
-            <Link to="/chapter-2">
-              Next Chapter
-              <ArrowRight className="ml-2 h-4 w-4" />
+            <Link to="/">
+              <ArrowRight className="mr-2 h-4 w-4" />
+              More chapters coming soon...
             </Link>
           </Button>
         </div>
@@ -81,4 +81,4 @@ const Chapter1 = () => {
   );
 };
 
-export default Chapter1;
+export default Chapter5;
