@@ -17,10 +17,15 @@ const Index = () => {
                     <p className="text-lg text-muted-foreground mt-4 max-w-3xl mx-auto">
                         An intimate account of recovering from a traumatic brain injury, finding new strength, and embracing life's unwritten chapters.
                     </p>
-                    <div className="mt-8">
+                    <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
                         <Button asChild size="lg">
                             <Link to="/chapter-1">
                                 Start Reading <ArrowRight className="ml-2 h-5 w-5" />
+                            </Link>
+                        </Button>
+                        <Button asChild variant="outline" size="lg">
+                            <Link to="/dashboard">
+                                Interactive Tools <ArrowRight className="ml-2 h-5 w-5" />
                             </Link>
                         </Button>
                     </div>

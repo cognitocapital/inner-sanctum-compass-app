@@ -5,6 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Chapter1 from "./pages/Chapter1";
+import Dashboard from "./pages/Dashboard";
+import BreathingExercise from "./pages/BreathingExercise";
+import ChallengeTracker from "./pages/ChallengeTracker";
+import MindTraining from "./pages/MindTraining";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -18,6 +22,10 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/chapter-1" element={<Chapter1 />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/breathing" element={<BreathingExercise />} />
+          <Route path="/challenges" element={<ChallengeTracker />} />
+          <Route path="/mind" element={<MindTraining />} />
           {/* More chapter routes will be added as chapters are created */}
           <Route path="*" element={<NotFound />} />
         </Routes>
