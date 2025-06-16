@@ -1,7 +1,8 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Wind, Thermometer, Brain, BookOpen, PenTool, Heart, Shield, Target, Zap, Sun, Moon, Activity, Users, Calendar, Compass, TrendingUp, Flame, GraduationCap } from "lucide-react";
+import { ArrowLeft, Wind, Thermometer, Brain, BookOpen, PenTool, Heart, Shield, Target, Zap, Sun, Moon, Activity, Users, Calendar, Compass, TrendingUp, Flame, GraduationCap, Eye, Check } from "lucide-react";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
