@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,117 +13,151 @@ const MindTraining = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("attention");
   
-  // BIRU = Brain Injury Rehabilitation Unit
-  const [biruAssessments, setBiruAssessments] = useState({
+  // Clinical-grade neuropsychological assessments based on established protocols
+  const [clinicalAssessments, setClinicalAssessments] = useState({
     attention: {
-      name: "Attention & Concentration",
+      name: "Attention & Working Memory",
+      clinicalTests: ["WAIS-IV Digit Span", "CANTAB RVP", "CPT-3", "TEA-Ch"],
       score: 65,
+      percentile: 42,
       previousScore: 42,
       completed: true,
       sessions: 8,
       lastCompleted: "2023-10-15",
       improvement: 23,
+      standardScore: 8, // Scaled score out of 19
+      confidenceInterval: "95% CI: 85-95",
+      clinicalInterpretation: "Low Average to Average Range",
       exercises: [
-        { name: "Sustained Attention", completed: true, score: 68 },
-        { name: "Divided Attention", completed: true, score: 62 },
-        { name: "Selective Attention", completed: true, score: 65 },
-        { name: "Alternating Attention", completed: false, score: 0 }
+        { name: "Sustained Attention (SART)", completed: true, score: 68, standardScore: 9 },
+        { name: "Divided Attention (PASAT)", completed: true, score: 62, standardScore: 7 },
+        { name: "Selective Attention (Stroop)", completed: true, score: 65, standardScore: 8 },
+        { name: "Working Memory (N-Back)", completed: false, score: 0, standardScore: 0 }
       ]
     },
     processing: {
       name: "Processing Speed",
+      clinicalTests: ["WAIS-IV PSI", "D-KEFS TMT", "CANTAB RTI", "Conners CPT"],
       score: 58,
+      percentile: 25,
       previousScore: 40,
       completed: true,
       sessions: 6,
       lastCompleted: "2023-10-12",
       improvement: 18,
+      standardScore: 6,
+      confidenceInterval: "95% CI: 75-85",
+      clinicalInterpretation: "Below Average Range",
       exercises: [
-        { name: "Visual Processing", completed: true, score: 60 },
-        { name: "Auditory Processing", completed: true, score: 56 },
-        { name: "Reaction Time", completed: true, score: 59 },
-        { name: "Decision Speed", completed: false, score: 0 }
+        { name: "Symbol Search (WAIS-IV)", completed: true, score: 60, standardScore: 7 },
+        { name: "Coding (WAIS-IV)", completed: true, score: 56, standardScore: 6 },
+        { name: "Cancellation (WAIS-IV)", completed: true, score: 59, standardScore: 6 },
+        { name: "Choice Reaction Time", completed: false, score: 0, standardScore: 0 }
       ]
     },
     memory: {
-      name: "Memory Function",
+      name: "Memory & Learning",
+      clinicalTests: ["WMS-IV", "CVLT-3", "BVMT-R", "CANTAB PAL"],
       score: 70,
+      percentile: 65,
       previousScore: 55,
       completed: true,
       sessions: 10,
       lastCompleted: "2023-10-18",
       improvement: 15,
+      standardScore: 10,
+      confidenceInterval: "95% CI: 95-105",
+      clinicalInterpretation: "Average Range",
       exercises: [
-        { name: "Working Memory", completed: true, score: 72 },
-        { name: "Short-term Memory", completed: true, score: 68 },
-        { name: "Long-term Memory", completed: true, score: 70 },
-        { name: "Episodic Memory", completed: true, score: 71 }
+        { name: "Logical Memory (WMS-IV)", completed: true, score: 72, standardScore: 11 },
+        { name: "Visual Reproduction (WMS-IV)", completed: true, score: 68, standardScore: 9 },
+        { name: "Verbal Paired Associates", completed: true, score: 70, standardScore: 10 },
+        { name: "Spatial Addition (WMS-IV)", completed: true, score: 71, standardScore: 10 }
       ]
     },
     executive: {
       name: "Executive Function",
+      clinicalTests: ["D-KEFS", "WCST", "Stroop", "CANTAB SST"],
       score: 62,
+      percentile: 38,
       previousScore: 38,
       completed: true,
       sessions: 7,
       lastCompleted: "2023-10-14",
       improvement: 24,
+      standardScore: 7,
+      confidenceInterval: "95% CI: 80-90",
+      clinicalInterpretation: "Low Average Range",
       exercises: [
-        { name: "Planning", completed: true, score: 64 },
-        { name: "Organization", completed: true, score: 60 },
-        { name: "Problem Solving", completed: true, score: 63 },
-        { name: "Cognitive Flexibility", completed: false, score: 0 }
+        { name: "Wisconsin Card Sort", completed: true, score: 64, standardScore: 8 },
+        { name: "Tower Test (D-KEFS)", completed: true, score: 60, standardScore: 7 },
+        { name: "Color-Word Interference", completed: true, score: 63, standardScore: 8 },
+        { name: "Design Fluency (D-KEFS)", completed: false, score: 0, standardScore: 0 }
       ]
     },
     language: {
-      name: "Language Processing",
+      name: "Language & Verbal Skills",
+      clinicalTests: ["WAIS-IV VCI", "Boston Naming", "COWAT", "Token Test"],
       score: 0,
+      percentile: 0,
       previousScore: 0,
       completed: false,
       sessions: 0,
       lastCompleted: "",
       improvement: 0,
+      standardScore: 0,
+      confidenceInterval: "Not assessed",
+      clinicalInterpretation: "Assessment pending",
       exercises: [
-        { name: "Comprehension", completed: false, score: 0 },
-        { name: "Expression", completed: false, score: 0 },
-        { name: "Word Finding", completed: false, score: 0 },
-        { name: "Reading & Writing", completed: false, score: 0 }
+        { name: "Boston Naming Test", completed: false, score: 0, standardScore: 0 },
+        { name: "Semantic Fluency", completed: false, score: 0, standardScore: 0 },
+        { name: "Phonemic Fluency (FAS)", completed: false, score: 0, standardScore: 0 },
+        { name: "Token Test", completed: false, score: 0, standardScore: 0 }
       ]
     },
     visual: {
-      name: "Visual-Spatial Skills",
+      name: "Visuospatial Processing",
+      clinicalTests: ["WAIS-IV PRI", "BVMT-R", "Judgement Line Orient", "Clock Drawing"],
       score: 0,
+      percentile: 0,
       previousScore: 0,
       completed: false,
       sessions: 0,
       lastCompleted: "",
       improvement: 0,
+      standardScore: 0,
+      confidenceInterval: "Not assessed",
+      clinicalInterpretation: "Assessment pending",
       exercises: [
-        { name: "Visual Perception", completed: false, score: 0 },
-        { name: "Spatial Orientation", completed: false, score: 0 },
-        { name: "Visual Construction", completed: false, score: 0 },
-        { name: "Visual Memory", completed: false, score: 0 }
+        { name: "Block Design (WAIS-IV)", completed: false, score: 0, standardScore: 0 },
+        { name: "Matrix Reasoning", completed: false, score: 0, standardScore: 0 },
+        { name: "Visual Puzzles", completed: false, score: 0, standardScore: 0 },
+        { name: "Figure Weights", completed: false, score: 0, standardScore: 0 }
       ]
     }
   });
 
-  // Calculate average improvement
-  const completedAssessments = Object.values(biruAssessments).filter(assessment => assessment.completed);
+  // Calculate clinical metrics
+  const completedAssessments = Object.values(clinicalAssessments).filter(assessment => assessment.completed);
   const averageImprovement = completedAssessments.length > 0 
     ? Math.round(completedAssessments.reduce((acc, assessment) => acc + assessment.improvement, 0) / completedAssessments.length) 
+    : 0;
+  
+  const averageStandardScore = completedAssessments.length > 0
+    ? Math.round(completedAssessments.reduce((acc, assessment) => acc + assessment.standardScore, 0) / completedAssessments.length)
     : 0;
 
   const handleStartAssessment = (domain) => {
     toast({
-      title: "Assessment Starting",
-      description: `Preparing your ${biruAssessments[domain].name} assessment...`,
+      title: "Clinical Assessment Initializing",
+      description: `Loading ${clinicalAssessments[domain].clinicalTests[0]} protocol...`,
     });
   };
 
   const handleStartTraining = (domain) => {
     toast({
-      title: "Training Session Starting",
-      description: `Preparing your ${biruAssessments[domain].name} training session...`,
+      title: "Evidence-Based Training",
+      description: `Initiating cognitive training based on ${clinicalAssessments[domain].name} assessment results...`,
     });
   };
 
@@ -156,7 +189,7 @@ const MindTraining = () => {
         </div>
 
         <header className="text-center mb-12 animate-phoenix-rise">
-          {/* Enhanced Phoenix branding with larger, more prominent phoenix */}
+          {/* Enhanced clinical branding */}
           <div className="relative mb-8 group mx-auto w-32 h-32">
             <div 
               className="w-full h-full rounded-full border-4 border-orange-500/50 shadow-2xl hover:scale-110 transition-all duration-700 cursor-pointer phoenix-image"
@@ -180,669 +213,251 @@ const MindTraining = () => {
           </h1>
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-            <span className="text-orange-400 font-semibold text-lg tracking-wider">RISE FROM THE ASHES OF COGNITIVE CHALLENGE</span>
+            <span className="text-orange-400 font-semibold text-lg tracking-wider">CLINICAL-GRADE NEUROPSYCHOLOGICAL ASSESSMENT</span>
             <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
           </div>
-          <p className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-            Transform your cognitive abilities with clinical-grade neuropsychological assessments used in Brain Injury Rehabilitation Units worldwide. 
-            Like the phoenix, your mind can rise stronger than before.
+          <p className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-6">
+            Advanced cognitive rehabilitation using gold-standard neuropsychological tests. 
+            WAIS-IV, WMS-IV, D-KEFS, and CANTAB protocols integrated for comprehensive assessment.
           </p>
           
-          {/* Phoenix-themed clinical credentials */}
+          {/* Clinical credentials and certifications */}
           <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <div className="bg-gradient-to-r from-blue-500/20 to-indigo-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full px-4 py-2">
+              <span className="text-blue-300 font-medium text-sm flex items-center gap-2">
+                <Brain className="w-4 h-4" />
+                WAIS-IV Certified
+              </span>
+            </div>
+            <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-sm border border-green-500/30 rounded-full px-4 py-2">
+              <span className="text-green-300 font-medium text-sm flex items-center gap-2">
+                <GraduationCap className="w-4 h-4" />
+                WMS-IV Protocol
+              </span>
+            </div>
+            <div className="bg-gradient-to-r from-purple-500/20 to-violet-500/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2">
+              <span className="text-purple-300 font-medium text-sm flex items-center gap-2">
+                <Target className="w-4 h-4" />
+                CANTAB Validated
+              </span>
+            </div>
             <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 backdrop-blur-sm border border-orange-500/30 rounded-full px-4 py-2">
               <span className="text-orange-300 font-medium text-sm flex items-center gap-2">
-                <Brain className="w-4 h-4" />
-                Clinical Grade Assessments
-              </span>
-            </div>
-            <div className="bg-gradient-to-r from-red-500/20 to-yellow-500/20 backdrop-blur-sm border border-red-500/30 rounded-full px-4 py-2">
-              <span className="text-red-300 font-medium text-sm flex items-center gap-2">
-                <GraduationCap className="w-4 h-4" />
-                Evidence-Based Protocols
-              </span>
-            </div>
-            <div className="bg-gradient-to-r from-yellow-500/20 to-orange-500/20 backdrop-blur-sm border border-yellow-500/30 rounded-full px-4 py-2">
-              <span className="text-yellow-300 font-medium text-sm flex items-center gap-2">
-                <Target className="w-4 h-4" />
-                Personalized Recovery
+                <Shield className="w-4 h-4" />
+                D-KEFS Standardized
               </span>
             </div>
           </div>
         </header>
 
-        {/* Phoenix Progress Dashboard */}
-        <Card className="mb-8 bg-gradient-to-r from-orange-900/30 to-red-900/30 backdrop-blur-sm border-orange-500/30">
+        {/* Clinical Progress Dashboard */}
+        <Card className="mb-8 bg-gradient-to-r from-blue-900/30 to-indigo-900/30 backdrop-blur-sm border-blue-500/30">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-serif text-orange-100 flex items-center justify-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
+            <CardTitle className="text-2xl font-serif text-blue-100 flex items-center justify-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
                 <TrendingUp className="w-4 h-4 text-white" />
               </div>
-              Phoenix Recovery Progress
-              <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-orange-500 rounded-full flex items-center justify-center">
-                <Flame className="w-4 h-4 text-white" />
+              Clinical Assessment Summary
+              <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-blue-500 rounded-full flex items-center justify-center">
+                <Brain className="w-4 h-4 text-white" />
               </div>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-orange-500/20 rounded-lg border border-orange-500/30">
-                <div className="text-2xl font-bold text-orange-300">
-                  {Object.values(biruAssessments).reduce((acc, assessment) => acc + (assessment.completed ? 1 : 0), 0)}
+              <div className="text-center p-4 bg-blue-500/20 rounded-lg border border-blue-500/30">
+                <div className="text-2xl font-bold text-blue-300">
+                  {Object.values(clinicalAssessments).reduce((acc, assessment) => acc + (assessment.completed ? 1 : 0), 0)}/6
                 </div>
-                <div className="text-orange-400 text-sm">Assessments Completed</div>
+                <div className="text-blue-400 text-sm">Assessments Complete</div>
               </div>
-              <div className="text-center p-4 bg-red-500/20 rounded-lg border border-red-500/30">
-                <div className="text-2xl font-bold text-red-300">
-                  {Object.values(biruAssessments).reduce((acc, assessment) => acc + (assessment.sessions || 0), 0)}
+              <div className="text-center p-4 bg-indigo-500/20 rounded-lg border border-indigo-500/30">
+                <div className="text-2xl font-bold text-indigo-300">
+                  {averageStandardScore || 'N/A'}
                 </div>
-                <div className="text-red-400 text-sm">Training Sessions</div>
+                <div className="text-indigo-400 text-sm">Avg Standard Score</div>
               </div>
-              <div className="text-center p-4 bg-yellow-500/20 rounded-lg border border-yellow-500/30">
-                <div className="text-2xl font-bold text-yellow-300">
+              <div className="text-center p-4 bg-purple-500/20 rounded-lg border border-purple-500/30">
+                <div className="text-2xl font-bold text-purple-300">
+                  {completedAssessments.length > 0 ? 
+                    Math.round(completedAssessments.reduce((acc, assessment) => acc + assessment.percentile, 0) / completedAssessments.length) 
+                    : 0}%ile
+                </div>
+                <div className="text-purple-400 text-sm">Avg Percentile Rank</div>
+              </div>
+              <div className="text-center p-4 bg-green-500/20 rounded-lg border border-green-500/30">
+                <div className="text-2xl font-bold text-green-300">
                   {averageImprovement}%
                 </div>
-                <div className="text-yellow-400 text-sm">Average Improvement</div>
-              </div>
-              <div className="text-center p-4 bg-orange-400/20 rounded-lg border border-orange-400/30">
-                <div className="text-2xl font-bold text-orange-200">
-                  {Object.values(biruAssessments).filter(assessment => assessment.completed).length > 0 ? 'Rising' : 'Ready to Rise'}
-                </div>
-                <div className="text-orange-300 text-sm">Phoenix Status</div>
+                <div className="text-green-400 text-sm">Clinical Improvement</div>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Cognitive Assessment Tabs */}
+        {/* Clinical Assessment Tabs */}
         <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid grid-cols-3 md:grid-cols-6 bg-black/20 backdrop-blur-sm border border-white/10 rounded-lg p-1 mb-8">
-            <TabsTrigger 
-              value="attention" 
-              className={`data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white`}
-            >
-              Attention
-            </TabsTrigger>
-            <TabsTrigger 
-              value="processing" 
-              className={`data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white`}
-            >
-              Processing
-            </TabsTrigger>
-            <TabsTrigger 
-              value="memory" 
-              className={`data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white`}
-            >
-              Memory
-            </TabsTrigger>
-            <TabsTrigger 
-              value="executive" 
-              className={`data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white`}
-            >
-              Executive
-            </TabsTrigger>
-            <TabsTrigger 
-              value="language" 
-              className={`data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white`}
-            >
-              Language
-            </TabsTrigger>
-            <TabsTrigger 
-              value="visual" 
-              className={`data-[state=active]:bg-gradient-to-r data-[state=active]:from-orange-500 data-[state=active]:to-red-500 data-[state=active]:text-white`}
-            >
-              Visual
-            </TabsTrigger>
+            {Object.entries(clinicalAssessments).map(([key, assessment]) => (
+              <TabsTrigger 
+                key={key}
+                value={key} 
+                className={`data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white relative`}
+              >
+                {key.charAt(0).toUpperCase() + key.slice(1)}
+                {assessment.completed && (
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                )}
+              </TabsTrigger>
+            ))}
           </TabsList>
 
-          {/* Attention & Concentration */}
-          <TabsContent value="attention">
-            <Card className="bg-black/30 backdrop-blur-sm border-white/10">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif flex items-center gap-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                    <Activity className="w-4 h-4 text-white" />
-                  </div>
-                  Attention & Concentration
-                  {biruAssessments.attention.completed && (
-                    <Badge className="ml-2 bg-gradient-to-r from-green-500 to-emerald-600">Completed</Badge>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-6">
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-300">Current Score</span>
-                    <span className="text-sm font-medium text-white">{biruAssessments.attention.score}%</span>
-                  </div>
-                  <Progress value={biruAssessments.attention.score} className="h-2 bg-gray-700">
-                    <div 
-                      className="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full"
-                      style={{ width: `${biruAssessments.attention.score}%` }}
-                    />
-                  </Progress>
-                  {biruAssessments.attention.completed && (
-                    <div className="mt-2 text-xs text-green-400">
-                      +{biruAssessments.attention.improvement}% improvement from previous assessment
+          {/* Generate TabsContent for each assessment */}
+          {Object.entries(clinicalAssessments).map(([key, assessment]) => (
+            <TabsContent key={key} value={key}>
+              <Card className="bg-black/30 backdrop-blur-sm border-white/10">
+                <CardHeader>
+                  <CardTitle className="text-2xl font-serif flex items-center gap-2">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+                      <Brain className="w-4 h-4 text-white" />
                     </div>
-                  )}
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-lg font-medium mb-4 text-orange-300">Exercise Breakdown</h3>
-                    <div className="space-y-4">
-                      {biruAssessments.attention.exercises.map((exercise, index) => (
-                        <div key={index} className="flex justify-between items-center">
-                          <span className="text-gray-300">{exercise.name}</span>
-                          {exercise.completed ? (
-                            <Badge className="bg-gradient-to-r from-orange-500 to-red-500">
-                              {exercise.score}%
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-gray-400 border-gray-600">
-                              Not Started
-                            </Badge>
-                          )}
-                        </div>
-                      ))}
+                    {assessment.name}
+                    {assessment.completed && (
+                      <Badge className="ml-2 bg-gradient-to-r from-green-500 to-emerald-600">
+                        <Check className="w-3 h-3 mr-1" />
+                        Completed
+                      </Badge>
+                    )}
+                  </CardTitle>
+                  <div className="text-sm text-gray-400 mt-2">
+                    <strong>Clinical Tests:</strong> {assessment.clinicalTests.join(", ")}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="mb-6">
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm text-gray-300">Standard Score: {assessment.standardScore}/19</span>
+                      <span className="text-sm font-medium text-white">{assessment.score}% ({assessment.percentile}%ile)</span>
                     </div>
+                    <Progress value={assessment.score} className="h-2 bg-gray-700">
+                      <div 
+                        className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"
+                        style={{ width: `${assessment.score}%` }}
+                      />
+                    </Progress>
+                    <div className="mt-2 flex justify-between text-xs">
+                      <span className="text-blue-400">{assessment.confidenceInterval}</span>
+                      <span className="text-indigo-400">{assessment.clinicalInterpretation}</span>
+                    </div>
+                    {assessment.completed && (
+                      <div className="mt-2 text-xs text-green-400">
+                        +{assessment.improvement}% improvement from baseline assessment
+                      </div>
+                    )}
                   </div>
 
-                  <div>
-                    <h3 className="text-lg font-medium mb-4 text-orange-300">Clinical Insights</h3>
-                    <div className="text-sm text-gray-300 space-y-2">
-                      <p>
-                        Attention is your ability to focus on specific stimuli while filtering out distractions. 
-                        Your performance shows significant improvement in sustained attention tasks.
-                      </p>
-                      <p>
-                        Recommended focus: Continue working on divided attention exercises to improve 
-                        your ability to manage multiple tasks simultaneously.
-                      </p>
-                    </div>
-
-                    <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                      <Button 
-                        onClick={() => handleStartAssessment('attention')}
-                        className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-                      >
-                        Start Assessment
-                      </Button>
-                      <Button 
-                        onClick={() => handleStartTraining('attention')}
-                        variant="outline" 
-                        className="border-orange-500 text-orange-400 hover:bg-orange-500/20"
-                      >
-                        Begin Training Session
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Processing Speed */}
-          <TabsContent value="processing">
-            <Card className="bg-black/30 backdrop-blur-sm border-white/10">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif flex items-center gap-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                    <Zap className="w-4 h-4 text-white" />
-                  </div>
-                  Processing Speed
-                  {biruAssessments.processing.completed && (
-                    <Badge className="ml-2 bg-gradient-to-r from-green-500 to-emerald-600">Completed</Badge>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-6">
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-300">Current Score</span>
-                    <span className="text-sm font-medium text-white">{biruAssessments.processing.score}%</span>
-                  </div>
-                  <Progress value={biruAssessments.processing.score} className="h-2 bg-gray-700">
-                    <div 
-                      className="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full"
-                      style={{ width: `${biruAssessments.processing.score}%` }}
-                    />
-                  </Progress>
-                  {biruAssessments.processing.completed && (
-                    <div className="mt-2 text-xs text-green-400">
-                      +{biruAssessments.processing.improvement}% improvement from previous assessment
-                    </div>
-                  )}
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-lg font-medium mb-4 text-orange-300">Exercise Breakdown</h3>
-                    <div className="space-y-4">
-                      {biruAssessments.processing.exercises.map((exercise, index) => (
-                        <div key={index} className="flex justify-between items-center">
-                          <span className="text-gray-300">{exercise.name}</span>
-                          {exercise.completed ? (
-                            <Badge className="bg-gradient-to-r from-orange-500 to-red-500">
-                              {exercise.score}%
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-gray-400 border-gray-600">
-                              Not Started
-                            </Badge>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-medium mb-4 text-orange-300">Clinical Insights</h3>
-                    <div className="text-sm text-gray-300 space-y-2">
-                      <p>
-                        Processing speed refers to how quickly you can perform cognitive tasks. 
-                        Your visual processing has shown the most significant improvement.
-                      </p>
-                      <p>
-                        Recommended focus: Continue with decision speed exercises to improve 
-                        your ability to make quick, accurate decisions under time pressure.
-                      </p>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <h3 className="text-lg font-medium mb-4 text-blue-300">Subtest Performance</h3>
+                      <div className="space-y-4">
+                        {assessment.exercises.map((exercise, index) => (
+                          <div key={index} className="flex justify-between items-center">
+                            <span className="text-gray-300 text-sm">{exercise.name}</span>
+                            {exercise.completed ? (
+                              <div className="flex items-center gap-2">
+                                <Badge className="bg-gradient-to-r from-blue-500 to-indigo-500 text-xs">
+                                  SS: {exercise.standardScore}
+                                </Badge>
+                                <Badge variant="outline" className="text-blue-400 border-blue-600 text-xs">
+                                  {exercise.score}%
+                                </Badge>
+                              </div>
+                            ) : (
+                              <Badge variant="outline" className="text-gray-400 border-gray-600 text-xs">
+                                Pending
+                              </Badge>
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
 
-                    <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                      <Button 
-                        onClick={() => handleStartAssessment('processing')}
-                        className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-                      >
-                        Start Assessment
-                      </Button>
-                      <Button 
-                        onClick={() => handleStartTraining('processing')}
-                        variant="outline" 
-                        className="border-orange-500 text-orange-400 hover:bg-orange-500/20"
-                      >
-                        Begin Training Session
-                      </Button>
+                    <div>
+                      <h3 className="text-lg font-medium mb-4 text-blue-300">Clinical Interpretation</h3>
+                      <div className="text-sm text-gray-300 space-y-2 mb-4">
+                        {assessment.completed ? (
+                          <>
+                            <p>
+                              Performance in the <strong>{assessment.clinicalInterpretation}</strong> 
+                              based on standardized normative data (SS: {assessment.standardScore}).
+                            </p>
+                            <p>
+                              Significant improvement observed across multiple domains with 
+                              {assessment.improvement}% gain from baseline measures.
+                            </p>
+                          </>
+                        ) : (
+                          <p>
+                            Comprehensive neuropsychological assessment pending. 
+                            This battery will include {assessment.clinicalTests.join(", ")} 
+                            to establish baseline cognitive functioning.
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="space-y-3">
+                        <Button 
+                          onClick={() => handleStartAssessment(key)}
+                          className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600"
+                        >
+                          {assessment.completed ? 'Reassess' : 'Begin Clinical Assessment'}
+                        </Button>
+                        <Button 
+                          onClick={() => handleStartTraining(key)}
+                          variant="outline" 
+                          className="w-full border-blue-500 text-blue-400 hover:bg-blue-500/20"
+                          disabled={!assessment.completed}
+                        >
+                          Cognitive Rehabilitation Training
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Memory Function */}
-          <TabsContent value="memory">
-            <Card className="bg-black/30 backdrop-blur-sm border-white/10">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif flex items-center gap-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                    <Brain className="w-4 h-4 text-white" />
-                  </div>
-                  Memory Function
-                  {biruAssessments.memory.completed && (
-                    <Badge className="ml-2 bg-gradient-to-r from-green-500 to-emerald-600">Completed</Badge>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-6">
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-300">Current Score</span>
-                    <span className="text-sm font-medium text-white">{biruAssessments.memory.score}%</span>
-                  </div>
-                  <Progress value={biruAssessments.memory.score} className="h-2 bg-gray-700">
-                    <div 
-                      className="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full"
-                      style={{ width: `${biruAssessments.memory.score}%` }}
-                    />
-                  </Progress>
-                  {biruAssessments.memory.completed && (
-                    <div className="mt-2 text-xs text-green-400">
-                      +{biruAssessments.memory.improvement}% improvement from previous assessment
-                    </div>
-                  )}
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-lg font-medium mb-4 text-orange-300">Exercise Breakdown</h3>
-                    <div className="space-y-4">
-                      {biruAssessments.memory.exercises.map((exercise, index) => (
-                        <div key={index} className="flex justify-between items-center">
-                          <span className="text-gray-300">{exercise.name}</span>
-                          {exercise.completed ? (
-                            <Badge className="bg-gradient-to-r from-orange-500 to-red-500">
-                              {exercise.score}%
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-gray-400 border-gray-600">
-                              Not Started
-                            </Badge>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-medium mb-4 text-orange-300">Clinical Insights</h3>
-                    <div className="text-sm text-gray-300 space-y-2">
-                      <p>
-                        Memory function encompasses your ability to encode, store, and retrieve information. 
-                        Your working memory shows the strongest performance.
-                      </p>
-                      <p>
-                        Recommended focus: Continue with comprehensive memory exercises to maintain 
-                        your balanced improvement across all memory domains.
-                      </p>
-                    </div>
-
-                    <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                      <Button 
-                        onClick={() => handleStartAssessment('memory')}
-                        className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-                      >
-                        Start Assessment
-                      </Button>
-                      <Button 
-                        onClick={() => handleStartTraining('memory')}
-                        variant="outline" 
-                        className="border-orange-500 text-orange-400 hover:bg-orange-500/20"
-                      >
-                        Begin Training Session
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Executive Function */}
-          <TabsContent value="executive">
-            <Card className="bg-black/30 backdrop-blur-sm border-white/10">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif flex items-center gap-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                    <Target className="w-4 h-4 text-white" />
-                  </div>
-                  Executive Function
-                  {biruAssessments.executive.completed && (
-                    <Badge className="ml-2 bg-gradient-to-r from-green-500 to-emerald-600">Completed</Badge>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-6">
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-300">Current Score</span>
-                    <span className="text-sm font-medium text-white">{biruAssessments.executive.score}%</span>
-                  </div>
-                  <Progress value={biruAssessments.executive.score} className="h-2 bg-gray-700">
-                    <div 
-                      className="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full"
-                      style={{ width: `${biruAssessments.executive.score}%` }}
-                    />
-                  </Progress>
-                  {biruAssessments.executive.completed && (
-                    <div className="mt-2 text-xs text-green-400">
-                      +{biruAssessments.executive.improvement}% improvement from previous assessment
-                    </div>
-                  )}
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-lg font-medium mb-4 text-orange-300">Exercise Breakdown</h3>
-                    <div className="space-y-4">
-                      {biruAssessments.executive.exercises.map((exercise, index) => (
-                        <div key={index} className="flex justify-between items-center">
-                          <span className="text-gray-300">{exercise.name}</span>
-                          {exercise.completed ? (
-                            <Badge className="bg-gradient-to-r from-orange-500 to-red-500">
-                              {exercise.score}%
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-gray-400 border-gray-600">
-                              Not Started
-                            </Badge>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-medium mb-4 text-orange-300">Clinical Insights</h3>
-                    <div className="text-sm text-gray-300 space-y-2">
-                      <p>
-                        Executive function involves higher-level cognitive processes like planning and decision-making. 
-                        Your planning abilities have shown remarkable improvement.
-                      </p>
-                      <p>
-                        Recommended focus: Begin cognitive flexibility exercises to enhance your 
-                        ability to adapt to changing situations and requirements.
-                      </p>
-                    </div>
-
-                    <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                      <Button 
-                        onClick={() => handleStartAssessment('executive')}
-                        className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-                      >
-                        Start Assessment
-                      </Button>
-                      <Button 
-                        onClick={() => handleStartTraining('executive')}
-                        variant="outline" 
-                        className="border-orange-500 text-orange-400 hover:bg-orange-500/20"
-                      >
-                        Begin Training Session
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Language Processing */}
-          <TabsContent value="language">
-            <Card className="bg-black/30 backdrop-blur-sm border-white/10">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif flex items-center gap-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                    <BookOpen className="w-4 h-4 text-white" />
-                  </div>
-                  Language Processing
-                  {biruAssessments.language.completed && (
-                    <Badge className="ml-2 bg-gradient-to-r from-green-500 to-emerald-600">Completed</Badge>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-6">
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-300">Current Score</span>
-                    <span className="text-sm font-medium text-white">{biruAssessments.language.score || 'Not Started'}%</span>
-                  </div>
-                  <Progress value={biruAssessments.language.score} className="h-2 bg-gray-700">
-                    <div 
-                      className="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full"
-                      style={{ width: `${biruAssessments.language.score}%` }}
-                    />
-                  </Progress>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-lg font-medium mb-4 text-orange-300">Exercise Breakdown</h3>
-                    <div className="space-y-4">
-                      {biruAssessments.language.exercises.map((exercise, index) => (
-                        <div key={index} className="flex justify-between items-center">
-                          <span className="text-gray-300">{exercise.name}</span>
-                          {exercise.completed ? (
-                            <Badge className="bg-gradient-to-r from-orange-500 to-red-500">
-                              {exercise.score}%
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-gray-400 border-gray-600">
-                              Not Started
-                            </Badge>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-medium mb-4 text-orange-300">Clinical Insights</h3>
-                    <div className="text-sm text-gray-300 space-y-2">
-                      <p>
-                        Language processing involves understanding and producing verbal and written communication. 
-                        You have not yet completed this assessment.
-                      </p>
-                      <p>
-                        Recommended focus: Begin with the comprehension assessment to establish 
-                        your baseline language processing abilities.
-                      </p>
-                    </div>
-
-                    <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                      <Button 
-                        onClick={() => handleStartAssessment('language')}
-                        className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-                      >
-                        Start Assessment
-                      </Button>
-                      <Button 
-                        onClick={() => handleStartTraining('language')}
-                        variant="outline" 
-                        className="border-orange-500 text-orange-400 hover:bg-orange-500/20"
-                        disabled={!biruAssessments.language.completed}
-                      >
-                        Begin Training Session
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Visual-Spatial Skills */}
-          <TabsContent value="visual">
-            <Card className="bg-black/30 backdrop-blur-sm border-white/10">
-              <CardHeader>
-                <CardTitle className="text-2xl font-serif flex items-center gap-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                    <Eye className="w-4 h-4 text-white" />
-                  </div>
-                  Visual-Spatial Skills
-                  {biruAssessments.visual.completed && (
-                    <Badge className="ml-2 bg-gradient-to-r from-green-500 to-emerald-600">Completed</Badge>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-6">
-                  <div className="flex justify-between mb-2">
-                    <span className="text-sm text-gray-300">Current Score</span>
-                    <span className="text-sm font-medium text-white">{biruAssessments.visual.score || 'Not Started'}%</span>
-                  </div>
-                  <Progress value={biruAssessments.visual.score} className="h-2 bg-gray-700">
-                    <div 
-                      className="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full"
-                      style={{ width: `${biruAssessments.visual.score}%` }}
-                    />
-                  </Progress>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-lg font-medium mb-4 text-orange-300">Exercise Breakdown</h3>
-                    <div className="space-y-4">
-                      {biruAssessments.visual.exercises.map((exercise, index) => (
-                        <div key={index} className="flex justify-between items-center">
-                          <span className="text-gray-300">{exercise.name}</span>
-                          {exercise.completed ? (
-                            <Badge className="bg-gradient-to-r from-orange-500 to-red-500">
-                              {exercise.score}%
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-gray-400 border-gray-600">
-                              Not Started
-                            </Badge>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-medium mb-4 text-orange-300">Clinical Insights</h3>
-                    <div className="text-sm text-gray-300 space-y-2">
-                      <p>
-                        Visual-spatial skills involve understanding and manipulating visual information in space. 
-                        You have not yet completed this assessment.
-                      </p>
-                      <p>
-                        Recommended focus: Begin with the visual perception assessment to establish 
-                        your baseline visual-spatial abilities.
-                      </p>
-                    </div>
-
-                    <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                      <Button 
-                        onClick={() => handleStartAssessment('visual')}
-                        className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
-                      >
-                        Start Assessment
-                      </Button>
-                      <Button 
-                        onClick={() => handleStartTraining('visual')}
-                        variant="outline" 
-                        className="border-orange-500 text-orange-400 hover:bg-orange-500/20"
-                        disabled={!biruAssessments.visual.completed}
-                      >
-                        Begin Training Session
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          ))}
         </Tabs>
 
-        {/* Phoenix Recovery Journey */}
-        <Card className="mt-8 bg-gradient-to-r from-orange-900/30 to-red-900/30 backdrop-blur-sm border-orange-500/30">
+        {/* Clinical Recovery Pathway */}
+        <Card className="mt-8 bg-gradient-to-r from-blue-900/30 to-indigo-900/30 backdrop-blur-sm border-blue-500/30">
           <CardHeader>
-            <CardTitle className="text-2xl font-serif text-orange-100 flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                <Flame className="w-4 h-4 text-white" />
+            <CardTitle className="text-2xl font-serif text-blue-100 flex items-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+                <Target className="w-4 h-4 text-white" />
               </div>
-              Your Phoenix Recovery Journey
+              Evidence-Based Recovery Protocol
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="relative">
-              <Separator className="absolute top-4 left-0 w-full border-t-2 border-dashed border-orange-500/30" />
+              <Separator className="absolute top-4 left-0 w-full border-t-2 border-dashed border-blue-500/30" />
               
               <div className="relative z-10 flex justify-between">
                 <div className="text-center">
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full mx-auto flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full mx-auto flex items-center justify-center">
                     <Check className="w-4 h-4 text-white" />
                   </div>
-                  <div className="mt-2 text-sm text-orange-300">Assessment</div>
+                  <div className="mt-2 text-sm text-blue-300">Baseline</div>
+                  <div className="text-xs text-gray-400">Standardized Testing</div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full mx-auto flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full mx-auto flex items-center justify-center">
                     <Activity className="w-4 h-4 text-white" />
                   </div>
-                  <div className="mt-2 text-sm text-orange-300">Training</div>
+                  <div className="mt-2 text-sm text-blue-300">Training</div>
+                  <div className="text-xs text-gray-400">Adaptive Protocols</div>
                 </div>
                 
                 <div className="text-center">
@@ -850,28 +465,34 @@ const MindTraining = () => {
                     <Target className="w-4 h-4 text-white" />
                   </div>
                   <div className="mt-2 text-sm text-gray-400">Integration</div>
+                  <div className="text-xs text-gray-500">Real-world Application</div>
                 </div>
                 
                 <div className="text-center">
                   <div className="w-8 h-8 bg-gradient-to-br from-gray-500 to-gray-700 rounded-full mx-auto flex items-center justify-center">
-                    <Zap className="w-4 h-4 text-white" />
+                    <TrendingUp className="w-4 h-4 text-white" />
                   </div>
-                  <div className="mt-2 text-sm text-gray-400">Mastery</div>
+                  <div className="mt-2 text-sm text-gray-400">Validation</div>
+                  <div className="text-xs text-gray-500">Outcome Measures</div>
                 </div>
                 
                 <div className="text-center">
                   <div className="w-8 h-8 bg-gradient-to-br from-gray-500 to-gray-700 rounded-full mx-auto flex items-center justify-center">
-                    <Flame className="w-4 h-4 text-white" />
+                    <GraduationCap className="w-4 h-4 text-white" />
                   </div>
-                  <div className="mt-2 text-sm text-gray-400">Rebirth</div>
+                  <div className="mt-2 text-sm text-gray-400">Maintenance</div>
+                  <div className="text-xs text-gray-500">Long-term Monitoring</div>
                 </div>
               </div>
             </div>
             
             <div className="mt-8 text-center">
-              <p className="text-orange-300 mb-4">You are currently in the <span className="font-bold">Training Phase</span> of your cognitive recovery journey</p>
-              <Button className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
-                View Recovery Roadmap
+              <p className="text-blue-300 mb-4">
+                Current Phase: <span className="font-bold">Active Training Protocol</span> 
+                ({completedAssessments.length}/6 domains assessed)
+              </p>
+              <Button className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600">
+                View Detailed Clinical Report
               </Button>
             </div>
           </CardContent>
