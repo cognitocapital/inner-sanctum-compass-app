@@ -1,7 +1,8 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Wind, Thermometer, Brain, BookOpen, PenTool, Heart, Shield, Target, Zap, Sun, Moon, Activity, Users, Calendar, Compass, TrendingUp, Flame, GraduationCap, Eye, Check } from "lucide-react";
+import { ArrowLeft, Brain, Check, Eye, Target, TrendingUp, GraduationCap, Shield, Activity, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
@@ -25,7 +26,7 @@ const MindTraining = () => {
       sessions: 8,
       lastCompleted: "2023-10-15",
       improvement: 23,
-      standardScore: 8, // Scaled score out of 19
+      standardScore: 8,
       confidenceInterval: "95% CI: 85-95",
       clinicalInterpretation: "Low Average to Average Range",
       exercises: [
@@ -162,20 +163,28 @@ const MindTraining = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-purple-900 text-white relative overflow-hidden">
-      {/* Enhanced Phoenix-themed animated background elements */}
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-foreground relative overflow-hidden">
+      {/* Phoenix-themed animated background elements from Index */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Phoenix flame particles with enhanced glow */}
-        <div className="absolute top-20 left-10 w-4 h-4 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-90 shadow-2xl shadow-orange-500/80"></div>
-        <div className="absolute top-40 right-20 w-3 h-3 bg-red-500 rounded-full animate-[float_3s_ease-in-out_infinite_1s] opacity-75 shadow-xl shadow-red-500/70"></div>
-        <div className="absolute bottom-60 left-1/4 w-3.5 h-3.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_2s] opacity-85 shadow-2xl shadow-orange-500/75"></div>
-        <div className="absolute bottom-40 right-1/3 w-2.5 h-2.5 bg-yellow-500 rounded-full animate-[float_3s_ease-in-out_infinite_3s] opacity-70 shadow-xl shadow-yellow-500/60"></div>
-        <div className="absolute top-1/3 left-1/6 w-2 h-2 bg-red-400 rounded-full animate-[float_3s_ease-in-out_infinite_1.5s] opacity-65 shadow-lg shadow-red-400/50"></div>
-        <div className="absolute bottom-1/3 right-1/6 w-1.5 h-1.5 bg-orange-400 rounded-full animate-[float_3s_ease-in-out_infinite_2.5s] opacity-55 shadow-lg shadow-orange-400/45"></div>
+        {/* Primary flame particles */}
+        <div className="absolute top-20 left-10 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-80 shadow-lg shadow-orange-500/50"></div>
+        <div className="absolute top-40 right-20 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1s] opacity-60 shadow-lg shadow-orange-500/40"></div>
+        <div className="absolute bottom-60 left-1/4 w-2.5 h-2.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_2s] opacity-70 shadow-lg shadow-orange-500/45"></div>
+        <div className="absolute bottom-40 right-1/3 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_3s] opacity-50 shadow-lg shadow-orange-500/35"></div>
+        <div className="absolute top-1/3 left-1/6 w-1.5 h-1.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.5s] opacity-45 shadow-lg shadow-orange-500/30"></div>
+        <div className="absolute bottom-1/3 right-1/6 w-1 h-1 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_2.5s] opacity-35 shadow-lg shadow-orange-500/25"></div>
+        <div className="absolute top-2/3 right-1/5 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.5s] opacity-55 shadow-lg shadow-orange-500/40"></div>
         
-        {/* Phoenix wing trail effects */}
-        <div className="absolute top-16 left-1/2 w-1 h-12 bg-gradient-to-t from-orange-500/80 to-transparent animate-[float_4s_ease-in-out_infinite_3.5s] opacity-40"></div>
-        <div className="absolute bottom-32 right-1/2 w-0.5 h-8 bg-gradient-to-t from-red-500/60 to-transparent animate-[float_4s_ease-in-out_infinite_4.5s] opacity-35"></div>
+        {/* Additional ember particles */}
+        <div className="absolute top-32 left-1/5 w-1 h-1 bg-yellow-400 rounded-full animate-[float_4s_ease-in-out_infinite_4s] opacity-40"></div>
+        <div className="absolute top-56 right-1/4 w-1.5 h-1.5 bg-red-400 rounded-full animate-[float_4s_ease-in-out_infinite_5s] opacity-35"></div>
+        <div className="absolute bottom-72 left-1/3 w-1 h-1 bg-yellow-400 rounded-full animate-[float_4s_ease-in-out_infinite_6s] opacity-30"></div>
+        <div className="absolute bottom-24 right-1/6 w-1.5 h-1.5 bg-orange-500 rounded-full animate-[float_4s_ease-in-out_infinite_7s] opacity-45"></div>
+        <div className="absolute top-1/4 right-1/8 w-1 h-1 bg-red-500 rounded-full animate-[float_4s_ease-in-out_infinite_8s] opacity-40"></div>
+        
+        {/* Subtle flame trails */}
+        <div className="absolute top-16 left-1/2 w-0.5 h-8 bg-gradient-to-t from-orange-500/60 to-transparent animate-[float_3s_ease-in-out_infinite_3.5s] opacity-30"></div>
+        <div className="absolute bottom-32 right-1/2 w-0.5 h-6 bg-gradient-to-t from-orange-500/50 to-transparent animate-[float_3s_ease-in-out_infinite_4.5s] opacity-25"></div>
       </div>
       
       <div className="container mx-auto px-4 py-8 relative z-10">
@@ -188,11 +197,11 @@ const MindTraining = () => {
           </Button>
         </div>
 
-        <header className="text-center mb-12 animate-phoenix-rise">
-          {/* Enhanced clinical branding */}
+        <header className="text-center mb-12">
+          {/* Phoenix branding with enhanced clinical styling */}
           <div className="relative mb-8 group mx-auto w-32 h-32">
             <div 
-              className="w-full h-full rounded-full border-4 border-orange-500/50 shadow-2xl hover:scale-110 transition-all duration-700 cursor-pointer phoenix-image"
+              className="w-full h-full rounded-full border-4 border-orange-500/50 shadow-2xl hover:scale-110 transition-all duration-700 cursor-pointer"
               style={{
                 backgroundImage: `url('/lovable-uploads/87893c50-952e-48f8-9649-a7083c6cffd3.png')`,
                 backgroundSize: 'cover',
@@ -200,15 +209,15 @@ const MindTraining = () => {
                 backgroundRepeat: 'no-repeat'
               }}
             />
-            {/* Enhanced flame particles around phoenix */}
-            <div className="absolute -top-6 -left-6 w-5 h-5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-95 shadow-xl shadow-orange-500/80"></div>
-            <div className="absolute -top-8 right-16 w-4 h-4 bg-red-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.8s] opacity-85 shadow-lg shadow-red-500/70"></div>
-            <div className="absolute top-8 -right-7 w-4.5 h-4.5 bg-yellow-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.2s] opacity-90 shadow-xl shadow-yellow-500/75"></div>
-            <div className="absolute bottom-16 -left-8 w-3.5 h-3.5 bg-orange-400 rounded-full animate-[float_3s_ease-in-out_infinite_0.3s] opacity-75 shadow-lg shadow-orange-400/60"></div>
-            <div className="absolute -bottom-7 right-12 w-4 h-4 bg-red-400 rounded-full animate-[float_3s_ease-in-out_infinite_1.5s] opacity-85 shadow-lg shadow-red-400/65"></div>
+            {/* Flame particles around phoenix */}
+            <div className="absolute -top-4 -left-4 w-4 h-4 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-90"></div>
+            <div className="absolute -top-6 right-12 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.8s] opacity-75"></div>
+            <div className="absolute top-6 -right-5 w-3.5 h-3.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.2s] opacity-85"></div>
+            <div className="absolute bottom-12 -left-6 w-2.5 h-2.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.3s] opacity-65"></div>
+            <div className="absolute -bottom-5 right-8 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.5s] opacity-80"></div>
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-serif font-bold text-white mb-4 drop-shadow-lg">
+          <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-4 drop-shadow-lg">
             Mind Academy
           </h1>
           <div className="flex items-center justify-center gap-3 mb-6">
@@ -221,39 +230,55 @@ const MindTraining = () => {
             WAIS-IV, WMS-IV, D-KEFS, and CANTAB protocols integrated for comprehensive assessment.
           </p>
           
-          {/* Clinical credentials and certifications */}
+          {/* Clinical credentials with phoenix styling */}
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <div className="bg-gradient-to-r from-blue-500/20 to-indigo-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full px-4 py-2">
+            <div className="backdrop-blur-sm bg-white/10 border border-blue-500/30 rounded-full px-4 py-2 hover:scale-105 transition-transform">
               <span className="text-blue-300 font-medium text-sm flex items-center gap-2">
                 <Brain className="w-4 h-4" />
                 WAIS-IV Certified
               </span>
             </div>
-            <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-sm border border-green-500/30 rounded-full px-4 py-2">
+            <div className="backdrop-blur-sm bg-white/10 border border-green-500/30 rounded-full px-4 py-2 hover:scale-105 transition-transform">
               <span className="text-green-300 font-medium text-sm flex items-center gap-2">
                 <GraduationCap className="w-4 h-4" />
                 WMS-IV Protocol
               </span>
             </div>
-            <div className="bg-gradient-to-r from-purple-500/20 to-violet-500/20 backdrop-blur-sm border border-purple-500/30 rounded-full px-4 py-2">
+            <div className="backdrop-blur-sm bg-white/10 border border-purple-500/30 rounded-full px-4 py-2 hover:scale-105 transition-transform">
               <span className="text-purple-300 font-medium text-sm flex items-center gap-2">
                 <Target className="w-4 h-4" />
                 CANTAB Validated
               </span>
             </div>
-            <div className="bg-gradient-to-r from-orange-500/20 to-red-500/20 backdrop-blur-sm border border-orange-500/30 rounded-full px-4 py-2">
+            <div className="backdrop-blur-sm bg-white/10 border border-orange-500/30 rounded-full px-4 py-2 hover:scale-105 transition-transform">
               <span className="text-orange-300 font-medium text-sm flex items-center gap-2">
                 <Shield className="w-4 h-4" />
                 D-KEFS Standardized
               </span>
             </div>
           </div>
+
+          {/* Quick Access Navigation */}
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
+            <Button 
+              onClick={() => handleStartAssessment('attention')}
+              size="lg" 
+              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+            >
+              Begin Assessment <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            <Button asChild variant="outline" size="lg" className="border-orange-500/50 hover:bg-orange-500/10 hover:border-orange-500 transition-all duration-300 hover:scale-105 group">
+              <Link to="/dashboard">
+                Full Dashboard <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
+          </div>
         </header>
 
-        {/* Clinical Progress Dashboard */}
-        <Card className="mb-8 bg-gradient-to-r from-blue-900/30 to-indigo-900/30 backdrop-blur-sm border-blue-500/30">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-serif text-blue-100 flex items-center justify-center gap-3">
+        {/* Clinical Progress Dashboard with phoenix card styling */}
+        <Card className="mb-8 backdrop-blur-sm bg-white/80 border-orange-500/20 shadow-2xl">
+          <CardHeader className="bg-orange-500/10 rounded-t-lg">
+            <CardTitle className="text-2xl font-serif text-center text-gray-900 flex items-center justify-center gap-3">
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
                 <TrendingUp className="w-4 h-4 text-white" />
               </div>
@@ -263,235 +288,239 @@ const MindTraining = () => {
               </div>
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-8">
             <div className="grid md:grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-blue-500/20 rounded-lg border border-blue-500/30">
-                <div className="text-2xl font-bold text-blue-300">
+              <div className="text-center p-4 bg-gradient-to-br from-orange-500/10 to-orange-500/20 rounded-lg border border-orange-500/30 hover:scale-105 transition-transform">
+                <div className="text-2xl font-bold text-orange-600">
                   {Object.values(clinicalAssessments).reduce((acc, assessment) => acc + (assessment.completed ? 1 : 0), 0)}/6
                 </div>
-                <div className="text-blue-400 text-sm">Assessments Complete</div>
+                <div className="text-gray-700 text-sm">Assessments Complete</div>
               </div>
-              <div className="text-center p-4 bg-indigo-500/20 rounded-lg border border-indigo-500/30">
-                <div className="text-2xl font-bold text-indigo-300">
+              <div className="text-center p-4 bg-gradient-to-br from-blue-500/10 to-blue-500/20 rounded-lg border border-blue-500/30 hover:scale-105 transition-transform">
+                <div className="text-2xl font-bold text-blue-600">
                   {averageStandardScore || 'N/A'}
                 </div>
-                <div className="text-indigo-400 text-sm">Avg Standard Score</div>
+                <div className="text-gray-700 text-sm">Avg Standard Score</div>
               </div>
-              <div className="text-center p-4 bg-purple-500/20 rounded-lg border border-purple-500/30">
-                <div className="text-2xl font-bold text-purple-300">
+              <div className="text-center p-4 bg-gradient-to-br from-green-500/10 to-green-500/20 rounded-lg border border-green-500/30 hover:scale-105 transition-transform">
+                <div className="text-2xl font-bold text-green-600">
                   {completedAssessments.length > 0 ? 
                     Math.round(completedAssessments.reduce((acc, assessment) => acc + assessment.percentile, 0) / completedAssessments.length) 
                     : 0}%ile
                 </div>
-                <div className="text-purple-400 text-sm">Avg Percentile Rank</div>
+                <div className="text-gray-700 text-sm">Avg Percentile Rank</div>
               </div>
-              <div className="text-center p-4 bg-green-500/20 rounded-lg border border-green-500/30">
-                <div className="text-2xl font-bold text-green-300">
+              <div className="text-center p-4 bg-gradient-to-br from-purple-500/10 to-purple-500/20 rounded-lg border border-purple-500/30 hover:scale-105 transition-transform">
+                <div className="text-2xl font-bold text-purple-600">
                   {averageImprovement}%
                 </div>
-                <div className="text-green-400 text-sm">Clinical Improvement</div>
+                <div className="text-gray-700 text-sm">Clinical Improvement</div>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Clinical Assessment Tabs */}
-        <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-3 md:grid-cols-6 bg-black/20 backdrop-blur-sm border border-white/10 rounded-lg p-1 mb-8">
-            {Object.entries(clinicalAssessments).map(([key, assessment]) => (
-              <TabsTrigger 
-                key={key}
-                value={key} 
-                className={`data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-500 data-[state=active]:to-indigo-500 data-[state=active]:text-white relative`}
-              >
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-                {assessment.completed && (
-                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
-                )}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-
-          {/* Generate TabsContent for each assessment */}
-          {Object.entries(clinicalAssessments).map(([key, assessment]) => (
-            <TabsContent key={key} value={key}>
-              <Card className="bg-black/30 backdrop-blur-sm border-white/10">
-                <CardHeader>
-                  <CardTitle className="text-2xl font-serif flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
-                      <Brain className="w-4 h-4 text-white" />
-                    </div>
-                    {assessment.name}
+        {/* Clinical Assessment Tabs with phoenix styling */}
+        <Card className="backdrop-blur-sm bg-white/80 border-orange-500/20 shadow-2xl">
+          <CardHeader className="bg-orange-500/10 rounded-t-lg">
+            <CardTitle className="text-2xl font-serif text-center text-gray-900">Neuropsychological Test Battery</CardTitle>
+          </CardHeader>
+          <CardContent className="p-8">
+            <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid grid-cols-3 md:grid-cols-6 bg-gray-100 rounded-lg p-1 mb-8">
+                {Object.entries(clinicalAssessments).map(([key, assessment]) => (
+                  <TabsTrigger 
+                    key={key}
+                    value={key} 
+                    className={`data-[state=active]:bg-orange-500 data-[state=active]:text-white relative transition-all duration-300`}
+                  >
+                    {key.charAt(0).toUpperCase() + key.slice(1)}
                     {assessment.completed && (
-                      <Badge className="ml-2 bg-gradient-to-r from-green-500 to-emerald-600">
-                        <Check className="w-3 h-3 mr-1" />
-                        Completed
-                      </Badge>
+                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
                     )}
-                  </CardTitle>
-                  <div className="text-sm text-gray-400 mt-2">
-                    <strong>Clinical Tests:</strong> {assessment.clinicalTests.join(", ")}
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="mb-6">
-                    <div className="flex justify-between mb-2">
-                      <span className="text-sm text-gray-300">Standard Score: {assessment.standardScore}/19</span>
-                      <span className="text-sm font-medium text-white">{assessment.score}% ({assessment.percentile}%ile)</span>
-                    </div>
-                    <Progress value={assessment.score} className="h-2 bg-gray-700">
-                      <div 
-                        className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"
-                        style={{ width: `${assessment.score}%` }}
-                      />
-                    </Progress>
-                    <div className="mt-2 flex justify-between text-xs">
-                      <span className="text-blue-400">{assessment.confidenceInterval}</span>
-                      <span className="text-indigo-400">{assessment.clinicalInterpretation}</span>
-                    </div>
-                    {assessment.completed && (
-                      <div className="mt-2 text-xs text-green-400">
-                        +{assessment.improvement}% improvement from baseline assessment
-                      </div>
-                    )}
-                  </div>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
 
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <h3 className="text-lg font-medium mb-4 text-blue-300">Subtest Performance</h3>
-                      <div className="space-y-4">
-                        {assessment.exercises.map((exercise, index) => (
-                          <div key={index} className="flex justify-between items-center">
-                            <span className="text-gray-300 text-sm">{exercise.name}</span>
-                            {exercise.completed ? (
-                              <div className="flex items-center gap-2">
-                                <Badge className="bg-gradient-to-r from-blue-500 to-indigo-500 text-xs">
-                                  SS: {exercise.standardScore}
+              {/* Generate TabsContent for each assessment */}
+              {Object.entries(clinicalAssessments).map(([key, assessment]) => (
+                <TabsContent key={key} value={key}>
+                  <div className="bg-gray-50 rounded-lg p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+                        <Brain className="w-4 h-4 text-white" />
+                      </div>
+                      <h3 className="text-2xl font-serif text-gray-900">{assessment.name}</h3>
+                      {assessment.completed && (
+                        <Badge className="ml-2 bg-gradient-to-r from-green-500 to-emerald-600">
+                          <Check className="w-3 h-3 mr-1" />
+                          Completed
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="text-sm text-gray-600 mb-6">
+                      <strong>Clinical Tests:</strong> {assessment.clinicalTests.join(", ")}
+                    </div>
+
+                    <div className="mb-6">
+                      <div className="flex justify-between mb-2">
+                        <span className="text-sm text-gray-600">Standard Score: {assessment.standardScore}/19</span>
+                        <span className="text-sm font-medium text-gray-900">{assessment.score}% ({assessment.percentile}%ile)</span>
+                      </div>
+                      <Progress value={assessment.score} className="h-2 bg-gray-200">
+                        <div 
+                          className="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full"
+                          style={{ width: `${assessment.score}%` }}
+                        />
+                      </Progress>
+                      <div className="mt-2 flex justify-between text-xs">
+                        <span className="text-blue-600">{assessment.confidenceInterval}</span>
+                        <span className="text-indigo-600">{assessment.clinicalInterpretation}</span>
+                      </div>
+                      {assessment.completed && (
+                        <div className="mt-2 text-xs text-green-600 font-medium">
+                          +{assessment.improvement}% improvement from baseline assessment
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <h4 className="text-lg font-medium mb-4 text-gray-700">Subtest Performance</h4>
+                        <div className="space-y-4">
+                          {assessment.exercises.map((exercise, index) => (
+                            <div key={index} className="flex justify-between items-center p-3 bg-white rounded-lg border">
+                              <span className="text-gray-700 text-sm font-medium">{exercise.name}</span>
+                              {exercise.completed ? (
+                                <div className="flex items-center gap-2">
+                                  <Badge className="bg-gradient-to-r from-blue-500 to-indigo-500 text-xs">
+                                    SS: {exercise.standardScore}
+                                  </Badge>
+                                  <Badge variant="outline" className="text-blue-600 border-blue-600 text-xs">
+                                    {exercise.score}%
+                                  </Badge>
+                                </div>
+                              ) : (
+                                <Badge variant="outline" className="text-gray-500 border-gray-400 text-xs">
+                                  Pending
                                 </Badge>
-                                <Badge variant="outline" className="text-blue-400 border-blue-600 text-xs">
-                                  {exercise.score}%
-                                </Badge>
-                              </div>
-                            ) : (
-                              <Badge variant="outline" className="text-gray-400 border-gray-600 text-xs">
-                                Pending
-                              </Badge>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div>
-                      <h3 className="text-lg font-medium mb-4 text-blue-300">Clinical Interpretation</h3>
-                      <div className="text-sm text-gray-300 space-y-2 mb-4">
-                        {assessment.completed ? (
-                          <>
-                            <p>
-                              Performance in the <strong>{assessment.clinicalInterpretation}</strong> 
-                              based on standardized normative data (SS: {assessment.standardScore}).
-                            </p>
-                            <p>
-                              Significant improvement observed across multiple domains with 
-                              {assessment.improvement}% gain from baseline measures.
-                            </p>
-                          </>
-                        ) : (
-                          <p>
-                            Comprehensive neuropsychological assessment pending. 
-                            This battery will include {assessment.clinicalTests.join(", ")} 
-                            to establish baseline cognitive functioning.
-                          </p>
-                        )}
+                              )}
+                            </div>
+                          ))}
+                        </div>
                       </div>
 
-                      <div className="space-y-3">
-                        <Button 
-                          onClick={() => handleStartAssessment(key)}
-                          className="w-full bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600"
-                        >
-                          {assessment.completed ? 'Reassess' : 'Begin Clinical Assessment'}
-                        </Button>
-                        <Button 
-                          onClick={() => handleStartTraining(key)}
-                          variant="outline" 
-                          className="w-full border-blue-500 text-blue-400 hover:bg-blue-500/20"
-                          disabled={!assessment.completed}
-                        >
-                          Cognitive Rehabilitation Training
-                        </Button>
+                      <div>
+                        <h4 className="text-lg font-medium mb-4 text-gray-700">Clinical Interpretation</h4>
+                        <div className="text-sm text-gray-700 space-y-2 mb-4 p-4 bg-white rounded-lg border">
+                          {assessment.completed ? (
+                            <>
+                              <p>
+                                Performance in the <strong>{assessment.clinicalInterpretation}</strong> 
+                                based on standardized normative data (SS: {assessment.standardScore}).
+                              </p>
+                              <p>
+                                Significant improvement observed across multiple domains with 
+                                {assessment.improvement}% gain from baseline measures.
+                              </p>
+                            </>
+                          ) : (
+                            <p>
+                              Comprehensive neuropsychological assessment pending. 
+                              This battery will include {assessment.clinicalTests.join(", ")} 
+                              to establish baseline cognitive functioning.
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="space-y-3">
+                          <Button 
+                            onClick={() => handleStartAssessment(key)}
+                            className="w-full bg-orange-500 hover:bg-orange-600 transition-all duration-300 hover:scale-105"
+                          >
+                            {assessment.completed ? 'Reassess' : 'Begin Clinical Assessment'}
+                          </Button>
+                          <Button 
+                            onClick={() => handleStartTraining(key)}
+                            variant="outline" 
+                            className="w-full border-orange-500 text-orange-600 hover:bg-orange-500/10 transition-all duration-300 hover:scale-105"
+                            disabled={!assessment.completed}
+                          >
+                            Cognitive Rehabilitation Training
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          ))}
-        </Tabs>
+                </TabsContent>
+              ))}
+            </Tabs>
+          </CardContent>
+        </Card>
 
         {/* Clinical Recovery Pathway */}
-        <Card className="mt-8 bg-gradient-to-r from-blue-900/30 to-indigo-900/30 backdrop-blur-sm border-blue-500/30">
-          <CardHeader>
-            <CardTitle className="text-2xl font-serif text-blue-100 flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+        <Card className="mt-8 backdrop-blur-sm bg-white/80 border-orange-500/20 shadow-2xl">
+          <CardHeader className="bg-orange-500/10 rounded-t-lg">
+            <CardTitle className="text-2xl font-serif text-center text-gray-900 flex items-center justify-center gap-3">
+              <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center">
                 <Target className="w-4 h-4 text-white" />
               </div>
               Evidence-Based Recovery Protocol
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-8">
             <div className="relative">
-              <Separator className="absolute top-4 left-0 w-full border-t-2 border-dashed border-blue-500/30" />
+              <Separator className="absolute top-4 left-0 w-full border-t-2 border-dashed border-orange-500/30" />
               
               <div className="relative z-10 flex justify-between">
                 <div className="text-center">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full mx-auto flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full mx-auto flex items-center justify-center hover:scale-110 transition-transform">
                     <Check className="w-4 h-4 text-white" />
                   </div>
-                  <div className="mt-2 text-sm text-blue-300">Baseline</div>
-                  <div className="text-xs text-gray-400">Standardized Testing</div>
+                  <div className="mt-2 text-sm text-gray-700 font-medium">Baseline</div>
+                  <div className="text-xs text-gray-600">Standardized Testing</div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-full mx-auto flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-red-500 rounded-full mx-auto flex items-center justify-center hover:scale-110 transition-transform">
                     <Activity className="w-4 h-4 text-white" />
                   </div>
-                  <div className="mt-2 text-sm text-blue-300">Training</div>
-                  <div className="text-xs text-gray-400">Adaptive Protocols</div>
+                  <div className="mt-2 text-sm text-gray-700 font-medium">Training</div>
+                  <div className="text-xs text-gray-600">Adaptive Protocols</div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="w-8 h-8 bg-gradient-to-br from-gray-500 to-gray-700 rounded-full mx-auto flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full mx-auto flex items-center justify-center hover:scale-110 transition-transform">
                     <Target className="w-4 h-4 text-white" />
                   </div>
-                  <div className="mt-2 text-sm text-gray-400">Integration</div>
+                  <div className="mt-2 text-sm text-gray-500">Integration</div>
                   <div className="text-xs text-gray-500">Real-world Application</div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="w-8 h-8 bg-gradient-to-br from-gray-500 to-gray-700 rounded-full mx-auto flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full mx-auto flex items-center justify-center hover:scale-110 transition-transform">
                     <TrendingUp className="w-4 h-4 text-white" />
                   </div>
-                  <div className="mt-2 text-sm text-gray-400">Validation</div>
+                  <div className="mt-2 text-sm text-gray-500">Validation</div>
                   <div className="text-xs text-gray-500">Outcome Measures</div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="w-8 h-8 bg-gradient-to-br from-gray-500 to-gray-700 rounded-full mx-auto flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-br from-gray-400 to-gray-600 rounded-full mx-auto flex items-center justify-center hover:scale-110 transition-transform">
                     <GraduationCap className="w-4 h-4 text-white" />
                   </div>
-                  <div className="mt-2 text-sm text-gray-400">Maintenance</div>
+                  <div className="mt-2 text-sm text-gray-500">Maintenance</div>
                   <div className="text-xs text-gray-500">Long-term Monitoring</div>
                 </div>
               </div>
             </div>
             
             <div className="mt-8 text-center">
-              <p className="text-blue-300 mb-4">
-                Current Phase: <span className="font-bold">Active Training Protocol</span> 
+              <p className="text-gray-700 mb-4">
+                Current Phase: <span className="font-bold text-orange-600">Active Training Protocol</span> 
                 ({completedAssessments.length}/6 domains assessed)
               </p>
-              <Button className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600">
+              <Button className="bg-orange-500 hover:bg-orange-600 transition-all duration-300 hover:scale-105">
                 View Detailed Clinical Report
               </Button>
             </div>
