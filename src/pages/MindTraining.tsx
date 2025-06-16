@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -40,7 +41,7 @@ const MindTraining = () => {
     wcst: { completed: false, categories: 0, errors: 0, perseverative: 0 },
     cpt3: { completed: false, omissions: 0, commissions: 0, hitRT: 0 },
     dkefs: { completed: false, sorting: 0, fluency: 0, design: 0, colorWord: 0 },
-    wms4: { completed: false, auditory: 0, visual: 0, visualWorking: 0, immediate: 0 },
+    wms4: { completed: false, auditory: 0, visual: 0, visualWorking: 0, immediate: 0, delayed: 0 },
     cognistat: { completed: false, attention: 0, language: 0, construction: 0, memory: 0 },
     rbans: { completed: false, immediate: 0, visuospatial: 0, language: 0, attention: 0, delayed: 0 }
   });
