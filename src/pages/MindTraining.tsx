@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -493,12 +492,12 @@ const MindTraining = () => {
                         </div>
                         <div className="flex justify-between mb-1">
                           <span>FSIQ Score:</span>
-                          <span className="font-medium text-purple-600">{biruAssessments.waisIV.fsiq || "--"}</span>
+                          <span className="font-medium text-purple-600">{biruAssessments.waisIV?.fsiq || "--"}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Status:</span>
-                          <span className={biruAssessments.waisIV.completed ? "text-green-600" : "text-orange-600"}>
-                            {biruAssessments.waisIV.completed ? "✓ Complete" : "⏳ Pending"}
+                          <span className={biruAssessments.waisIV?.completed ? "text-green-600" : "text-orange-600"}>
+                            {biruAssessments.waisIV?.completed ? "✓ Complete" : "⏳ Pending"}
                           </span>
                         </div>
                       </div>
@@ -537,7 +536,7 @@ const MindTraining = () => {
                         </div>
                         <div className="flex justify-between">
                           <span>Completion:</span>
-                          <span className="font-medium text-green-600">{biruAssessments.dkefs.completed ? "100%" : "0%"}</span>
+                          <span className="font-medium text-green-600">{biruAssessments.dkefs?.completed ? "100%" : "0%"}</span>
                         </div>
                       </div>
                       <Button 
@@ -571,11 +570,11 @@ const MindTraining = () => {
                         </div>
                         <div className="flex justify-between mb-1">
                           <span>Immediate Index:</span>
-                          <span className="font-medium text-orange-600">{biruAssessments.wms4.immediate || "--"}</span>
+                          <span className="font-medium text-orange-600">{biruAssessments.wms4?.immediate || "--"}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Delayed Index:</span>
-                          <span className="font-medium text-orange-600">{biruAssessments.wms4.delayed || "--"}</span>
+                          <span className="font-medium text-orange-600">{biruAssessments.wms4?.delayed || "--"}</span>
                         </div>
                       </div>
                       <Button 
@@ -609,11 +608,11 @@ const MindTraining = () => {
                         </div>
                         <div className="flex justify-between mb-1">
                           <span>Omissions:</span>
-                          <span className="font-medium text-blue-600">{biruAssessments.cpt3.omissions || "--"}</span>
+                          <span className="font-medium text-blue-600">{biruAssessments.cpt3?.omissions || "--"}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>RT (ms):</span>
-                          <span className="font-medium text-blue-600">{biruAssessments.cpt3.hitRT || "--"}</span>
+                          <span className="font-medium text-blue-600">{biruAssessments.cpt3?.hitRT || "--"}</span>
                         </div>
                       </div>
                       <Button 
@@ -647,11 +646,11 @@ const MindTraining = () => {
                         </div>
                         <div className="flex justify-between mb-1">
                           <span>Trial 5 Score:</span>
-                          <span className="font-medium text-red-600">{biruAssessments.ravlt.trial5 || "--"}/15</span>
+                          <span className="font-medium text-red-600">{biruAssessments.ravlt?.trial5 || "--"}/15</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Delayed Recall:</span>
-                          <span className="font-medium text-red-600">{biruAssessments.ravlt.delayed || "--"}/15</span>
+                          <span className="font-medium text-red-600">{biruAssessments.ravlt?.delayed || "--"}/15</span>
                         </div>
                       </div>
                       <Button 
@@ -681,16 +680,16 @@ const MindTraining = () => {
                       <div className="text-sm">
                         <div className="flex justify-between mb-1">
                           <span>Categories:</span>
-                          <span className="font-medium text-indigo-600">{biruAssessments.wcst.categories || "--"}/6</span>
+                          <span className="font-medium text-indigo-600">{biruAssessments.wcst?.categories || "--"}/6</span>
                         </div>
                         <div className="flex justify-between mb-1">
                           <span>Perseverative:</span>
-                          <span className="font-medium text-indigo-600">{biruAssessments.wcst.perseverative || "--"}%</span>
+                          <span className="font-medium text-indigo-600">{biruAssessments.wcst?.perseverative || "--"}%</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Status:</span>
-                          <span className={biruAssessments.wcst.completed ? "text-green-600" : "text-orange-600"}>
-                            {biruAssessments.wcst.completed ? "✓ Complete" : "⏳ Pending"}
+                          <span className={biruAssessments.wcst?.completed ? "text-green-600" : "text-orange-600"}>
+                            {biruAssessments.wcst?.completed ? "✓ Complete" : "⏳ Pending"}
                           </span>
                         </div>
                       </div>
