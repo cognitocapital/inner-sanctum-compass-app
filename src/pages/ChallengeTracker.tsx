@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Plus, CheckCircle, Award, BarChart3, Brain, Heart, Zap } from "lucide-react";
+import { ArrowLeft, Plus, CheckCircle, Award, BarChart3, Brain, Heart, Zap, Dumbbell, Activity } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Challenge {
@@ -35,22 +35,74 @@ const ChallengeTracker = () => {
   });
   
   const [showForm, setShowForm] = useState(false);
-  const [showTemplates, setShowTemplates] = useState(false);
+  const [showDumbbellTemplates, setShowDumbbellTemplates] = useState(false);
+  const [showBodyweightTemplates, setShowBodyweightTemplates] = useState(false);
   const { toast } = useToast();
 
-  // Predefined dumbbell workout templates
+  // Enhanced dumbbell workout templates
   const dumbbellWorkouts = [
-    { title: "Dumbbell Deadlift", description: "2-3 sets of 10-15 reps. Targets hamstrings, glutes, lower back.", difficulty: 3 as const, category: 'physical' as const },
-    { title: "Squat to Punch", description: "2-3 sets of 20 punches (10 per arm). Targets quads, glutes, shoulders, core.", difficulty: 4 as const, category: 'physical' as const },
-    { title: "Squat to Shoulder Press", description: "2-3 sets of 10-15 reps. Full body movement from deadlift to overhead press.", difficulty: 4 as const, category: 'physical' as const },
-    { title: "Clean and Press", description: "2-3 sets of 10-15 reps. Full body exercise - floor to overhead.", difficulty: 5 as const, category: 'physical' as const },
-    { title: "Shoulder Press", description: "2-3 sets of 10-15 reps. Targets shoulders and triceps.", difficulty: 2 as const, category: 'physical' as const },
-    { title: "Dumbbell Bench Press", description: "2-3 sets of 10-15 reps. Targets chest, shoulders, triceps.", difficulty: 3 as const, category: 'physical' as const },
-    { title: "Dumbbell Flys", description: "2-3 sets of 10-15 reps. Targets chest and shoulders.", difficulty: 2 as const, category: 'physical' as const },
-    { title: "Dumbbell Rows", description: "2-3 sets of 10-15 reps. Targets back and biceps.", difficulty: 3 as const, category: 'physical' as const },
-    { title: "Dumbbell Curls", description: "2-3 sets of 10-15 reps. Targets biceps.", difficulty: 2 as const, category: 'physical' as const },
-    { title: "Triceps Extensions", description: "2-3 sets of 10-15 reps. Targets triceps.", difficulty: 2 as const, category: 'physical' as const },
-    { title: "Complete Dumbbell Workout", description: "Full workout session with warm-up, all exercises, and cool-down.", difficulty: 5 as const, category: 'physical' as const }
+    // Upper Body
+    { title: "Dumbbell Chest Press", description: "3 sets of 8-12 reps. Lie flat, press dumbbells up from chest level. Targets chest, shoulders, triceps.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
+    { title: "Dumbbell Flyes", description: "3 sets of 10-15 reps. Wide arc motion to isolate chest muscles. Control the weight on both up and down phases.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
+    { title: "Dumbbell Shoulder Press", description: "3 sets of 8-12 reps. Press dumbbells overhead from shoulder height. Keep core engaged throughout.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
+    { title: "Lateral Raises", description: "3 sets of 12-15 reps. Lift dumbbells to shoulder height with arms slightly bent. Targets side deltoids.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
+    { title: "Dumbbell Rows", description: "3 sets of 8-12 reps. Pull dumbbells to your ribs, squeeze shoulder blades. Targets back and biceps.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
+    { title: "Bicep Curls", description: "3 sets of 10-15 reps. Controlled curling motion, don't swing. Focus on the squeeze at the top.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
+    { title: "Tricep Extensions", description: "3 sets of 10-15 reps. Overhead or lying position. Keep elbows stationary, extend forearms only.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
+    
+    // Lower Body
+    { title: "Dumbbell Squats", description: "3 sets of 12-15 reps. Hold dumbbells at shoulders or sides. Go down until thighs parallel to floor.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
+    { title: "Dumbbell Lunges", description: "3 sets of 10 per leg. Step forward into lunge, keep front knee over ankle. Great for balance and strength.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
+    { title: "Romanian Deadlifts", description: "3 sets of 10-12 reps. Hinge at hips, keep dumbbells close to legs. Targets hamstrings and glutes.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
+    { title: "Goblet Squats", description: "3 sets of 12-15 reps. Hold one dumbbell at chest level. Perfect for squat form and depth.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
+    { title: "Calf Raises", description: "3 sets of 15-20 reps. Hold dumbbells, rise up on toes. Pause at top for maximum contraction.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
+    
+    // Full Body Compound
+    { title: "Dumbbell Thrusters", description: "3 sets of 8-10 reps. Squat to overhead press in one fluid motion. Ultimate full-body exercise.", difficulty: 5 as const, category: 'physical' as const, muscleGroup: "Full Body" },
+    { title: "Dumbbell Burpees", description: "3 sets of 5-8 reps. Burpee with dumbbell chest press at top. High intensity, full-body movement.", difficulty: 5 as const, category: 'physical' as const, muscleGroup: "Full Body" },
+    { title: "Dumbbell Clean & Press", description: "3 sets of 6-8 reps. Floor to overhead in one motion. Power, coordination, and strength combined.", difficulty: 5 as const, category: 'physical' as const, muscleGroup: "Full Body" },
+    { title: "Dumbbell Renegade Rows", description: "3 sets of 6-8 per arm. Plank position, row each arm alternately. Core stability and back strength.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Full Body" },
+    
+    // Complete Workouts
+    { title: "Upper Body Dumbbell Circuit", description: "Complete upper body workout: chest press, rows, shoulder press, curls, tricep extensions. 45-60 minutes.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Complete Workout" },
+    { title: "Lower Body Dumbbell Circuit", description: "Complete lower body workout: squats, lunges, deadlifts, calf raises. 45-60 minutes.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Complete Workout" },
+    { title: "Full Body Dumbbell Workout", description: "Complete full-body session with compound movements. Warm-up, workout, cool-down. 60-75 minutes.", difficulty: 5 as const, category: 'physical' as const, muscleGroup: "Complete Workout" }
+  ];
+
+  // Bodyweight workout templates
+  const bodyweightWorkouts = [
+    // Upper Body
+    { title: "Push-ups", description: "3 sets of 8-15 reps. Classic chest, shoulder, and tricep builder. Modify on knees if needed.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
+    { title: "Diamond Push-ups", description: "3 sets of 5-10 reps. Hands form diamond shape. Advanced tricep and chest variation.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
+    { title: "Pike Push-ups", description: "3 sets of 8-12 reps. Downward dog position, press up. Targets shoulders and upper chest.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
+    { title: "Tricep Dips", description: "3 sets of 8-15 reps. Use chair or bench. Lower body until 90-degree angle, push back up.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
+    
+    // Core
+    { title: "Plank Hold", description: "3 sets of 30-60 seconds. Maintain straight line from head to heels. Core stability foundation.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Core" },
+    { title: "Mountain Climbers", description: "3 sets of 20-30 reps. Plank position, alternate bringing knees to chest. Cardio and core combined.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Core" },
+    { title: "Russian Twists", description: "3 sets of 20-30 reps. Seated, lean back, twist side to side. Can add weight or keep bodyweight.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Core" },
+    { title: "Bicycle Crunches", description: "3 sets of 20-30 reps. Alternate elbow to opposite knee. Targets entire core region.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Core" },
+    { title: "Dead Bug", description: "3 sets of 10 per side. Lie on back, extend opposite arm and leg. Excellent for core stability.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Core" },
+    
+    // Lower Body
+    { title: "Bodyweight Squats", description: "3 sets of 15-25 reps. Fundamental lower body movement. Focus on depth and form.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
+    { title: "Jump Squats", description: "3 sets of 10-15 reps. Explosive squat with jump. High intensity, power development.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
+    { title: "Lunges", description: "3 sets of 10-15 per leg. Step forward or backward. Unilateral strength and balance.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
+    { title: "Single-Leg Glute Bridges", description: "3 sets of 10-15 per leg. Lie on back, lift hips with one leg. Glute activation and stability.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
+    { title: "Wall Sits", description: "3 sets of 30-60 seconds. Back against wall, slide down to 90 degrees. Isometric quad strength.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
+    { title: "Calf Raises", description: "3 sets of 15-25 reps. Rise up on toes, slow controlled descent. Can do single-leg for more challenge.", difficulty: 1 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
+    
+    // Full Body/Cardio
+    { title: "Burpees", description: "3 sets of 5-10 reps. Squat, plank, push-up, jump. Ultimate full-body cardio exercise.", difficulty: 5 as const, category: 'physical' as const, muscleGroup: "Full Body" },
+    { title: "Bear Crawl", description: "3 sets of 30-60 seconds. Crawl forward/backward on hands and feet. Full-body coordination.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Full Body" },
+    { title: "High Knees", description: "3 sets of 30-60 seconds. Run in place, bring knees to chest level. Cardio and leg strength.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Full Body" },
+    { title: "Jumping Jacks", description: "3 sets of 20-30 reps. Classic cardio movement. Great for warm-up or cardio intervals.", difficulty: 1 as const, category: 'physical' as const, muscleGroup: "Full Body" },
+    
+    // Complete Workouts
+    { title: "Bodyweight HIIT Circuit", description: "20-minute high-intensity circuit: burpees, mountain climbers, jump squats, push-ups. 4 rounds.", difficulty: 5 as const, category: 'physical' as const, muscleGroup: "Complete Workout" },
+    { title: "Core Focused Workout", description: "25-minute core session: planks, mountain climbers, Russian twists, bicycle crunches, dead bugs.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Complete Workout" },
+    { title: "Bodyweight Strength Circuit", description: "35-minute strength circuit covering all major muscle groups. No equipment needed.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Complete Workout" },
+    { title: "Beginner Bodyweight Routine", description: "20-minute beginner-friendly routine: squats, push-ups, lunges, plank. Perfect for starting out.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Complete Workout" }
   ];
 
   // Load data from localStorage
@@ -106,7 +158,7 @@ const ChallengeTracker = () => {
     });
   };
 
-  const addTemplateChallenge = (template: typeof dumbbellWorkouts[0]) => {
+  const addTemplateChallenge = (template: typeof dumbbellWorkouts[0] | typeof bodyweightWorkouts[0]) => {
     const phoenixPoints = template.difficulty * 10;
     const challenge: Challenge = {
       id: Date.now().toString(),
@@ -122,7 +174,7 @@ const ChallengeTracker = () => {
     setChallenges(prev => [challenge, ...prev]);
     
     toast({
-      title: "Dumbbell Challenge Added! 💪",
+      title: "Workout Challenge Added! 💪",
       description: `${template.title} added (${phoenixPoints} phoenix points)`,
     });
   };
@@ -236,9 +288,92 @@ const ChallengeTracker = () => {
     }
   };
 
+  const getMuscleGroupColor = (muscleGroup: string) => {
+    switch (muscleGroup) {
+      case 'Upper Body': return 'bg-blue-500/10 text-blue-600';
+      case 'Lower Body': return 'bg-green-500/10 text-green-600';
+      case 'Core': return 'bg-purple-500/10 text-purple-600';
+      case 'Full Body': return 'bg-red-500/10 text-red-600';
+      case 'Complete Workout': return 'bg-orange-500/10 text-orange-600';
+      default: return 'bg-gray-500/10 text-gray-600';
+    }
+  };
+
   const completedToday = challenges.filter(c => 
     c.completed && c.date === new Date().toISOString().split('T')[0]
   ).length;
+
+  const renderWorkoutTemplates = (workouts: any[], title: string, icon: React.ReactNode, description: string) => (
+    <Card className="mb-8 animate-fade-in">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          {icon} {title}
+          <Badge variant="secondary" className="text-xs">
+            {workouts.length} exercises
+          </Badge>
+        </CardTitle>
+        <p className="text-sm text-muted-foreground">
+          {description}
+        </p>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          {/* Group by muscle group */}
+          {['Upper Body', 'Lower Body', 'Core', 'Full Body', 'Complete Workout'].map(group => {
+            const groupWorkouts = workouts.filter(w => w.muscleGroup === group);
+            if (groupWorkouts.length === 0) return null;
+            
+            return (
+              <div key={group} className="border rounded-lg p-4 bg-muted/20">
+                <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                  {group}
+                  <Badge className={getMuscleGroupColor(group)} variant="secondary">
+                    {groupWorkouts.length} exercises
+                  </Badge>
+                </h4>
+                <div className="grid gap-3">
+                  {groupWorkouts.map((workout, index) => (
+                    <div 
+                      key={index}
+                      className="flex items-center justify-between p-3 bg-background rounded-lg border hover:bg-muted/30 transition-colors"
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h5 className="font-semibold text-sm">{workout.title}</h5>
+                          <div className={`w-2 h-2 rounded-full ${getDifficultyColor(workout.difficulty)}`} />
+                          <span className="text-xs text-muted-foreground">
+                            {workout.difficulty * 10} pts
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground">{workout.description}</p>
+                      </div>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => addTemplateChallenge(workout)}
+                        className="ml-4 shrink-0"
+                      >
+                        <Plus className="h-3 w-3 mr-1" />
+                        Add
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="mt-6 flex justify-center">
+          <Button variant="ghost" onClick={() => {
+            setShowDumbbellTemplates(false);
+            setShowBodyweightTemplates(false);
+          }}>
+            Close Templates
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -312,187 +447,160 @@ const ChallengeTracker = () => {
                 </Card>
               </div>
 
-          {/* Add Challenge Buttons */}
-          <div className="mb-8 animate-fade-in flex gap-4 flex-wrap" style={{animationDelay: '200ms'}}>
-            <Button 
-              onClick={() => setShowForm(!showForm)}
-              className="flex-1 md:flex-none"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              Add New Challenge
-            </Button>
-            <Button 
-              onClick={() => setShowTemplates(!showTemplates)}
-              variant="outline"
-              className="flex-1 md:flex-none"
-            >
-              💪 Dumbbell Workouts
-            </Button>
-          </div>
+              {/* Add Challenge Buttons */}
+              <div className="mb-8 animate-fade-in flex gap-4 flex-wrap" style={{animationDelay: '200ms'}}>
+                <Button 
+                  onClick={() => setShowForm(!showForm)}
+                  className="flex-1 md:flex-none"
+                >
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add New Challenge
+                </Button>
+                <Button 
+                  onClick={() => setShowDumbbellTemplates(!showDumbbellTemplates)}
+                  variant="outline"
+                  className="flex-1 md:flex-none"
+                >
+                  <Dumbbell className="mr-2 h-4 w-4" />
+                  Dumbbell Workouts
+                </Button>
+                <Button 
+                  onClick={() => setShowBodyweightTemplates(!showBodyweightTemplates)}
+                  variant="outline"
+                  className="flex-1 md:flex-none"
+                >
+                  <Activity className="mr-2 h-4 w-4" />
+                  Bodyweight Workouts
+                </Button>
+              </div>
 
-          {/* Add Challenge Form */}
-          {showForm && (
-            <Card className="mb-8 animate-fade-in">
-              <CardHeader>
-                <CardTitle>New Challenge</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="title">Challenge Title</Label>
-                  <Input
-                    id="title"
-                    value={newChallenge.title}
-                    onChange={(e) => setNewChallenge(prev => ({ ...prev, title: e.target.value }))}
-                    placeholder="e.g., Have a phone conversation"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="description">Description (optional)</Label>
-                  <Textarea
-                    id="description"
-                    value={newChallenge.description}
-                    onChange={(e) => setNewChallenge(prev => ({ ...prev, description: e.target.value }))}
-                    placeholder="Additional details about this challenge..."
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="category">Challenge Category</Label>
-                    <select 
-                      id="category"
-                      value={newChallenge.category}
-                      onChange={(e) => setNewChallenge(prev => ({ ...prev, category: e.target.value as 'physical' | 'cognitive' | 'emotional' | 'social' }))}
-                      className="w-full p-2 border border-input bg-background rounded-md"
-                    >
-                      <option value="physical">🏃‍♂️ Physical</option>
-                      <option value="cognitive">🧠 Cognitive</option>
-                      <option value="emotional">❤️ Emotional</option>
-                      <option value="social">👥 Social</option>
-                    </select>
-                  </div>
-                  <div>
-                    <Label htmlFor="difficulty">Difficulty Level</Label>
-                    <select 
-                      id="difficulty"
-                      value={newChallenge.difficulty}
-                      onChange={(e) => setNewChallenge(prev => ({ ...prev, difficulty: Number(e.target.value) as 1 | 2 | 3 | 4 | 5 }))}
-                      className="w-full p-2 border border-input bg-background rounded-md"
-                    >
-                      <option value={1}>1 - Very Easy (10 pts)</option>
-                      <option value={2}>2 - Easy (20 pts)</option>
-                      <option value={3}>3 - Moderate (30 pts)</option>
-                      <option value={4}>4 - Hard (40 pts)</option>
-                      <option value={5}>5 - Very Hard (50 pts)</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button onClick={addChallenge}>Add Challenge</Button>
-                  <Button variant="outline" onClick={() => setShowForm(false)}>Cancel</Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+              {/* Add Challenge Form */}
+              {showForm && (
+                <Card className="mb-8 animate-fade-in">
+                  <CardHeader>
+                    <CardTitle>New Challenge</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <Label htmlFor="title">Challenge Title</Label>
+                      <Input
+                        id="title"
+                        value={newChallenge.title}
+                        onChange={(e) => setNewChallenge(prev => ({ ...prev, title: e.target.value }))}
+                        placeholder="e.g., Have a phone conversation"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="description">Description (optional)</Label>
+                      <Textarea
+                        id="description"
+                        value={newChallenge.description}
+                        onChange={(e) => setNewChallenge(prev => ({ ...prev, description: e.target.value }))}
+                        placeholder="Additional details about this challenge..."
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="category">Challenge Category</Label>
+                        <select 
+                          id="category"
+                          value={newChallenge.category}
+                          onChange={(e) => setNewChallenge(prev => ({ ...prev, category: e.target.value as 'physical' | 'cognitive' | 'emotional' | 'social' }))}
+                          className="w-full p-2 border border-input bg-background rounded-md"
+                        >
+                          <option value="physical">🏃‍♂️ Physical</option>
+                          <option value="cognitive">🧠 Cognitive</option>
+                          <option value="emotional">❤️ Emotional</option>
+                          <option value="social">👥 Social</option>
+                        </select>
+                      </div>
+                      <div>
+                        <Label htmlFor="difficulty">Difficulty Level</Label>
+                        <select 
+                          id="difficulty"
+                          value={newChallenge.difficulty}
+                          onChange={(e) => setNewChallenge(prev => ({ ...prev, difficulty: Number(e.target.value) as 1 | 2 | 3 | 4 | 5 }))}
+                          className="w-full p-2 border border-input bg-background rounded-md"
+                        >
+                          <option value={1}>1 - Very Easy (10 pts)</option>
+                          <option value={2}>2 - Easy (20 pts)</option>
+                          <option value={3}>3 - Moderate (30 pts)</option>
+                          <option value={4}>4 - Hard (40 pts)</option>
+                          <option value={5}>5 - Very Hard (50 pts)</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button onClick={addChallenge}>Add Challenge</Button>
+                      <Button variant="outline" onClick={() => setShowForm(false)}>Cancel</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
-          {/* Dumbbell Workout Templates */}
-          {showTemplates && (
-            <Card className="mb-8 animate-fade-in">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  💪 Dumbbell Workout Templates
-                  <Badge variant="secondary" className="text-xs">
-                    {dumbbellWorkouts.length} exercises
-                  </Badge>
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">
-                  Quick-add professional dumbbell exercises to your challenge list. Start with 2kg or 4kg weights and progress as you get stronger.
-                </p>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-3">
-                  {dumbbellWorkouts.map((workout, index) => (
-                    <div 
-                      key={index}
-                      className="flex items-center justify-between p-3 bg-muted/30 rounded-lg border hover:bg-muted/50 transition-colors"
-                    >
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-semibold text-sm">{workout.title}</h4>
-                          <div className={`w-2 h-2 rounded-full ${getDifficultyColor(workout.difficulty)}`} />
-                          <span className="text-xs text-muted-foreground">
-                            {workout.difficulty * 10} pts
-                          </span>
+              {/* Dumbbell Workout Templates */}
+              {showDumbbellTemplates && renderWorkoutTemplates(
+                dumbbellWorkouts,
+                "Professional Dumbbell Workouts",
+                <Dumbbell className="h-5 w-5" />,
+                "Comprehensive dumbbell exercises organized by muscle group. Start with 2-4kg weights and progress as you get stronger. Each exercise includes proper form cues and rep ranges."
+              )}
+
+              {/* Bodyweight Workout Templates */}
+              {showBodyweightTemplates && renderWorkoutTemplates(
+                bodyweightWorkouts,
+                "Bodyweight Training Programs",
+                <Activity className="h-5 w-5" />,
+                "No equipment needed! Professional bodyweight exercises for all fitness levels. Perfect for home workouts, travel, or when you want to focus on functional movement patterns."
+              )}
+
+              {/* Challenges List */}
+              <div className="space-y-4">
+                {challenges.map((challenge, index) => (
+                  <Card 
+                    key={challenge.id} 
+                    className={`transition-all duration-200 animate-fade-in ${challenge.completed ? 'bg-muted/50' : ''}`}
+                    style={{animationDelay: `${300 + index * 50}ms`}}
+                  >
+                    <CardContent className="p-4">
+                      <div className="flex items-start gap-4">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => toggleComplete(challenge.id)}
+                          className={`mt-1 ${challenge.completed ? 'text-green-600' : 'text-muted-foreground'}`}
+                        >
+                          <CheckCircle className="h-5 w-5" />
+                        </Button>
+                        
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <h3 className={`font-semibold ${challenge.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
+                              {challenge.title}
+                            </h3>
+                            <Badge className={getCategoryColor(challenge.category)}>
+                              {getCategoryIcon(challenge.category)}
+                              <span className="ml-1 capitalize">{challenge.category}</span>
+                            </Badge>
+                            <div className={`w-2 h-2 rounded-full ${getDifficultyColor(challenge.difficulty)}`} />
+                          </div>
+                          
+                          {challenge.description && (
+                            <p className="text-muted-foreground text-sm mb-2">
+                              {challenge.description}
+                            </p>
+                          )}
+                          
+                          <div className="flex items-center justify-between text-xs text-muted-foreground">
+                            <span>{new Date(challenge.date).toLocaleDateString()} • Difficulty: {challenge.difficulty}/5</span>
+                            <span className="font-medium text-primary">{challenge.phoenixPoints} pts 🔥</span>
+                          </div>
                         </div>
-                        <p className="text-xs text-muted-foreground">{workout.description}</p>
                       </div>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => addTemplateChallenge(workout)}
-                        className="ml-4 shrink-0"
-                      >
-                        <Plus className="h-3 w-3 mr-1" />
-                        Add
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4 flex justify-center">
-                  <Button variant="ghost" onClick={() => setShowTemplates(false)}>
-                    Close Templates
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Challenges List */}
-          <div className="space-y-4">
-            {challenges.map((challenge, index) => (
-              <Card 
-                key={challenge.id} 
-                className={`transition-all duration-200 animate-fade-in ${challenge.completed ? 'bg-muted/50' : ''}`}
-                style={{animationDelay: `${300 + index * 50}ms`}}
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-4">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => toggleComplete(challenge.id)}
-                      className={`mt-1 ${challenge.completed ? 'text-green-600' : 'text-muted-foreground'}`}
-                    >
-                      <CheckCircle className="h-5 w-5" />
-                    </Button>
-                    
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className={`font-semibold ${challenge.completed ? 'line-through text-muted-foreground' : 'text-foreground'}`}>
-                          {challenge.title}
-                        </h3>
-                        <Badge className={getCategoryColor(challenge.category)}>
-                          {getCategoryIcon(challenge.category)}
-                          <span className="ml-1 capitalize">{challenge.category}</span>
-                        </Badge>
-                        <div className={`w-2 h-2 rounded-full ${getDifficultyColor(challenge.difficulty)}`} />
-                      </div>
-                      
-                      {challenge.description && (
-                        <p className="text-muted-foreground text-sm mb-2">
-                          {challenge.description}
-                        </p>
-                      )}
-                      
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{new Date(challenge.date).toLocaleDateString()} • Difficulty: {challenge.difficulty}/5</span>
-                        <span className="font-medium text-primary">{challenge.phoenixPoints} pts 🔥</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
 
               {challenges.length === 0 && (
                 <Card className="text-center py-12">
