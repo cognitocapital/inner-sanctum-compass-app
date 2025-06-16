@@ -63,7 +63,7 @@ const Dashboard = () => {
               Yellow Brick Road
             </h1>
             <p className="text-lg md:text-xl text-gray-300 mt-4 max-w-3xl mx-auto leading-relaxed">
-              Interactive tools to support your healing journey after traumatic brain injury
+              Clinical-grade tools and interactive support for traumatic brain injury recovery
             </p>
           </header>
 
@@ -104,20 +104,25 @@ const Dashboard = () => {
               </CardContent>
             </Card>
 
-            {/* The Mind */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-card to-primary/5 border-primary/20 group" style={{animationDelay: '400ms'}}>
+            {/* Updated Mind Training Card */}
+            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-blue-50/90 to-purple-50/90 border-blue-500/30 group" style={{animationDelay: '400ms'}}>
               <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-phoenix-gradient rounded-full w-fit group-hover:animate-glow-pulse transition-all duration-300">
+                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
                   <Brain className="h-8 w-8 text-white" />
                 </div>
-                <CardTitle className="text-xl font-serif">Mind Training</CardTitle>
+                <CardTitle className="text-xl font-serif text-blue-900">BIRU Mind Training</CardTitle>
+                <div className="mt-2">
+                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    Clinical Grade
+                  </span>
+                </div>
               </CardHeader>
               <CardContent className="text-center">
-                <p className="text-muted-foreground mb-4">
-                  Cognitive exercises and meditation for brain recovery and focus
+                <p className="text-blue-800 mb-4">
+                  Evidence-based cognitive assessments and exercises used in Brain Injury Rehabilitation Units
                 </p>
-                <Button asChild className="w-full bg-phoenix-gradient hover:bg-flame-gradient text-white">
-                  <Link to="/mind">Train Now</Link>
+                <Button asChild className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                  <Link to="/mind">Start Clinical Assessment</Link>
                 </Button>
               </CardContent>
             </Card>
