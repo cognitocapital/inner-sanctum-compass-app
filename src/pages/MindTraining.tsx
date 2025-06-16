@@ -27,13 +27,13 @@ const MindTraining = () => {
   const [currentGameType, setCurrentGameType] = useState<'hatching' | 'flying' | 'gathering' | 'transformation'>('hatching');
   const [phoenixMessage, setPhoenixMessage] = useState("");
   
-  // BIRU Assessment states
+  // BIRU Assessment states - Fixed typing
   const [biruAssessments, setBiruAssessments] = useState({
     trailMaking: { completed: false, timeA: 0, timeB: 0, errors: 0 },
-    digitSpan: { forward: 0, backward: 0, sequencing: 0 },
-    stroopTest: { correct: 0, errors: 0, avgTime: 0 },
+    digitSpan: { completed: false, forward: 0, backward: 0, sequencing: 0 },
+    stroopTest: { completed: false, correct: 0, errors: 0, avgTime: 0 },
     clockDrawing: { score: 0, completed: false },
-    motorSkills: { dominant: 0, nonDominant: 0, bilateral: 0 }
+    motorSkills: { completed: false, dominant: 0, nonDominant: 0, bilateral: 0 }
   });
 
   const [currentBiruExercise, setCurrentBiruExercise] = useState('attention');
@@ -293,7 +293,7 @@ const MindTraining = () => {
               />
             </div>
             <h1 className="text-4xl font-serif font-bold text-primary mb-4">
-              BIRU Mind Training Center
+              Phoenix Mind Academy
             </h1>
             <p className="text-lg text-muted-foreground mb-2">
               Evidence-based cognitive exercises used in Brain Injury Rehabilitation Units
@@ -668,7 +668,7 @@ const MindTraining = () => {
               )}
             </TabsContent>
 
-            {/* ... keep existing code (mindfulness, guided, journal tabs) */}
+            {/* Mindfulness Tab */}
             <TabsContent value="mindfulness" className="space-y-6">
               <NarrativePrompts 
                 currentChapter="Chapter 5"
@@ -684,6 +684,7 @@ const MindTraining = () => {
               />
             </TabsContent>
 
+            {/* Guided Tab */}
             <TabsContent value="guided" className="space-y-6">
               <GuidedMeditations 
                 onComplete={(duration, theme) => {
@@ -700,6 +701,7 @@ const MindTraining = () => {
               />
             </TabsContent>
 
+            {/* Journal Tab */}
             <TabsContent value="journal" className="space-y-6">
               <MindfulnessJournal 
                 currentChapter="Chapter 5"
