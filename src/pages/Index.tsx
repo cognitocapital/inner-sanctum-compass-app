@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,9 +72,13 @@ const Index = () => {
                                 Start Reading <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </Button>
-                        <Button asChild variant="outline" size="lg" className="border-orange-500/50 hover:bg-orange-500/10 hover:border-orange-500 transition-all duration-300 hover:scale-105 group">
-                            <Link to="/dashboard">
-                                Yellow Brick Road <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                        <Button asChild size="lg" className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-300 hover:via-yellow-400 hover:to-yellow-500 text-gray-900 font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 group border-2 border-yellow-300 relative overflow-hidden">
+                            <Link to="/dashboard" className="relative z-10">
+                                <span className="flex items-center">
+                                    ✨ Yellow Brick Road ✨
+                                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                                </span>
+                                <div className="absolute inset-0 bg-gradient-to-r from-yellow-200/20 to-yellow-400/20 animate-pulse"></div>
                             </Link>
                         </Button>
                         <Button asChild size="lg" className="bg-red-500 hover:bg-red-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
