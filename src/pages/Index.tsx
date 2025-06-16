@@ -73,7 +73,7 @@ const Index = () => {
                         </Button>
                         <Button asChild variant="outline" size="lg" className="border-orange-500/50 hover:bg-orange-500/10 hover:border-orange-500 transition-all duration-300 hover:scale-105 group">
                             <Link to="/dashboard">
-                                Interactive Tools <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                                Yellow Brick Road <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </Button>
                         <Button asChild size="lg" className="bg-red-500 hover:bg-red-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">

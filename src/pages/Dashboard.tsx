@@ -60,7 +60,7 @@ const Dashboard = () => {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-4 drop-shadow-lg">
-              Recovery Tools
+              Yellow Brick Road
             </h1>
             <p className="text-lg md:text-xl text-gray-300 mt-4 max-w-3xl mx-auto leading-relaxed">
               Interactive tools to support your healing journey after traumatic brain injury
