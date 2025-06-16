@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Plus, CheckCircle, Award, BarChart3, Brain, Heart, Zap, Dumbbell, Activity } from "lucide-react";
+import { ArrowLeft, Plus, CheckCircle, Award, BarChart3, Brain, Heart, Zap, Dumbbell, Activity, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface Challenge {
@@ -39,70 +39,904 @@ const ChallengeTracker = () => {
   const [showBodyweightTemplates, setShowBodyweightTemplates] = useState(false);
   const { toast } = useToast();
 
-  // Enhanced dumbbell workout templates
+  // Enhanced dumbbell workout templates with visual instructions
   const dumbbellWorkouts = [
     // Upper Body
-    { title: "Dumbbell Chest Press", description: "3 sets of 8-12 reps. Lie flat, press dumbbells up from chest level. Targets chest, shoulders, triceps.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
-    { title: "Dumbbell Flyes", description: "3 sets of 10-15 reps. Wide arc motion to isolate chest muscles. Control the weight on both up and down phases.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
-    { title: "Dumbbell Shoulder Press", description: "3 sets of 8-12 reps. Press dumbbells overhead from shoulder height. Keep core engaged throughout.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
-    { title: "Lateral Raises", description: "3 sets of 12-15 reps. Lift dumbbells to shoulder height with arms slightly bent. Targets side deltoids.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
-    { title: "Dumbbell Rows", description: "3 sets of 8-12 reps. Pull dumbbells to your ribs, squeeze shoulder blades. Targets back and biceps.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
-    { title: "Bicep Curls", description: "3 sets of 10-15 reps. Controlled curling motion, don't swing. Focus on the squeeze at the top.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
-    { title: "Tricep Extensions", description: "3 sets of 10-15 reps. Overhead or lying position. Keep elbows stationary, extend forearms only.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
+    { 
+      title: "Dumbbell Chest Press", 
+      description: "3 sets of 8-12 reps. Lie flat, press dumbbells up from chest level. Targets chest, shoulders, triceps.", 
+      difficulty: 3 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Upper Body",
+      visualCue: "🛏️ Lie flat → 💪 Press up → 🔄 Control down",
+      formDiagram: `
+Starting Position:     Movement:
+     💪               💪
+  🛏️ 👤 🛏️    →    🛏️ 👤 🛏️
+     💪               💪
+   (chest)          (extended)`,
+      stepByStep: [
+        "1. Lie flat on bench/floor with dumbbells at chest level",
+        "2. Keep feet flat on ground, core engaged",
+        "3. Press dumbbells straight up until arms extend",
+        "4. Slowly lower back to starting position",
+        "5. Keep wrists straight throughout movement"
+      ]
+    },
+    { 
+      title: "Dumbbell Flyes", 
+      description: "3 sets of 10-15 reps. Wide arc motion to isolate chest muscles. Control the weight on both up and down phases.", 
+      difficulty: 3 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Upper Body",
+      visualCue: "🦅 Wide wings → 🤗 Embrace motion",
+      formDiagram: `
+Starting:           Movement:
+  💪     💪         💪
+    \\   /      →      \\
+     👤              👤
+    /   \\              /
+  💪     💪         💪`,
+      stepByStep: [
+        "1. Lie flat with arms extended wide",
+        "2. Slight bend in elbows throughout",
+        "3. Arc motion like hugging a tree",
+        "4. Feel stretch in chest at bottom",
+        "5. Squeeze chest muscles at top"
+      ]
+    },
+    { 
+      title: "Dumbbell Shoulder Press", 
+      description: "3 sets of 8-12 reps. Press dumbbells overhead from shoulder height. Keep core engaged throughout.", 
+      difficulty: 3 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Upper Body",
+      visualCue: "🏛️ Pillars → 🚀 Launch up",
+      formDiagram: `
+Start:       Press:
+  💪 💪       💪   💪
+   👤   →      |👤|
+   🦵🦵        🦵🦵
+ (hinge)      (to overhead)`,
+      stepByStep: [
+        "1. Stand with feet shoulder-width apart",
+        "2. Hold dumbbells at shoulder height",
+        "3. Press straight up overhead",
+        "4. Don't arch your back excessively",
+        "5. Lower with control to shoulders"
+      ]
+    },
+    { 
+      title: "Lateral Raises", 
+      description: "3 sets of 12-15 reps. Lift dumbbells to shoulder height with arms slightly bent. Targets side deltoids.", 
+      difficulty: 2 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Upper Body",
+      visualCue: "🛬 Airplane wings → ✈️ Takeoff",
+      formDiagram: `
+Start:         Lift:
+  |💪         💪   💪
+  👤     →     \\👤/
+  |💪          💪💪
+              (shoulder height)`,
+      stepByStep: [
+        "1. Stand with dumbbells at sides",
+        "2. Slight bend in elbows",
+        "3. Lift to shoulder height",
+        "4. Lead with pinkies, not thumbs",
+        "5. Control the descent"
+      ]
+    },
+    { 
+      title: "Dumbbell Rows", 
+      description: "3 sets of 8-12 reps. Pull dumbbells to your ribs, squeeze shoulder blades. Targets back and biceps.", 
+      difficulty: 3 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Upper Body",
+      visualCue: "🚣 Rowing motion → 💪 Pull to ribs",
+      formDiagram: `
+Bent Over:      Pull:
+    👤          👤
+   /💪\\    →   💪👤💪
+  🦵  🦵       🦵  🦵
+ (hinge)      (to ribs)`,
+      stepByStep: [
+        "1. Hinge at hips, bend forward",
+        "2. Keep back straight, core tight",
+        "3. Pull dumbbells to rib cage",
+        "4. Squeeze shoulder blades together",
+        "5. Lower with control"
+      ]
+    },
+    { 
+      title: "Bicep Curls", 
+      description: "3 sets of 10-15 reps. Controlled curling motion, don't swing. Focus on the squeeze at the top.", 
+      difficulty: 2 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Upper Body",
+      visualCue: "💪 Flex → 🔄 Control → 💪 Squeeze",
+      formDiagram: `
+Start:      Curl:       Peak:
+  👤         👤         👤
+ |💪|   →   💪👤   →   💪👤💪
+ 🦵🦵       🦵🦵       🦵🦵`,
+      stepByStep: [
+        "1. Stand with arms at sides",
+        "2. Keep elbows close to body",
+        "3. Curl weight up slowly",
+        "4. Squeeze bicep at top",
+        "5. Lower slowly, don't drop"
+      ]
+    },
+    { 
+      title: "Tricep Extensions", 
+      description: "3 sets of 10-15 reps. Overhead or lying position. Keep elbows stationary, extend forearms only.", 
+      difficulty: 2 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Upper Body",
+      visualCue: "🔒 Lock elbows → 📏 Extend forearms",
+      formDiagram: `
+Overhead:       Extension:
+   💪            💪
+   |👤      →    |👤
+   🦵🦵          🦵🦵
+(behind head)   (extended)`,
+      stepByStep: [
+        "1. Hold dumbbell overhead with both hands",
+        "2. Keep elbows pointing forward",
+        "3. Lower weight behind head",
+        "4. Extend only at elbow joint",
+        "5. Feel tricep stretch and contraction"
+      ]
+    },
     
     // Lower Body
-    { title: "Dumbbell Squats", description: "3 sets of 12-15 reps. Hold dumbbells at shoulders or sides. Go down until thighs parallel to floor.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
-    { title: "Dumbbell Lunges", description: "3 sets of 10 per leg. Step forward into lunge, keep front knee over ankle. Great for balance and strength.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
-    { title: "Romanian Deadlifts", description: "3 sets of 10-12 reps. Hinge at hips, keep dumbbells close to legs. Targets hamstrings and glutes.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
-    { title: "Goblet Squats", description: "3 sets of 12-15 reps. Hold one dumbbell at chest level. Perfect for squat form and depth.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
-    { title: "Calf Raises", description: "3 sets of 15-20 reps. Hold dumbbells, rise up on toes. Pause at top for maximum contraction.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
+    { 
+      title: "Dumbbell Squats", 
+      description: "3 sets of 12-15 reps. Hold dumbbells at shoulders or sides. Go down until thighs parallel to floor.", 
+      difficulty: 3 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Lower Body",
+      visualCue: "🪑 Sit back → 🚀 Drive up",
+      formDiagram: `
+Standing:      Squat:
+💪 👤 💪       💪👤💪
+  🦵🦵    →     🦵🦵
+             (parallel)`,
+      stepByStep: [
+        "1. Feet shoulder-width apart",
+        "2. Hold dumbbells at shoulders",
+        "3. Sit back like sitting in chair",
+        "4. Keep chest up, knees track toes",
+        "5. Drive through heels to stand"
+      ]
+    },
+    { 
+      title: "Dumbbell Lunges", 
+      description: "3 sets of 10 per leg. Step forward into lunge, keep front knee over ankle. Great for balance and strength.", 
+      difficulty: 3 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Lower Body",
+      visualCue: "👣 Step forward → 🔻 Drop down → 🚀 Push back",
+      formDiagram: `
+Step:        Lunge:       Return:
+ 👤           👤          👤
+🦵 🦵    →   🦵            🦵🦵
+              🦵
+           (90° angles)`,
+      stepByStep: [
+        "1. Step forward with one leg",
+        "2. Lower until both knees at 90°",
+        "3. Front knee over ankle",
+        "4. Back knee nearly touches ground",
+        "5. Push back to starting position"
+      ]
+    },
+    { 
+      title: "Romanian Deadlifts", 
+      description: "3 sets of 10-12 reps. Hinge at hips, keep dumbbells close to legs. Targets hamstrings and glutes.", 
+      difficulty: 4 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Lower Body",
+      visualCue: "🚪 Hip hinge → 📏 Straight back → 🔄 Hamstring stretch",
+      formDiagram: `
+Start:       Hinge:
+ 👤           👤
+💪👤💪   →    /💪💪
+🦵🦵         /  🦵🦵
+           (hips back)`,
+      stepByStep: [
+        "1. Hold dumbbells in front of thighs",
+        "2. Push hips back, not knees",
+        "3. Keep back straight throughout",
+        "4. Feel stretch in hamstrings",
+        "5. Drive hips forward to return"
+      ]
+    },
+    { 
+      title: "Goblet Squats", 
+      description: "3 sets of 12-15 reps. Hold one dumbbell at chest level. Perfect for squat form and depth.", 
+      difficulty: 2 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Lower Body",
+      visualCue: "🏆 Hold goblet → 🪑 Squat deep → 👑 Stay upright",
+      formDiagram: `
+Hold:        Squat:
+  💪          💪
+  👤     →    👤
+ 🦵🦵         🦵🦵
+(at chest)  (deep squat)`,
+      stepByStep: [
+        "1. Hold dumbbell at chest with both hands",
+        "2. Elbows point down",
+        "3. Squat between your legs",
+        "4. Keep torso upright",
+        "5. Go as deep as mobility allows"
+      ]
+    },
+    { 
+      title: "Calf Raises", 
+      description: "3 sets of 15-20 reps. Hold dumbbells, rise up on toes. Pause at top for maximum contraction.", 
+      difficulty: 2 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Lower Body",
+      visualCue: "🦶 Flat feet → 🩰 Tippy toes → ⏸️ Pause",
+      formDiagram: `
+Start:       Raise:
+ 👤           👤
+🦶🦶    →    🩰🩰
+(flat)     (on toes)`,
+      stepByStep: [
+        "1. Stand with dumbbells at sides",
+        "2. Rise up on balls of feet",
+        "3. Get as high as possible",
+        "4. Pause at the top",
+        "5. Lower slowly with control"
+      ]
+    },
     
     // Full Body Compound
-    { title: "Dumbbell Thrusters", description: "3 sets of 8-10 reps. Squat to overhead press in one fluid motion. Ultimate full-body exercise.", difficulty: 5 as const, category: 'physical' as const, muscleGroup: "Full Body" },
-    { title: "Dumbbell Burpees", description: "3 sets of 5-8 reps. Burpee with dumbbell chest press at top. High intensity, full-body movement.", difficulty: 5 as const, category: 'physical' as const, muscleGroup: "Full Body" },
-    { title: "Dumbbell Clean & Press", description: "3 sets of 6-8 reps. Floor to overhead in one motion. Power, coordination, and strength combined.", difficulty: 5 as const, category: 'physical' as const, muscleGroup: "Full Body" },
-    { title: "Dumbbell Renegade Rows", description: "3 sets of 6-8 per arm. Plank position, row each arm alternately. Core stability and back strength.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Full Body" },
+    { 
+      title: "Dumbbell Thrusters", 
+      description: "3 sets of 8-10 reps. Squat to overhead press in one fluid motion. Ultimate full-body exercise.", 
+      difficulty: 5 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Full Body",
+      visualCue: "🪑 Squat → 🚀 Explode up → 💪 Press overhead",
+      formDiagram: `
+Squat:       Drive:       Press:
+💪👤💪       💪👤💪       💪 💪
+ 🦵🦵    →    🦵🦵    →    |👤|
+(bottom)    (stand)      🦵🦵`,
+      stepByStep: [
+        "1. Hold dumbbells at shoulders",
+        "2. Squat down fully",
+        "3. Drive up explosively",
+        "4. Use leg momentum to press overhead",
+        "5. One fluid movement"
+      ]
+    },
+    { 
+      title: "Dumbbell Burpees", 
+      description: "3 sets of 5-8 reps. Burpee with dumbbell chest press at top. High intensity, full-body movement.", 
+      difficulty: 5 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Full Body",
+      visualCue: "⬇️ Down → 🤸 Burpee → 💪 Press → 🔄 Repeat",
+      formDiagram: `
+1. Stand:    2. Down:    3. Jump:    4. Press:
+💪👤💪       🤲         👤         💪👤💪
+🦵🦵    →    👤    →    🦵🦵   →    🦵🦵
+           🦵🦵      (jump up)   (press)`,
+      stepByStep: [
+        "1. Start standing with dumbbells",
+        "2. Place dumbbells down, jump back",
+        "3. Do push-up (optional)",
+        "4. Jump feet forward, stand up",
+        "5. Press dumbbells overhead"
+      ]
+    },
+    { 
+      title: "Dumbbell Clean & Press", 
+      description: "3 sets of 6-8 reps. Floor to overhead in one motion. Power, coordination, and strength combined.", 
+      difficulty: 5 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Full Body",
+      visualCue: "🏋️ Pull from floor → 🔄 Flip to shoulders → 🚀 Press up",
+      formDiagram: `
+Floor:       Clean:       Press:
+💪👤💪       💪👤💪       💪 💪
+  ||    →     ||    →     |👤|
+ 🦵🦵        🦵🦵        🦵🦵
+(deadlift)  (shoulders)  (overhead)`,
+      stepByStep: [
+        "1. Dumbbells on floor beside feet",
+        "2. Deadlift up with power",
+        "3. 'Clean' to shoulder position",
+        "4. Press overhead immediately",
+        "5. One explosive movement"
+      ]
+    },
+    { 
+      title: "Dumbbell Renegade Rows", 
+      description: "3 sets of 6-8 per arm. Plank position, row each arm alternately. Core stability and back strength.", 
+      difficulty: 4 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Full Body",
+      visualCue: "🏋️ Plank position → 🚣 Row one side → 🔄 Alternate",
+      formDiagram: `
+Plank:           Row:
+💪——👤——💪   →   💪  👤💪
+  🦵  🦵          🦵  🦵
+(on dumbbells)   (row up)`,
+      stepByStep: [
+        "1. Plank position on dumbbells",
+        "2. Core tight, body straight",
+        "3. Row one dumbbell to ribs",
+        "4. Don't rotate hips",
+        "5. Alternate arms, stay stable"
+      ]
+    },
     
     // Complete Workouts
-    { title: "Upper Body Dumbbell Circuit", description: "Complete upper body workout: chest press, rows, shoulder press, curls, tricep extensions. 45-60 minutes.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Complete Workout" },
-    { title: "Lower Body Dumbbell Circuit", description: "Complete lower body workout: squats, lunges, deadlifts, calf raises. 45-60 minutes.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Complete Workout" },
-    { title: "Full Body Dumbbell Workout", description: "Complete full-body session with compound movements. Warm-up, workout, cool-down. 60-75 minutes.", difficulty: 5 as const, category: 'physical' as const, muscleGroup: "Complete Workout" }
+    { 
+      title: "Upper Body Dumbbell Circuit", 
+      description: "Complete upper body workout: chest press, rows, shoulder press, curls, tricep extensions. 45-60 minutes.", 
+      difficulty: 4 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Complete Workout",
+      visualCue: "🔄 Circuit style → 💪 All upper muscles → ⏱️ 45-60 min",
+      formDiagram: `
+Circuit Flow:
+💪 Chest → 🚣 Back → 🏛️ Shoulders
+    ↓           ↑
+💪 Triceps ← 💪 Biceps`,
+      stepByStep: [
+        "1. Warm up 5-10 minutes",
+        "2. Chest Press: 3 sets of 8-12",
+        "3. Rows: 3 sets of 8-12",
+        "4. Shoulder Press: 3 sets of 8-12",
+        "5. Bicep Curls: 3 sets of 10-15",
+        "6. Tricep Extensions: 3 sets of 10-15",
+        "7. Cool down and stretch"
+      ]
+    },
+    { 
+      title: "Lower Body Dumbbell Circuit", 
+      description: "Complete lower body workout: squats, lunges, deadlifts, calf raises. 45-60 minutes.", 
+      difficulty: 4 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Complete Workout",
+      visualCue: "🦵 Full legs → 🍑 Glutes → 💪 Power → ⏱️ 45-60 min",
+      formDiagram: `
+Lower Flow:
+🪑 Squats → 👣 Lunges
+    ↓           ↑
+🚪 RDLs ← 🩰 Calves`,
+      stepByStep: [
+        "1. Dynamic warm-up 5-10 minutes",
+        "2. Squats: 3 sets of 12-15",
+        "3. Lunges: 3 sets of 10 each leg",
+        "4. Romanian Deadlifts: 3 sets of 10-12",
+        "5. Calf Raises: 3 sets of 15-20",
+        "6. Goblet Squats: 2 sets of 12-15",
+        "7. Stretch and cool down"
+      ]
+    },
+    { 
+      title: "Full Body Dumbbell Workout", 
+      description: "Complete full-body session with compound movements. Warm-up, workout, cool-down. 60-75 minutes.", 
+      difficulty: 5 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Complete Workout",
+      visualCue: "🏋️ Total body → 💪 All muscles → ⏱️ 60-75 min",
+      formDiagram: `
+Full Body Flow:
+🚀 Thrusters → 🚣 Rows → 💪 Press
+      ↓           ↑         ↑
+🤸 Burpees ← 🪑 Squats ← 👣 Lunges`,
+      stepByStep: [
+        "1. Full warm-up 10-15 minutes",
+        "2. Thrusters: 3 sets of 8-10",
+        "3. Renegade Rows: 3 sets of 6-8 each",
+        "4. Squat to Press: 3 sets of 10-12",
+        "5. Lunges: 3 sets of 8-10 each leg",
+        "6. Clean & Press: 3 sets of 6-8",
+        "7. Cool down 10-15 minutes"
+      ]
+    }
   ];
 
-  // Bodyweight workout templates
+  // Bodyweight workout templates with visual instructions
   const bodyweightWorkouts = [
     // Upper Body
-    { title: "Push-ups", description: "3 sets of 8-15 reps. Classic chest, shoulder, and tricep builder. Modify on knees if needed.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
-    { title: "Diamond Push-ups", description: "3 sets of 5-10 reps. Hands form diamond shape. Advanced tricep and chest variation.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
-    { title: "Pike Push-ups", description: "3 sets of 8-12 reps. Downward dog position, press up. Targets shoulders and upper chest.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
-    { title: "Tricep Dips", description: "3 sets of 8-15 reps. Use chair or bench. Lower body until 90-degree angle, push back up.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Upper Body" },
+    { 
+      title: "Push-ups", 
+      description: "3 sets of 8-15 reps. Classic chest, shoulder, and tricep builder. Modify on knees if needed.", 
+      difficulty: 2 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Upper Body",
+      visualCue: "📐 Plank → ⬇️ Lower → ⬆️ Push up",
+      formDiagram: `
+Start:         Down:         Up:
+——👤——    →    ——👤——    →    ——👤——
+  🦵🦵          🦵🦵          🦵🦵
+(straight)    (chest down)  (arms extend)`,
+      stepByStep: [
+        "1. Start in plank position",
+        "2. Hands slightly wider than shoulders",
+        "3. Lower chest to ground",
+        "4. Keep body straight throughout",
+        "5. Push back to starting position"
+      ]
+    },
+    { 
+      title: "Diamond Push-ups", 
+      description: "3 sets of 5-10 reps. Hands form diamond shape. Advanced tricep and chest variation.", 
+      difficulty: 4 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Upper Body",
+      visualCue: "💎 Diamond hands → ⬇️ Lower → 💪 Tricep focus",
+      formDiagram: `
+Hand Position:    Movement:
+    💎            ——👤——
+   👤         →    💎
+  🦵🦵           🦵🦵
+(diamond)      (lower/push)`,
+      stepByStep: [
+        "1. Make diamond with thumbs and fingers",
+        "2. Position under chest",
+        "3. Lower slowly with control",
+        "4. Feel triceps working",
+        "5. Push up powerfully"
+      ]
+    },
+    { 
+      title: "Pike Push-ups", 
+      description: "3 sets of 8-12 reps. Downward dog position, press up. Targets shoulders and upper chest.", 
+      difficulty: 3 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Upper Body",
+      visualCue: "⛰️ Pike position → ⬇️ Head down → 🏛️ Shoulder press",
+      formDiagram: `
+Pike:          Press:
+  /👤\\         /👤\\
+ /    \\   →   /    \\
+🦵      🦵    🦵      🦵
+(inverted V)  (head down)`,
+      stepByStep: [
+        "1. Start in downward dog",
+        "2. Walk feet closer to hands",
+        "3. Lower head toward ground",
+        "4. Press back to pike position",
+        "5. Focus on shoulder strength"
+      ]
+    },
+    { 
+      title: "Tricep Dips", 
+      description: "3 sets of 8-15 reps. Use chair or bench. Lower body until 90-degree angle, push back up.", 
+      difficulty: 3 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Upper Body",
+      visualCue: "🪑 Hands on chair → ⬇️ Dip down → 💪 Press up",
+      formDiagram: `
+Start:         Dip:
+🪑👤          🪑👤
+  🦵     →      🦵
+  🦵            🦵
+(supported)   (90° arms)`,
+      stepByStep: [
+        "1. Hands on chair/bench behind you",
+        "2. Legs extended or bent",
+        "3. Lower until 90° elbow angle",
+        "4. Push back up using triceps",
+        "5. Keep body close to chair"
+      ]
+    },
     
     // Core
-    { title: "Plank Hold", description: "3 sets of 30-60 seconds. Maintain straight line from head to heels. Core stability foundation.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Core" },
-    { title: "Mountain Climbers", description: "3 sets of 20-30 reps. Plank position, alternate bringing knees to chest. Cardio and core combined.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Core" },
-    { title: "Russian Twists", description: "3 sets of 20-30 reps. Seated, lean back, twist side to side. Can add weight or keep bodyweight.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Core" },
-    { title: "Bicycle Crunches", description: "3 sets of 20-30 reps. Alternate elbow to opposite knee. Targets entire core region.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Core" },
-    { title: "Dead Bug", description: "3 sets of 10 per side. Lie on back, extend opposite arm and leg. Excellent for core stability.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Core" },
+    { 
+      title: "Plank Hold", 
+      description: "3 sets of 30-60 seconds. Maintain straight line from head to heels. Core stability foundation.", 
+      difficulty: 2 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Core",
+      visualCue: "📏 Straight line → 💪 Core tight → ⏱️ Hold time",
+      formDiagram: `
+Perfect Plank:
+——👤——————
+   🦵🦵
+(head to heels straight)`,
+      stepByStep: [
+        "1. Forearms and toes on ground",
+        "2. Body forms straight line",
+        "3. Engage core muscles",
+        "4. Don't let hips sag or pike",
+        "5. Breathe normally throughout"
+      ]
+    },
+    { 
+      title: "Mountain Climbers", 
+      description: "3 sets of 20-30 reps. Plank position, alternate bringing knees to chest. Cardio and core combined.", 
+      difficulty: 3 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Core",
+      visualCue: "🏔️ Plank → 🏃 Running motion → 🔄 Alternate",
+      formDiagram: `
+Start:         Climb:
+——👤——    →    ——👤——
+  🦵🦵          🦵  🦵
+(plank)       (knee up)`,
+      stepByStep: [
+        "1. Start in high plank",
+        "2. Bring one knee to chest",
+        "3. Quickly switch legs",
+        "4. Keep hips level",
+        "5. Maintain plank position"
+      ]
+    },
+    { 
+      title: "Russian Twists", 
+      description: "3 sets of 20-30 reps. Seated, lean back, twist side to side. Can add weight or keep bodyweight.", 
+      difficulty: 3 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Core",
+      visualCue: "🪑 Sit lean back → 🔄 Twist left/right → 💪 Core burn",
+      formDiagram: `
+Center:        Twist:
+  👤           👤
+ /|\\     →    /|\\
+🦵🦵          🦵🦵
+(lean back)   (rotate)`,
+      stepByStep: [
+        "1. Sit with knees bent",
+        "2. Lean back slightly",
+        "3. Lift feet off ground (optional)",
+        "4. Twist torso left and right",
+        "5. Keep chest up throughout"
+      ]
+    },
+    { 
+      title: "Bicycle Crunches", 
+      description: "3 sets of 20-30 reps. Alternate elbow to opposite knee. Targets entire core region.", 
+      difficulty: 2 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Core",
+      visualCue: "🚴 Cycling motion → 💪 Elbow to knee → 🔄 Alternate",
+      formDiagram: `
+Right Side:    Left Side:
+   👤\\         /👤
+    🦵    →    🦵
+   🦵           🦵
+(elbow-knee)  (switch)`,
+      stepByStep: [
+        "1. Lie on back, hands behind head",
+        "2. Bring right elbow to left knee",
+        "3. Extend right leg straight",
+        "4. Switch to left elbow, right knee",
+        "5. Keep shoulders off ground"
+      ]
+    },
+    { 
+      title: "Dead Bug", 
+      description: "3 sets of 10 per side. Lie on back, extend opposite arm and leg. Excellent for core stability.", 
+      difficulty: 2 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Core",
+      visualCue: "🪲 Dead bug → 💪 Opposite limbs → 🔄 Control",
+      formDiagram: `
+Start:         Extend:
+ 💪👤💪        💪  👤
+  🦵🦵    →      🦵  🦵
+(90° angles)   (opposite out)`,
+      stepByStep: [
+        "1. Lie on back, arms and legs at 90°",
+        "2. Extend opposite arm and leg",
+        "3. Keep lower back pressed down",
+        "4. Return to starting position",
+        "5. Alternate sides slowly"
+      ]
+    },
     
     // Lower Body
-    { title: "Bodyweight Squats", description: "3 sets of 15-25 reps. Fundamental lower body movement. Focus on depth and form.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
-    { title: "Jump Squats", description: "3 sets of 10-15 reps. Explosive squat with jump. High intensity, power development.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
-    { title: "Lunges", description: "3 sets of 10-15 per leg. Step forward or backward. Unilateral strength and balance.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
-    { title: "Single-Leg Glute Bridges", description: "3 sets of 10-15 per leg. Lie on back, lift hips with one leg. Glute activation and stability.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
-    { title: "Wall Sits", description: "3 sets of 30-60 seconds. Back against wall, slide down to 90 degrees. Isometric quad strength.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
-    { title: "Calf Raises", description: "3 sets of 15-25 reps. Rise up on toes, slow controlled descent. Can do single-leg for more challenge.", difficulty: 1 as const, category: 'physical' as const, muscleGroup: "Lower Body" },
+    { 
+      title: "Bodyweight Squats", 
+      description: "3 sets of 15-25 reps. Fundamental lower body movement. Focus on depth and form.", 
+      difficulty: 2 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Lower Body",
+      visualCue: "🪑 Sit back → ⬇️ Deep squat → 🚀 Drive up",
+      formDiagram: `
+Stand:       Squat:
+ 👤           👤
+🦵🦵    →    🦵🦵
+(tall)      (parallel)`,
+      stepByStep: [
+        "1. Feet shoulder-width apart",
+        "2. Sit back like sitting in chair",
+        "3. Go down until thighs parallel",
+        "4. Keep chest up, knees out",
+        "5. Drive through heels to stand"
+      ]
+    },
+    { 
+      title: "Jump Squats", 
+      description: "3 sets of 10-15 reps. Explosive squat with jump. High intensity, power development.", 
+      difficulty: 4 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Lower Body",
+      visualCue: "🪑 Squat → 🚀 Explode up → 🛬 Soft landing",
+      formDiagram: `
+Squat:       Jump:        Land:
+ 👤           👤          👤
+🦵🦵    →     🦵🦵    →   🦵🦵
+(down)      (airborne)   (absorb)`,
+      stepByStep: [
+        "1. Start with regular squat",
+        "2. Explode up as high as possible",
+        "3. Use arms for momentum",
+        "4. Land softly on balls of feet",
+        "5. Immediately into next rep"
+      ]
+    },
+    { 
+      title: "Lunges", 
+      description: "3 sets of 10-15 per leg. Step forward or backward. Unilateral strength and balance.", 
+      difficulty: 2 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Lower Body",
+      visualCue: "👣 Step out → 🔻 Drop down → 🔄 Alternate",
+      formDiagram: `
+Step:        Lunge:
+ 👤           👤
+🦵 🦵    →   🦵
+              🦵
+           (90° both)`,
+      stepByStep: [
+        "1. Step forward with one leg",
+        "2. Lower until both knees 90°",
+        "3. Front knee over ankle",
+        "4. Push back to start",
+        "5. Alternate legs or complete one side"
+      ]
+    },
+    { 
+      title: "Single-Leg Glute Bridges", 
+      description: "3 sets of 10-15 per leg. Lie on back, lift hips with one leg. Glute activation and stability.", 
+      difficulty: 3 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Lower Body",
+      visualCue: "🛏️ Lie down → 🍑 Lift hips → 🦵 One leg up",
+      formDiagram: `
+Start:       Bridge:
+—👤—         —👤—
+🦵🦵    →    🦵  🦵
+(flat)      (hip up)`,
+      stepByStep: [
+        "1. Lie on back, knees bent",
+        "2. Extend one leg straight",
+        "3. Lift hips using one leg",
+        "4. Squeeze glute at top",
+        "5. Lower slowly, switch legs"
+      ]
+    },
+    { 
+      title: "Wall Sits", 
+      description: "3 sets of 30-60 seconds. Back against wall, slide down to 90 degrees. Isometric quad strength.", 
+      difficulty: 3 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Lower Body",
+      visualCue: "🧱 Back to wall → 🪑 Slide down → ⏱️ Hold position",
+      formDiagram: `
+Wall Sit:
+🧱👤
+  🦵🦵
+(90° knees)`,
+      stepByStep: [
+        "1. Back flat against wall",
+        "2. Slide down until thighs parallel",
+        "3. Knees at 90-degree angle",
+        "4. Hold position, breathe normally",
+        "5. Build up hold time gradually"
+      ]
+    },
+    { 
+      title: "Calf Raises", 
+      description: "3 sets of 15-25 reps. Rise up on toes, slow controlled descent. Can do single-leg for more challenge.", 
+      difficulty: 1 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Lower Body",
+      visualCue: "🦶 Flat feet → 🩰  Rise up → ⏸️ Pause top",
+      formDiagram: `
+Start:       Raise:
+ 👤           👤
+🦶🦶    →    🩰🩰
+(flat)     (high)`,
+      stepByStep: [
+        "1. Stand with feet hip-width apart",
+        "2. Rise up on balls of feet",
+        "3. Get as high as possible",
+        "4. Pause at the top",
+        "5. Lower slowly with control"
+      ]
+    },
     
     // Full Body/Cardio
-    { title: "Burpees", description: "3 sets of 5-10 reps. Squat, plank, push-up, jump. Ultimate full-body cardio exercise.", difficulty: 5 as const, category: 'physical' as const, muscleGroup: "Full Body" },
-    { title: "Bear Crawl", description: "3 sets of 30-60 seconds. Crawl forward/backward on hands and feet. Full-body coordination.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Full Body" },
-    { title: "High Knees", description: "3 sets of 30-60 seconds. Run in place, bring knees to chest level. Cardio and leg strength.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Full Body" },
-    { title: "Jumping Jacks", description: "3 sets of 20-30 reps. Classic cardio movement. Great for warm-up or cardio intervals.", difficulty: 1 as const, category: 'physical' as const, muscleGroup: "Full Body" },
+    { 
+      title: "Burpees", 
+      description: "3 sets of 5-10 reps. Squat, plank, push-up, jump. Ultimate full-body cardio exercise.", 
+      difficulty: 5 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Full Body",
+      visualCue: "⬇️ Squat down → 🤸 Jump back → 💪 Push-up → 🚀 Jump up",
+      formDiagram: `
+1. Squat:    2. Plank:    3. Jump:     4. Up:
+   👤         ——👤——       👤         👤
+  🦵🦵    →    🦵🦵    →   🦵🦵   →   🦵🦵
+ (down)      (back)      (forward)   (jump)`,
+      stepByStep: [
+        "1. Start standing",
+        "2. Squat down, hands on floor",
+        "3. Jump feet back to plank",
+        "4. Do push-up (optional)",
+        "5. Jump feet forward, jump up"
+      ]
+    },
+    { 
+      title: "Bear Crawl", 
+      description: "3 sets of 30-60 seconds. Crawl forward/backward on hands and feet. Full-body coordination.", 
+      difficulty: 4 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Full Body",
+      visualCue: "🐻 Bear position → 👣 Small steps → 🔄 Coordinate",
+      formDiagram: `
+Bear Position:
+  👤
+ /  \\
+🦵    🦵
+(hands & feet)`,
+      stepByStep: [
+        "1. Hands and feet on ground",
+        "2. Knees slightly off ground",
+        "3. Take small steps forward",
+        "4. Keep core tight",
+        "5. Move opposite hand and foot"
+      ]
+    },
+    { 
+      title: "High Knees", 
+      description: "3 sets of 30-60 seconds. Run in place, bring knees to chest level. Cardio and leg strength.", 
+      difficulty: 2 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Full Body",
+      visualCue: "🏃 Run in place → 🦵 Knees high → ⚡ Fast pace",
+      formDiagram: `
+Running:
+  👤
+ 🦵|
+🦵 |
+(high knees)`,
+      stepByStep: [
+        "1. Stand tall, arms at sides",
+        "2. Run in place",
+        "3. Bring knees to chest level",
+        "4. Stay on balls of feet",
+        "5. Pump arms naturally"
+      ]
+    },
+    { 
+      title: "Jumping Jacks", 
+      description: "3 sets of 20-30 reps. Classic cardio movement. Great for warm-up or cardio intervals.", 
+      difficulty: 1 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Full Body",
+      visualCue: "🕴️ Arms down → ⭐ Star jump → 🔄 Repeat rhythm",
+      formDiagram: `
+Start:       Jump:
+ 👤           👤
+ |         \\  |  /
+🦵🦵    →    🦵🦵
+(together)  (apart)`,
+      stepByStep: [
+        "1. Start with feet together",
+        "2. Jump feet apart, arms overhead",
+        "3. Jump back to starting position",
+        "4. Land softly on balls of feet",
+        "5. Maintain steady rhythm"
+      ]
+    },
     
     // Complete Workouts
-    { title: "Bodyweight HIIT Circuit", description: "20-minute high-intensity circuit: burpees, mountain climbers, jump squats, push-ups. 4 rounds.", difficulty: 5 as const, category: 'physical' as const, muscleGroup: "Complete Workout" },
-    { title: "Core Focused Workout", description: "25-minute core session: planks, mountain climbers, Russian twists, bicycle crunches, dead bugs.", difficulty: 3 as const, category: 'physical' as const, muscleGroup: "Complete Workout" },
-    { title: "Bodyweight Strength Circuit", description: "35-minute strength circuit covering all major muscle groups. No equipment needed.", difficulty: 4 as const, category: 'physical' as const, muscleGroup: "Complete Workout" },
-    { title: "Beginner Bodyweight Routine", description: "20-minute beginner-friendly routine: squats, push-ups, lunges, plank. Perfect for starting out.", difficulty: 2 as const, category: 'physical' as const, muscleGroup: "Complete Workout" }
+    { 
+      title: "Bodyweight HIIT Circuit", 
+      description: "20-minute high-intensity circuit: burpees, mountain climbers, jump squats, push-ups. 4 rounds.", 
+      difficulty: 5 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Complete Workout",
+      visualCue: "⚡ High intensity → 🔥 4 rounds → ⏱️ 20 minutes",
+      formDiagram: `
+Circuit:
+🤸 Burpees → 🏔️ Mt. Climbers
+     ↓              ↑
+💪 Push-ups ← 🚀 Jump Squats`,
+      stepByStep: [
+        "1. Warm up 3-5 minutes",
+        "2. Round 1: 45 sec work, 15 sec rest",
+        "3. Burpees → Mountain Climbers",
+        "4. Jump Squats → Push-ups",
+        "5. Rest 1 minute between rounds",
+        "6. Repeat for 4 total rounds",
+        "7. Cool down and stretch"
+      ]
+    },
+    { 
+      title: "Core Focused Workout", 
+      description: "25-minute core session: planks, mountain climbers, Russian twists, bicycle crunches, dead bugs.", 
+      difficulty: 3 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Complete Workout",
+      visualCue: "💪 Core focus → 🔄 5 exercises → ⏱️ 25 minutes",
+      formDiagram: `
+Core Circuit:
+📏 Plank → 🏔️ Mt. Climbers
+    ↓             ↑
+🪲 Dead Bug ← 🚴 Bicycle
+    ↓             ↑
+   🔄 Russian Twists`,
+      stepByStep: [
+        "1. Warm up with light movement",
+        "2. Plank Hold: 3 x 30-60 seconds",
+        "3. Mountain Climbers: 3 x 20 reps",
+        "4. Russian Twists: 3 x 20 reps",
+        "5. Bicycle Crunches: 3 x 20 reps",
+        "6. Dead Bugs: 3 x 10 each side",
+        "7. Finish with gentle stretching"
+      ]
+    },
+    { 
+      title: "Bodyweight Strength Circuit", 
+      description: "35-minute strength circuit covering all major muscle groups. No equipment needed.", 
+      difficulty: 4 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Complete Workout",
+      visualCue: "💪 Full body → 🔄 Circuit style → ⏱️ 35 minutes",
+      formDiagram: `
+Strength Flow:
+💪 Upper → 🦵 Lower → 💪 Core
+   ↓        ↓        ↓
+🔄 Repeat Circuit 3x`,
+      stepByStep: [
+        "1. Dynamic warm-up 5 minutes",
+        "2. Push-ups: 3 sets of max reps",
+        "3. Squats: 3 sets of 15-20",
+        "4. Pike Push-ups: 3 sets of 8-12",
+        "5. Lunges: 3 sets of 10 each leg",
+        "6. Plank: 3 sets of 30-45 seconds",
+        "7. Cool down and flexibility"
+      ]
+    },
+    { 
+      title: "Beginner Bodyweight Routine", 
+      description: "20-minute beginner-friendly routine: squats, push-ups, lunges, plank. Perfect for starting out.", 
+      difficulty: 2 as const, 
+      category: 'physical' as const, 
+      muscleGroup: "Complete Workout",
+      visualCue: "🌱 Beginner friendly → 📚 Learn basics → ⏱️ 20 minutes",
+      formDiagram: `
+Beginner Flow:
+🪑 Squats → 💪 Push-ups
+    ↓          ↑
+📏 Plank ← 👣 Lunges`,
+      stepByStep: [
+        "1. Light warm-up 3-5 minutes",
+        "2. Bodyweight Squats: 2 sets of 10-15", 
+        "3. Modified Push-ups: 2 sets of 5-10",
+        "4. Lunges: 2 sets of 8 each leg",
+        "5. Plank Hold: 2 sets of 15-30 seconds",
+        "6. Walk around to cool down",
+        "7. Gentle stretching"
+      ]
+    }
   ];
 
   // Load data from localStorage
@@ -335,27 +1169,55 @@ const ChallengeTracker = () => {
                   {groupWorkouts.map((workout, index) => (
                     <div 
                       key={index}
-                      className="flex items-center justify-between p-3 bg-background rounded-lg border hover:bg-muted/30 transition-colors"
+                      className="border rounded-lg p-4 bg-background hover:bg-muted/30 transition-colors"
                     >
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
                           <h5 className="font-semibold text-sm">{workout.title}</h5>
                           <div className={`w-2 h-2 rounded-full ${getDifficultyColor(workout.difficulty)}`} />
                           <span className="text-xs text-muted-foreground">
                             {workout.difficulty * 10} pts
                           </span>
                         </div>
-                        <p className="text-xs text-muted-foreground">{workout.description}</p>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => addTemplateChallenge(workout)}
+                          className="shrink-0"
+                        >
+                          <Plus className="h-3 w-3 mr-1" />
+                          Add
+                        </Button>
                       </div>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => addTemplateChallenge(workout)}
-                        className="ml-4 shrink-0"
-                      >
-                        <Plus className="h-3 w-3 mr-1" />
-                        Add
-                      </Button>
+                      
+                      <p className="text-xs text-muted-foreground mb-3">{workout.description}</p>
+                      
+                      {/* Visual Instructions */}
+                      <div className="bg-muted/50 rounded-lg p-3 mb-3">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Eye className="h-4 w-4 text-primary" />
+                          <span className="text-sm font-medium">Visual Guide</span>
+                        </div>
+                        
+                        <div className="text-sm text-muted-foreground mb-2">
+                          <strong>Quick Cue:</strong> {workout.visualCue}
+                        </div>
+                        
+                        <div className="bg-background/50 rounded p-2 mb-2">
+                          <pre className="text-xs text-muted-foreground font-mono whitespace-pre-wrap">
+                            {workout.formDiagram}
+                          </pre>
+                        </div>
+                        
+                        <div className="text-sm">
+                          <strong className="text-primary">Step by Step:</strong>
+                          <ul className="list-disc list-inside mt-1 space-y-1 text-xs text-muted-foreground">
+                            {workout.stepByStep.map((step: string, stepIndex: number) => (
+                              <li key={stepIndex}>{step}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -543,7 +1405,7 @@ const ChallengeTracker = () => {
                 dumbbellWorkouts,
                 "Professional Dumbbell Workouts",
                 <Dumbbell className="h-5 w-5" />,
-                "Comprehensive dumbbell exercises organized by muscle group. Start with 2-4kg weights and progress as you get stronger. Each exercise includes proper form cues and rep ranges."
+                "Comprehensive dumbbell exercises with visual instructions organized by muscle group. Start with 2-4kg weights and progress as you get stronger. Each exercise includes proper form cues, diagrams, and step-by-step guidance."
               )}
 
               {/* Bodyweight Workout Templates */}
@@ -551,7 +1413,7 @@ const ChallengeTracker = () => {
                 bodyweightWorkouts,
                 "Bodyweight Training Programs",
                 <Activity className="h-5 w-5" />,
-                "No equipment needed! Professional bodyweight exercises for all fitness levels. Perfect for home workouts, travel, or when you want to focus on functional movement patterns."
+                "No equipment needed! Professional bodyweight exercises with visual form guides for all fitness levels. Perfect for home workouts, travel, or when you want to focus on functional movement patterns."
               )}
 
               {/* Challenges List */}
