@@ -1,9 +1,36 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, ExternalLink, Brain, Heart, BookOpen, Users } from "lucide-react";
+import { ArrowLeft, ExternalLink, Brain, Heart, BookOpen, Users, Star } from "lucide-react";
 
 const Resources = () => {
+  const featuredInfluencers = [
+    {
+      name: "Eckhart Tolle",
+      description: "Spiritual teacher and author focusing on presence and consciousness",
+      website: "https://www.eckharttolle.com",
+      focus: "Mindfulness, presence, and spiritual awakening",
+      books: ["The Power of Now", "A New Earth"],
+      impact: "Referenced in 'What a Journey' for teachings on presence and mindfulness"
+    },
+    {
+      name: "Wim Hof",
+      description: "Extreme athlete known for his breathing method and cold exposure techniques",
+      website: "https://www.wimhofmethod.com",
+      focus: "Breathing techniques, cold therapy, and mental resilience",
+      books: ["The Wim Hof Method"],
+      impact: "Referenced in 'What a Journey' for revolutionary breathing and resilience techniques"
+    },
+    {
+      name: "Steven Kotler",
+      description: "Flow researcher and peak performance expert",
+      website: "https://www.stevenkotler.com",
+      focus: "Flow states, peak performance, and human potential",
+      books: ["The Art of Impossible", "Stealing Fire", "The Rise of Superman"],
+      impact: "Referenced in 'What a Journey' for insights on achieving peak performance and flow states"
+    }
+  ];
+
   const tbiExperts = [
     {
       name: "Dr. Daniel Amen",
@@ -165,6 +192,51 @@ const Resources = () => {
           </div>
 
           <div className="grid gap-8">
+            {/* Featured Influences from "What a Journey" */}
+            <Card className="border-orange-500/30 bg-gradient-to-r from-orange-500/10 to-orange-600/10">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-orange-600">
+                  <Star className="h-5 w-5" />
+                  Featured Influences from "What a Journey"
+                </CardTitle>
+                <p className="text-sm text-gray-600">
+                  These teachers and their works have been specifically referenced in the book and have played a crucial role in the author's recovery and personal growth journey.
+                </p>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-6">
+                  {featuredInfluencers.map((influencer, index) => (
+                    <div key={index} className="p-6 bg-white/60 rounded-lg border border-orange-500/20 shadow-sm">
+                      <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                        <div className="flex-1">
+                          <h3 className="font-bold text-xl text-gray-800 mb-2">{influencer.name}</h3>
+                          <p className="text-gray-700 mb-3">{influencer.description}</p>
+                          <p className="text-sm text-orange-600 font-medium mb-2">{influencer.focus}</p>
+                          <div className="mb-3">
+                            <p className="text-sm font-medium text-gray-700 mb-1">Key Works:</p>
+                            <p className="text-sm text-gray-600">{influencer.books.join(", ")}</p>
+                          </div>
+                          <div className="bg-orange-500/10 rounded-md p-3 mb-4">
+                            <p className="text-sm italic text-gray-700">{influencer.impact}</p>
+                          </div>
+                        </div>
+                        <div className="flex-shrink-0">
+                          <a 
+                            href={influencer.website} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
+                          >
+                            Explore Work <ExternalLink className="h-4 w-4" />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
             {/* TBI Medical Experts */}
             <Card className="border-orange-500/20">
               <CardHeader>
