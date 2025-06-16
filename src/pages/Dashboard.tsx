@@ -86,20 +86,20 @@ const Dashboard = () => {
               </CardContent>
             </Card>
 
-            {/* Cold Exposure */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-card to-primary/5 border-primary/20 group" style={{animationDelay: '200ms'}}>
+            {/* Cold Exposure - Updated */}
+            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-slate-800/80 to-cyan-900/80 border-cyan-500/30 group backdrop-blur-sm" style={{animationDelay: '200ms'}}>
               <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-ember-gradient rounded-full w-fit group-hover:animate-glow-pulse transition-all duration-300">
+                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-xl">
                   <Thermometer className="h-8 w-8 text-white" />
                 </div>
-                <CardTitle className="text-xl font-serif">Challenge Tracking</CardTitle>
+                <CardTitle className="text-xl font-serif text-cyan-100">Ice Warrior Academy</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <p className="text-muted-foreground mb-4">
-                  Track daily challenges and exposure therapy for building resilience
+                <p className="text-cyan-200 mb-4">
+                  Transform your resilience through deliberate cold exposure and ice bath protocols
                 </p>
-                <Button asChild className="w-full bg-ember-gradient hover:bg-flame-gradient text-white">
-                  <Link to="/challenges">View Tracker</Link>
+                <Button asChild className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                  <Link to="/cold-exposure">Start Cold Training</Link>
                 </Button>
               </CardContent>
             </Card>

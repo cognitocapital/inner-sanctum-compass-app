@@ -4,6 +4,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
+import Dashboard from "./pages/Dashboard";
+import BreathingExercise from "./pages/BreathingExercise";
+import ColdExposure from "./pages/ColdExposure";
 import Dedication from "./pages/Dedication";
 import Prologue from "./pages/Prologue";
 import Introduction from "./pages/Introduction";
@@ -28,8 +31,6 @@ import Chapter18 from "./pages/Chapter18";
 import Chapter19 from "./pages/Chapter19";
 import Chapter20 from "./pages/Chapter20";
 import Chapter21 from "./pages/Chapter21";
-import Dashboard from "./pages/Dashboard";
-import BreathingExercise from "./pages/BreathingExercise";
 import ChallengeTracker from "./pages/ChallengeTracker";
 import MindTraining from "./pages/MindTraining";
 import GratitudeJourney from "./pages/GratitudeJourney";
@@ -47,6 +48,9 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/breathing" element={<BreathingExercise />} />
+          <Route path="/cold-exposure" element={<ColdExposure />} />
           <Route path="/dedication" element={<Dedication />} />
           <Route path="/prologue" element={<Prologue />} />
           <Route path="/introduction" element={<Introduction />} />
@@ -71,8 +75,6 @@ const App = () => (
           <Route path="/chapter-19" element={<Chapter19 />} />
           <Route path="/chapter-20" element={<Chapter20 />} />
           <Route path="/chapter-21" element={<Chapter21 />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/breathing" element={<BreathingExercise />} />
           <Route path="/challenges" element={<ChallengeTracker />} />
           <Route path="/mind" element={<MindTraining />} />
           <Route path="/gratitude" element={<GratitudeJourney />} />
