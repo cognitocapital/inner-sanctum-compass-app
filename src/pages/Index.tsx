@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -35,6 +34,7 @@ const Index = () => {
             
             <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
                 <header className="text-center mb-16">
+                    {/* Phoenix image and title */}
                     <div className="relative mb-8 group">
                         <div className="relative mx-auto w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
                             <div 
@@ -81,11 +81,6 @@ const Index = () => {
                                 <div className="absolute inset-0 bg-gradient-to-r from-yellow-200/20 to-yellow-400/20 animate-pulse"></div>
                             </Link>
                         </Button>
-                        <Button asChild size="lg" className="bg-red-500 hover:bg-red-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                            <Link to="/gratitude">
-                                Gratitude Journey <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                        </Button>
                         <Button asChild variant="outline" size="lg" className="border-green-500/50 hover:bg-green-500/10 hover:border-green-500 transition-all duration-300 hover:scale-105 group">
                             <Link to="/resources">
                                 Growth Resources <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -94,6 +89,7 @@ const Index = () => {
                     </div>
                 </header>
 
+                {/* main content with Table of Contents */}
                 <main>
                     <Card className="backdrop-blur-sm bg-white/80 border-orange-500/20 shadow-2xl">
                         <CardHeader className="bg-orange-500/10 rounded-t-lg">
@@ -161,6 +157,7 @@ const Index = () => {
                     </Card>
                 </main>
 
+                {/* footer */}
                 <footer className="text-center mt-16 text-sm text-gray-400">
                     <p>© 2024 Michael Heron. All rights reserved.</p>
                 </footer>
