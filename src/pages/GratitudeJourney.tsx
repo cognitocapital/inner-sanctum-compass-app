@@ -646,6 +646,134 @@ const GratitudeJourney = () => {
 
               <Card className="backdrop-blur-sm bg-white/80 border-orange-500/20 shadow-2xl">
                 <CardHeader>
+                  <CardTitle className="text-orange-600">Influential Teachers & Content</CardTitle>
+                  <p className="text-sm text-gray-600">Follow these transformational teachers across platforms</p>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Eckhart Tolle */}
+                  <div className="p-4 bg-blue-50 rounded-lg">
+                    <h4 className="font-semibold text-blue-800 mb-2">Eckhart Tolle - Spiritual Teacher & Author</h4>
+                    <p className="text-sm text-blue-700 mb-3">Mindfulness, presence, and spiritual awakening</p>
+                    <div className="flex flex-wrap gap-2">
+                      <a 
+                        href="https://www.youtube.com/@EckhartTolle" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs hover:bg-red-200 transition-colors"
+                      >
+                        YouTube
+                      </a>
+                      <a 
+                        href="https://twitter.com/EckhartTolle" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs hover:bg-gray-200 transition-colors"
+                      >
+                        X (Twitter)
+                      </a>
+                      <a 
+                        href="https://open.spotify.com/search/eckhart%20tolle" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs hover:bg-green-200 transition-colors"
+                      >
+                        Spotify
+                      </a>
+                      <a 
+                        href="https://www.audible.com/author/Eckhart-Tolle/B001H6U9H8" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs hover:bg-orange-200 transition-colors"
+                      >
+                        Audible
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Wim Hof */}
+                  <div className="p-4 bg-cyan-50 rounded-lg">
+                    <h4 className="font-semibold text-cyan-800 mb-2">Wim Hof - The Iceman</h4>
+                    <p className="text-sm text-cyan-700 mb-3">Breathing techniques, cold exposure, and mental resilience</p>
+                    <div className="flex flex-wrap gap-2">
+                      <a 
+                        href="https://www.youtube.com/@wimhof1" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs hover:bg-red-200 transition-colors"
+                      >
+                        YouTube
+                      </a>
+                      <a 
+                        href="https://twitter.com/iceman_hof" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs hover:bg-gray-200 transition-colors"
+                      >
+                        X (Twitter)
+                      </a>
+                      <a 
+                        href="https://open.spotify.com/search/wim%20hof" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs hover:bg-green-200 transition-colors"
+                      >
+                        Spotify
+                      </a>
+                      <a 
+                        href="https://www.audible.com/author/Wim-Hof/B077GDMQP9" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs hover:bg-orange-200 transition-colors"
+                      >
+                        Audible
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Dr. Joe Dispenza */}
+                  <div className="p-4 bg-purple-50 rounded-lg">
+                    <h4 className="font-semibold text-purple-800 mb-2">Dr. Joe Dispenza - Neuroscientist & Author</h4>
+                    <p className="text-sm text-purple-700 mb-3">Meditation, neuroscience, and personal transformation</p>
+                    <div className="flex flex-wrap gap-2">
+                      <a 
+                        href="https://www.youtube.com/@DrJoeDispenza" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs hover:bg-red-200 transition-colors"
+                      >
+                        YouTube
+                      </a>
+                      <a 
+                        href="https://twitter.com/DrJoeDispenza" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs hover:bg-gray-200 transition-colors"
+                      >
+                        X (Twitter)
+                      </a>
+                      <a 
+                        href="https://open.spotify.com/search/joe%20dispenza" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs hover:bg-green-200 transition-colors"
+                      >
+                        Spotify
+                      </a>
+                      <a 
+                        href="https://www.audible.com/author/Joe-Dispenza/B001JPBHVQ" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs hover:bg-orange-200 transition-colors"
+                      >
+                        Audible
+                      </a>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="backdrop-blur-sm bg-white/80 border-orange-500/20 shadow-2xl">
+                <CardHeader>
                   <CardTitle className="text-orange-600">Professional Support Resources</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
