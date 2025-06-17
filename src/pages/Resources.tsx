@@ -8,7 +8,7 @@ const Resources = () => {
     {
       name: "Eckhart Tolle",
       description: "Spiritual teacher and author focusing on presence and consciousness",
-      website: "https://www.eckharttolle.com",
+      website: "https://eckharttolle.com/",
       focus: "Mindfulness, presence, and spiritual awakening",
       books: ["The Power of Now", "A New Earth"],
       impact: "Referenced in 'What a Journey' for teachings on presence and mindfulness"
