@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Wind, Thermometer, Brain, BookOpen, PenTool, Heart, Shield, Target, Zap, Sun, Moon, Activity, Users, Calendar, Compass } from "lucide-react";
+import { ArrowLeft, Wind, Thermometer, Brain, BookOpen, Heart, Users } from "lucide-react";
 
 const Dashboard = () => {
     return (
@@ -41,7 +41,7 @@ const Dashboard = () => {
           </div>
 
           <header className="text-center mb-12 animate-phoenix-rise">
-            {/* Smaller phoenix image for dashboard */}
+            {/* Phoenix image for dashboard */}
             <div className="relative mb-6 group mx-auto w-24 h-24">
               <div 
                 className="w-full h-full rounded-full border-4 border-orange-500/40 shadow-2xl hover:scale-110 transition-all duration-700 cursor-pointer phoenix-image"
@@ -64,285 +64,185 @@ const Dashboard = () => {
               Yellow Brick Road
             </h1>
             <p className="text-lg md:text-xl text-gray-300 mt-4 max-w-3xl mx-auto leading-relaxed">
-              Clinical-grade tools and interactive support for traumatic brain injury recovery
+              Essential clinical-grade tools for traumatic brain injury recovery and rehabilitation
             </p>
           </header>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {/* Breathing Exercises */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {/* Phoenix Breath - Comprehensive breathing exercises */}
             <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in backdrop-blur-sm bg-white/80 border-orange-500/20 group">
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
-                  <Wind className="h-8 w-8 text-white" />
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto mb-4 p-4 bg-gradient-to-br from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
+                  <Wind className="h-10 w-10 text-white" />
                 </div>
-                <CardTitle className="text-xl font-serif text-gray-900">Phoenix Breath</CardTitle>
+                <CardTitle className="text-2xl font-serif text-gray-900">Phoenix Breath</CardTitle>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                  Neuroplasticity Training
+                </span>
               </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-gray-600 mb-4">
-                  Rise from the ashes with guided breathing exercises that promote neuroplasticity and inner healing
+              <CardContent className="text-center space-y-4">
+                <p className="text-gray-600 text-base leading-relaxed">
+                  Rise from the ashes with guided breathing exercises that promote neuroplasticity, reduce anxiety, and enhance cognitive recovery through evidence-based respiratory techniques.
                 </p>
+                <div className="space-y-2 text-sm text-gray-500">
+                  <div>• Box Breathing (4-4-4-4 pattern)</div>
+                  <div>• Wim Hof Method protocols</div>
+                  <div>• Heart Rate Variability training</div>
+                  <div>• Stress reduction techniques</div>
+                </div>
                 <Button asChild className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <Link to="/breathing">Ignite Your Breath</Link>
+                  <Link to="/breathing">Begin Breathing Training</Link>
                 </Button>
               </CardContent>
             </Card>
 
-            {/* Cold Exposure - Updated */}
+            {/* Ice Warrior Academy - Cold exposure therapy */}
             <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-slate-800/80 to-cyan-900/80 border-cyan-500/30 group backdrop-blur-sm" style={{animationDelay: '200ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-xl">
-                  <Thermometer className="h-8 w-8 text-white" />
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto mb-4 p-4 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-xl">
+                  <Thermometer className="h-10 w-10 text-white" />
                 </div>
-                <CardTitle className="text-xl font-serif text-cyan-100">Ice Warrior Academy</CardTitle>
+                <CardTitle className="text-2xl font-serif text-cyan-100">Ice Warrior Academy</CardTitle>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-cyan-100 text-cyan-800">
+                  Resilience Building
+                </span>
               </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-cyan-200 mb-4">
-                  Transform your resilience through deliberate cold exposure and ice bath protocols
+              <CardContent className="text-center space-y-4">
+                <p className="text-cyan-200 text-base leading-relaxed">
+                  Transform your resilience through deliberate cold exposure protocols, building mental fortitude and triggering beneficial stress responses for brain recovery.
                 </p>
+                <div className="space-y-2 text-sm text-cyan-300">
+                  <div>• Progressive cold adaptation</div>
+                  <div>• Ice bath protocols</div>
+                  <div>• Cold shower challenges</div>
+                  <div>• Mental resilience training</div>
+                </div>
                 <Button asChild className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                   <Link to="/cold-exposure">Begin Cold Training</Link>
                 </Button>
               </CardContent>
             </Card>
 
-            {/* Phoenix Mind Academy - Renamed */}
+            {/* Phoenix Mind Academy - Clinical cognitive training */}
             <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-purple-900/80 to-red-900/80 border-orange-500/30 group" style={{animationDelay: '400ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-orange-500 to-red-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
-                  <Brain className="h-8 w-8 text-white" />
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto mb-4 p-4 bg-gradient-to-br from-orange-500 to-red-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
+                  <Brain className="h-10 w-10 text-white" />
                 </div>
-                <CardTitle className="text-xl font-serif text-orange-100">Phoenix Mind Academy</CardTitle>
-                <div className="mt-2">
-                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                    Clinical Grade
-                  </span>
-                </div>
+                <CardTitle className="text-2xl font-serif text-orange-100">Phoenix Mind Academy</CardTitle>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-100 text-orange-800">
+                  Clinical Grade
+                </span>
               </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-orange-200 mb-4">
-                  Rise stronger with evidence-based cognitive training used in Brain Injury Rehabilitation Units
+              <CardContent className="text-center space-y-4">
+                <p className="text-orange-200 text-base leading-relaxed">
+                  Rise stronger with evidence-based cognitive training, clinical assessments, and rehabilitation tools used in Brain Injury Rehabilitation Units worldwide.
                 </p>
+                <div className="space-y-2 text-sm text-orange-300">
+                  <div>• PHQ-9 & GAD-7 assessments</div>
+                  <div>• Cognitive rehabilitation exercises</div>
+                  <div>• Progress tracking & analytics</div>
+                  <div>• Professional assessment resources</div>
+                </div>
                 <Button asChild className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <Link to="/mind">Awaken Your Mind</Link>
+                  <Link to="/mind">Enter Mind Academy</Link>
                 </Button>
               </CardContent>
             </Card>
 
-            {/* Phoenix Heart Sanctuary */}
+            {/* Phoenix Heart Sanctuary - Trauma-informed emotional healing */}
             <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-pink-900/80 to-red-900/80 border-pink-500/30 group" style={{animationDelay: '600ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-pink-500 to-red-500 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
-                  <Heart className="h-8 w-8 text-white" />
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto mb-4 p-4 bg-gradient-to-br from-pink-500 to-red-500 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
+                  <Heart className="h-10 w-10 text-white" />
                 </div>
-                <CardTitle className="text-xl font-serif text-pink-100">Phoenix Heart Sanctuary</CardTitle>
+                <CardTitle className="text-2xl font-serif text-pink-100">Phoenix Heart Sanctuary</CardTitle>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-pink-100 text-pink-800">
+                  Trauma-Informed Care
+                </span>
               </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-pink-200 mb-4">
-                  Heal emotional wounds with guided trauma-informed practices and self-compassion exercises
+              <CardContent className="text-center space-y-4">
+                <p className="text-pink-200 text-base leading-relaxed">
+                  Heal emotional wounds with trauma-informed practices, self-compassion exercises, and evidence-based therapeutic techniques for complete recovery.
                 </p>
+                <div className="space-y-2 text-sm text-pink-300">
+                  <div>• Gratitude journaling practices</div>
+                  <div>• Self-compassion exercises</div>
+                  <div>• Trauma processing techniques</div>
+                  <div>• Emotional regulation tools</div>
+                </div>
                 <Button asChild className="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <Link to="/heart-sanctuary">Open Your Heart</Link>
+                  <Link to="/gratitude">Open Your Heart</Link>
                 </Button>
               </CardContent>
             </Card>
 
-            {/* Phoenix Shield Resilience */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-green-900/80 to-emerald-900/80 border-green-500/30 group" style={{animationDelay: '800ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
-                  <Shield className="h-8 w-8 text-white" />
+            {/* Phoenix Circle Community - Peer support network */}
+            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-teal-900/80 to-blue-900/80 border-teal-500/30 group" style={{animationDelay: '800ms'}}>
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto mb-4 p-4 bg-gradient-to-br from-teal-500 to-blue-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
+                  <Users className="h-10 w-10 text-white" />
                 </div>
-                <CardTitle className="text-xl font-serif text-green-100">Phoenix Shield</CardTitle>
+                <CardTitle className="text-2xl font-serif text-teal-100">Phoenix Circle</CardTitle>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 text-teal-800">
+                  Peer Support Network
+                </span>
               </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-green-200 mb-4">
-                  Build unbreakable resilience through adaptive coping strategies and stress management
+              <CardContent className="text-center space-y-4">
+                <p className="text-teal-200 text-base leading-relaxed">
+                  Connect with fellow phoenix warriors on their recovery journey, share wisdom, experiences, and build lasting supportive relationships.
                 </p>
-                <Button asChild className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <Link to="/phoenix-shield">Forge Your Shield</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Phoenix Goals Navigator */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-indigo-900/80 to-purple-900/80 border-indigo-500/30 group" style={{animationDelay: '1000ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
-                  <Target className="h-8 w-8 text-white" />
+                <div className="space-y-2 text-sm text-teal-300">
+                  <div>• Share your recovery story</div>
+                  <div>• Connect with others</div>
+                  <div>• Weekly support circles</div>
+                  <div>• Mentorship opportunities</div>
                 </div>
-                <CardTitle className="text-xl font-serif text-indigo-100">Phoenix Goals Navigator</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-indigo-200 mb-4">
-                  Chart your recovery path with SMART goal setting and progress tracking tools
-                </p>
-                <Button asChild className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <Link to="/goals-navigator">Navigate Your Path</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Phoenix Energy Tracker */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-yellow-900/80 to-orange-900/80 border-yellow-500/30 group" style={{animationDelay: '1200ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
-                  <Zap className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl font-serif text-yellow-100">Phoenix Energy Tracker</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-yellow-200 mb-4">
-                  Monitor your energy levels, fatigue patterns, and optimize your daily rhythms
-                </p>
-                <Button asChild className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <Link to="/energy-tracker">Track Your Energy</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Phoenix Circle Community */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-teal-900/80 to-blue-900/80 border-teal-500/30 group" style={{animationDelay: '1400ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-teal-500 to-blue-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
-                  <Users className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl font-serif text-teal-100">Phoenix Circle</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-teal-200 mb-4">
-                  Connect with fellow phoenix warriors on their recovery journey and share wisdom
-                </p>
                 <Button asChild className="w-full bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <Link to="/phoenix-circle">Join the Circle</Link>
+                  <Link to="/unwritten">Join the Circle</Link>
                 </Button>
               </CardContent>
             </Card>
 
-            {/* Phoenix Rhythm Tracker */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-violet-900/80 to-purple-900/80 border-violet-500/30 group" style={{animationDelay: '1600ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-violet-500 to-purple-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
-                  <Activity className="h-8 w-8 text-white" />
+            {/* Continue Reading - Gateway back to the story */}
+            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-card to-primary/5 border-primary/20 group" style={{animationDelay: '1000ms'}}>
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto mb-4 p-4 bg-phoenix-gradient rounded-full w-fit group-hover:animate-glow-pulse transition-all duration-300">
+                  <BookOpen className="h-10 w-10 text-white" />
                 </div>
-                <CardTitle className="text-xl font-serif text-violet-100">Phoenix Rhythm</CardTitle>
+                <CardTitle className="text-2xl font-serif">Continue the Journey</CardTitle>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-800">
+                  Recovery Story
+                </span>
               </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-violet-200 mb-4">
-                  Optimize your sleep, activity, and recovery patterns with circadian rhythm insights
+              <CardContent className="text-center space-y-4">
+                <p className="text-muted-foreground text-base leading-relaxed">
+                  Return to the inspiring story of recovery, resilience, and transformation. Discover what happens next in this journey of healing.
                 </p>
-                <Button asChild className="w-full bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <Link to="/phoenix-rhythm">Find Your Rhythm</Link>
+                <div className="space-y-2 text-sm text-gray-500">
+                  <div>• 21 chapters of recovery</div>
+                  <div>• Real experiences & insights</div>
+                  <div>• Hope and inspiration</div>
+                  <div>• Practical wisdom</div>
+                </div>
+                <Button asChild className="w-full bg-flame-gradient hover:bg-ember-gradient text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                  <Link to="/chapter-1">Continue Reading</Link>
                 </Button>
               </CardContent>
             </Card>
+          </div>
 
-            {/* Phoenix Dawn Journal */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-amber-900/80 to-yellow-900/80 border-amber-500/30 group" style={{animationDelay: '1800ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
-                  <Sun className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl font-serif text-amber-100">Phoenix Dawn Journal</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-amber-200 mb-4">
-                  Start each day with intention through guided morning reflections and gratitude practices
-                </p>
-                <Button asChild className="w-full bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <Link to="/dawn-journal">Greet the Dawn</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Phoenix Dusk Reflection */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-slate-900/80 to-blue-900/80 border-slate-500/30 group" style={{animationDelay: '2000ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-slate-500 to-blue-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
-                  <Moon className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl font-serif text-slate-100">Phoenix Dusk Reflection</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-slate-200 mb-4">
-                  End your day with peaceful reflection, processing experiences and preparing for rest
-                </p>
-                <Button asChild className="w-full bg-gradient-to-r from-slate-500 to-blue-600 hover:from-slate-600 hover:to-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <Link to="/dusk-reflection">Embrace the Dusk</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Phoenix Path Planner */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-emerald-900/80 to-teal-900/80 border-emerald-500/30 group" style={{animationDelay: '2200ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
-                  <Calendar className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl font-serif text-emerald-100">Phoenix Path Planner</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-emerald-200 mb-4">
-                  Plan your recovery journey with adaptive scheduling and milestone tracking
-                </p>
-                <Button asChild className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <Link to="/path-planner">Plan Your Path</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Phoenix Compass Guide */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-rose-900/80 to-pink-900/80 border-rose-500/30 group" style={{animationDelay: '2400ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-gradient-to-br from-rose-500 to-pink-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
-                  <Compass className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl font-serif text-rose-100">Phoenix Compass Guide</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-rose-200 mb-4">
-                  Navigate life transitions with personalized guidance and decision-making support
-                </p>
-                <Button asChild className="w-full bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-600 hover:to-pink-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <Link to="/compass-guide">Find Your Direction</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Unwritten Chapters */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-card to-primary/5 border-primary/20 group" style={{animationDelay: '2600ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-phoenix-gradient rounded-full w-fit group-hover:animate-glow-pulse transition-all duration-300">
-                  <PenTool className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl font-serif">Unwritten Chapters</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-muted-foreground mb-4">
-                  Share your story and connect with others on their recovery journey
-                </p>
-                <Button asChild className="w-full bg-phoenix-gradient hover:bg-flame-gradient text-white">
-                  <Link to="/unwritten">Share Your Story</Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Reading */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in md:col-span-2 bg-gradient-to-r from-card to-primary/5 border-primary/20" style={{animationDelay: '2800ms'}}>
-              <CardHeader className="text-center">
-                <div className="mx-auto mb-4 p-3 bg-flame-gradient rounded-full w-fit">
-                  <BookOpen className="h-8 w-8 text-white" />
-                </div>
-                <CardTitle className="text-xl font-serif">Continue Reading</CardTitle>
-              </CardHeader>
-              <CardContent className="text-center">
-                <p className="text-muted-foreground mb-4">
-                  Return to the story of recovery and discover what happens next
-                </p>
-                <Button asChild size="lg" className="bg-flame-gradient hover:bg-ember-gradient text-white">
-                  <Link to="/chapter-1">Read Chapter 1</Link>
-                </Button>
-              </CardContent>
-            </Card>
+          {/* Additional Resources Section */}
+          <div className="mt-16 text-center">
+            <h2 className="text-2xl font-serif text-white mb-6">Additional Resources</h2>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button asChild variant="outline" className="border-green-500/50 hover:bg-green-500/10 hover:border-green-500 transition-all duration-300">
+                <Link to="/resources">Professional Resources</Link>
+              </Button>
+              <Button asChild variant="outline" className="border-blue-500/50 hover:bg-blue-500/10 hover:border-blue-500 transition-all duration-300">
+                <Link to="/challenges">Recovery Challenges</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
