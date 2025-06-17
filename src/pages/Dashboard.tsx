@@ -229,33 +229,6 @@ const Dashboard = () => {
                 </Button>
               </CardContent>
             </Card>
-
-            {/* Continue Reading - Gateway back to the story */}
-            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-card to-primary/5 border-primary/20 group" style={{animationDelay: '1000ms'}}>
-              <CardHeader className="text-center pb-4">
-                <div className="mx-auto mb-4 p-4 bg-phoenix-gradient rounded-full w-fit group-hover:animate-glow-pulse transition-all duration-300">
-                  <BookOpen className="h-10 w-10 text-white" />
-                </div>
-                <CardTitle className="text-2xl font-serif">Continue the Journey</CardTitle>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-amber-100 text-amber-800">
-                  Recovery Story
-                </span>
-              </CardHeader>
-              <CardContent className="text-center space-y-4">
-                <p className="text-muted-foreground text-base leading-relaxed">
-                  Return to the inspiring story of recovery, resilience, and transformation. Discover what happens next in this journey of healing.
-                </p>
-                <div className="space-y-2 text-sm text-gray-500">
-                  <div>• 21 chapters of recovery</div>
-                  <div>• Real experiences & insights</div>
-                  <div>• Hope and inspiration</div>
-                  <div>• Practical wisdom</div>
-                </div>
-                <Button asChild className="w-full bg-flame-gradient hover:bg-ember-gradient text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                  <Link to="/chapter-1">Continue Reading</Link>
-                </Button>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Additional Resources Section */}
@@ -267,6 +240,9 @@ const Dashboard = () => {
               </Button>
               <Button asChild variant="outline" className="border-blue-500/50 hover:bg-blue-500/10 hover:border-blue-500 transition-all duration-300">
                 <Link to="/challenges">Recovery Challenges</Link>
+              </Button>
+              <Button asChild variant="outline" className="border-amber-500/50 hover:bg-amber-500/10 hover:border-amber-500 transition-all duration-300">
+                <Link to="/chapter-1">Continue Reading Story</Link>
               </Button>
             </div>
           </div>
