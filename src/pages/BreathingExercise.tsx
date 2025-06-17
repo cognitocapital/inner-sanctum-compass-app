@@ -256,7 +256,7 @@ const BreathingExercise = () => {
                     <div className="text-sm text-orange-300">Standard</div>
                   </Button>
                   <Button 
-                    onClick={() => startSession(15)) 
+                    onClick={() => startSession(15)} 
                     variant="outline" 
                     className="h-20 flex-col gap-2 bg-gradient-to-br from-orange-900/30 to-red-900/30 border-orange-500/40 hover:border-orange-400 transition-all duration-300 hover:scale-105"
                   >
