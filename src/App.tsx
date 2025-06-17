@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -36,6 +37,7 @@ import MindTraining from "./pages/MindTraining";
 import GratitudeJourney from "./pages/GratitudeJourney";
 import UnwrittenChapters from "./pages/UnwrittenChapters";
 import Resources from "./pages/Resources";
+import TBIPrograms from "./pages/TBIPrograms";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -80,7 +82,7 @@ const App = () => (
           <Route path="/gratitude" element={<GratitudeJourney />} />
           <Route path="/unwritten" element={<UnwrittenChapters />} />
           <Route path="/resources" element={<Resources />} />
-          {/* More chapter routes will be added as chapters are created */}
+          <Route path="/tbi-programs" element={<TBIPrograms />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -15,15 +15,10 @@ import {
   BookOpen, 
   Users, 
   Trophy,
-  Computer,
-  ChevronDown,
-  ChevronUp,
-  ExternalLink
+  Computer
 } from "lucide-react";
 
 const Dashboard = () => {
-  const [showComputerPrograms, setShowComputerPrograms] = useState(false);
-
   const journeyItems = [
     {
       title: "Phoenix Breath Academy",
@@ -64,72 +59,14 @@ const Dashboard = () => {
       link: "/gratitude",
       color: "from-pink-500 to-rose-500",
       status: "active"
-    }
-  ];
-
-  const computerPrograms = [
-    {
-      name: "Cogmed QM",
-      description: "Focuses on working memory and attention, available through certified providers like healthcare professionals.",
-      website: "https://www.cogmed.com/training",
-      effectiveness: "High for Cognition",
-      availability: "Commercially Available",
-      keyFindings: "Improves working memory (p<0.045), cognition (p<0.044)",
-      sessions: "25 sessions over 5 weeks, 30-45 minutes daily"
     },
     {
-      name: "RehaCom", 
-      description: "A comprehensive tool for cognitive training, widely used in rehab centers.",
-      website: "https://www.hasomed.de/en/rehacom.html",
-      effectiveness: "High for Cognition",
-      availability: "Commercially Available",
-      keyFindings: "Improves neuropsychological status, memory (p<0.05)",
-      sessions: "Adjustable difficulty, tailored to cognitive deficits"
-    },
-    {
-      name: "Parrott Software",
-      description: "Targets attention and memory, though it's less commonly available and more research-oriented.",
-      website: "#",
-      effectiveness: "Moderate to Variable",
-      availability: "Research-Oriented",
-      keyFindings: "Increases attention (p<0.005), memory (p<0.05)",
-      sessions: "Computer-based exercises with adaptive difficulty"
-    },
-    {
-      name: "ProMotor Exercise Games",
-      description: "Uses virtual reality to improve executive functions, often found in specialized centers.",
-      website: "#",
-      effectiveness: "High for Motor, Cognition",
-      availability: "Specialized Centers",
-      keyFindings: "Improves executive function tasks (p=0.02, p=0.01)",
-      sessions: "Interactive VR games simulating real-world tasks"
-    },
-    {
-      name: "Attention Process Training (APT-3)",
-      description: "Targets attention training with structured exercises for focused, selective, and divided attention.",
-      website: "#",
-      effectiveness: "Moderate",
-      availability: "Via Specialists",
-      keyFindings: "Improves task difficulty, trend toward daily task generalization",
-      sessions: "Structured attention exercises"
-    },
-    {
-      name: "Lumosity",
-      description: "General brain training app offering various cognitive games, but not TBI-specific.",
-      website: "https://www.lumosity.com/",
-      effectiveness: "Less Specific for TBI",
-      availability: "Consumer App",
-      keyFindings: "Mixed results for TBI, general cognitive improvements",
-      sessions: "Adaptive games for memory, attention, problem-solving"
-    },
-    {
-      name: "Virtual Reality CBT",
-      description: "A 12-session program using virtual reality to improve cognition and memory.",
-      website: "#",
-      effectiveness: "High for Cognition",
-      availability: "Research Settings",
-      keyFindings: "Improves recall (p<0.05), ongoing tasks (p<0.01)",
-      sessions: "12 sessions, 30-60 minutes in VR environments"
+      title: "TBI Recovery Programs",
+      description: "Comprehensive computer-based rehabilitation resources",
+      icon: Computer,
+      link: "/tbi-programs",
+      color: "from-indigo-500 to-purple-500",
+      status: "active"
     }
   ];
 
@@ -184,109 +121,6 @@ const Dashboard = () => {
             );
           })}
         </div>
-
-        {/* Computer-Based Rehabilitation Programs Section */}
-        <Card className="bg-gradient-to-br from-slate-900/80 to-blue-900/80 border-blue-500/30 backdrop-blur-sm mb-8">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                  <Computer className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <CardTitle className="text-2xl text-blue-100">Computer-Based Rehabilitation Programs</CardTitle>
-                  <p className="text-blue-200 text-sm mt-1">Research-backed cognitive training tools for TBI recovery</p>
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                onClick={() => setShowComputerPrograms(!showComputerPrograms)}
-                className="text-blue-200 hover:text-white"
-              >
-                {showComputerPrograms ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
-              </Button>
-            </div>
-          </CardHeader>
-          
-          {showComputerPrograms && (
-            <CardContent className="pt-0">
-              <div className="space-y-6">
-                {/* Key Points */}
-                <div className="bg-blue-900/30 rounded-lg p-4 border border-blue-500/20">
-                  <h3 className="text-lg font-semibold text-blue-100 mb-3">Key Points</h3>
-                  <ul className="space-y-2 text-blue-200 text-sm">
-                    <li>• Research suggests computer-based programs like Cogmed QM and RehaCom improve cognitive functions in TBI rehabilitation.</li>
-                    <li>• It seems likely that virtual reality programs, such as ProMotor Exercise Games, enhance executive functions and motor skills.</li>
-                    <li>• The evidence leans toward these programs being effective, but their availability and long-term benefits vary, with ongoing debates about standardization.</li>
-                    <li>• Controversy exists on the best methods, with some programs like Lumosity being less specific to TBI.</li>
-                  </ul>
-                </div>
-
-                <Separator className="bg-blue-500/20" />
-
-                {/* Available Programs */}
-                <div>
-                  <h3 className="text-xl font-semibold text-blue-100 mb-4">Available Programs</h3>
-                  <div className="grid gap-4">
-                    {computerPrograms.map((program, index) => (
-                      <div key={index} className="bg-slate-900/50 rounded-lg p-4 border border-blue-500/20">
-                        <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              <h4 className="font-semibold text-blue-100 text-lg">{program.name}</h4>
-                              {program.website !== "#" && (
-                                <a 
-                                  href={program.website} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="text-blue-300 hover:text-blue-200"
-                                >
-                                  <ExternalLink className="h-4 w-4" />
-                                </a>
-                              )}
-                            </div>
-                            <p className="text-blue-200 text-sm mb-3">{program.description}</p>
-                            <div className="space-y-2">
-                              <div className="flex flex-wrap gap-2">
-                                <Badge variant="outline" className="border-green-500/50 text-green-300 text-xs">
-                                  {program.effectiveness}
-                                </Badge>
-                                <Badge variant="outline" className="border-orange-500/50 text-orange-300 text-xs">
-                                  {program.availability}
-                                </Badge>
-                              </div>
-                              <p className="text-xs text-blue-300"><strong>Key Findings:</strong> {program.keyFindings}</p>
-                              <p className="text-xs text-blue-300"><strong>Sessions:</strong> {program.sessions}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Building Programs Consideration */}
-                <div className="bg-slate-900/30 rounded-lg p-4 border border-slate-500/20">
-                  <h3 className="text-lg font-semibold text-slate-100 mb-3">Building Programs</h3>
-                  <p className="text-slate-200 text-sm">
-                    Building new programs is complex and requires experts like psychologists and software developers. 
-                    It's more practical to access existing programs through rehabilitation specialists, as creating new ones 
-                    involves significant resources and research to ensure they're effective.
-                  </p>
-                </div>
-
-                {/* Considerations */}
-                <div className="bg-orange-900/30 rounded-lg p-4 border border-orange-500/20">
-                  <h3 className="text-lg font-semibold text-orange-100 mb-3">Considerations</h3>
-                  <p className="text-orange-200 text-sm">
-                    The evidence suggests these programs work, but there's debate about which is best and how to standardize them. 
-                    If you're looking for options, consult a rehab specialist to find the right fit for your needs.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          )}
-        </Card>
 
         {/* Book Chapters */}
         <Card className="bg-gradient-to-br from-slate-900/80 to-orange-900/80 border-orange-500/30 backdrop-blur-sm">
