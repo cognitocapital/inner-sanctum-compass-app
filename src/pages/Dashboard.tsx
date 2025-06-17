@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -119,6 +118,33 @@ const Dashboard = () => {
                 </div>
                 <Button asChild className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                   <Link to="/cold-exposure">Begin Cold Training</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* TBI Computer Programs - New clinical-grade cognitive rehabilitation */}
+            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-indigo-900/80 to-blue-900/80 border-indigo-500/30 group" style={{animationDelay: '300ms'}}>
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto mb-4 p-4 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
+                  <Brain className="h-10 w-10 text-white" />
+                </div>
+                <CardTitle className="text-2xl font-serif text-indigo-100">TBI Computer Programs</CardTitle>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800">
+                  Evidence-Based
+                </span>
+              </CardHeader>
+              <CardContent className="text-center space-y-4">
+                <p className="text-indigo-200 text-base leading-relaxed">
+                  Access research-backed computer-based programs for traumatic brain injury rehabilitation, including Cogmed QM, RehaCom, and virtual reality therapies.
+                </p>
+                <div className="space-y-2 text-sm text-indigo-300">
+                  <div>• Cogmed QM working memory training</div>
+                  <div>• RehaCom cognitive rehabilitation</div>
+                  <div>• Virtual reality therapy programs</div>
+                  <div>• Evidence-based effectiveness data</div>
+                </div>
+                <Button asChild className="w-full bg-gradient-to-r from-indigo-500 to-blue-600 hover:from-indigo-600 hover:to-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                  <Link to="/tbi-programs">Explore TBI Programs</Link>
                 </Button>
               </CardContent>
             </Card>
