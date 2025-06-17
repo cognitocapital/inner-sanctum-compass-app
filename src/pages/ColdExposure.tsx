@@ -136,10 +136,10 @@ const ColdExposure = () => {
   };
 
   const coldProtocols = [
-    { name: "Beginner Freeze", duration: 30, temp: "50-60°F", description: "Perfect for ice bath newcomers" },
-    { name: "Warrior's Trial", duration: 60, temp: "45-55°F", description: "Building mental toughness" },
-    { name: "Arctic Challenge", duration: 120, temp: "40-50°F", description: "For experienced cold warriors" },
-    { name: "Polar Mastery", duration: 180, temp: "35-45°F", description: "Elite cold exposure protocol" }
+    { name: "Beginner Freeze", duration: 30, tempF: "50-60°F", tempC: "10-15°C", description: "Perfect for ice bath newcomers" },
+    { name: "Warrior's Trial", duration: 60, tempF: "45-55°F", tempC: "7-13°C", description: "Building mental toughness" },
+    { name: "Arctic Challenge", duration: 120, tempF: "40-50°F", tempC: "4-10°C", description: "For experienced cold warriors" },
+    { name: "Polar Mastery", duration: 180, tempF: "35-45°F", tempC: "2-7°C", description: "Elite cold exposure protocol" }
   ];
 
   return (
@@ -236,10 +236,12 @@ const ColdExposure = () => {
                       key={protocol.name}
                       onClick={() => startSession(protocol.duration)}
                       variant="outline"
-                      className="h-24 flex-col gap-2 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 border-cyan-500/40 hover:border-cyan-400 transition-all duration-300 hover:scale-105"
+                      className="h-28 flex-col gap-1 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 border-cyan-500/40 hover:border-cyan-400 transition-all duration-300 hover:scale-105"
                     >
                       <div className="text-sm font-bold text-cyan-100">{protocol.name}</div>
-                      <div className="text-xs text-cyan-300">{protocol.duration}s • {protocol.temp}</div>
+                      <div className="text-xs text-cyan-300">{protocol.duration}s</div>
+                      <div className="text-xs text-cyan-300">{protocol.tempF}</div>
+                      <div className="text-xs text-cyan-400">({protocol.tempC})</div>
                       <div className="text-xs text-cyan-400">{protocol.description}</div>
                     </Button>
                   ))}
@@ -354,7 +356,10 @@ const ColdExposure = () => {
                       <div className="text-cyan-200">{protocol.description}</div>
                       <div className="flex justify-between text-sm">
                         <span className="text-cyan-300">Duration: {protocol.duration}s</span>
-                        <span className="text-cyan-300">Temp: {protocol.temp}</span>
+                        <div className="text-cyan-300">
+                          <div>Temp: {protocol.tempF}</div>
+                          <div className="text-xs text-cyan-400">({protocol.tempC})</div>
+                        </div>
                       </div>
                       <Button 
                         onClick={() => startSession(protocol.duration)}
