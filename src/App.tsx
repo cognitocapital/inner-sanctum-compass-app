@@ -37,8 +37,8 @@ import GratitudeJourney from "./pages/GratitudeJourney";
 import UnwrittenChapters from "./pages/UnwrittenChapters";
 import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
-import TBIPrograms from "./pages/TBIPrograms";
 import NeuroRehab from "./pages/NeuroRehab";
+import TBIPrograms from "./pages/TBIPrograms";
 
 const queryClient = new QueryClient();
 
@@ -53,8 +53,8 @@ const App = () => (
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/breathing" element={<BreathingExercise />} />
           <Route path="/cold-exposure" element={<ColdExposure />} />
-          <Route path="/tbi-programs" element={<TBIPrograms />} />
           <Route path="/neuro-rehab" element={<NeuroRehab />} />
+          <Route path="/tbi-programs" element={<TBIPrograms />} />
           <Route path="/dedication" element={<Dedication />} />
           <Route path="/prologue" element={<Prologue />} />
           <Route path="/introduction" element={<Introduction />} />

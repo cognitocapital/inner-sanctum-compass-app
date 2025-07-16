@@ -192,40 +192,39 @@ const NeuroRehab = () => {
                     </Card>
                 </section>
 
-                {/* Development Timeline */}
+                {/* Live Platform Access */}
                 <section className="text-center">
-                    <Card className="bg-white/10 backdrop-blur-sm border-blue-400/30">
+                    <Card className="bg-white/10 backdrop-blur-sm border-green-400/30">
                         <CardHeader>
-                            <CardTitle className="text-2xl text-blue-300 flex items-center justify-center gap-2">
-                                <Calendar className="h-6 w-6" />
-                                Development Roadmap
+                            <CardTitle className="text-2xl text-green-300 flex items-center justify-center gap-2">
+                                <Activity className="h-6 w-6" />
+                                Active Platform Access
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-blue-200 mb-6">
-                                As AI capabilities advance, this platform will evolve to incorporate breakthrough 
-                                technologies in neurological rehabilitation, maintaining hospital-grade standards 
-                                and evidence-based protocols.
+                            <p className="text-green-200 mb-6">
+                                Experience the full working rehabilitation platform with real-time assessments, 
+                                interactive therapy modules, and comprehensive analytics dashboard.
                             </p>
                             
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                 <Button 
-                                    variant="outline" 
+                                    asChild
                                     size="lg"
-                                    className="border-blue-400 text-blue-400 hover:bg-blue-400/10"
-                                    disabled
+                                    className="bg-green-500/30 border-green-400 text-green-300 hover:bg-green-500/40"
                                 >
-                                    <Brain className="mr-2 h-4 w-4" />
-                                    Research Phase Active
+                                    <Link to="/tbi-programs">
+                                        <Brain className="mr-2 h-4 w-4" />
+                                        Launch Platform
+                                    </Link>
                                 </Button>
                                 <Button 
                                     variant="outline" 
                                     size="lg"
-                                    className="border-cyan-400 text-cyan-400 hover:bg-cyan-400/10"
-                                    disabled
+                                    className="border-blue-400 text-blue-400 hover:bg-blue-400/10"
                                 >
-                                    <Activity className="mr-2 h-4 w-4" />
-                                    Clinical Partnerships
+                                    <BookOpen className="mr-2 h-4 w-4" />
+                                    Research Hub
                                 </Button>
                             </div>
                         </CardContent>
