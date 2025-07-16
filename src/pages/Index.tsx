@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Brain } from "lucide-react";
 
 const Index = () => {
     const totalChapters = 21;
@@ -84,6 +84,12 @@ const Index = () => {
                         <Button asChild variant="outline" size="lg" className="border-green-500/50 hover:bg-green-500/10 hover:border-green-500 transition-all duration-300 hover:scale-105 group">
                             <Link to="/resources">
                                 Growth Resources <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        </Button>
+                        <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group border border-blue-500">
+                            <Link to="/neuro-rehab">
+                                <Brain className="mr-2 h-5 w-5" />
+                                Neuro Rehab Suite <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </Button>
                     </div>
