@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, ArrowLeft } from "lucide-react";
-import { AudiobookPlayer } from "@/components/ui/audiobook-player";
+import { UploadedAudiobookPlayer } from "@/components/ui/uploaded-audiobook-player";
 
 const Dedication = () => {
     return (
@@ -58,10 +58,7 @@ const Dedication = () => {
                             
                             {/* Audiobook Player */}
                             <div className="mt-12">
-                                <AudiobookPlayer 
-                                    apiKey="" // Add your ElevenLabs API key here
-                                    voiceId="9BWtsMINqrJLrRacOk9x" // Aria voice
-                                />
+                                <UploadedAudiobookPlayer startChapterId="dedication" />
                             </div>
                             
                             <div className="flex justify-center mt-8">
