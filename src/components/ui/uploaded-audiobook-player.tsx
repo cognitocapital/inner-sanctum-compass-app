@@ -21,12 +21,12 @@ interface Chapter {
 
 // Audio chapters - add more as you upload them
 const chapters: Chapter[] = [
-  { id: "dedication", title: "Dedication", audioUrl: null, route: "/dedication" },
+  { id: "dedication", title: "Dedication", audioUrl: "/audio/dedication.mp3", route: "/dedication" },
   { id: "prologue", title: "Prologue", audioUrl: "/audio/prologue.mp3", route: "/prologue" },
-  { id: "introduction", title: "Introduction", audioUrl: null, route: "/introduction" },
-  { id: "chapter1", title: "Chapter 1: The Accident", audioUrl: null, route: "/chapter1" },
-  { id: "chapter2", title: "Chapter 2: Waking Up", audioUrl: null, route: "/chapter2" },
-  { id: "chapter3", title: "Chapter 3: The Hospital", audioUrl: null, route: "/chapter3" },
+  { id: "introduction", title: "Introduction", audioUrl: "/audio/introduction.mp3", route: "/introduction" },
+  { id: "chapter1", title: "Chapter 1: The Accident", audioUrl: "/audio/chapter1.mp3", route: "/chapter1" },
+  { id: "chapter2", title: "Chapter 2: Waking Up", audioUrl: "/audio/chapter2.mp3", route: "/chapter2" },
+  { id: "chapter3", title: "Chapter 3: The Gun to My Head", audioUrl: "/audio/chapter3.mp3", route: "/chapter3" },
   { id: "chapter4", title: "Chapter 4: Coming Home", audioUrl: null, route: "/chapter4" },
   { id: "chapter5", title: "Chapter 5: The New Normal", audioUrl: null, route: "/chapter5" },
   { id: "chapter6", title: "Chapter 6: Finding My Way", audioUrl: null, route: "/chapter6" },
