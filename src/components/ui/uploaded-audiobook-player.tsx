@@ -32,8 +32,10 @@ const chapters: Chapter[] = [
   { id: "chapter6", title: "Chapter 6: The Roller Coaster", audioUrl: "/audio/chapter6.mp3", route: "/chapter6" },
   { id: "chapter7", title: "Chapter 7: Mind Games", audioUrl: "/audio/chapter7.mp3", route: "/chapter7" },
   { id: "chapter8", title: "Chapter 8: Nourishing the Body", audioUrl: "/audio/chapter8.mp3", route: "/chapter8" },
-  { id: "chapter9", title: "Chapter 9: Support Systems", audioUrl: null, route: "/chapter9" },
-  { id: "chapter10", title: "Chapter 10: Breakthroughs", audioUrl: null, route: "/chapter10" },
+  { id: "chapter9", title: "Chapter 9: The Business Dilemma", audioUrl: "/audio/chapter9.mp3", route: "/chapter9" },
+  { id: "chapter10", title: "Chapter 10: A New Chapter", audioUrl: "/audio/chapter10.mp3", route: "/chapter10" },
+  { id: "chapter11", title: "Chapter 11: The Inner Work", audioUrl: "/audio/chapter11.mp3", route: "/chapter11" },
+  { id: "chapter12", title: "Chapter 12: Reclaiming Independence", audioUrl: "/audio/chapter12.mp3", route: "/chapter12" },
 ];
 
 interface UploadedAudiobookPlayerProps {
