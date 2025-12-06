@@ -41,6 +41,11 @@ const chapters: Chapter[] = [
   { id: "chapter15", title: "Chapter 15: Still Standing", audioUrl: "/audio/chapter15.mp3", route: "/chapter15" },
   { id: "chapter16", title: "Chapter 16: Looking Forward", audioUrl: "/audio/chapter16.mp3", route: "/chapter16" },
   { id: "chapter17", title: "Chapter 17: The Torch Rekindled", audioUrl: "/audio/chapter17.mp3", route: "/chapter17" },
+  { id: "chapter18", title: "Chapter 18: Unwritten Chapters", audioUrl: "/audio/chapter18.mp3", route: "/chapter18" },
+  { id: "chapter19", title: "Chapter 19: A New Resource", audioUrl: "/audio/chapter19.mp3", route: "/chapter19" },
+  { id: "chapter20", title: "Chapter 20", audioUrl: null, route: "/chapter20" },
+  { id: "chapter21", title: "Chapter 21", audioUrl: null, route: "/chapter21" },
+  { id: "acknowledgments", title: "Acknowledgments", audioUrl: "/audio/acknowledgments.mp3", route: "/acknowledgments" },
 ];
 
 interface UploadedAudiobookPlayerProps {
