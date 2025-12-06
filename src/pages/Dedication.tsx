@@ -1,10 +1,51 @@
-import { Link } from "react-router-dom";
+import { useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { UploadedAudiobookPlayer } from "@/components/ui/uploaded-audiobook-player";
 
 const Dedication = () => {
+    const [showVideoIntro, setShowVideoIntro] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
+    const navigate = useNavigate();
+
+    const handleStartReading = () => {
+        setShowVideoIntro(true);
+    };
+
+    const handleVideoEnd = () => {
+        navigate("/prologue");
+    };
+
+    const handleSkip = () => {
+        if (videoRef.current) {
+            videoRef.current.pause();
+        }
+        navigate("/prologue");
+    };
+
+    if (showVideoIntro) {
+        return (
+            <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+                <video
+                    ref={videoRef}
+                    src="/video/start-reading-intro.mp4"
+                    className="w-full h-full object-contain"
+                    onEnded={handleVideoEnd}
+                    playsInline
+                    autoPlay
+                />
+                <button
+                    onClick={handleSkip}
+                    className="absolute bottom-8 right-8 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-sm transition-all duration-300"
+                >
+                    Skip Intro
+                </button>
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-foreground relative overflow-hidden">
             {/* Animated background elements */}
@@ -62,10 +103,12 @@ const Dedication = () => {
                             </div>
                             
                             <div className="flex justify-center mt-8">
-                                <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                                    <Link to="/prologue">
-                                        Start Reading <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                                    </Link>
+                                <Button 
+                                    onClick={handleStartReading}
+                                    size="lg" 
+                                    className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+                                >
+                                    Start Reading <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                                 </Button>
                             </div>
                         </CardContent>
