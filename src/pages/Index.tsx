@@ -80,7 +80,7 @@ const Index = () => {
                                 <div className="absolute inset-0 bg-gradient-to-r from-yellow-200/20 to-yellow-400/20 animate-pulse"></div>
                             </Link>
                         </Button>
-                        <Button asChild variant="outline" size="lg" className="border-green-500/50 hover:bg-green-500/10 hover:border-green-500 transition-all duration-300 hover:scale-105 group">
+                        <Button asChild size="lg" className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group border border-green-500">
                             <Link to="/resources">
                                 Growth Resources <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
