@@ -5,31 +5,30 @@ import { ArrowRight, Brain } from "lucide-react";
 
 const Index = () => {
     const totalChapters = 21;
-    const availableChapters = Array.from({ length: totalChapters }, (_, i) => i + 1);
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
             {/* Animated background elements inspired by phoenix flames */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 {/* Primary flame particles */}
-                <div className="absolute top-20 left-10 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-80 shadow-lg shadow-orange-500/50"></div>
-                <div className="absolute top-40 right-20 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1s] opacity-60 shadow-lg shadow-orange-500/40"></div>
-                <div className="absolute bottom-60 left-1/4 w-2.5 h-2.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_2s] opacity-70 shadow-lg shadow-orange-500/45"></div>
-                <div className="absolute bottom-40 right-1/3 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_3s] opacity-50 shadow-lg shadow-orange-500/35"></div>
-                <div className="absolute top-1/3 left-1/6 w-1.5 h-1.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.5s] opacity-45 shadow-lg shadow-orange-500/30"></div>
-                <div className="absolute bottom-1/3 right-1/6 w-1 h-1 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_2.5s] opacity-35 shadow-lg shadow-orange-500/25"></div>
-                <div className="absolute top-2/3 right-1/5 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.5s] opacity-55 shadow-lg shadow-orange-500/40"></div>
+                <div key="particle-1" className="absolute top-20 left-10 w-3 h-3 bg-orange-500 rounded-full animate-float opacity-80 shadow-lg shadow-orange-500/50"></div>
+                <div key="particle-2" className="absolute top-40 right-20 w-2 h-2 bg-orange-500 rounded-full animate-float opacity-60 shadow-lg shadow-orange-500/40" style={{ animationDelay: '1s' }}></div>
+                <div key="particle-3" className="absolute bottom-60 left-1/4 w-2.5 h-2.5 bg-orange-500 rounded-full animate-float opacity-70 shadow-lg shadow-orange-500/45" style={{ animationDelay: '2s' }}></div>
+                <div key="particle-4" className="absolute bottom-40 right-1/3 w-2 h-2 bg-orange-500 rounded-full animate-float opacity-50 shadow-lg shadow-orange-500/35" style={{ animationDelay: '3s' }}></div>
+                <div key="particle-5" className="absolute top-1/3 left-[16%] w-1.5 h-1.5 bg-orange-500 rounded-full animate-float opacity-45 shadow-lg shadow-orange-500/30" style={{ animationDelay: '1.5s' }}></div>
+                <div key="particle-6" className="absolute bottom-1/3 right-[16%] w-1 h-1 bg-orange-500 rounded-full animate-float opacity-35 shadow-lg shadow-orange-500/25" style={{ animationDelay: '2.5s' }}></div>
+                <div key="particle-7" className="absolute top-2/3 right-[20%] w-2 h-2 bg-orange-500 rounded-full animate-float opacity-55 shadow-lg shadow-orange-500/40" style={{ animationDelay: '0.5s' }}></div>
                 
                 {/* Additional ember particles */}
-                <div className="absolute top-32 left-1/5 w-1 h-1 bg-yellow-400 rounded-full animate-[float_4s_ease-in-out_infinite_4s] opacity-40"></div>
-                <div className="absolute top-56 right-1/4 w-1.5 h-1.5 bg-red-400 rounded-full animate-[float_4s_ease-in-out_infinite_5s] opacity-35"></div>
-                <div className="absolute bottom-72 left-1/3 w-1 h-1 bg-yellow-400 rounded-full animate-[float_4s_ease-in-out_infinite_6s] opacity-30"></div>
-                <div className="absolute bottom-24 right-1/6 w-1.5 h-1.5 bg-orange-500 rounded-full animate-[float_4s_ease-in-out_infinite_7s] opacity-45"></div>
-                <div className="absolute top-1/4 right-1/8 w-1 h-1 bg-red-500 rounded-full animate-[float_4s_ease-in-out_infinite_8s] opacity-40"></div>
+                <div key="ember-1" className="absolute top-32 left-[20%] w-1 h-1 bg-yellow-400 rounded-full animate-float opacity-40" style={{ animationDelay: '4s' }}></div>
+                <div key="ember-2" className="absolute top-56 right-1/4 w-1.5 h-1.5 bg-red-400 rounded-full animate-float opacity-35" style={{ animationDelay: '5s' }}></div>
+                <div key="ember-3" className="absolute bottom-72 left-1/3 w-1 h-1 bg-yellow-400 rounded-full animate-float opacity-30" style={{ animationDelay: '6s' }}></div>
+                <div key="ember-4" className="absolute bottom-24 right-[16%] w-1.5 h-1.5 bg-orange-500 rounded-full animate-float opacity-45" style={{ animationDelay: '7s' }}></div>
+                <div key="ember-5" className="absolute top-1/4 right-[12%] w-1 h-1 bg-red-500 rounded-full animate-float opacity-40" style={{ animationDelay: '8s' }}></div>
                 
                 {/* Subtle flame trails */}
-                <div className="absolute top-16 left-1/2 w-0.5 h-8 bg-gradient-to-t from-orange-500/60 to-transparent animate-[float_3s_ease-in-out_infinite_3.5s] opacity-30"></div>
-                <div className="absolute bottom-32 right-1/2 w-0.5 h-6 bg-gradient-to-t from-orange-500/50 to-transparent animate-[float_3s_ease-in-out_infinite_4.5s] opacity-25"></div>
+                <div key="trail-1" className="absolute top-16 left-1/2 w-0.5 h-8 bg-gradient-to-t from-orange-500/60 to-transparent animate-float opacity-30" style={{ animationDelay: '3.5s' }}></div>
+                <div key="trail-2" className="absolute bottom-32 right-1/2 w-0.5 h-6 bg-gradient-to-t from-orange-500/50 to-transparent animate-float opacity-25" style={{ animationDelay: '4.5s' }}></div>
             </div>
             
             <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
@@ -47,11 +46,11 @@ const Index = () => {
                                 }}
                             />
                             {/* Flame particles around phoenix */}
-                            <div className="absolute -top-4 -left-4 w-4 h-4 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-90"></div>
-                            <div className="absolute -top-6 right-12 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.8s] opacity-75"></div>
-                            <div className="absolute top-6 -right-5 w-3.5 h-3.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.2s] opacity-85"></div>
-                            <div className="absolute bottom-12 -left-6 w-2.5 h-2.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.3s] opacity-65"></div>
-                            <div className="absolute -bottom-5 right-8 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.5s] opacity-80"></div>
+                            <div key="phoenix-particle-1" className="absolute -top-4 -left-4 w-4 h-4 bg-orange-500 rounded-full animate-float opacity-90"></div>
+                            <div key="phoenix-particle-2" className="absolute -top-6 right-12 w-3 h-3 bg-orange-500 rounded-full animate-float opacity-75" style={{ animationDelay: '0.8s' }}></div>
+                            <div key="phoenix-particle-3" className="absolute top-6 -right-5 w-3.5 h-3.5 bg-orange-500 rounded-full animate-float opacity-85" style={{ animationDelay: '1.2s' }}></div>
+                            <div key="phoenix-particle-4" className="absolute bottom-12 -left-6 w-2.5 h-2.5 bg-orange-500 rounded-full animate-float opacity-65" style={{ animationDelay: '0.3s' }}></div>
+                            <div key="phoenix-particle-5" className="absolute -bottom-5 right-8 w-3 h-3 bg-orange-500 rounded-full animate-float opacity-80" style={{ animationDelay: '1.5s' }}></div>
                         </div>
                     </div>
                     
@@ -73,8 +72,8 @@ const Index = () => {
                             </Link>
                         </Button>
                         <Button asChild size="lg" className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-300 hover:via-yellow-400 hover:to-yellow-500 text-gray-900 font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 group border-2 border-yellow-300 relative overflow-hidden">
-                            <Link to="/dashboard" className="relative z-10">
-                                <span className="flex items-center">
+                            <Link to="/dashboard">
+                                <span className="flex items-center relative z-10">
                                     ✨ Yellow Brick Road ✨
                                     <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                                 </span>
@@ -128,35 +127,19 @@ const Index = () => {
                             <div>
                                 <h3 className="text-xl font-semibold text-gray-700 mb-4">Chapters</h3>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                                    {Array.from({ length: totalChapters }, (_, i) => i + 1).map((chapterNum) => {
-                                        const isAvailable = availableChapters.includes(chapterNum);
-                                        return (
+                                    {Array.from({ length: totalChapters }, (_, i) => i + 1).map((chapterNum) => (
                                         <Button 
                                             key={chapterNum} 
-                                            asChild={isAvailable} 
+                                            asChild
                                             variant="outline" 
-                                            className={`h-20 flex-col gap-1 transition-all duration-300 ${
-                                                isAvailable 
-                                                    ? 'hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20' 
-                                                    : 'opacity-50 cursor-not-allowed'
-                                            }`}
-                                            disabled={!isAvailable}
+                                            className="h-20 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20"
                                         >
-                                            {isAvailable ? (
-                                                <Link to={`/chapter-${chapterNum}`} className="flex flex-col items-center justify-center h-full w-full">
-                                                    <span className="text-sm text-gray-600">Chapter</span>
-                                                    <span className="text-2xl font-bold text-orange-500">{chapterNum}</span>
-                                                </Link>
-                                            ) : (
-                                                <div className="flex flex-col items-center justify-center h-full w-full">
-                                                    <span className="text-sm text-gray-600">Chapter</span>
-                                                    <span className="text-2xl font-bold">{chapterNum}</span>
-                                                    <span className="text-xs text-gray-600">Coming Soon</span>
-                                                </div>
-                                            )}
+                                            <Link to={`/chapter-${chapterNum}`} className="flex flex-col items-center justify-center h-full w-full">
+                                                <span className="text-sm text-gray-600">Chapter</span>
+                                                <span className="text-2xl font-bold text-orange-500">{chapterNum}</span>
+                                            </Link>
                                         </Button>
-                                        );
-                                    })}
+                                    ))}
                                 </div>
                             </div>
                         </CardContent>
