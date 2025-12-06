@@ -1,10 +1,18 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Wind, Thermometer, Brain, BookOpen, Heart, Users } from "lucide-react";
+import VideoIntro from "@/components/ui/video-intro";
 
 const Dashboard = () => {
+    const [introComplete, setIntroComplete] = useState(false);
+    
     return (
+      <VideoIntro 
+        videoSrc="/video/yellow-brick-road-intro.mp4" 
+        onComplete={() => setIntroComplete(true)}
+      >
       <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
         {/* Animated background elements inspired by phoenix flames */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -248,6 +256,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      </VideoIntro>
     );
 };
 
