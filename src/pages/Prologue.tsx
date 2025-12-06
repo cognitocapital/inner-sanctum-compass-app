@@ -1,8 +1,27 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const Prologue = () => {
+  const [showIntro, setShowIntro] = useState(true);
+
+  // Video Intro - auto-plays immediately
+  if (showIntro) {
+    return (
+      <div className="min-h-screen bg-black">
+        <video
+          src="/video/start-reading-intro.mp4"
+          className="w-full h-screen object-cover"
+          onEnded={() => setShowIntro(false)}
+          autoPlay
+          playsInline
+          muted
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
       {/* Animated background elements inspired by phoenix flames */}
