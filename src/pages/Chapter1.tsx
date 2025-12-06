@@ -1,8 +1,56 @@
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Play } from "lucide-react";
 
 const Chapter1 = () => {
+  const [showIntro, setShowIntro] = useState(true);
+  const [videoStarted, setVideoStarted] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleBeginReading = () => {
+    setVideoStarted(true);
+    videoRef.current?.play();
+  };
+
+  const handleVideoEnd = () => {
+    setShowIntro(false);
+  };
+
+  // Video Intro Screen
+  if (showIntro) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden">
+        <video
+          ref={videoRef}
+          src="/video/start-reading-intro.mp4"
+          className="absolute inset-0 w-full h-full object-cover"
+          onEnded={handleVideoEnd}
+          playsInline
+        />
+        
+        {/* Overlay with button - shown before video starts */}
+        {!videoStarted && (
+          <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center z-10 animate-fade-in">
+            <h1 className="text-4xl md:text-6xl font-serif text-white mb-4 text-center drop-shadow-lg px-4">
+              What a Journey
+            </h1>
+            <p className="text-lg md:text-xl text-gray-300 mb-8 text-center px-4">
+              A Story of Recovery and Transformation
+            </p>
+            <Button 
+              onClick={handleBeginReading}
+              className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white text-lg px-8 py-6 shadow-xl"
+            >
+              <Play className="mr-2 h-5 w-5" />
+              Begin Reading
+            </Button>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
       {/* Animated background elements inspired by phoenix flames */}
