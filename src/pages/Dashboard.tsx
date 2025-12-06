@@ -1,9 +1,80 @@
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Wind, Thermometer, Brain, BookOpen, Heart, Users } from "lucide-react";
+import { ArrowLeft, Wind, Thermometer, Brain, BookOpen, Heart, Users, Play, SkipForward } from "lucide-react";
 
 const Dashboard = () => {
+    const [showIntro, setShowIntro] = useState(true);
+    const [videoStarted, setVideoStarted] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    const handleBeginJourney = () => {
+      setVideoStarted(true);
+      videoRef.current?.play();
+    };
+
+    const handleSkipIntro = () => {
+      setShowIntro(false);
+    };
+
+    const handleVideoEnd = () => {
+      setShowIntro(false);
+    };
+
+    // Video Intro Screen
+    if (showIntro) {
+      return (
+        <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden">
+          <video
+            ref={videoRef}
+            src="/video/yellow-brick-road-intro.mp4"
+            className="absolute inset-0 w-full h-full object-cover"
+            onEnded={handleVideoEnd}
+            playsInline
+          />
+          
+          {/* Overlay with buttons - shown before video starts */}
+          {!videoStarted && (
+            <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center z-10 animate-fade-in">
+              <h1 className="text-4xl md:text-6xl font-serif text-white mb-8 text-center drop-shadow-lg">
+                Welcome to the Yellow Brick Road
+              </h1>
+              <div className="flex gap-4">
+                <Button 
+                  onClick={handleBeginJourney}
+                  className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white text-lg px-8 py-6 shadow-xl"
+                >
+                  <Play className="mr-2 h-5 w-5" />
+                  Begin Your Journey
+                </Button>
+                <Button 
+                  onClick={handleSkipIntro}
+                  variant="outline"
+                  className="border-white/50 text-white hover:bg-white/10 text-lg px-8 py-6"
+                >
+                  <SkipForward className="mr-2 h-5 w-5" />
+                  Skip Intro
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Skip button during video playback */}
+          {videoStarted && (
+            <Button 
+              onClick={handleSkipIntro}
+              variant="ghost"
+              className="absolute bottom-8 right-8 z-20 text-white/70 hover:text-white hover:bg-white/10"
+            >
+              <SkipForward className="mr-2 h-4 w-4" />
+              Skip
+            </Button>
+          )}
+        </div>
+      );
+    }
+
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
         {/* Animated background elements inspired by phoenix flames */}
