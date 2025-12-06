@@ -8,7 +8,7 @@ const Index = () => {
     const availableChapters = Array.from({ length: totalChapters }, (_, i) => i + 1);
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-foreground relative overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
             {/* Animated background elements inspired by phoenix flames */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 {/* Primary flame particles */}
