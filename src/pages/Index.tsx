@@ -3,8 +3,32 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Brain } from "lucide-react";
 
+// Chapter titles from manuscript version 6.0
+const chapterTitles: { [key: number]: string } = {
+    1: "Australia Day",
+    2: "Hospital Daze",
+    3: "The Gun to My Head",
+    4: "Finding My Footing",
+    5: "Choose Your Own Adventure",
+    6: "The Roller Coaster",
+    7: "Mind Games",
+    8: "Nourishing the Body",
+    9: "The Business Dilemma",
+    10: "A New Chapter",
+    11: "The Inner Work",
+    12: "Reclaiming Independence",
+    13: "The Power of Gratitude",
+    14: "The Universe's Message",
+    15: "Still Standing",
+    16: "Looking Forward",
+    17: "The Torch Rekindled",
+    18: "Unwritten Chapters",
+    19: "A New Resource",
+    20: "The Next Page",
+};
+
 const Index = () => {
-    const totalChapters = 21;
+    const totalChapters = 20;
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
@@ -132,11 +156,11 @@ const Index = () => {
                                             key={chapterNum} 
                                             asChild
                                             variant="outline" 
-                                            className="h-20 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20"
+                                            className="h-24 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20"
                                         >
-                                            <Link to={`/chapter-${chapterNum}`} className="flex flex-col items-center justify-center h-full w-full">
-                                                <span className="text-sm text-gray-600">Chapter</span>
-                                                <span className="text-2xl font-bold text-orange-500">{chapterNum}</span>
+                                            <Link to={`/chapter-${chapterNum}`} className="flex flex-col items-center justify-center h-full w-full px-2">
+                                                <span className="text-xs text-gray-500">Chapter {chapterNum}</span>
+                                                <span className="text-sm font-semibold text-orange-600 text-center leading-tight">{chapterTitles[chapterNum]}</span>
                                             </Link>
                                         </Button>
                                     ))}
