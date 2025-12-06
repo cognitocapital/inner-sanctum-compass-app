@@ -19,13 +19,13 @@ interface Chapter {
   route: string;
 }
 
-// Audio chapters - add more as you upload them
+// Audio chapters - based on manuscript version 6.0
 const chapters: Chapter[] = [
   { id: "dedication", title: "Dedication", audioUrl: "/audio/dedication.mp3", route: "/dedication" },
   { id: "prologue", title: "Prologue", audioUrl: "/audio/prologue.mp3", route: "/prologue" },
   { id: "introduction", title: "Introduction", audioUrl: "/audio/introduction.mp3", route: "/introduction" },
-  { id: "chapter1", title: "Chapter 1: The Accident", audioUrl: "/audio/chapter1.mp3", route: "/chapter1" },
-  { id: "chapter2", title: "Chapter 2: Waking Up", audioUrl: "/audio/chapter2.mp3", route: "/chapter2" },
+  { id: "chapter1", title: "Chapter 1: Australia Day", audioUrl: "/audio/chapter1.mp3", route: "/chapter1" },
+  { id: "chapter2", title: "Chapter 2: Hospital Daze", audioUrl: "/audio/chapter2.mp3", route: "/chapter2" },
   { id: "chapter3", title: "Chapter 3: The Gun to My Head", audioUrl: "/audio/chapter3.mp3", route: "/chapter3" },
   { id: "chapter4", title: "Chapter 4: Finding My Footing", audioUrl: "/audio/chapter4.mp3", route: "/chapter4" },
   { id: "chapter5", title: "Chapter 5: Choose Your Own Adventure", audioUrl: "/audio/chapter5.mp3", route: "/chapter5" },
@@ -43,8 +43,7 @@ const chapters: Chapter[] = [
   { id: "chapter17", title: "Chapter 17: The Torch Rekindled", audioUrl: "/audio/chapter17.mp3", route: "/chapter17" },
   { id: "chapter18", title: "Chapter 18: Unwritten Chapters", audioUrl: "/audio/chapter18.mp3", route: "/chapter18" },
   { id: "chapter19", title: "Chapter 19: A New Resource", audioUrl: "/audio/chapter19.mp3", route: "/chapter19" },
-  { id: "chapter20", title: "Chapter 20", audioUrl: null, route: "/chapter20" },
-  { id: "chapter21", title: "Chapter 21", audioUrl: null, route: "/chapter21" },
+  { id: "chapter20", title: "Chapter 20: The Next Page", audioUrl: null, route: "/chapter20" },
   { id: "acknowledgments", title: "Acknowledgments", audioUrl: "/audio/acknowledgments.mp3", route: "/acknowledgments" },
 ];
 
