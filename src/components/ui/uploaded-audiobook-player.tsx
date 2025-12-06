@@ -36,6 +36,7 @@ const chapters: Chapter[] = [
   { id: "chapter10", title: "Chapter 10: A New Chapter", audioUrl: "/audio/chapter10.mp3", route: "/chapter10" },
   { id: "chapter11", title: "Chapter 11: The Inner Work", audioUrl: "/audio/chapter11.mp3", route: "/chapter11" },
   { id: "chapter12", title: "Chapter 12: Reclaiming Independence", audioUrl: "/audio/chapter12.mp3", route: "/chapter12" },
+  { id: "chapter13", title: "Chapter 13: The Power of Gratitude", audioUrl: "/audio/chapter13.mp3", route: "/chapter13" },
 ];
 
 interface UploadedAudiobookPlayerProps {
