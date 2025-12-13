@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Wind, Thermometer, Brain, BookOpen, Heart, Users, Play, Target, BarChart3, ExternalLink } from "lucide-react";
+import { DashboardAmbientControl, AmbientSoundPlayer } from "@/components/ui/ambient-sound-player";
 
 const Dashboard = () => {
     const [showIntro, setShowIntro] = useState(true);
@@ -327,6 +328,9 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+        
+        {/* Global Ambient Sound Control */}
+        <DashboardAmbientControl />
       </div>
     );
 };
