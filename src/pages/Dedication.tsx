@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, ArrowLeft } from "lucide-react";
-import { UploadedAudiobookPlayer } from "@/components/ui/uploaded-audiobook-player";
+import { ArrowRight, ArrowLeft, Headphones } from "lucide-react";
+import { useOpenAudiobook } from "@/hooks/use-audiobook";
 
 const Dedication = () => {
+    const openAudiobook = useOpenAudiobook();
+    
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-foreground relative overflow-hidden">
             {/* Animated background elements */}
@@ -56,13 +58,18 @@ const Dedication = () => {
                                 </div>
                             </div>
                             
-                            {/* Audiobook Player */}
-                            <div className="mt-12">
-                                <UploadedAudiobookPlayer startChapterId="dedication" />
-                            </div>
-                            
-                            <div className="flex justify-center mt-8">
-                                <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                            {/* Listen to Audiobook Button */}
+                            <div className="flex justify-center gap-4 mt-8">
+                                <Button 
+                                    onClick={() => openAudiobook("dedication")}
+                                    size="lg" 
+                                    className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                                >
+                                    <Headphones className="mr-2 h-5 w-5" />
+                                    Listen to Chapter
+                                </Button>
+                                
+                                <Button asChild size="lg" variant="outline" className="border-orange-500 text-orange-600 hover:bg-orange-50 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
                                     <Link to="/prologue">
                                         Start Reading <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                                     </Link>
