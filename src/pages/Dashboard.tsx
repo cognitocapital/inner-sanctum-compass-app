@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Play, BookOpen, Headphones, SkipForward, Home } from "lucide-react";
+import { Play, BookOpen, Headphones } from "lucide-react";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { ModuleCard } from "@/components/dashboard/ModuleCard";
 import { MODULE_DATA } from "@/components/dashboard/moduleData";
@@ -83,24 +83,22 @@ const Dashboard = () => {
                 Begin Your Journey
                 </Button>
                 
-                <div className="flex gap-4 mt-4">
-                  <Button 
+                <div className="flex justify-center gap-6 mt-6">
+                  <button 
                     onClick={() => setShowIntro(false)}
-                    variant="ghost"
-                    className="text-white/60 hover:text-white hover:bg-white/10"
+                    className="text-white/40 hover:text-white/70 text-sm transition-colors"
                   >
-                    <SkipForward className="mr-2 h-4 w-4" />
                     Skip
-                  </Button>
+                  </button>
                   
-                  <Button 
+                  <span className="text-white/20">|</span>
+                  
+                  <button 
                     onClick={() => navigate('/')}
-                    variant="ghost"
-                    className="text-white/60 hover:text-white hover:bg-white/10"
+                    className="text-white/40 hover:text-white/70 text-sm transition-colors"
                   >
-                    <Home className="mr-2 h-4 w-4" />
                     Return Home
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
