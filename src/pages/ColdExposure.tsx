@@ -1,35 +1,48 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Play, Pause, RotateCcw, Thermometer, Snowflake, Timer, Trophy, TrendingUp, Flame } from "lucide-react";
+import { ArrowLeft, Play, Pause, RotateCcw, Thermometer, Snowflake, Timer, Trophy, TrendingUp, Flame, BookOpen, Zap } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import EvidenceBadge from "@/components/clinical/EvidenceBadge";
 import SafetyPreScreen from "@/components/clinical/SafetyPreScreen";
 import ClinicalDisclaimer from "@/components/clinical/ClinicalDisclaimer";
+import { MobileBottomNav, MobilePageContainer } from "@/components/ui/mobile-nav";
+import { MobileFullScreenModal } from "@/components/ui/mobile-modal";
+import { MobileStatsGrid } from "@/components/ui/mobile-stats-grid";
+import { MobileHeader } from "@/components/ui/mobile-header";
+import { MobileActionCard } from "@/components/ui/mobile-action-card";
+import { cn } from "@/lib/utils";
 
 const coldContraindications = [
-  { id: 'vertigo', question: 'Are you experiencing vertigo or dizziness today?', severity: 'stop' as const, advice: 'Cold exposure may worsen vestibular symptoms. Please skip this session and consult your healthcare provider.' },
-  { id: 'fatigue', question: 'Are you experiencing severe fatigue or exhaustion?', severity: 'caution' as const, advice: 'Consider a shorter session or skip if fatigue is significant. Rest is important for recovery.' },
-  { id: 'cardiac', question: 'Do you have any heart conditions or high blood pressure?', severity: 'stop' as const, advice: 'Cold exposure affects cardiovascular function. Please consult your physician before attempting.' },
-  { id: 'raynauds', question: 'Do you have Raynaud\'s syndrome or circulation issues?', severity: 'stop' as const, advice: 'Cold exposure is contraindicated for circulation disorders. Please skip this activity.' },
-  { id: 'headache', question: 'Are you experiencing a headache or migraine today?', severity: 'caution' as const, advice: 'Cold exposure may trigger or worsen headaches. Consider skipping or using very brief exposure.' },
-  { id: 'recent_injury', question: 'Have you had a recent TBI episode or symptoms flare-up?', severity: 'caution' as const, advice: 'During active symptom phases, gentle rest may be more appropriate than cold exposure.' },
+  { id: 'vertigo', question: 'Are you experiencing vertigo or dizziness today?', severity: 'stop' as const, advice: 'Cold exposure may worsen vestibular symptoms. Please skip this session.' },
+  { id: 'fatigue', question: 'Are you experiencing severe fatigue or exhaustion?', severity: 'caution' as const, advice: 'Consider a shorter session or skip if fatigue is significant.' },
+  { id: 'cardiac', question: 'Do you have any heart conditions or high blood pressure?', severity: 'stop' as const, advice: 'Cold exposure affects cardiovascular function. Please consult your physician.' },
+  { id: 'raynauds', question: 'Do you have Raynaud\'s syndrome or circulation issues?', severity: 'stop' as const, advice: 'Cold exposure is contraindicated for circulation disorders.' },
+  { id: 'headache', question: 'Are you experiencing a headache or migraine today?', severity: 'caution' as const, advice: 'Cold exposure may trigger or worsen headaches.' },
+  { id: 'recent_injury', question: 'Have you had a recent TBI episode or symptoms flare-up?', severity: 'caution' as const, advice: 'During active symptom phases, gentle rest may be more appropriate.' },
+];
+
+const coldProtocols = [
+  { name: "Beginner", duration: 30, tempF: "50-60°F", tempC: "10-15°C", description: "Perfect for newcomers", level: 1 },
+  { name: "Warrior", duration: 60, tempF: "45-55°F", tempC: "7-13°C", description: "Building toughness", level: 2 },
+  { name: "Arctic", duration: 120, tempF: "40-50°F", tempC: "4-10°C", description: "Experienced", level: 3 },
+  { name: "Polar", duration: 180, tempF: "35-45°F", tempC: "2-7°C", description: "Elite protocol", level: 4 }
 ];
 
 const ColdExposure = () => {
   const [showSafetyScreen, setShowSafetyScreen] = useState(true);
+  const [activeTab, setActiveTab] = useState("session");
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
-  const [selectedDuration, setSelectedDuration] = useState(60); // seconds
+  const [selectedDuration, setSelectedDuration] = useState(60);
   const [phase, setPhase] = useState<'prepare' | 'enter' | 'endure' | 'exit'>('prepare');
   const [totalTime, setTotalTime] = useState(0);
   const [streak, setStreak] = useState(0);
   const [personalBest, setPersonalBest] = useState(0);
   const [completedSessions, setCompletedSessions] = useState(0);
-  const [temperature, setTemperature] = useState(50); // Fahrenheit
+  const [showProtocolModal, setShowProtocolModal] = useState(false);
+  const [showScienceModal, setShowScienceModal] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
 
@@ -47,26 +60,17 @@ const ColdExposure = () => {
   }, []);
 
   const phaseInstructions = {
-    prepare: "Take deep breaths and prepare mentally. You've got this! 🧊",
-    enter: "Slowly enter the cold water. Control your breathing. Stay calm. ❄️",
-    endure: "You're doing amazing! Focus on your breath. Mind over matter! 💪",
-    exit: "Well done, ice warrior! You've conquered the cold! 🏆"
+    prepare: "Take deep breaths and prepare mentally 🧊",
+    enter: "Slowly enter the cold water ❄️",
+    endure: "Focus on your breath! 💪",
+    exit: "Well done, ice warrior! 🏆"
   };
-
-  const motivationalMessages = [
-    "Every second in the cold builds your resilience! 🔥",
-    "You're rewiring your nervous system right now! 🧠",
-    "The cold is your teacher, embrace the lesson! 📚",
-    "Your future self is thanking you for this! ⭐",
-    "Discomfort today, strength tomorrow! 💎"
-  ];
 
   useEffect(() => {
     if (isActive && timeLeft > 0) {
       intervalRef.current = setTimeout(() => {
         setTimeLeft(timeLeft - 1);
         
-        // Phase transitions
         if (selectedDuration > 60) {
           if (timeLeft === selectedDuration - 10 && phase === 'prepare') setPhase('enter');
           if (timeLeft === selectedDuration - 20 && phase === 'enter') setPhase('endure');
@@ -78,9 +82,7 @@ const ColdExposure = () => {
     }
 
     return () => {
-      if (intervalRef.current) {
-        clearTimeout(intervalRef.current);
-      }
+      if (intervalRef.current) clearTimeout(intervalRef.current);
     };
   }, [isActive, timeLeft, phase, selectedDuration]);
 
@@ -94,22 +96,14 @@ const ColdExposure = () => {
     setTotalTime(newTotal);
     setStreak(newStreak);
     
-    // Check for personal best
     if (selectedDuration > personalBest) {
       setPersonalBest(selectedDuration);
       localStorage.setItem('coldExposureBest', selectedDuration.toString());
-      toast({
-        title: "New Personal Best! 🏆",
-        description: `${selectedDuration} seconds of pure ice warrior spirit!`,
-      });
+      toast({ title: "New Personal Best! 🏆", description: `${selectedDuration}s of pure ice warrior spirit!` });
     } else {
-      toast({
-        title: "Session Complete! ❄️",
-        description: `${selectedDuration} seconds of cold mastery. Your resilience grows!`,
-      });
+      toast({ title: "Session Complete! ❄️", description: `${selectedDuration}s of cold mastery!` });
     }
     
-    // Save to localStorage
     localStorage.setItem('coldExposureStreak', newStreak.toString());
     localStorage.setItem('coldExposureSessions', newSessions.toString());
     localStorage.setItem('coldExposureTotal', newTotal.toString());
@@ -120,12 +114,11 @@ const ColdExposure = () => {
     setTimeLeft(duration);
     setPhase('prepare');
     setIsActive(true);
+    setShowProtocolModal(false);
+    setActiveTab("session");
   };
 
-  const toggleSession = () => {
-    setIsActive(!isActive);
-  };
-
+  const toggleSession = () => setIsActive(!isActive);
   const resetSession = () => {
     setIsActive(false);
     setTimeLeft(selectedDuration);
@@ -148,330 +141,351 @@ const ColdExposure = () => {
     }
   };
 
-  const coldProtocols = [
-    { name: "Beginner Freeze", duration: 30, tempF: "50-60°F", tempC: "10-15°C", description: "Perfect for ice bath newcomers" },
-    { name: "Warrior's Trial", duration: 60, tempF: "45-55°F", tempC: "7-13°C", description: "Building mental toughness" },
-    { name: "Arctic Challenge", duration: 120, tempF: "40-50°F", tempC: "4-10°C", description: "For experienced cold warriors" },
-    { name: "Polar Mastery", duration: 180, tempF: "35-45°F", tempC: "2-7°C", description: "Elite cold exposure protocol" }
+  const navItems = [
+    { id: "session", label: "Session", icon: <Snowflake className="h-5 w-5" /> },
+    { id: "protocols", label: "Protocols", icon: <Thermometer className="h-5 w-5" /> },
+    { id: "science", label: "Science", icon: <BookOpen className="h-5 w-5" /> },
   ];
 
   // Safety pre-screen
   if (showSafetyScreen) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-900 to-cyan-900 text-white p-8">
-        <div className="max-w-xl mx-auto">
-          <div className="mb-8">
-            <Button asChild variant="ghost" className="pl-0 text-cyan-300 hover:text-white">
-              <Link to="/dashboard">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Yellow Brick Road
-              </Link>
-            </Button>
-          </div>
+      <MobilePageContainer hasBottomNav={false} className="bg-gradient-to-b from-slate-900 via-blue-900 to-cyan-900 text-white">
+        <div className="p-4 md:p-8 max-w-xl mx-auto">
+          <Button asChild variant="ghost" className="pl-0 text-cyan-300 hover:text-white mb-4">
+            <Link to="/dashboard">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              <span className="hidden sm:inline">Back to Dashboard</span>
+            </Link>
+          </Button>
           
-          <div className="text-center mb-8">
-            <Snowflake className="h-12 w-12 text-cyan-400 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-cyan-100 mb-2">Ice Warrior Academy</h1>
+          <div className="text-center mb-6">
+            <Snowflake className="h-10 w-10 text-cyan-400 mx-auto mb-3 animate-pulse" />
+            <h1 className="text-xl font-bold text-cyan-100 mb-2">Ice Warrior Academy</h1>
           </div>
 
-          <div className="mb-6">
+          <div className="mb-4">
             <EvidenceBadge
               level="emerging"
-              domain="Cold Exposure Therapy"
-              description="While acute cold exposure shows neuroprotective effects, chronic cold therapy for TBI recovery has limited evidence. Benefits may include stress resilience and mood regulation."
+              domain="Cold Exposure"
+              description="Emerging evidence for stress resilience. Limited TBI research."
               pubmedId="37138494"
             />
           </div>
 
           <SafetyPreScreen
-            title="Pre-Session Safety Check"
-            description="Cold exposure can affect your nervous system. Let's ensure it's safe for you today."
+            title="Safety Check"
+            description="Let's ensure cold exposure is safe for you today."
             contraindications={coldContraindications}
             onProceed={() => setShowSafetyScreen(false)}
             onSkip={() => window.history.back()}
             accentColor="cyan"
           />
 
-          <ClinicalDisclaimer type="warning" title="Important Notice" className="mt-6">
-            Cold exposure therapy has <strong>emerging evidence</strong> for general wellness but limited TBI-specific research. 
-            Acute hypothermia aids neuroprotection, but chronic cold exposure effects on cognition are mixed. 
-            Always consult your healthcare provider before beginning cold exposure practices.
+          <ClinicalDisclaimer type="warning" title="Notice" className="mt-4">
+            Cold exposure has <strong>emerging evidence</strong> for wellness but limited TBI-specific research.
           </ClinicalDisclaimer>
         </div>
-      </div>
+      </MobilePageContainer>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-900 to-cyan-900 text-white relative overflow-hidden">
-      {/* Animated ice crystals background */}
+    <MobilePageContainer className="bg-gradient-to-b from-slate-900 via-blue-900 to-cyan-900 text-white relative overflow-hidden">
+      {/* Background particles */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-20 left-10 w-3 h-3 bg-cyan-400 rounded-full animate-[float_4s_ease-in-out_infinite] opacity-70"></div>
-        <div className="absolute top-40 right-20 w-2 h-2 bg-blue-300 rounded-full animate-[float_4s_ease-in-out_infinite_1s] opacity-60"></div>
-        <div className="absolute bottom-60 left-1/4 w-2.5 h-2.5 bg-teal-400 rounded-full animate-[float_4s_ease-in-out_infinite_2s] opacity-80"></div>
-        <div className="absolute top-1/3 right-1/4 w-1.5 h-1.5 bg-cyan-300 rounded-full animate-[float_4s_ease-in-out_infinite_1.5s] opacity-50"></div>
-        <div className="absolute bottom-1/3 left-1/3 w-2 h-2 bg-blue-400 rounded-full animate-[float_4s_ease-in-out_infinite_0.5s] opacity-65"></div>
+        {[...Array(5)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-cyan-400/60 rounded-full animate-[float_4s_ease-in-out_infinite]"
+            style={{
+              left: `${15 + i * 20}%`,
+              top: `${20 + (i % 3) * 25}%`,
+              animationDelay: `${i * 0.5}s`
+            }}
+          />
+        ))}
       </div>
 
-      <div className="container mx-auto px-4 py-8 relative z-10">
-        <div className="mb-8">
-          <Button asChild variant="ghost" className="pl-0 text-cyan-300 hover:text-white">
-            <Link to="/dashboard">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Yellow Brick Road
-            </Link>
-          </Button>
-        </div>
-
-        <div className="max-w-6xl mx-auto">
-          {/* Evidence Badge */}
-          <div className="mb-6">
+      <div className="relative z-10">
+        {/* Header */}
+        <MobileHeader
+          title="Ice Warrior Academy"
+          subtitle="Build resilience through cold exposure"
+          backHref="/dashboard"
+          backLabel="Dashboard"
+          accentColor="cyan"
+          icon={
+            <div className="w-full h-full rounded-full bg-gradient-to-b from-cyan-400 to-blue-600 flex items-center justify-center shadow-2xl animate-pulse">
+              <Snowflake className="h-10 w-10 md:h-14 md:w-14 text-white" />
+            </div>
+          }
+        >
+          <div className="mt-4">
             <EvidenceBadge
               level="emerging"
-              domain="Cold Exposure Therapy"
-              description="Emerging evidence for stress resilience and mood regulation. Limited TBI-specific research."
+              domain="Cold Exposure"
+              description="Emerging evidence for stress resilience"
               pubmedId="37138494"
             />
           </div>
+        </MobileHeader>
 
-          <header className="mb-12 text-center animate-fade-in">
-            <div className="relative mb-8 mx-auto w-32 h-32">
-              <div className="w-full h-full rounded-full bg-gradient-to-b from-cyan-400 to-blue-600 flex items-center justify-center shadow-2xl animate-pulse">
-                <Snowflake className="h-16 w-16 text-white animate-spin" style={{animationDuration: '8s'}} />
-              </div>
-              <div className="absolute -top-2 -right-2 w-8 h-8 bg-cyan-300 rounded-full animate-bounce opacity-80"></div>
-              <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-blue-400 rounded-full animate-bounce opacity-70" style={{animationDelay: '0.5s'}}></div>
-            </div>
-            <h1 className="text-5xl font-serif font-bold text-cyan-100 mb-4 drop-shadow-lg">
-              Ice Warrior Academy
-            </h1>
-            <p className="text-xl text-cyan-200 max-w-3xl mx-auto leading-relaxed">
-              Transform your resilience through deliberate cold exposure. Build mental strength, boost immunity, and unlock your inner ice warrior.
-            </p>
-          </header>
+        {/* Stats */}
+        <div className="px-4 mb-6">
+          <MobileStatsGrid
+            accentColor="cyan"
+            stats={[
+              { icon: <Trophy className="h-6 w-6" />, value: streak, label: "Day Streak", iconColor: "text-yellow-400" },
+              { icon: <Timer className="h-6 w-6" />, value: `${personalBest}s`, label: "Best Time", iconColor: "text-cyan-400" },
+              { icon: <Snowflake className="h-6 w-6" />, value: completedSessions, label: "Sessions", iconColor: "text-teal-400" },
+              { icon: <TrendingUp className="h-6 w-6" />, value: `${Math.floor(totalTime / 60)}m`, label: "Total", iconColor: "text-blue-400" },
+            ]}
+          />
+        </div>
 
-          {/* Stats Dashboard */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <Card className="bg-gradient-to-br from-cyan-900/50 to-blue-900/50 border-cyan-500/30 backdrop-blur-sm">
-              <CardContent className="p-4 text-center">
-                <Trophy className="h-8 w-8 text-yellow-400 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-cyan-100">{streak}</div>
-                <div className="text-xs text-cyan-300">Day Streak</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-br from-blue-900/50 to-teal-900/50 border-blue-500/30 backdrop-blur-sm">
-              <CardContent className="p-4 text-center">
-                <Timer className="h-8 w-8 text-cyan-400 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-cyan-100">{personalBest}s</div>
-                <div className="text-xs text-cyan-300">Personal Best</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-br from-teal-900/50 to-cyan-900/50 border-teal-500/30 backdrop-blur-sm">
-              <CardContent className="p-4 text-center">
-                <Snowflake className="h-8 w-8 text-teal-400 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-cyan-100">{completedSessions}</div>
-                <div className="text-xs text-cyan-300">Sessions</div>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-br from-slate-900/50 to-blue-900/50 border-slate-500/30 backdrop-blur-sm">
-              <CardContent className="p-4 text-center">
-                <TrendingUp className="h-8 w-8 text-slate-400 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-cyan-100">{Math.floor(totalTime / 60)}m</div>
-                <div className="text-xs text-cyan-300">Total Time</div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Tabs defaultValue="session" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8 bg-slate-800/50 border-cyan-500/30">
-              <TabsTrigger value="session" className="flex items-center gap-2">
-                <Snowflake className="h-4 w-4" />
-                Active Session
-              </TabsTrigger>
-              <TabsTrigger value="protocols" className="flex items-center gap-2">
-                <Thermometer className="h-4 w-4" />
-                Protocols
-              </TabsTrigger>
-              <TabsTrigger value="science" className="flex items-center gap-2">
-                <Flame className="h-4 w-4" />
-                The Science
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="session" className="space-y-8">
+        {/* Main Content Area */}
+        <div className="px-4 pb-6">
+          {activeTab === "session" && (
+            <div className="space-y-4">
+              {/* Protocol Selection (if no active session) */}
               {!isActive && timeLeft === 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div className="grid grid-cols-2 gap-3">
                   {coldProtocols.map((protocol) => (
-                    <Button
+                    <MobileActionCard
                       key={protocol.name}
+                      title={protocol.name}
+                      description={`${protocol.duration}s • ${protocol.tempC}`}
+                      accentColor="cyan"
                       onClick={() => startSession(protocol.duration)}
-                      variant="outline"
-                      className="h-28 flex-col gap-1 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 border-cyan-500/40 hover:border-cyan-400 transition-all duration-300 hover:scale-105"
-                    >
-                      <div className="text-sm font-bold text-cyan-100">{protocol.name}</div>
-                      <div className="text-xs text-cyan-300">{protocol.duration}s</div>
-                      <div className="text-xs text-cyan-300">{protocol.tempF}</div>
-                      <div className="text-xs text-cyan-400">({protocol.tempC})</div>
-                      <div className="text-xs text-cyan-400">{protocol.description}</div>
-                    </Button>
+                      icon={<Snowflake className="h-6 w-6 text-cyan-400" />}
+                    />
                   ))}
                 </div>
               )}
 
-              <Card className="bg-gradient-to-br from-slate-900/80 to-cyan-900/80 border-cyan-500/30 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="text-3xl font-serif text-center text-cyan-100">
-                    {selectedDuration > 0 ? `${selectedDuration}s Challenge` : 'Select Your Challenge'}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-8">
-                  {selectedDuration > 0 && (
-                    <>
-                      {/* Visual Timer */}
-                      <div className="relative flex items-center justify-center h-80">
-                        <div className="relative w-64 h-64">
-                          {/* Ice crystal background */}
-                          <div 
-                            className="w-full h-full rounded-full border-4 border-cyan-400/50 flex items-center justify-center transition-all duration-1000"
-                            style={{
-                              background: `conic-gradient(from 0deg, rgba(6, 182, 212, 0.8) ${(1 - timeLeft / selectedDuration) * 100}%, rgba(30, 41, 59, 0.3) ${(1 - timeLeft / selectedDuration) * 100}%)`,
-                              boxShadow: isActive ? '0 0 40px rgba(6, 182, 212, 0.6)' : '0 0 20px rgba(6, 182, 212, 0.3)'
-                            }}
-                          >
-                            <div className="bg-slate-900/80 rounded-full p-8 backdrop-blur-sm">
-                              <div className="text-center">
-                                <div className="text-5xl font-bold text-cyan-100 mb-2">
-                                  {formatTime(timeLeft)}
-                                </div>
-                                <div className={`text-lg uppercase tracking-wide font-medium ${getPhaseColor()}`}>
-                                  {phase}
-                                </div>
+              {/* Active Session Timer */}
+              {(isActive || timeLeft > 0) && (
+                <Card className="bg-gradient-to-br from-slate-900/80 to-cyan-900/80 border-cyan-500/30 backdrop-blur-sm">
+                  <CardContent className="p-4 md:p-6 space-y-6">
+                    {/* Timer Display */}
+                    <div className="relative flex items-center justify-center">
+                      <div className="relative w-48 h-48 md:w-64 md:h-64">
+                        <div 
+                          className="w-full h-full rounded-full border-4 border-cyan-400/50 flex items-center justify-center transition-all duration-1000"
+                          style={{
+                            background: `conic-gradient(from 0deg, rgba(6, 182, 212, 0.8) ${(1 - timeLeft / selectedDuration) * 100}%, rgba(30, 41, 59, 0.3) ${(1 - timeLeft / selectedDuration) * 100}%)`,
+                            boxShadow: isActive ? '0 0 40px rgba(6, 182, 212, 0.6)' : '0 0 20px rgba(6, 182, 212, 0.3)'
+                          }}
+                        >
+                          <div className="bg-slate-900/80 rounded-full p-6 md:p-8 backdrop-blur-sm">
+                            <div className="text-center">
+                              <div className="text-4xl md:text-5xl font-bold text-cyan-100 mb-1">
+                                {formatTime(timeLeft)}
+                              </div>
+                              <div className={cn("text-sm md:text-lg uppercase tracking-wide font-medium", getPhaseColor())}>
+                                {phase}
                               </div>
                             </div>
                           </div>
-                          
-                          {/* Floating ice particles */}
-                          <div className="absolute inset-0 pointer-events-none">
-                            <div className={`absolute top-4 left-8 w-2 h-2 bg-cyan-300 rounded-full transition-all duration-1000 ${isActive ? 'animate-bounce opacity-80' : 'opacity-30'}`}></div>
-                            <div className={`absolute top-12 right-6 w-1.5 h-1.5 bg-blue-300 rounded-full transition-all duration-1000 ${isActive ? 'animate-pulse opacity-70' : 'opacity-20'}`}></div>
-                            <div className={`absolute bottom-8 left-12 w-2.5 h-2.5 bg-teal-300 rounded-full transition-all duration-1000 ${isActive ? 'animate-ping opacity-60' : 'opacity-25'}`}></div>
-                          </div>
                         </div>
                       </div>
+                    </div>
 
-                      {/* Instructions and Motivation */}
-                      <div className="text-center space-y-4">
-                        <div className="text-xl text-cyan-100">
-                          {phaseInstructions[phase]}
-                        </div>
-                        {isActive && (
-                          <div className="text-sm text-cyan-300 italic animate-pulse">
-                            {motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)]}
-                          </div>
-                        )}
-                      </div>
+                    {/* Phase Instructions */}
+                    <div className="text-center">
+                      <p className="text-lg md:text-xl text-cyan-100">{phaseInstructions[phase]}</p>
+                    </div>
 
-                      {/* Controls */}
-                      <div className="flex justify-center gap-4">
-                        <Button 
-                          onClick={toggleSession}
-                          size="lg"
-                          className="min-w-32 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500"
-                        >
-                          {isActive ? (
-                            <>
-                              <Pause className="mr-2 h-5 w-5" />
-                              Pause
-                            </>
-                          ) : (
-                            <>
-                              <Play className="mr-2 h-5 w-5" />
-                              {timeLeft === selectedDuration ? 'Start' : 'Resume'}
-                            </>
-                          )}
-                        </Button>
-                        <Button 
-                          onClick={resetSession}
-                          variant="outline"
-                          size="lg"
-                          className="border-cyan-500/50 hover:border-cyan-400"
-                        >
-                          <RotateCcw className="mr-2 h-5 w-5" />
-                          Reset
-                        </Button>
-                      </div>
-                    </>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
+                    {/* Controls */}
+                    <div className="flex justify-center gap-3">
+                      <Button 
+                        onClick={toggleSession}
+                        size="lg"
+                        className="flex-1 max-w-[140px] bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500"
+                      >
+                        {isActive ? <Pause className="mr-2 h-5 w-5" /> : <Play className="mr-2 h-5 w-5" />}
+                        {isActive ? 'Pause' : timeLeft === selectedDuration ? 'Start' : 'Resume'}
+                      </Button>
+                      <Button 
+                        onClick={resetSession}
+                        variant="outline"
+                        size="lg"
+                        className="border-cyan-500/50 hover:border-cyan-400"
+                      >
+                        <RotateCcw className="h-5 w-5" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          )}
 
-            <TabsContent value="protocols" className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
+          {/* Desktop Tabs Content */}
+          <div className="hidden md:block">
+            {activeTab === "protocols" && (
+              <div className="grid md:grid-cols-2 gap-4">
                 {coldProtocols.map((protocol, index) => (
-                  <Card key={protocol.name} className="bg-gradient-to-br from-slate-900/80 to-cyan-900/50 border-cyan-500/30 backdrop-blur-sm">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-3 text-cyan-100">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                          index === 0 ? 'bg-green-500' : 
-                          index === 1 ? 'bg-yellow-500' : 
-                          index === 2 ? 'bg-orange-500' : 'bg-red-500'
-                        }`}>
+                  <Card key={protocol.name} className="bg-gradient-to-br from-slate-900/80 to-cyan-900/50 border-cyan-500/30">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="flex items-center gap-3 text-cyan-100 text-lg">
+                        <div className={cn(
+                          "w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold text-white",
+                          index === 0 ? 'bg-green-500' : index === 1 ? 'bg-yellow-500' : index === 2 ? 'bg-orange-500' : 'bg-red-500'
+                        )}>
                           {index + 1}
                         </div>
                         {protocol.name}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="text-cyan-200">{protocol.description}</div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-cyan-300">Duration: {protocol.duration}s</span>
-                        <div className="text-cyan-300">
-                          <div>Temp: {protocol.tempF}</div>
-                          <div className="text-xs text-cyan-400">({protocol.tempC})</div>
-                        </div>
+                    <CardContent className="space-y-3">
+                      <p className="text-cyan-200 text-sm">{protocol.description}</p>
+                      <div className="flex justify-between text-xs text-cyan-300">
+                        <span>{protocol.duration}s</span>
+                        <span>{protocol.tempC}</span>
                       </div>
-                      <Button 
-                        onClick={() => startSession(protocol.duration)}
-                        className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500"
-                      >
-                        Start {protocol.name}
+                      <Button onClick={() => startSession(protocol.duration)} className="w-full bg-gradient-to-r from-cyan-600 to-blue-600">
+                        Start
                       </Button>
                     </CardContent>
                   </Card>
                 ))}
               </div>
-            </TabsContent>
+            )}
 
-            <TabsContent value="science" className="space-y-6">
-              <Card className="bg-gradient-to-br from-slate-900/80 to-cyan-900/50 border-cyan-500/30 backdrop-blur-sm">
+            {activeTab === "science" && (
+              <Card className="bg-gradient-to-br from-slate-900/80 to-cyan-900/50 border-cyan-500/30">
                 <CardHeader>
-                  <CardTitle className="text-2xl text-cyan-100">The Science of Cold Exposure</CardTitle>
+                  <CardTitle className="text-xl text-cyan-100">The Science of Cold Exposure</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6 text-cyan-200">
+                <CardContent className="space-y-4 text-cyan-200 text-sm">
                   <div>
-                    <h3 className="text-lg font-semibold text-cyan-100 mb-2">🧠 Neurological Benefits</h3>
-                    <p>Cold exposure activates the sympathetic nervous system, increasing norepinephrine levels by up to 530%. This enhances focus, alertness, and mood while building stress resilience.</p>
+                    <h3 className="font-semibold text-cyan-100 mb-1">🧠 Neurological Benefits</h3>
+                    <p>Cold activates the sympathetic nervous system, increasing norepinephrine by up to 530%.</p>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-cyan-100 mb-2">🔥 Metabolic Enhancement</h3>
-                    <p>Regular cold exposure activates brown adipose tissue, increasing metabolic rate and improving insulin sensitivity. Studies show up to 15% increase in metabolic rate.</p>
+                    <h3 className="font-semibold text-cyan-100 mb-1">🔥 Metabolic Enhancement</h3>
+                    <p>Regular cold exposure activates brown adipose tissue, increasing metabolic rate up to 15%.</p>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-cyan-100 mb-2">🛡️ Immune System Boost</h3>
-                    <p>Cold therapy increases white blood cell count and activates the immune system. Regular practitioners show 29% fewer sick days.</p>
+                    <h3 className="font-semibold text-cyan-100 mb-1">🛡️ Immune System</h3>
+                    <p>Cold therapy increases white blood cell count. Regular practitioners show 29% fewer sick days.</p>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-cyan-100 mb-2">💪 Recovery & Inflammation</h3>
-                    <p>Cold exposure reduces inflammation markers and accelerates recovery. Professional athletes use cold therapy to reduce muscle soreness by up to 20%.</p>
+                    <h3 className="font-semibold text-cyan-100 mb-1">💪 Recovery</h3>
+                    <p>Reduces inflammation and accelerates recovery. Athletes reduce muscle soreness by up to 20%.</p>
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
-          </Tabs>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav
+        items={navItems}
+        activeId={activeTab}
+        onSelect={(id) => {
+          if (id === "protocols") {
+            setShowProtocolModal(true);
+          } else if (id === "science") {
+            setShowScienceModal(true);
+          } else {
+            setActiveTab(id);
+          }
+        }}
+        accentColor="cyan"
+      />
+
+      {/* Protocols Modal (Mobile) */}
+      <MobileFullScreenModal
+        isOpen={showProtocolModal}
+        onClose={() => setShowProtocolModal(false)}
+        title="Cold Protocols"
+        accentColor="cyan"
+      >
+        <div className="p-4 space-y-4">
+          {coldProtocols.map((protocol, index) => (
+            <Card key={protocol.name} className="bg-gradient-to-br from-slate-900/80 to-cyan-900/50 border-cyan-500/30">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className={cn(
+                    "w-10 h-10 rounded-full flex items-center justify-center text-lg font-bold text-white",
+                    index === 0 ? 'bg-green-500' : index === 1 ? 'bg-yellow-500' : index === 2 ? 'bg-orange-500' : 'bg-red-500'
+                  )}>
+                    {index + 1}
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-cyan-100">{protocol.name}</h3>
+                    <p className="text-xs text-cyan-300">{protocol.description}</p>
+                  </div>
+                </div>
+                <div className="flex justify-between text-sm text-cyan-300 mb-3">
+                  <span>⏱️ {protocol.duration}s</span>
+                  <span>🌡️ {protocol.tempC}</span>
+                </div>
+                <Button 
+                  onClick={() => startSession(protocol.duration)} 
+                  className="w-full bg-gradient-to-r from-cyan-600 to-blue-600"
+                >
+                  <Play className="mr-2 h-4 w-4" />
+                  Start Protocol
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </MobileFullScreenModal>
+
+      {/* Science Modal (Mobile) */}
+      <MobileFullScreenModal
+        isOpen={showScienceModal}
+        onClose={() => setShowScienceModal(false)}
+        title="The Science"
+        accentColor="cyan"
+      >
+        <div className="p-4 space-y-4">
+          <Card className="bg-gradient-to-br from-slate-900/80 to-cyan-900/50 border-cyan-500/30">
+            <CardContent className="p-4 space-y-4 text-cyan-200">
+              <div>
+                <h3 className="font-semibold text-cyan-100 mb-2 flex items-center gap-2">
+                  <Zap className="h-5 w-5 text-yellow-400" />
+                  Neurological Benefits
+                </h3>
+                <p className="text-sm">Cold activates the sympathetic nervous system, increasing norepinephrine by up to 530%. This enhances focus, alertness, and mood.</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-cyan-100 mb-2 flex items-center gap-2">
+                  <Flame className="h-5 w-5 text-orange-400" />
+                  Metabolic Enhancement
+                </h3>
+                <p className="text-sm">Regular cold exposure activates brown adipose tissue, increasing metabolic rate up to 15% and improving insulin sensitivity.</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-cyan-100 mb-2 flex items-center gap-2">
+                  <Trophy className="h-5 w-5 text-green-400" />
+                  Immune System
+                </h3>
+                <p className="text-sm">Cold therapy increases white blood cell count. Regular practitioners show 29% fewer sick days.</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-cyan-100 mb-2 flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-blue-400" />
+                  Recovery & Inflammation
+                </h3>
+                <p className="text-sm">Reduces inflammation and accelerates recovery. Athletes reduce muscle soreness by up to 20%.</p>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <ClinicalDisclaimer type="info" title="Research Note">
+            While cold exposure shows promising benefits, always consult your healthcare provider, especially for TBI recovery.
+          </ClinicalDisclaimer>
+        </div>
+      </MobileFullScreenModal>
+    </MobilePageContainer>
   );
 };
 
