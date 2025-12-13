@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Wind, Thermometer, Brain, BookOpen, Heart, Users, Play } from "lucide-react";
+import { ArrowLeft, Wind, Thermometer, Brain, BookOpen, Heart, Users, Play, Target, BarChart3, ExternalLink } from "lucide-react";
 
 const Dashboard = () => {
     const [showIntro, setShowIntro] = useState(true);
@@ -244,6 +244,41 @@ const Dashboard = () => {
                 </div>
                 <Button asChild className="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
                   <Link to="/gratitude">Open Your Heart</Link>
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* INCOG 2.0 Cognitive Rehabilitation - NEW */}
+            <Card className="hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-emerald-900/80 to-teal-900/80 border-emerald-500/30 group" style={{animationDelay: '500ms'}}>
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto mb-4 p-4 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full w-fit group-hover:scale-110 transition-all duration-300 shadow-lg">
+                  <Target className="h-10 w-10 text-white" />
+                </div>
+                <CardTitle className="text-2xl font-serif text-emerald-100">INCOG 2.0 Modules</CardTitle>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800">
+                  Evidence-Based Rehab
+                </span>
+              </CardHeader>
+              <CardContent className="text-center space-y-4">
+                <p className="text-emerald-200 text-base leading-relaxed">
+                  Interactive cognitive rehabilitation tools aligned with INCOG 2.0 international guidelines, with built-in progress tracking and links to professional assessments.
+                </p>
+                <div className="space-y-2 text-sm text-emerald-300">
+                  <div className="flex items-center justify-center gap-2">
+                    <BarChart3 className="w-3 h-3" /> Goal Management Training (GMT)
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <BarChart3 className="w-3 h-3" /> Spaced Repetition Memory
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <BarChart3 className="w-3 h-3" /> Music & Rhythm Therapy
+                  </div>
+                  <div className="flex items-center justify-center gap-2">
+                    <ExternalLink className="w-3 h-3" /> ADL Errorless Learning
+                  </div>
+                </div>
+                <Button asChild className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+                  <Link to="/incog">Open INCOG Modules</Link>
                 </Button>
               </CardContent>
             </Card>

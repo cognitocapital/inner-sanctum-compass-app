@@ -2,11 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, Target, Music, Dumbbell, Brain, Repeat } from 'lucide-react';
+import { ArrowLeft, Target, Music, Dumbbell, Brain, Repeat, ClipboardList } from 'lucide-react';
 import GMTDashboard from '@/components/gmt/GMTDashboard';
 import MusicTherapy from '@/components/therapy/MusicTherapy';
 import ADLTraining from '@/components/adl/ADLTraining';
 import SpacedRepetition from '@/components/memory/SpacedRepetition';
+import ProfessionalAssessments from '@/components/assessments/ProfessionalAssessments';
 
 const INCOG = () => {
   return (
@@ -15,10 +16,10 @@ const INCOG = () => {
       <div className="sticky top-0 z-50 bg-gray-900/95 backdrop-blur border-b border-orange-500/20">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/">
+            <Link to="/dashboard">
               <Button variant="ghost" className="text-orange-400 hover:text-orange-300">
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Home
+                Back to Dashboard
               </Button>
             </Link>
             <div className="flex items-center gap-2">
@@ -44,38 +45,41 @@ const INCOG = () => {
 
         {/* Module Tabs */}
         <Tabs defaultValue="gmt" className="space-y-6">
-          <TabsList className="grid grid-cols-4 bg-gray-800/50 p-1">
+          <TabsList className="grid grid-cols-5 bg-gray-800/50 p-1">
             <TabsTrigger 
               value="gmt" 
-              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs sm:text-sm"
+              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs"
             >
-              <Target className="w-4 h-4 mr-1 sm:mr-2" />
-              <span className="hidden sm:inline">GMT</span>
-              <span className="sm:hidden">GMT</span>
+              <Target className="w-4 h-4 mr-1 hidden sm:block" />
+              GMT
             </TabsTrigger>
             <TabsTrigger 
               value="music"
-              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs sm:text-sm"
+              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs"
             >
-              <Music className="w-4 h-4 mr-1 sm:mr-2" />
-              <span className="hidden sm:inline">Music</span>
-              <span className="sm:hidden">Music</span>
+              <Music className="w-4 h-4 mr-1 hidden sm:block" />
+              Music
             </TabsTrigger>
             <TabsTrigger 
               value="memory"
-              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs sm:text-sm"
+              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs"
             >
-              <Repeat className="w-4 h-4 mr-1 sm:mr-2" />
-              <span className="hidden sm:inline">Memory</span>
-              <span className="sm:hidden">Mem</span>
+              <Repeat className="w-4 h-4 mr-1 hidden sm:block" />
+              Memory
             </TabsTrigger>
             <TabsTrigger 
               value="adl"
-              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs sm:text-sm"
+              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs"
             >
-              <Dumbbell className="w-4 h-4 mr-1 sm:mr-2" />
-              <span className="hidden sm:inline">ADL</span>
-              <span className="sm:hidden">ADL</span>
+              <Dumbbell className="w-4 h-4 mr-1 hidden sm:block" />
+              ADL
+            </TabsTrigger>
+            <TabsTrigger 
+              value="assessments"
+              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs"
+            >
+              <ClipboardList className="w-4 h-4 mr-1 hidden sm:block" />
+              Assess
             </TabsTrigger>
           </TabsList>
 
@@ -93,6 +97,10 @@ const INCOG = () => {
 
           <TabsContent value="adl" className="text-white">
             <ADLTraining />
+          </TabsContent>
+
+          <TabsContent value="assessments" className="text-white">
+            <ProfessionalAssessments />
           </TabsContent>
         </Tabs>
       </div>
