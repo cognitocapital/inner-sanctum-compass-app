@@ -8,56 +8,62 @@ export interface AmbientSoundConfig {
   color: string;
 }
 
-// Attribution: Sounds by TabletopAudio.com (royalty-free for personal use)
 export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
-  breath: {
-    id: "breath",
-    name: "Phoenix Breath",
-    description: "Ocean waves for breathing calm",
-    audioUrl: "https://sounds.tabletopaudio.com/unknown_open_ocean.mp3",
+  phoenix: {
+    id: "phoenix",
+    name: "Phoenix Flames",
+    description: "Warm crackling fire for transformation & renewal",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/10/30/audio_946d5e7455.mp3",
     color: "from-orange-500 to-red-600"
   },
-  ice: {
-    id: "ice",
-    name: "Ice Warrior",
-    description: "Rain sounds for stress adaptation",
-    audioUrl: "https://sounds.tabletopaudio.com/43785848_rainy_village.mp3",
-    color: "from-cyan-400 to-blue-600"
+  ocean: {
+    id: "ocean",
+    name: "Ocean Waves",
+    description: "Gentle waves for breathing & relaxation",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/01/18/audio_d0c6ff1bab.mp3",
+    color: "from-blue-400 to-cyan-500"
   },
-  tbi: {
-    id: "tbi",
-    name: "TBI Focus",
-    description: "Forest ambience for cognitive focus",
-    audioUrl: "https://sounds.tabletopaudio.com/24511510_forest_day.mp3",
+  rain: {
+    id: "rain",
+    name: "Gentle Rain",
+    description: "Soft rainfall for focus & calm",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/05/13/audio_257112355f.mp3",
+    color: "from-slate-400 to-blue-500"
+  },
+  forest: {
+    id: "forest",
+    name: "Forest Sanctuary",
+    description: "Birds & nature for grounding",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/08/04/audio_2dae668d83.mp3",
     color: "from-emerald-500 to-green-600"
   },
-  mind: {
-    id: "mind",
-    name: "Phoenix Mind",
-    description: "Secret garden for meditation",
-    audioUrl: "https://sounds.tabletopaudio.com/22266143_secret_garden.mp3",
+  wind: {
+    id: "wind",
+    name: "Arctic Wind",
+    description: "Crisp wind for cold exposure focus",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/03/10/audio_6be98be124.mp3",
+    color: "from-cyan-400 to-blue-600"
+  },
+  bowls: {
+    id: "bowls",
+    name: "Tibetan Bowls",
+    description: "Singing bowls for deep meditation",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/02/23/audio_ea70ad08e3.mp3",
     color: "from-purple-500 to-indigo-600"
   },
-  heart: {
-    id: "heart",
-    name: "Phoenix Heart",
-    description: "Lush nature for emotional healing",
-    audioUrl: "https://sounds.tabletopaudio.com/43532608_lush_world.mp3",
-    color: "from-pink-500 to-red-500"
-  },
-  incog: {
-    id: "incog",
-    name: "INCOG Rehab",
-    description: "Night forest for rehab immersion",
-    audioUrl: "https://sounds.tabletopaudio.com/unknown_forest_night.mp3",
+  night: {
+    id: "night",
+    name: "Night Ambience",
+    description: "Crickets & night sounds for rest",
+    audioUrl: "https://cdn.pixabay.com/audio/2021/08/04/audio_bb630c2a50.mp3",
     color: "from-indigo-600 to-purple-800"
   },
-  circle: {
-    id: "circle",
-    name: "Phoenix Circle",
-    description: "Surreal forest for community serenity",
-    audioUrl: "https://sounds.tabletopaudio.com/41936625_mushroom_forest.mp3",
-    color: "from-teal-500 to-emerald-600"
+  space: {
+    id: "space",
+    name: "Cosmic Drift",
+    description: "Ethereal tones for cognitive training",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3",
+    color: "from-violet-500 to-fuchsia-600"
   }
 };
 
