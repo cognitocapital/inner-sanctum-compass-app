@@ -3,6 +3,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+import { AudioProvider } from "@/contexts/AudioContext";
+import { GlobalAmbientControl } from "@/components/ui/global-ambient-control";
+import { GlobalAudiobookPlayer } from "@/components/ui/global-audiobook-player";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import BreathingExercise from "./pages/BreathingExercise";
@@ -43,9 +47,35 @@ import INCOG from "./pages/INCOG";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
+// Create a context for audiobook visibility
+export const useAudiobookPlayer = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [startChapter, setStartChapter] = useState("dedication");
+  
+  const showPlayer = (chapterId?: string) => {
+    if (chapterId) setStartChapter(chapterId);
+    setIsVisible(true);
+  };
+  
+  const hidePlayer = () => setIsVisible(false);
+  
+  return { isVisible, startChapter, showPlayer, hidePlayer };
+};
+
+const AppContent = () => {
+  const [audiobookVisible, setAudiobookVisible] = useState(false);
+  const [startChapterId, setStartChapterId] = useState("dedication");
+
+  // Expose global function for opening audiobook
+  if (typeof window !== "undefined") {
+    (window as any).openAudiobook = (chapterId?: string) => {
+      if (chapterId) setStartChapterId(chapterId);
+      setAudiobookVisible(true);
+    };
+  }
+
+  return (
+    <>
       <Toaster />
       <Sonner />
       <BrowserRouter>
@@ -86,10 +116,27 @@ const App = () => (
           <Route path="/gratitude" element={<GratitudeJourney />} />
           <Route path="/unwritten" element={<UnwrittenChapters />} />
           <Route path="/resources" element={<Resources />} />
-          {/* More chapter routes will be added as chapters are created */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
+      
+      {/* Global Audio Controls - Always Available */}
+      <GlobalAmbientControl />
+      <GlobalAudiobookPlayer 
+        isVisible={audiobookVisible}
+        onClose={() => setAudiobookVisible(false)}
+        startChapterId={startChapterId}
+      />
+    </>
+  );
+};
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <AudioProvider>
+        <AppContent />
+      </AudioProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

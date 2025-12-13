@@ -1,11 +1,26 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Play, BookOpen } from "lucide-react";
-import { DashboardAmbientControl } from "@/components/ui/ambient-sound-player";
+import { Play, BookOpen, Headphones } from "lucide-react";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { ModuleCard } from "@/components/dashboard/ModuleCard";
 import { MODULE_DATA } from "@/components/dashboard/moduleData";
+import { useOpenAudiobook } from "@/hooks/use-audiobook";
+
+// Audiobook trigger button component
+const AudiobookButton = () => {
+  const openAudiobook = useOpenAudiobook();
+  return (
+    <Button 
+      variant="ghost" 
+      className="text-orange-400 hover:text-orange-300 hover:bg-orange-500/10"
+      onClick={() => openAudiobook()}
+    >
+      <Headphones className="mr-2 h-4 w-4" />
+      Listen to Audiobook
+    </Button>
+  );
+};
 
 const Dashboard = () => {
   const [showIntro, setShowIntro] = useState(true);
@@ -124,6 +139,8 @@ const Dashboard = () => {
         {/* Quick Actions Footer */}
         <div className="mt-20 text-center">
           <div className="inline-flex flex-wrap items-center justify-center gap-4 p-4 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10">
+            <AudiobookButton />
+            <div className="w-px h-6 bg-white/20" />
             <Button 
               asChild 
               variant="ghost" 
@@ -153,9 +170,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      
-      {/* Global Ambient Sound Control */}
-      <DashboardAmbientControl />
     </div>
   );
 };
