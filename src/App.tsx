@@ -39,6 +39,7 @@ import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
 import NeuroRehab from "./pages/NeuroRehab";
 import TBIPrograms from "./pages/TBIPrograms";
+import INCOG from "./pages/INCOG";
 
 const queryClient = new QueryClient();
 
@@ -55,6 +56,7 @@ const App = () => (
           <Route path="/cold-exposure" element={<ColdExposure />} />
           <Route path="/neuro-rehab" element={<NeuroRehab />} />
           <Route path="/tbi-programs" element={<TBIPrograms />} />
+          <Route path="/incog" element={<INCOG />} />
           <Route path="/dedication" element={<Dedication />} />
           <Route path="/prologue" element={<Prologue />} />
           <Route path="/introduction" element={<Introduction />} />
