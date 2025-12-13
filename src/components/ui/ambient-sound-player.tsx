@@ -13,55 +13,55 @@ export interface AmbientSoundConfig {
   color: string;
 }
 
-// Curated free ambient sounds (royalty-free URLs from freesound.org alternatives or embedded)
+// Curated free ambient sounds from Archive.org (stable, royalty-free)
 export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
   breath: {
     id: "breath",
     name: "Ocean Waves",
     description: "Gentle ocean waves for breathing exercises",
-    audioUrl: "https://cdn.pixabay.com/audio/2022/01/18/audio_d0c6ff1bab.mp3",
+    audioUrl: "https://archive.org/download/naturesounds-soundtheraphy/Birds%20With%20Ocean%20Waves%20on%20the%20Beach.mp3",
     color: "from-orange-500 to-red-500"
   },
   ice: {
     id: "ice",
     name: "Arctic Wind",
     description: "Crisp wind sounds for cold exposure focus",
-    audioUrl: "https://cdn.pixabay.com/audio/2022/03/10/audio_6be98be124.mp3",
+    audioUrl: "https://archive.org/download/78_wind-around-house-or-barn_gbia0409024a/WIND%20%28Around%20House%20or%20Barn%29.mp3",
     color: "from-cyan-500 to-blue-600"
   },
   computer: {
     id: "computer",
     name: "Neural Focus",
     description: "Ambient electronic tones for cognitive training",
-    audioUrl: "https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3",
+    audioUrl: "https://archive.org/download/freefloatingmusic-aic2011/11%20-%20Benjamin%20Dauer%20Alluvial.mp3",
     color: "from-indigo-500 to-blue-600"
   },
   mind: {
     id: "mind",
     name: "Deep Meditation",
     description: "Tibetan bowls for mental clarity",
-    audioUrl: "https://cdn.pixabay.com/audio/2022/02/23/audio_ea70ad08e3.mp3",
+    audioUrl: "https://archive.org/download/RestorativeSleepMusicBinauralBeatsSleepInTheClouds432Hz/Powerful%20Om%20Chanting%20432%20Hz%20-%20Tibetan%20Om%20Meditation.mp3",
     color: "from-purple-500 to-red-600"
   },
   heart: {
     id: "heart",
     name: "Gentle Chimes",
     description: "Soft wind chimes for emotional healing",
-    audioUrl: "https://cdn.pixabay.com/audio/2021/08/04/audio_bb630c2a50.mp3",
+    audioUrl: "https://archive.org/download/CelticChristmasAWindhamHillCollection2001/02%20Lisa%20Lynne_%20Circle%20Of%20Joy.mp3",
     color: "from-pink-500 to-red-500"
   },
   incog: {
     id: "incog",
     name: "Focus Frequencies",
     description: "Binaural beats for cognitive rehabilitation",
-    audioUrl: "https://cdn.pixabay.com/audio/2022/10/30/audio_f9d5ccb507.mp3",
+    audioUrl: "https://archive.org/download/1hr-30-min-theta-binaural-beat-7-hz-pure-tone/1hr%2030%20min%20Theta%20Binaural%20Beat%20%287Hz%29%20-%20Pure%20Tone.mp3",
     color: "from-emerald-500 to-teal-600"
   },
   circle: {
     id: "circle",
     name: "Community Warmth",
     description: "Ambient nature sounds for connection",
-    audioUrl: "https://cdn.pixabay.com/audio/2022/08/04/audio_2dae668d83.mp3",
+    audioUrl: "https://archive.org/download/RestorativeSleepMusicBinauralBeatsSleepInTheClouds432Hz/Musique%20Paisible%20Nature%20%20Sons%20de%20la%20Nature%20%28Anti%20Stress%29%20-%20432%20Hz.mp3",
     color: "from-teal-500 to-blue-600"
   }
 };
