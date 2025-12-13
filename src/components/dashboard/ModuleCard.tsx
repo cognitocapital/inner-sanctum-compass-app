@@ -2,15 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Volume2, VolumeX, Sparkles } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { ModuleIcon } from "./ModuleIcon";
 
 export interface ModuleCardProps {
   title: string;
   subtitle: string;
   description: string;
   features: string[];
-  icon: LucideIcon;
+  iconVariant: "breath" | "ice" | "computer" | "mind" | "heart" | "incog" | "circle";
   href: string;
   buttonText: string;
   gradient: string;
@@ -28,7 +27,7 @@ export const ModuleCard = ({
   subtitle,
   description,
   features,
-  icon: Icon,
+  iconVariant,
   href,
   buttonText,
   gradient,
@@ -45,7 +44,7 @@ export const ModuleCard = ({
     <div
       className={cn(
         "group relative rounded-2xl overflow-hidden transition-all duration-700",
-        "hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] hover:-translate-y-3",
+        "hover:shadow-[0_25px_80px_-15px_rgba(0,0,0,0.6)] hover:-translate-y-4",
         "animate-fade-in backdrop-blur-xl",
         gradient
       )}
@@ -67,62 +66,47 @@ export const ModuleCard = ({
         "absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-500",
         isHovered ? "opacity-100" : "opacity-0"
       )}>
-        {[...Array(6)].map((_, i) => (
+        {[...Array(8)].map((_, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 bg-white/40 rounded-full animate-float"
             style={{
-              left: `${15 + i * 15}%`,
-              top: `${20 + (i % 3) * 25}%`,
-              animationDelay: `${i * 0.3}s`,
-              animationDuration: `${3 + i * 0.5}s`
+              left: `${10 + i * 12}%`,
+              top: `${15 + (i % 4) * 20}%`,
+              animationDelay: `${i * 0.2}s`,
+              animationDuration: `${3 + i * 0.4}s`
             }}
           />
         ))}
       </div>
 
+      {/* Corner accent */}
+      <div className={cn(
+        "absolute top-0 right-0 w-24 h-24 transition-all duration-500",
+        "bg-gradient-to-bl from-white/10 to-transparent",
+        isHovered ? "opacity-100" : "opacity-50"
+      )} />
+
       {/* Content */}
-      <div className="relative z-10 p-6 flex flex-col h-full">
-        {/* Header with icon */}
+      <div className="relative z-10 p-6 flex flex-col h-full min-h-[420px]">
+        {/* Header with enhanced icon */}
         <div className="text-center mb-5">
-          <div className="relative mx-auto mb-4">
-            {/* Icon glow ring */}
-            <div
-              className={cn(
-                "absolute inset-0 rounded-full blur-xl transition-all duration-500",
-                iconGradient,
-                isHovered ? "opacity-60 scale-150" : "opacity-30 scale-100"
-              )}
-            />
-            
-            {/* Icon container */}
-            <div
-              className={cn(
-                "relative w-16 h-16 mx-auto rounded-2xl flex items-center justify-center",
-                "bg-gradient-to-br shadow-2xl",
-                "transition-all duration-500 group-hover:scale-110 group-hover:rotate-3",
-                iconGradient
-              )}
-            >
-              <Icon className="h-8 w-8 text-white drop-shadow-lg" strokeWidth={1.5} />
-              
-              {/* Sparkle effect */}
-              <Sparkles 
-                className={cn(
-                  "absolute -top-1 -right-1 h-4 w-4 text-yellow-300 transition-all duration-300",
-                  isHovered ? "opacity-100 scale-100" : "opacity-0 scale-50"
-                )} 
-              />
-            </div>
+          <div className="relative mx-auto mb-4 flex items-center justify-center">
+            <ModuleIcon variant={iconVariant} isHovered={isHovered} />
           </div>
 
-          <h3 className={cn("text-2xl font-serif font-bold mb-1 tracking-tight", textColor)}>
+          <h3 className={cn(
+            "text-2xl font-serif font-bold mb-2 tracking-tight transition-all duration-300",
+            textColor,
+            isHovered && "scale-105"
+          )}>
             {title}
           </h3>
           
           <span className={cn(
-            "inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider",
-            badgeColor
+            "inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300",
+            badgeColor,
+            isHovered && "scale-105"
           )}>
             {badgeText}
           </span>
@@ -134,22 +118,23 @@ export const ModuleCard = ({
         </p>
 
         {/* Features list */}
-        <div className="flex-1 space-y-2 mb-5">
+        <div className="flex-1 space-y-2.5 mb-5">
           {features.map((feature, index) => (
             <div
               key={index}
               className={cn(
-                "flex items-center gap-2 text-sm transition-all duration-300",
+                "flex items-center gap-3 text-sm transition-all duration-300",
                 subtextColor,
                 isHovered && "translate-x-1"
               )}
               style={{ transitionDelay: `${index * 50}ms` }}
             >
               <div className={cn(
-                "w-1.5 h-1.5 rounded-full bg-gradient-to-r shrink-0",
-                iconGradient
+                "w-1.5 h-1.5 rounded-full bg-gradient-to-r shrink-0 transition-all duration-300",
+                iconGradient,
+                isHovered && "scale-150"
               )} />
-              <span>{feature}</span>
+              <span className="opacity-90">{feature}</span>
             </div>
           ))}
         </div>
@@ -158,8 +143,8 @@ export const ModuleCard = ({
         <Button
           asChild
           className={cn(
-            "w-full font-semibold shadow-lg transition-all duration-300",
-            "hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]",
+            "w-full font-semibold shadow-lg transition-all duration-300 py-6",
+            "hover:shadow-2xl hover:scale-[1.03] active:scale-[0.98]",
             "bg-gradient-to-r text-white border-0",
             iconGradient
           )}
@@ -168,14 +153,18 @@ export const ModuleCard = ({
         </Button>
       </div>
 
-      {/* Bottom accent line */}
+      {/* Bottom accent line with animation */}
       <div
         className={cn(
           "absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r transition-all duration-500",
-          iconGradient,
-          isHovered ? "opacity-100" : "opacity-50"
+          iconGradient
         )}
-      />
+      >
+        <div className={cn(
+          "h-full bg-gradient-to-r from-transparent via-white/50 to-transparent transition-transform duration-1000",
+          isHovered ? "translate-x-full" : "-translate-x-full"
+        )} />
+      </div>
     </div>
   );
 };

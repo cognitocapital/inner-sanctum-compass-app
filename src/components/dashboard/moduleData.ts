@@ -1,4 +1,3 @@
-import { Wind, Thermometer, Brain, Heart, Users, Target } from "lucide-react";
 import type { ModuleCardProps } from "./ModuleCard";
 
 export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
@@ -12,7 +11,7 @@ export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
       "HRV Training",
       "Stress Dissolution"
     ],
-    icon: Wind,
+    iconVariant: "breath",
     href: "/breathing",
     buttonText: "Begin Breathing",
     gradient: "bg-gradient-to-br from-orange-950/90 via-red-950/80 to-orange-900/70 border border-orange-500/30",
@@ -33,7 +32,7 @@ export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
       "Cold Shower Challenges",
       "Mental Resilience"
     ],
-    icon: Thermometer,
+    iconVariant: "ice",
     href: "/cold-exposure",
     buttonText: "Enter Academy",
     gradient: "bg-gradient-to-br from-slate-900/90 via-cyan-950/80 to-blue-950/70 border border-cyan-500/30",
@@ -54,7 +53,7 @@ export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
       "VR Therapy Programs",
       "Clinical Evidence"
     ],
-    icon: Brain,
+    iconVariant: "computer",
     href: "/tbi-programs",
     buttonText: "Explore Programs",
     gradient: "bg-gradient-to-br from-indigo-950/90 via-blue-950/80 to-indigo-900/70 border border-indigo-500/30",
@@ -75,7 +74,7 @@ export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
       "Progress Analytics",
       "Professional Tools"
     ],
-    icon: Brain,
+    iconVariant: "mind",
     href: "/mind",
     buttonText: "Train Your Mind",
     gradient: "bg-gradient-to-br from-purple-950/90 via-fuchsia-950/80 to-red-950/70 border border-purple-500/30",
@@ -96,7 +95,7 @@ export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
       "Trauma Processing",
       "Emotional Regulation"
     ],
-    icon: Heart,
+    iconVariant: "heart",
     href: "/gratitude",
     buttonText: "Open Your Heart",
     gradient: "bg-gradient-to-br from-pink-950/90 via-rose-950/80 to-red-950/70 border border-pink-500/30",
@@ -117,7 +116,7 @@ export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
       "Music & Rhythm",
       "ADL Errorless Learning"
     ],
-    icon: Target,
+    iconVariant: "incog",
     href: "/incog",
     buttonText: "Open Modules",
     gradient: "bg-gradient-to-br from-emerald-950/90 via-teal-950/80 to-green-950/70 border border-emerald-500/30",
@@ -138,7 +137,7 @@ export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
       "Weekly Circles",
       "Mentorship"
     ],
-    icon: Users,
+    iconVariant: "circle",
     href: "/unwritten",
     buttonText: "Join the Circle",
     gradient: "bg-gradient-to-br from-teal-950/90 via-blue-950/80 to-cyan-950/70 border border-teal-500/30",
