@@ -66,7 +66,7 @@ const Dedication = () => {
                                     className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                                 >
                                     <Headphones className="mr-2 h-5 w-5" />
-                                    Listen to Chapter
+                                    Start Listening
                                 </Button>
                                 
                                 <Button asChild size="lg" variant="outline" className="border-orange-500 text-orange-600 hover:bg-orange-50 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
