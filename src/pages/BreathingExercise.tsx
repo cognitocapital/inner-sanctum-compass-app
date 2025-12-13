@@ -7,6 +7,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Play, Pause, RotateCcw, Volume2, VolumeX, Flame, Trophy, Timer, TrendingUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import RetentionBreathing from "@/components/breathing/RetentionBreathing";
+import EvidenceBadge from "@/components/clinical/EvidenceBadge";
+import ClinicalDisclaimer from "@/components/clinical/ClinicalDisclaimer";
 
 const BreathingExercise = () => {
   const [isActive, setIsActive] = useState(false);
@@ -176,6 +178,16 @@ const BreathingExercise = () => {
         </div>
 
         <div className="max-w-6xl mx-auto">
+          {/* Evidence Badge */}
+          <div className="mb-6">
+            <EvidenceBadge
+              level="research"
+              domain="Breathing & HRV Training"
+              description="Controlled breathing improves autonomic regulation and emotional control. Research supports benefits for anxiety and stress management in TBI."
+              pubmedId="37138494"
+            />
+          </div>
+
           <header className="mb-12 text-center animate-fade-in">
             <div className="relative mb-8 mx-auto w-32 h-32">
               <div className="w-full h-full rounded-full bg-gradient-to-b from-orange-400 to-red-600 flex items-center justify-center shadow-2xl animate-pulse">

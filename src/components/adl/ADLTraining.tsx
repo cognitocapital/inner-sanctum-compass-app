@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@/components/ui/badge';
 import { 
-  Dumbbell, ChefHat, Pill, ShowerHead, MapPin, 
-  CheckCircle2, ChevronRight, ChevronLeft, Trophy, Brain, RotateCcw 
+  ChefHat, Pill, ShowerHead, MapPin, 
+  CheckCircle2, ChevronRight, ChevronLeft, Trophy, RotateCcw 
 } from 'lucide-react';
+import EvidenceBadge from '@/components/clinical/EvidenceBadge';
 
 interface ADLStep {
   id: string;
@@ -158,14 +159,13 @@ const ADLTraining = () => {
   if (!activeModuleId) {
     return (
       <div className="space-y-6">
-        {/* INCOG Badge */}
-        <div className="flex items-center gap-2">
-          <Badge variant="outline" className="border-orange-500 text-orange-500">
-            <Brain className="w-3 h-3 mr-1" />
-            INCOG 2.0 Level B Evidence
-          </Badge>
-          <span className="text-sm text-muted-foreground">Errorless Learning ADL Training</span>
-        </div>
+        {/* INCOG Evidence Badge */}
+        <EvidenceBadge
+          level="B"
+          domain="Errorless Learning ADL Training"
+          description="Errorless learning reduces frustration and builds procedural skills. Moderate evidence for daily living activities."
+          pubmedId="32855596"
+        />
 
         <div className="grid gap-4 md:grid-cols-2">
           {modules.map((module) => {

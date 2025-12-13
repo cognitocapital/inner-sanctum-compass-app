@@ -6,8 +6,21 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Play, Pause, RotateCcw, Thermometer, Snowflake, Timer, Trophy, TrendingUp, Flame } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import EvidenceBadge from "@/components/clinical/EvidenceBadge";
+import SafetyPreScreen from "@/components/clinical/SafetyPreScreen";
+import ClinicalDisclaimer from "@/components/clinical/ClinicalDisclaimer";
+
+const coldContraindications = [
+  { id: 'vertigo', question: 'Are you experiencing vertigo or dizziness today?', severity: 'stop' as const, advice: 'Cold exposure may worsen vestibular symptoms. Please skip this session and consult your healthcare provider.' },
+  { id: 'fatigue', question: 'Are you experiencing severe fatigue or exhaustion?', severity: 'caution' as const, advice: 'Consider a shorter session or skip if fatigue is significant. Rest is important for recovery.' },
+  { id: 'cardiac', question: 'Do you have any heart conditions or high blood pressure?', severity: 'stop' as const, advice: 'Cold exposure affects cardiovascular function. Please consult your physician before attempting.' },
+  { id: 'raynauds', question: 'Do you have Raynaud\'s syndrome or circulation issues?', severity: 'stop' as const, advice: 'Cold exposure is contraindicated for circulation disorders. Please skip this activity.' },
+  { id: 'headache', question: 'Are you experiencing a headache or migraine today?', severity: 'caution' as const, advice: 'Cold exposure may trigger or worsen headaches. Consider skipping or using very brief exposure.' },
+  { id: 'recent_injury', question: 'Have you had a recent TBI episode or symptoms flare-up?', severity: 'caution' as const, advice: 'During active symptom phases, gentle rest may be more appropriate than cold exposure.' },
+];
 
 const ColdExposure = () => {
+  const [showSafetyScreen, setShowSafetyScreen] = useState(true);
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   const [selectedDuration, setSelectedDuration] = useState(60); // seconds
@@ -142,6 +155,53 @@ const ColdExposure = () => {
     { name: "Polar Mastery", duration: 180, tempF: "35-45°F", tempC: "2-7°C", description: "Elite cold exposure protocol" }
   ];
 
+  // Safety pre-screen
+  if (showSafetyScreen) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-900 to-cyan-900 text-white p-8">
+        <div className="max-w-xl mx-auto">
+          <div className="mb-8">
+            <Button asChild variant="ghost" className="pl-0 text-cyan-300 hover:text-white">
+              <Link to="/dashboard">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Yellow Brick Road
+              </Link>
+            </Button>
+          </div>
+          
+          <div className="text-center mb-8">
+            <Snowflake className="h-12 w-12 text-cyan-400 mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-cyan-100 mb-2">Ice Warrior Academy</h1>
+          </div>
+
+          <div className="mb-6">
+            <EvidenceBadge
+              level="emerging"
+              domain="Cold Exposure Therapy"
+              description="While acute cold exposure shows neuroprotective effects, chronic cold therapy for TBI recovery has limited evidence. Benefits may include stress resilience and mood regulation."
+              pubmedId="37138494"
+            />
+          </div>
+
+          <SafetyPreScreen
+            title="Pre-Session Safety Check"
+            description="Cold exposure can affect your nervous system. Let's ensure it's safe for you today."
+            contraindications={coldContraindications}
+            onProceed={() => setShowSafetyScreen(false)}
+            onSkip={() => window.history.back()}
+            accentColor="cyan"
+          />
+
+          <ClinicalDisclaimer type="warning" title="Important Notice" className="mt-6">
+            Cold exposure therapy has <strong>emerging evidence</strong> for general wellness but limited TBI-specific research. 
+            Acute hypothermia aids neuroprotection, but chronic cold exposure effects on cognition are mixed. 
+            Always consult your healthcare provider before beginning cold exposure practices.
+          </ClinicalDisclaimer>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-900 to-cyan-900 text-white relative overflow-hidden">
       {/* Animated ice crystals background */}
@@ -164,6 +224,16 @@ const ColdExposure = () => {
         </div>
 
         <div className="max-w-6xl mx-auto">
+          {/* Evidence Badge */}
+          <div className="mb-6">
+            <EvidenceBadge
+              level="emerging"
+              domain="Cold Exposure Therapy"
+              description="Emerging evidence for stress resilience and mood regulation. Limited TBI-specific research."
+              pubmedId="37138494"
+            />
+          </div>
+
           <header className="mb-12 text-center animate-fade-in">
             <div className="relative mb-8 mx-auto w-32 h-32">
               <div className="w-full h-full rounded-full bg-gradient-to-b from-cyan-400 to-blue-600 flex items-center justify-center shadow-2xl animate-pulse">
