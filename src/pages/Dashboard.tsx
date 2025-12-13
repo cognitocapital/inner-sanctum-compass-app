@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Play, BookOpen, Headphones } from "lucide-react";
+import { Play, BookOpen, Headphones, SkipForward } from "lucide-react";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { ModuleCard } from "@/components/dashboard/ModuleCard";
 import { MODULE_DATA } from "@/components/dashboard/moduleData";
@@ -23,6 +23,7 @@ const AudiobookButton = () => {
 };
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [showIntro, setShowIntro] = useState(true);
   const [videoStarted, setVideoStarted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -80,12 +81,21 @@ const Dashboard = () => {
               >
                 <Play className="mr-3 h-6 w-6" />
                 Begin Your Journey
-              </Button>
+                </Button>
+                
+                <Button 
+                  onClick={() => navigate('/')}
+                  variant="ghost"
+                  className="text-white/60 hover:text-white hover:bg-white/10 mt-4"
+                >
+                  <SkipForward className="mr-2 h-4 w-4" />
+                  Skip & Return Home
+                </Button>
+              </div>
             </div>
-          </div>
-        )}
-      </div>
-    );
+          )}
+        </div>
+      );
   }
 
   return (
