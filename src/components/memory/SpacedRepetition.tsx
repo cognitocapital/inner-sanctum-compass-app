@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Brain, RefreshCw, CheckCircle, XCircle, Clock, Sparkles, Trophy } from 'lucide-react';
+import { RefreshCw, CheckCircle, XCircle, Clock, Sparkles, Trophy } from 'lucide-react';
+import EvidenceBadge from '@/components/clinical/EvidenceBadge';
 
 interface FlashCard {
   id: string;
@@ -200,13 +201,12 @@ const SpacedRepetition = () => {
   if (dueCards.length === 0) {
     return (
       <div className="space-y-6">
-        <div className="flex items-center gap-2">
-          <Badge variant="outline" className="border-orange-500 text-orange-500">
-            <Brain className="w-3 h-3 mr-1" />
-            INCOG 2.0 Level A Evidence
-          </Badge>
-          <span className="text-sm text-muted-foreground">Spaced Repetition Memory Training</span>
-        </div>
+        <EvidenceBadge
+          level="A"
+          domain="Spaced Repetition Memory Training"
+          description="Spaced retrieval practice optimizes memory consolidation. Level A evidence for internal memory strategies."
+          pubmedId="32855596"
+        />
 
         <Card className="bg-muted/30">
           <CardContent className="pt-8 text-center">
@@ -229,14 +229,13 @@ const SpacedRepetition = () => {
 
   return (
     <div className="space-y-6">
-      {/* INCOG Badge */}
-      <div className="flex items-center gap-2">
-        <Badge variant="outline" className="border-orange-500 text-orange-500">
-          <Brain className="w-3 h-3 mr-1" />
-          INCOG 2.0 Level A Evidence
-        </Badge>
-        <span className="text-sm text-muted-foreground">Spaced Repetition Memory Training</span>
-      </div>
+      {/* INCOG Evidence Badge */}
+      <EvidenceBadge
+        level="A"
+        domain="Spaced Repetition Memory Training"
+        description="Spaced retrieval practice optimizes memory consolidation. Level A evidence for internal memory strategies."
+        pubmedId="32855596"
+      />
 
       {/* Progress */}
       <div className="space-y-2">

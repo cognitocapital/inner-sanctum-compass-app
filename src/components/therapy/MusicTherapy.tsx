@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
-import { Play, Pause, Volume2, VolumeX, Music, Brain, Heart, Waves, Sun, Moon } from 'lucide-react';
+import { Play, Pause, Volume2, VolumeX, Heart, Waves, Sun, Moon, Brain } from 'lucide-react';
+import EvidenceBadge from '@/components/clinical/EvidenceBadge';
 
 interface AudioTrack {
   id: string;
@@ -115,14 +116,13 @@ const MusicTherapy = () => {
 
   return (
     <div className="space-y-6">
-      {/* INCOG Badge */}
-      <div className="flex items-center gap-2">
-        <Badge variant="outline" className="border-orange-500 text-orange-500">
-          <Music className="w-3 h-3 mr-1" />
-          INCOG 2.0 Level A Evidence
-        </Badge>
-        <span className="text-sm text-muted-foreground">Music & Rhythm Therapy</span>
-      </div>
+      {/* INCOG Evidence Badge */}
+      <EvidenceBadge
+        level="A"
+        domain="Music & Rhythm Therapy"
+        description="Rhythmic auditory stimulation and music therapy improve motor, cognitive, and emotional outcomes after TBI."
+        pubmedId="32180108"
+      />
 
       {/* Now Playing */}
       {activeTrack && (

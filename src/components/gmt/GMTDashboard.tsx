@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Target, CheckCircle2, RefreshCw, Eye, Brain, Sparkles } from 'lucide-react';
+import { Target, CheckCircle2, RefreshCw, Eye, Sparkles } from 'lucide-react';
+import EvidenceBadge from '@/components/clinical/EvidenceBadge';
 
 interface Goal {
   id: string;
@@ -72,14 +73,13 @@ const GMTDashboard = () => {
 
   return (
     <div className="space-y-6">
-      {/* INCOG Badge */}
-      <div className="flex items-center gap-2">
-        <Badge variant="outline" className="border-orange-500 text-orange-500">
-          <Brain className="w-3 h-3 mr-1" />
-          INCOG 2.0 Level A Evidence
-        </Badge>
-        <span className="text-sm text-muted-foreground">Goal Management Training</span>
-      </div>
+      {/* INCOG Evidence Badge */}
+      <EvidenceBadge
+        level="A"
+        domain="Goal Management Training"
+        description="GMT improves executive function through structured goal-setting and self-monitoring. Strong evidence from multiple RCTs."
+        pubmedId="32855596"
+      />
 
       {/* Phase Tracker */}
       <Card className="bg-gradient-to-br from-orange-500/10 to-orange-600/5 border-orange-500/30">
