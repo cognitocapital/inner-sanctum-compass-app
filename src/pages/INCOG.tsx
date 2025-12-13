@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ArrowLeft, Target, Music, Dumbbell, Brain, Sparkles } from 'lucide-react';
+import { ArrowLeft, Target, Music, Dumbbell, Brain, Repeat } from 'lucide-react';
 import GMTDashboard from '@/components/gmt/GMTDashboard';
 import MusicTherapy from '@/components/therapy/MusicTherapy';
+import ADLTraining from '@/components/adl/ADLTraining';
+import SpacedRepetition from '@/components/memory/SpacedRepetition';
 
 const INCOG = () => {
   return (
@@ -43,27 +44,38 @@ const INCOG = () => {
 
         {/* Module Tabs */}
         <Tabs defaultValue="gmt" className="space-y-6">
-          <TabsList className="grid grid-cols-3 bg-gray-800/50 p-1">
+          <TabsList className="grid grid-cols-4 bg-gray-800/50 p-1">
             <TabsTrigger 
               value="gmt" 
-              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white"
+              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs sm:text-sm"
             >
-              <Target className="w-4 h-4 mr-2" />
-              GMT
+              <Target className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">GMT</span>
+              <span className="sm:hidden">GMT</span>
             </TabsTrigger>
             <TabsTrigger 
               value="music"
-              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white"
+              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs sm:text-sm"
             >
-              <Music className="w-4 h-4 mr-2" />
-              Music Therapy
+              <Music className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Music</span>
+              <span className="sm:hidden">Music</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="memory"
+              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs sm:text-sm"
+            >
+              <Repeat className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">Memory</span>
+              <span className="sm:hidden">Mem</span>
             </TabsTrigger>
             <TabsTrigger 
               value="adl"
-              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white"
+              className="data-[state=active]:bg-orange-500 data-[state=active]:text-white text-xs sm:text-sm"
             >
-              <Dumbbell className="w-4 h-4 mr-2" />
-              ADL Training
+              <Dumbbell className="w-4 h-4 mr-1 sm:mr-2" />
+              <span className="hidden sm:inline">ADL</span>
+              <span className="sm:hidden">ADL</span>
             </TabsTrigger>
           </TabsList>
 
@@ -75,40 +87,12 @@ const INCOG = () => {
             <MusicTherapy />
           </TabsContent>
 
+          <TabsContent value="memory" className="text-white">
+            <SpacedRepetition />
+          </TabsContent>
+
           <TabsContent value="adl" className="text-white">
-            <Card className="bg-gray-800/50 border-orange-500/30">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-orange-500" />
-                  ADL Training Module
-                </CardTitle>
-                <CardDescription>Activities of Daily Living - Coming Soon</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">
-                  The ADL (Activities of Daily Living) training module will incorporate 
-                  errorless learning techniques for practical skill rehabilitation, including:
-                </p>
-                <ul className="mt-4 space-y-2 text-sm text-gray-400">
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full" />
-                    Kitchen safety and meal preparation
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full" />
-                    Personal hygiene routines
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full" />
-                    Medication management
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full" />
-                    Community navigation skills
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
+            <ADLTraining />
           </TabsContent>
         </Tabs>
       </div>
