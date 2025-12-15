@@ -1,729 +1,320 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Brain, Activity, TrendingUp, FileText, Download, AlertTriangle, CheckCircle, ExternalLink, MapPin, Stethoscope } from "lucide-react";
+import { ArrowLeft, Brain, Activity, TrendingUp, FileText, Download, ExternalLink, MapPin, Stethoscope, Sparkles, BookOpen } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { motion } from "framer-motion";
+import EvidenceBadge from "@/components/clinical/EvidenceBadge";
+import { AnimatedNeuralBrain } from "@/components/mind/AnimatedNeuralBrain";
+import { ClinicalAssessments } from "@/components/mind/ClinicalAssessments";
+import { NBackGame } from "@/components/mind/NBackGame";
+import { NormativeTrendGraph, NORMATIVE_BENCHMARKS } from "@/components/mind/NormativeTrendGraph";
+import { MindGamification, defaultAchievements } from "@/components/mind/MindGamification";
 
-interface AssessmentData {
-  date: string;
-  memoryRecall: number; // 0-7 digit span
-  attentionDuration: number; // 0-30 minutes
-  moodRegulation: number; // 1-10 PHQ-9 adapted
-  anxietyLevel: number; // 1-10 GAD-7 adapted
-  vertigoSeverity: number; // 1-10
-  balanceTime: number; // 0-30 seconds
-  adlScore: number; // 0-5 tasks
-  fatigueLevel: number; // 1-10
-  cognitiveIndex: number; // calculated composite
+interface AssessmentResult {
+  phq9: number;
+  gad7: number;
+  moca: number;
+  abs: number;
+  timestamp: string;
 }
 
 const MindTraining = () => {
   const { toast } = useToast();
-  
-  const [currentAssessment, setCurrentAssessment] = useState({
-    memoryRecall: 0,
-    attentionDuration: 0,
-    moodRegulation: 5,
-    anxietyLevel: 5,
-    vertigoSeverity: 5,
-    balanceTime: 0,
-    adlScore: 0,
-    fatigueLevel: 5,
-    date: new Date().toISOString().split('T')[0]
-  });
-
-  const [assessmentHistory, setAssessmentHistory] = useState<AssessmentData[]>(() => {
-    const saved = localStorage.getItem('tbiAssessmentHistory');
+  const [activeTab, setActiveTab] = useState("overview");
+  const [assessmentResults, setAssessmentResults] = useState<AssessmentResult[]>(() => {
+    const saved = localStorage.getItem('mindAssessmentResults');
     return saved ? JSON.parse(saved) : [];
   });
+  const [gameScores, setGameScores] = useState<{ score: number; accuracy: number; date: string }[]>(() => {
+    const saved = localStorage.getItem('mindGameScores');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [streak, setStreak] = useState(() => {
+    const saved = localStorage.getItem('mindStreak');
+    return saved ? parseInt(saved) : 0;
+  });
+  const [totalXP, setTotalXP] = useState(() => {
+    const saved = localStorage.getItem('mindXP');
+    return saved ? parseInt(saved) : 0;
+  });
+  const [achievements, setAchievements] = useState(() => {
+    const saved = localStorage.getItem('mindAchievements');
+    return saved ? JSON.parse(saved) : defaultAchievements;
+  });
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const activeRegions = assessmentResults.length > 0 
+    ? ['attention', 'memory', 'executive', 'emotional'] 
+    : ['attention'];
 
   useEffect(() => {
-    localStorage.setItem('tbiAssessmentHistory', JSON.stringify(assessmentHistory));
-  }, [assessmentHistory]);
+    localStorage.setItem('mindAssessmentResults', JSON.stringify(assessmentResults));
+    localStorage.setItem('mindGameScores', JSON.stringify(gameScores));
+    localStorage.setItem('mindStreak', streak.toString());
+    localStorage.setItem('mindXP', totalXP.toString());
+    localStorage.setItem('mindAchievements', JSON.stringify(achievements));
+  }, [assessmentResults, gameScores, streak, totalXP, achievements]);
 
-  const handleInputChange = (field: string, value: string) => {
-    setCurrentAssessment(prev => ({
-      ...prev,
-      [field]: parseInt(value) || 0
-    }));
-  };
-
-  const calculateCognitiveIndex = (assessment: any) => {
-    // Normalize attention duration to 0-7 scale to match memory
-    const normalizedAttention = (assessment.attentionDuration / 30) * 7;
-    return ((assessment.memoryRecall + normalizedAttention) / 2);
-  };
-
-  const submitAssessment = () => {
-    // Validation
-    const requiredFields = ['memoryRecall', 'attentionDuration', 'moodRegulation', 'anxietyLevel', 'vertigoSeverity', 'balanceTime', 'adlScore', 'fatigueLevel'];
-    const missingFields = requiredFields.filter(field => 
-      currentAssessment[field as keyof typeof currentAssessment] === 0 && field !== 'memoryRecall' && field !== 'attentionDuration' && field !== 'balanceTime' && field !== 'adlScore'
-    );
-
-    if (missingFields.length > 0) {
-      toast({
-        title: "Assessment Incomplete",
-        description: "Please complete all assessment fields",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const cognitiveIndex = calculateCognitiveIndex(currentAssessment);
-    const newAssessment: AssessmentData = {
-      ...currentAssessment,
-      cognitiveIndex: parseFloat(cognitiveIndex.toFixed(1))
-    };
-
-    setAssessmentHistory(prev => [newAssessment, ...prev]);
+  const handleAssessmentComplete = (results: AssessmentResult) => {
+    setAssessmentResults(prev => [...prev, results]);
+    setTotalXP(prev => prev + 50);
+    setStreak(prev => prev + 1);
     
-    // Generate clinical alerts
-    const alerts = [];
-    if (newAssessment.anxietyLevel >= 8) alerts.push("High anxiety - consider specialist consultation");
-    if (newAssessment.moodRegulation <= 3) alerts.push("Low mood - monitor closely");
-    if (newAssessment.vertigoSeverity >= 8) alerts.push("Severe vertigo - vestibular therapy recommended");
-    if (newAssessment.cognitiveIndex <= 2) alerts.push("Cognitive concerns - neuropsych evaluation suggested");
+    // Check achievements
+    const newAchievements = [...achievements];
+    const firstAssessment = newAchievements.find(a => a.id === 'first_assessment');
+    if (firstAssessment && !firstAssessment.earned) {
+      firstAssessment.earned = true;
+      firstAssessment.earnedDate = new Date().toISOString();
+    }
+    const allAssessments = newAchievements.find(a => a.id === 'all_assessments');
+    if (allAssessments && !allAssessments.earned) {
+      allAssessments.earned = true;
+      allAssessments.earnedDate = new Date().toISOString();
+    }
+    setAchievements(newAchievements);
 
     toast({
-      title: "Assessment Completed",
-      description: `Cognitive Index: ${cognitiveIndex.toFixed(1)}/7${alerts.length > 0 ? ' - Clinical alerts generated' : ''}`,
-    });
-
-    // Reset form
-    setCurrentAssessment({
-      memoryRecall: 0,
-      attentionDuration: 0,
-      moodRegulation: 5,
-      anxietyLevel: 5,
-      vertigoSeverity: 5,
-      balanceTime: 0,
-      adlScore: 0,
-      fatigueLevel: 5,
-      date: new Date().toISOString().split('T')[0]
+      title: "Assessment Complete",
+      description: `PHQ-9: ${results.phq9} | GAD-7: ${results.gad7} | MoCA: ${results.moca} | ABS: ${results.abs}`,
     });
   };
 
-  const getAverage = (field: keyof AssessmentData) => {
-    if (assessmentHistory.length === 0) return "0";
-    const sum = assessmentHistory.reduce((acc, assessment) => acc + (assessment[field] as number), 0);
-    return (sum / assessmentHistory.length).toFixed(1);
-  };
-
-  const exportData = () => {
-    const headers = [
-      'Date', 'Memory Recall (0-7)', 'Attention Duration (min)', 'Mood (1-10)', 
-      'Anxiety (1-10)', 'Vertigo (1-10)', 'Balance (sec)', 'ADL (0-5)', 
-      'Fatigue (1-10)', 'Cognitive Index'
-    ];
+  const handleGameComplete = (score: number, accuracy: number) => {
+    const newScore = { score, accuracy, date: new Date().toISOString().split('T')[0] };
+    setGameScores(prev => [...prev, newScore]);
+    setTotalXP(prev => prev + score);
     
-    const csvContent = [
-      headers.join(','),
-      ...assessmentHistory.map(assessment => 
-        [
-          assessment.date,
-          assessment.memoryRecall,
-          assessment.attentionDuration,
-          assessment.moodRegulation,
-          assessment.anxietyLevel,
-          assessment.vertigoSeverity,
-          assessment.balanceTime,
-          assessment.adlScore,
-          assessment.fatigueLevel,
-          assessment.cognitiveIndex
-        ].join(',')
-      )
-    ].join('\n');
+    toast({
+      title: "Game Complete!",
+      description: `Score: ${score} | Accuracy: ${accuracy.toFixed(0)}%`,
+    });
+  };
 
-    const blob = new Blob([csvContent], { type: 'text/csv' });
+  const exportReport = () => {
+    const report = {
+      generatedAt: new Date().toISOString(),
+      assessments: assessmentResults,
+      gameScores,
+      streak,
+      totalXP,
+      achievements: achievements.filter((a: any) => a.earned)
+    };
+    
+    const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `TBI_Assessment_${new Date().toISOString().split('T')[0]}.csv`;
-    document.body.appendChild(a);
+    a.download = `Phoenix_Mind_Report_${new Date().toISOString().split('T')[0]}.json`;
     a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-
-    toast({
-      title: "Data Exported",
-      description: "Assessment data exported for clinical review",
-    });
+    
+    toast({ title: "Report Exported", description: "Clinical data exported for telehealth review" });
   };
 
-  const practitionerLogin = () => {
-    const password = prompt("Enter practitioner access code:");
-    if (password === "BIRU2025") {
-      setIsAuthenticated(true);
-      toast({
-        title: "Practitioner Access Granted",
-        description: "Advanced analytics and patient data access enabled",
-      });
-    } else {
-      toast({
-        title: "Access Denied",
-        description: "Invalid practitioner credentials",
-        variant: "destructive"
-      });
-    }
-  };
+  const level = Math.floor(totalXP / 200) + 1;
+
+  // Generate trend data from results
+  const cognitiveData = assessmentResults.map(r => ({
+    date: new Date(r.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    value: Math.round((30 - r.moca) / 3), // Simplified cognitive index
+  }));
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
-      {/* Animated background elements inspired by phoenix flames */}
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-orange-950/20 to-gray-900 text-white relative overflow-hidden">
+      {/* Animated background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Primary flame particles */}
-        <div className="absolute top-20 left-10 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-80 shadow-lg shadow-orange-500/50"></div>
-        <div className="absolute top-40 right-20 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1s] opacity-60 shadow-lg shadow-orange-500/40"></div>
-        <div className="absolute bottom-60 left-1/4 w-2.5 h-2.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_2s] opacity-70 shadow-lg shadow-orange-500/45"></div>
-        <div className="absolute bottom-40 right-1/3 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_3s] opacity-50 shadow-lg shadow-orange-500/35"></div>
-        <div className="absolute top-1/3 left-1/6 w-1.5 h-1.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.5s] opacity-45 shadow-lg shadow-orange-500/30"></div>
-        <div className="absolute bottom-1/3 right-1/6 w-1 h-1 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_2.5s] opacity-35 shadow-lg shadow-orange-500/25"></div>
-        <div className="absolute top-2/3 right-1/5 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.5s] opacity-55 shadow-lg shadow-orange-500/40"></div>
-        
-        {/* Additional ember particles */}
-        <div className="absolute top-32 left-1/5 w-1 h-1 bg-yellow-400 rounded-full animate-[float_4s_ease-in-out_infinite_4s] opacity-40"></div>
-        <div className="absolute top-56 right-1/4 w-1.5 h-1.5 bg-red-400 rounded-full animate-[float_4s_ease-in-out_infinite_5s] opacity-35"></div>
-        <div className="absolute bottom-72 left-1/3 w-1 h-1 bg-yellow-400 rounded-full animate-[float_4s_ease-in-out_infinite_6s] opacity-30"></div>
-        <div className="absolute bottom-24 right-1/6 w-1.5 h-1.5 bg-orange-500 rounded-full animate-[float_4s_ease-in-out_infinite_7s] opacity-45"></div>
-        <div className="absolute top-1/4 right-1/8 w-1 h-1 bg-red-500 rounded-full animate-[float_4s_ease-in-out_infinite_8s] opacity-40"></div>
-        
-        {/* Subtle flame trails */}
-        <div className="absolute top-16 left-1/2 w-0.5 h-8 bg-gradient-to-t from-orange-500/60 to-transparent animate-[float_3s_ease-in-out_infinite_3.5s] opacity-30"></div>
-        <div className="absolute bottom-32 right-1/2 w-0.5 h-6 bg-gradient-to-t from-orange-500/50 to-transparent animate-[float_3s_ease-in-out_infinite_4.5s] opacity-25"></div>
+        {[...Array(12)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-orange-500/40 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -20, 0],
+              opacity: [0.2, 0.6, 0.2],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
       </div>
 
-      <div className="container mx-auto px-4 py-8 relative z-10">
-        <div className="mb-8">
+      <div className="container mx-auto px-4 py-6 relative z-10">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
           <Button asChild variant="ghost" className="text-orange-300 hover:text-orange-100">
             <Link to="/dashboard">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Dashboard
+              Dashboard
             </Link>
           </Button>
+          <div className="flex gap-2">
+            <EvidenceBadge level="A" source="INCOG 2.0" pmid="37673101" />
+            <Badge className="bg-cyan-600/80 text-cyan-100">2025 NINDS</Badge>
+          </div>
         </div>
 
-        <header className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-orange-100 mb-4">
-            Mind Academy - Brain Injury Rehabilitation Assessment
+        {/* Hero Section */}
+        <header className="text-center mb-8">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex justify-center mb-4"
+          >
+            <AnimatedNeuralBrain 
+              activeRegions={activeRegions} 
+              size="md" 
+              showLabels 
+            />
+          </motion.div>
+          <h1 className="text-3xl md:text-4xl font-bold text-orange-100 mb-2">
+            Phoenix Mind Academy
           </h1>
-          <p className="text-lg text-orange-200 max-w-3xl mx-auto mb-6">
-            Evidence-based assessment tool for traumatic brain injury rehabilitation. 
-            Clinically validated metrics aligned with BIRU protocols and international standards.
+          <p className="text-orange-200/80 max-w-2xl mx-auto">
+            Clinical self-tracking with 2025 NINDS classification, Canadian mental health protocols, and UAMS agitation guidelines.
           </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Badge variant="outline" className="bg-orange-800/50 text-orange-200 border-orange-300">
-              PHQ-9 Adapted
-            </Badge>
-            <Badge variant="outline" className="bg-orange-800/50 text-orange-200 border-orange-300">
-              GAD-7 Compatible
-            </Badge>
-            <Badge variant="outline" className="bg-orange-800/50 text-orange-200 border-orange-300">
-              FIM Aligned
-            </Badge>
-            <Badge variant="outline" className="bg-orange-800/50 text-orange-200 border-orange-300">
-              BIRU Standards
-            </Badge>
-          </div>
         </header>
 
-        <Tabs defaultValue="resources" className="w-full">
-          <TabsList className="grid w-full grid-cols-5 bg-orange-800/50 border border-orange-600">
-            <TabsTrigger value="resources" className="text-orange-200 data-[state=active]:bg-orange-600">Assessment Resources</TabsTrigger>
-            <TabsTrigger value="assessment" className="text-orange-200 data-[state=active]:bg-orange-600">Daily Assessment</TabsTrigger>
-            <TabsTrigger value="progress" className="text-orange-200 data-[state=active]:bg-orange-600">Progress Tracking</TabsTrigger>
-            <TabsTrigger value="analytics" className="text-orange-200 data-[state=active]:bg-orange-600">Clinical Analytics</TabsTrigger>
-            <TabsTrigger value="practitioner" className="text-orange-200 data-[state=active]:bg-orange-600">Practitioner Portal</TabsTrigger>
+        {/* Main Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-5 bg-orange-900/30 border border-orange-600/50 mb-6">
+            <TabsTrigger value="overview" className="text-orange-200 data-[state=active]:bg-orange-600">Overview</TabsTrigger>
+            <TabsTrigger value="assess" className="text-orange-200 data-[state=active]:bg-orange-600">Assess</TabsTrigger>
+            <TabsTrigger value="train" className="text-orange-200 data-[state=active]:bg-orange-600">Train</TabsTrigger>
+            <TabsTrigger value="trends" className="text-orange-200 data-[state=active]:bg-orange-600">Trends</TabsTrigger>
+            <TabsTrigger value="resources" className="text-orange-200 data-[state=active]:bg-orange-600">Resources</TabsTrigger>
           </TabsList>
 
+          {/* Overview Tab */}
+          <TabsContent value="overview">
+            <div className="grid md:grid-cols-2 gap-6">
+              <MindGamification
+                streak={streak}
+                totalXP={totalXP}
+                level={level}
+                achievements={achievements}
+                weeklyGoal={{ current: Math.min(assessmentResults.length, 5), target: 5 }}
+              />
+              
+              <Card className="bg-black/40 border-orange-600/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-orange-100">
+                    <Sparkles className="h-5 w-5 text-amber-400" />
+                    Quick Actions
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button onClick={() => setActiveTab("assess")} className="w-full bg-orange-600 hover:bg-orange-500">
+                    <Brain className="h-4 w-4 mr-2" />
+                    Start Clinical Assessment
+                  </Button>
+                  <Button onClick={() => setActiveTab("train")} variant="outline" className="w-full border-orange-600 text-orange-200">
+                    <Activity className="h-4 w-4 mr-2" />
+                    Cognitive Training Game
+                  </Button>
+                  <Button onClick={exportReport} variant="outline" className="w-full border-orange-600 text-orange-200">
+                    <Download className="h-4 w-4 mr-2" />
+                    Export Telehealth Report
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Quanta Card */}
+              <Card className="bg-gradient-to-br from-orange-900/40 to-amber-900/40 border-orange-600/50 md:col-span-2">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <BookOpen className="h-8 w-8 text-orange-400 shrink-0" />
+                    <div>
+                      <h3 className="text-lg font-semibold text-orange-100 mb-2">Ch7: "Goldfish Capacity"</h3>
+                      <p className="text-orange-200/80 italic">
+                        "The goldfish brain—that's what I called it. Seconds of memory, thoughts slipping away like water through fingers. But each assessment, each game, each tracked moment builds new pathways. The capacity grows."
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Assess Tab */}
+          <TabsContent value="assess">
+            <ClinicalAssessments onComplete={handleAssessmentComplete} />
+          </TabsContent>
+
+          {/* Train Tab */}
+          <TabsContent value="train">
+            <div className="grid md:grid-cols-2 gap-6">
+              <NBackGame onComplete={handleGameComplete} difficulty={1} />
+              <NBackGame onComplete={handleGameComplete} difficulty={2} />
+            </div>
+          </TabsContent>
+
+          {/* Trends Tab */}
+          <TabsContent value="trends">
+            <div className="grid md:grid-cols-2 gap-6">
+              <NormativeTrendGraph
+                data={cognitiveData.length > 0 ? cognitiveData : [{ date: 'Today', value: 5 }]}
+                title="Cognitive Index"
+                metric="Composite Score"
+                normativeValue={NORMATIVE_BENCHMARKS.cognitiveIndex.value}
+                normativeLabel="TBI 6-Month Avg"
+                domain={[0, 10]}
+                higherIsBetter={true}
+                nindsCategory="Attention"
+              />
+              <NormativeTrendGraph
+                data={assessmentResults.map(r => ({
+                  date: new Date(r.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                  value: r.phq9
+                })).slice(-10)}
+                title="Mood (PHQ-9)"
+                metric="Depression Score"
+                normativeValue={NORMATIVE_BENCHMARKS.phq9.value}
+                normativeLabel="TBI Depression Avg"
+                domain={[0, 27]}
+                higherIsBetter={false}
+              />
+            </div>
+          </TabsContent>
+
+          {/* Resources Tab */}
           <TabsContent value="resources">
-            <Card className="bg-black/40 border-orange-600 shadow-lg">
+            <Card className="bg-black/40 border-orange-600/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-orange-100">
                   <Stethoscope className="h-5 w-5 text-orange-400" />
-                  Professional Assessment Resources
-                </CardTitle>
-                <p className="text-orange-200">Links to validated assessment tools and rehabilitation centers</p>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-semibold text-orange-100 mb-3">Standardized Assessment Tools</h3>
-                    
-                    <div className="bg-orange-900/30 p-4 rounded-lg border border-orange-700">
-                      <h4 className="font-semibold text-orange-200 mb-2">PHQ-9 (Depression Screening)</h4>
-                      <p className="text-orange-300 text-sm mb-3">Patient Health Questionnaire for mood assessment</p>
-                      <Button asChild variant="outline" size="sm" className="w-full border-orange-600 text-orange-200 hover:bg-orange-700">
-                        <a href="https://www.phqscreeners.com/select-screener" target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="mr-2 h-4 w-4" />
-                          Access PHQ-9 Assessment
-                        </a>
-                      </Button>
-                    </div>
-
-                    <div className="bg-orange-900/30 p-4 rounded-lg border border-orange-700">
-                      <h4 className="font-semibold text-orange-200 mb-2">GAD-7 (Anxiety Screening)</h4>
-                      <p className="text-orange-300 text-sm mb-3">Generalized Anxiety Disorder assessment scale</p>
-                      <Button asChild variant="outline" size="sm" className="w-full border-orange-600 text-orange-200 hover:bg-orange-700">
-                        <a href="https://www.phqscreeners.com/select-screener" target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="mr-2 h-4 w-4" />
-                          Access GAD-7 Assessment
-                        </a>
-                      </Button>
-                    </div>
-
-                    <div className="bg-orange-900/30 p-4 rounded-lg border border-orange-700">
-                      <h4 className="font-semibold text-orange-200 mb-2">FIM (Functional Independence Measure)</h4>
-                      <p className="text-orange-300 text-sm mb-3">Activities of daily living evaluation</p>
-                      <Button asChild variant="outline" size="sm" className="w-full border-orange-600 text-orange-200 hover:bg-orange-700">
-                        <a href="https://www.udsmr.org/WebModules/FIM/Fim_About.aspx" target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="mr-2 h-4 w-4" />
-                          Learn About FIM Assessment
-                        </a>
-                      </Button>
-                    </div>
-
-                    <div className="bg-orange-900/30 p-4 rounded-lg border border-orange-700">
-                      <h4 className="font-semibold text-orange-200 mb-2">Montreal Cognitive Assessment (MoCA)</h4>
-                      <p className="text-orange-300 text-sm mb-3">Cognitive screening for brain injury</p>
-                      <Button asChild variant="outline" size="sm" className="w-full border-orange-600 text-orange-200 hover:bg-orange-700">
-                        <a href="https://www.mocatest.org/" target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="mr-2 h-4 w-4" />
-                          Access MoCA Test
-                        </a>
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-semibold text-orange-100 mb-3">Find Assessment Centers</h3>
-                    
-                    <div className="bg-orange-900/30 p-4 rounded-lg border border-orange-700">
-                      <h4 className="font-semibold text-orange-200 mb-2">Australia - Brain Injury Rehabilitation Units</h4>
-                      <p className="text-orange-300 text-sm mb-3">Locate BIRU facilities across Australia</p>
-                      <Button asChild variant="outline" size="sm" className="w-full border-orange-600 text-orange-200 hover:bg-orange-700">
-                        <a href="https://www.health.gov.au/our-work/brain-injury-rehabilitation" target="_blank" rel="noopener noreferrer">
-                          <MapPin className="mr-2 h-4 w-4" />
-                          Find Australian BIRU Centers
-                        </a>
-                      </Button>
-                    </div>
-
-                    <div className="bg-orange-900/30 p-4 rounded-lg border border-orange-700">
-                      <h4 className="font-semibold text-orange-200 mb-2">Brain Injury Association</h4>
-                      <p className="text-orange-300 text-sm mb-3">Connect with local brain injury support services</p>
-                      <Button asChild variant="outline" size="sm" className="w-full border-orange-600 text-orange-200 hover:bg-orange-700">
-                        <a href="https://www.braininjuryaustralia.org.au/" target="_blank" rel="noopener noreferrer">
-                          <MapPin className="mr-2 h-4 w-4" />
-                          Find Local Services
-                        </a>
-                      </Button>
-                    </div>
-
-                    <div className="bg-orange-900/30 p-4 rounded-lg border border-orange-700">
-                      <h4 className="font-semibold text-orange-200 mb-2">International Resources</h4>
-                      <p className="text-orange-300 text-sm mb-3">Global brain injury rehabilitation centers</p>
-                      <Button asChild variant="outline" size="sm" className="w-full border-orange-600 text-orange-200 hover:bg-orange-700">
-                        <a href="https://www.internationalbrain.org/" target="_blank" rel="noopener noreferrer">
-                          <MapPin className="mr-2 h-4 w-4" />
-                          International Brain Injury Association
-                        </a>
-                      </Button>
-                    </div>
-
-                    <div className="bg-orange-900/30 p-4 rounded-lg border border-orange-700">
-                      <h4 className="font-semibold text-orange-200 mb-2">Neuropsychology Assessment</h4>
-                      <p className="text-orange-300 text-sm mb-3">Find neuropsychologists for comprehensive cognitive evaluation</p>
-                      <Button asChild variant="outline" size="sm" className="w-full border-orange-600 text-orange-200 hover:bg-orange-700">
-                        <a href="https://www.psychology.org.au/Find-a-Psychologist" target="_blank" rel="noopener noreferrer">
-                          <Stethoscope className="mr-2 h-4 w-4" />
-                          Find Neuropsychologist
-                        </a>
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-orange-900/20 p-4 rounded-lg border border-orange-700 mt-6">
-                  <h4 className="font-semibold text-orange-200 mb-2">⚠️ Important Note</h4>
-                  <p className="text-orange-300 text-sm">
-                    While our self-assessment tools provide valuable tracking, professional clinical assessments 
-                    are essential for accurate diagnosis, treatment planning, and monitoring of brain injury recovery. 
-                    These resources connect you with validated assessment tools and qualified professionals.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="assessment">
-            <Card className="bg-black/40 border-orange-600 shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-orange-100">
-                  <Brain className="h-5 w-5 text-orange-400" />
-                  Standardized TBI Assessment
-                </CardTitle>
-                <p className="text-orange-200">Complete your daily rehabilitation assessment using validated clinical metrics</p>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="memory" className="text-orange-200">Memory Recall (Digit Span Test)</Label>
-                      <Input
-                        id="memory"
-                        type="number"
-                        min="0"
-                        max="7"
-                        value={currentAssessment.memoryRecall}
-                        onChange={(e) => handleInputChange('memoryRecall', e.target.value)}
-                        placeholder="0-7 digits recalled"
-                        className="bg-black/50 border-orange-600 text-orange-100"
-                      />
-                      <p className="text-xs text-orange-300 mt-1">Standard: Remember sequence after 10 seconds</p>
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="attention" className="text-orange-200">Sustained Attention Duration</Label>
-                      <Input
-                        id="attention"
-                        type="number"
-                        min="0"
-                        max="30"
-                        value={currentAssessment.attentionDuration}
-                        onChange={(e) => handleInputChange('attentionDuration', e.target.value)}
-                        placeholder="Minutes focused on task"
-                        className="bg-black/50 border-orange-600 text-orange-100"
-                      />
-                      <p className="text-xs text-orange-300 mt-1">Maximum continuous focus time (0-30 minutes)</p>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="mood" className="text-orange-200">Mood Regulation (PHQ-9 Adapted)</Label>
-                      <Input
-                        id="mood"
-                        type="number"
-                        min="1"
-                        max="10"
-                        value={currentAssessment.moodRegulation}
-                        onChange={(e) => handleInputChange('moodRegulation', e.target.value)}
-                        placeholder="1-10 scale"
-                        className="bg-black/50 border-orange-600 text-orange-100"
-                      />
-                      <p className="text-xs text-orange-300 mt-1">1=Very Low, 5=Neutral, 10=Excellent</p>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="anxiety" className="text-orange-200">Anxiety Level (GAD-7 Adapted)</Label>
-                      <Input
-                        id="anxiety"
-                        type="number"
-                        min="1"
-                        max="10"
-                        value={currentAssessment.anxietyLevel}
-                        onChange={(e) => handleInputChange('anxietyLevel', e.target.value)}
-                        placeholder="1-10 scale"
-                        className="bg-black/50 border-orange-600 text-orange-100"
-                      />
-                      <p className="text-xs text-orange-300 mt-1">1=No Anxiety, 10=Severe Anxiety</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="vertigo" className="text-orange-200">Vertigo/Dizziness Severity</Label>
-                      <Input
-                        id="vertigo"
-                        type="number"
-                        min="1"
-                        max="10"
-                        value={currentAssessment.vertigoSeverity}
-                        onChange={(e) => handleInputChange('vertigoSeverity', e.target.value)}
-                        placeholder="1-10 scale"
-                        className="bg-black/50 border-orange-600 text-orange-100"
-                      />
-                      <p className="text-xs text-orange-300 mt-1">1=None, 10=Severe/Disabling</p>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="balance" className="text-orange-200">Balance Test (Single-leg Stand)</Label>
-                      <Input
-                        id="balance"
-                        type="number"
-                        min="0"
-                        max="30"
-                        value={currentAssessment.balanceTime}
-                        onChange={(e) => handleInputChange('balanceTime', e.target.value)}
-                        placeholder="Seconds maintained"
-                        className="bg-black/50 border-orange-600 text-orange-100"
-                      />
-                      <p className="text-xs text-orange-300 mt-1">Duration of single-leg stance (max 30 sec)</p>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="adl" className="text-orange-200">Activities of Daily Living (ADL)</Label>
-                      <Input
-                        id="adl"
-                        type="number"
-                        min="0"
-                        max="5"
-                        value={currentAssessment.adlScore}
-                        onChange={(e) => handleInputChange('adlScore', e.target.value)}
-                        placeholder="0-5 tasks completed"
-                        className="bg-black/50 border-orange-600 text-orange-100"
-                      />
-                      <p className="text-xs text-orange-300 mt-1">Independent tasks: dressing, eating, bathing, etc.</p>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="fatigue" className="text-orange-200">Fatigue Level</Label>
-                      <Input
-                        id="fatigue"
-                        type="number"
-                        min="1"
-                        max="10"
-                        value={currentAssessment.fatigueLevel}
-                        onChange={(e) => handleInputChange('fatigueLevel', e.target.value)}
-                        placeholder="1-10 scale"
-                        className="bg-black/50 border-orange-600 text-orange-100"
-                      />
-                      <p className="text-xs text-orange-300 mt-1">1=No Fatigue, 10=Extreme Fatigue</p>
-                    </div>
-                  </div>
-                </div>
-
-                <Button onClick={submitAssessment} className="w-full bg-orange-600 hover:bg-orange-700">
-                  <CheckCircle className="mr-2 h-4 w-4" />
-                  Submit Clinical Assessment
-                </Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="progress">
-            <Card className="bg-black/40 border-orange-600 shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-orange-100">
-                  <TrendingUp className="h-5 w-5 text-orange-400" />
-                  Rehabilitation Progress
+                  Professional Resources
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                {assessmentHistory.length === 0 ? (
-                  <div className="text-center py-8 text-orange-300">
-                    <Activity className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>No assessment data available. Complete your first assessment to track progress.</p>
-                  </div>
-                ) : (
-                  <div className="space-y-6">
-                    <div className="grid md:grid-cols-3 gap-4">
-                      <div className="bg-orange-900/30 p-4 rounded-lg border border-orange-700">
-                        <h4 className="font-semibold text-orange-200">Cognitive Index</h4>
-                        <p className="text-2xl font-bold text-orange-100">{getAverage('cognitiveIndex')}/7</p>
-                        <p className="text-sm text-orange-300">Memory + Attention composite</p>
+              <CardContent className="grid md:grid-cols-2 gap-4">
+                {[
+                  { name: "MoCA Test", url: "https://www.mocatest.org/", desc: "Official cognitive screening" },
+                  { name: "PHQ-9 Screeners", url: "https://www.phqscreeners.com/", desc: "Depression assessment" },
+                  { name: "Brain Injury Australia", url: "https://www.braininjuryaustralia.org.au/", desc: "Local support services" },
+                  { name: "NINDS TBI Guidelines", url: "https://www.ninds.nih.gov/", desc: "2025 classification" }
+                ].map((resource) => (
+                  <Button key={resource.name} asChild variant="outline" className="justify-start border-orange-600/50 text-orange-200 hover:bg-orange-600/20">
+                    <a href={resource.url} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="h-4 w-4 mr-2" />
+                      <div className="text-left">
+                        <div>{resource.name}</div>
+                        <div className="text-xs text-orange-300/70">{resource.desc}</div>
                       </div>
-                      <div className="bg-orange-900/30 p-4 rounded-lg border border-orange-700">
-                        <h4 className="font-semibold text-orange-200">Physical Function</h4>
-                        <p className="text-2xl font-bold text-orange-100">{getAverage('balanceTime')}s</p>
-                        <p className="text-sm text-orange-300">Average balance time</p>
-                      </div>
-                      <div className="bg-orange-900/30 p-4 rounded-lg border border-orange-700">
-                        <h4 className="font-semibold text-orange-200">Independence</h4>
-                        <p className="text-2xl font-bold text-orange-100">{getAverage('adlScore')}/5</p>
-                        <p className="text-sm text-orange-300">ADL completion rate</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-orange-200">Recent Assessments</h4>
-                      {assessmentHistory.slice(0, 5).map((assessment, index) => (
-                        <div key={index} className="border border-orange-700 rounded-lg p-4 bg-orange-900/20">
-                          <div className="flex justify-between items-center mb-2">
-                            <span className="font-medium text-orange-200">{assessment.date}</span>
-                            <Badge variant="outline" className="border-orange-600 text-orange-200">
-                              Cognitive Index: {assessment.cognitiveIndex}
-                            </Badge>
-                          </div>
-                          <div className="grid grid-cols-4 gap-4 text-sm text-orange-300">
-                            <div>Memory: {assessment.memoryRecall}/7</div>
-                            <div>Attention: {assessment.attentionDuration}min</div>
-                            <div>Balance: {assessment.balanceTime}s</div>
-                            <div>ADL: {assessment.adlScore}/5</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <Button onClick={exportData} variant="outline" className="w-full border-orange-600 text-orange-200 hover:bg-orange-700">
-                      <Download className="mr-2 h-4 w-4" />
-                      Export Clinical Data (CSV)
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="analytics">
-            <Card className="bg-black/40 border-orange-600 shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-orange-100">
-                  <FileText className="h-5 w-5 text-orange-400" />
-                  Clinical Analytics
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {assessmentHistory.length === 0 ? (
-                  <p className="text-center py-8 text-orange-300">Complete assessments to view analytics</p>
-                ) : (
-                  <div className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="font-semibold mb-3 text-orange-200">Domain Averages</h4>
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-orange-300">
-                            <span>Memory Recall:</span>
-                            <span className="font-medium">{getAverage('memoryRecall')}/7</span>
-                          </div>
-                          <div className="flex justify-between text-orange-300">
-                            <span>Attention Duration:</span>
-                            <span className="font-medium">{getAverage('attentionDuration')} min</span>
-                          </div>
-                          <div className="flex justify-between text-orange-300">
-                            <span>Mood Regulation:</span>
-                            <span className="font-medium">{getAverage('moodRegulation')}/10</span>
-                          </div>
-                          <div className="flex justify-between text-orange-300">
-                            <span>Anxiety Level:</span>
-                            <span className="font-medium">{getAverage('anxietyLevel')}/10</span>
-                          </div>
-                          <div className="flex justify-between text-orange-300">
-                            <span>Vertigo Severity:</span>
-                            <span className="font-medium">{getAverage('vertigoSeverity')}/10</span>
-                          </div>
-                          <div className="flex justify-between text-orange-300">
-                            <span>Balance Time:</span>
-                            <span className="font-medium">{getAverage('balanceTime')} sec</span>
-                          </div>
-                          <div className="flex justify-between text-orange-300">
-                            <span>ADL Score:</span>
-                            <span className="font-medium">{getAverage('adlScore')}/5</span>
-                          </div>
-                          <div className="flex justify-between text-orange-300">
-                            <span>Fatigue Level:</span>
-                            <span className="font-medium">{getAverage('fatigueLevel')}/10</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold mb-3 text-orange-200">Clinical Alerts</h4>
-                        <div className="space-y-2">
-                          {assessmentHistory.length > 0 && (
-                            <>
-                              {parseFloat(getAverage('anxietyLevel')) >= 7 && (
-                                <div className="flex items-center gap-2 text-orange-300">
-                                  <AlertTriangle className="h-4 w-4" />
-                                  Elevated anxiety - consider specialist review
-                                </div>
-                              )}
-                              {parseFloat(getAverage('moodRegulation')) <= 4 && (
-                                <div className="flex items-center gap-2 text-red-400">
-                                  <AlertTriangle className="h-4 w-4" />
-                                  Low mood indicator - monitor closely
-                                </div>
-                              )}
-                              {parseFloat(getAverage('vertigoSeverity')) >= 7 && (
-                                <div className="flex items-center gap-2 text-yellow-400">
-                                  <AlertTriangle className="h-4 w-4" />
-                                  Significant vertigo - vestibular therapy recommended
-                                </div>
-                              )}
-                              {parseFloat(getAverage('cognitiveIndex')) <= 2.5 && (
-                                <div className="flex items-center gap-2 text-blue-400">
-                                  <AlertTriangle className="h-4 w-4" />
-                                  Cognitive concerns - neuropsych evaluation suggested
-                                </div>
-                              )}
-                              {parseFloat(getAverage('anxietyLevel')) < 7 && parseFloat(getAverage('moodRegulation')) > 4 && parseFloat(getAverage('vertigoSeverity')) < 7 && parseFloat(getAverage('cognitiveIndex')) > 2.5 && (
-                                <div className="flex items-center gap-2 text-green-400">
-                                  <CheckCircle className="h-4 w-4" />
-                                  No immediate clinical concerns identified
-                                </div>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="practitioner">
-            <Card className="bg-black/40 border-orange-600 shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-orange-100">Practitioner Access Portal</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {!isAuthenticated ? (
-                  <div className="text-center py-8">
-                    <p className="mb-4 text-orange-300">Secure access for healthcare professionals</p>
-                    <Button onClick={practitionerLogin} className="bg-orange-600 hover:bg-orange-700">
-                      Practitioner Login
-                    </Button>
-                    <p className="text-xs text-orange-400 mt-2">Access code required for patient data review</p>
-                  </div>
-                ) : (
-                  <div className="space-y-6">
-                    <div className="bg-orange-900/30 border border-orange-700 rounded-lg p-4">
-                      <h4 className="font-semibold text-orange-200 mb-2">Practitioner Access Enabled</h4>
-                      <p className="text-orange-300">Full patient data access and clinical export capabilities available</p>
-                    </div>
-                    
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <Button onClick={exportData} className="bg-orange-600 hover:bg-orange-700">
-                        <Download className="mr-2 h-4 w-4" />
-                        Export Patient Data
-                      </Button>
-                      <Button variant="outline" className="border-orange-600 text-orange-200 hover:bg-orange-700">
-                        <FileText className="mr-2 h-4 w-4" />
-                        Generate Clinical Report
-                      </Button>
-                    </div>
-
-                    <div className="text-sm text-orange-300">
-                      <p><strong>Total Assessments:</strong> {assessmentHistory.length}</p>
-                      <p><strong>Assessment Period:</strong> {assessmentHistory.length > 0 ? `${assessmentHistory[assessmentHistory.length - 1]?.date} to ${assessmentHistory[0]?.date}` : 'No data'}</p>
-                      <p><strong>Data Compliance:</strong> BIRU standards, Australian Privacy Principles</p>
-                    </div>
-                  </div>
-                )}
+                    </a>
+                  </Button>
+                ))}
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
-
-        <div className="mt-12 text-center text-sm text-orange-400 border-t border-orange-700 pt-8">
-          <p className="mb-2">
-            <strong>Clinical Disclaimer:</strong> This tool is for rehabilitation monitoring and educational purposes only. 
-            It does not replace professional medical assessment or treatment. Consult your healthcare provider for clinical decisions.
-          </p>
-          <p>
-            Based on evidence-based protocols including PHQ-9, GAD-7, FIM, and Australian BIRU standards. 
-            Developed in alignment with traumatic brain injury rehabilitation best practices.
-          </p>
-        </div>
       </div>
     </div>
   );
