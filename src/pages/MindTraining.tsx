@@ -157,7 +157,7 @@ const MindTraining = () => {
             </Link>
           </Button>
           <div className="flex gap-2">
-            <EvidenceBadge level="A" source="INCOG 2.0" pmid="37673101" />
+            <EvidenceBadge level="A" domain="INCOG 2.0" pubmedId="37673101" />
             <Badge className="bg-cyan-600/80 text-cyan-100">2025 NINDS</Badge>
           </div>
         </div>
