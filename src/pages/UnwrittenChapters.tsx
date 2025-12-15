@@ -306,7 +306,7 @@ const UnwrittenChapters = () => {
             </Link>
           </Button>
           <div className="flex items-center gap-4">
-            <StreakDisplay streak={gamification.streakDays} />
+            <StreakDisplay days={gamification.streakDays} />
             <FeatherCount count={gamification.feathers} />
           </div>
         </div>
