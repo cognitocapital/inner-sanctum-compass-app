@@ -3,9 +3,10 @@ import { Volume2, VolumeX, Music, ChevronDown, Sparkles, Waves, Brain, Heart } f
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useAudio, AMBIENT_SOUNDS, SoundCategory } from "@/contexts/AudioContext";
+import { BinauralVisualizer } from "@/components/ui/binaural-visualizer";
 
 const categoryIcons: Record<SoundCategory, React.ElementType> = {
   nature: Waves,
@@ -98,24 +99,42 @@ export const GlobalAmbientControl = () => {
                   isAudiobookPlaying && "opacity-50 cursor-not-allowed"
                 )}
               >
-                <div
-                  className={cn(
-                    "w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br shrink-0",
-                    sound.color,
-                    activeSounds.has(sound.id) && "animate-pulse shadow-lg"
-                  )}
-                >
-                  {activeSounds.has(sound.id) ? (
-                    <Volume2 className="h-5 w-5 text-white" />
-                  ) : (
-                    <VolumeX className="h-5 w-5 text-white/70" />
-                  )}
-                </div>
+                {/* Visual indicator based on category */}
+                {sound.category === "binaural" && sound.frequency ? (
+                  <BinauralVisualizer
+                    frequency={
+                      sound.frequency.includes("Theta") ? "theta" :
+                      sound.frequency.includes("Alpha") ? "alpha" :
+                      sound.frequency.includes("Beta") ? "beta" : "nature"
+                    }
+                    isActive={activeSounds.has(sound.id)}
+                    size="sm"
+                  />
+                ) : (
+                  <div
+                    className={cn(
+                      "w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br shrink-0",
+                      sound.color,
+                      activeSounds.has(sound.id) && "binaural-aura shadow-lg"
+                    )}
+                  >
+                    {activeSounds.has(sound.id) ? (
+                      <Volume2 className="h-5 w-5 text-white" />
+                    ) : (
+                      <VolumeX className="h-5 w-5 text-white/70" />
+                    )}
+                  </div>
+                )}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-medium text-white truncate">{sound.name}</p>
                     {sound.incogLevel && (
-                      <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 border-primary/50 text-primary">
+                      <Badge 
+                        variant="outline" 
+                        className="text-[10px] px-1 py-0 h-4 border-primary/50 text-primary"
+                        role="status"
+                        aria-label={`INCOG evidence level ${sound.incogLevel}`}
+                      >
                         {sound.incogLevel}
                       </Badge>
                     )}
