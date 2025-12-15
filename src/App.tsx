@@ -41,7 +41,7 @@ import GratitudeJourney from "./pages/GratitudeJourney";
 import UnwrittenChapters from "./pages/UnwrittenChapters";
 import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
-import NeuroRehab from "./pages/NeuroRehab";
+// NeuroRehab removed - consolidated into INCOG 2.0
 import TBIPrograms from "./pages/TBIPrograms";
 import INCOG from "./pages/INCOG";
 
@@ -84,7 +84,8 @@ const AppContent = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/breathing" element={<BreathingExercise />} />
           <Route path="/cold-exposure" element={<ColdExposure />} />
-          <Route path="/neuro-rehab" element={<NeuroRehab />} />
+          {/* NeuroRehab consolidated into INCOG 2.0 - redirect */}
+          <Route path="/neuro-rehab" element={<INCOG />} />
           <Route path="/tbi-programs" element={<TBIPrograms />} />
           <Route path="/incog" element={<INCOG />} />
           <Route path="/dedication" element={<Dedication />} />
