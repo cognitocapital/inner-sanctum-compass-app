@@ -7,13 +7,15 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   ArrowLeft, Brain, Target, Music, Repeat, ClipboardList, Sparkles, 
-  BookOpen, Zap, Users, Settings, Trophy, Eye, Volume2
+  BookOpen, Zap, Users, Settings, Trophy, Eye, Volume2, Compass, MessageSquare
 } from "lucide-react";
 import GMTDashboard from "@/components/gmt/GMTDashboard";
 import MusicTherapy from "@/components/therapy/MusicTherapy";
 import ADLTraining from "@/components/adl/ADLTraining";
 import SpacedRepetition from "@/components/memory/SpacedRepetition";
 import ProfessionalAssessments from "@/components/assessments/ProfessionalAssessments";
+import VestibularModule from "@/components/vestibular/VestibularModule";
+import SpeechLanguageModule from "@/components/speech/SpeechLanguageModule";
 import { MobileBottomNav, MobilePageContainer } from "@/components/ui/mobile-nav";
 import { MobileFullScreenModal } from "@/components/ui/mobile-modal";
 import { AnimatedDomainWheel } from "@/components/ui/animated-domain-wheel";
@@ -27,6 +29,17 @@ import { useToast } from "@/hooks/use-toast";
 
 const modules = [
   { 
+    id: 'vestibular', 
+    label: 'VR', 
+    icon: Compass, 
+    title: 'VR Vestibular Rehab', 
+    description: 'Balance, gaze stability & VOR',
+    evidenceLevel: 'A',
+    xpReward: 80,
+    domain: 'vestibular',
+    cogLoad: 'medium',
+  },
+  { 
     id: 'gmt', 
     label: 'GMT', 
     icon: Target, 
@@ -35,6 +48,17 @@ const modules = [
     evidenceLevel: 'A',
     xpReward: 75,
     domain: 'executive',
+    cogLoad: 'medium',
+  },
+  { 
+    id: 'speech', 
+    label: 'Speech', 
+    icon: MessageSquare, 
+    title: 'Speech & Language', 
+    description: 'Pragmatics, voice & communication',
+    evidenceLevel: 'A',
+    xpReward: 70,
+    domain: 'communication',
     cogLoad: 'medium',
   },
   { 
@@ -67,7 +91,7 @@ const modules = [
     description: 'Daily living activities',
     evidenceLevel: 'B',
     xpReward: 50,
-    domain: 'communication',
+    domain: 'social',
     cogLoad: 'low',
   },
   { 
@@ -78,13 +102,17 @@ const modules = [
     description: 'Clinical evaluations',
     evidenceLevel: 'A',
     xpReward: 40,
-    domain: 'social',
+    domain: 'pta',
     cogLoad: 'medium',
   },
 ];
 
 // Manuscript quanta per domain
 const domainQuanta: Record<string, { quote: string; chapter: string }> = {
+  vestibular: { 
+    quote: "The vertigo was relentless... but day by day, the world stopped spinning.", 
+    chapter: "Ch4" 
+  },
   executive: { 
     quote: "My brain felt like it was constantly misfiring...", 
     chapter: "Ch7" 
@@ -98,8 +126,8 @@ const domainQuanta: Record<string, { quote: string; chapter: string }> = {
     chapter: "Intro" 
   },
   communication: { 
-    quote: "Words sometimes escaped me...", 
-    chapter: "Ch4" 
+    quote: "Words sometimes escaped me... sentences jumbled in my mind.", 
+    chapter: "Ch2" 
   },
   social: { 
     quote: "Community carries us forward...", 
@@ -128,6 +156,7 @@ const INCOG = () => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [showCaregiverView, setShowCaregiverView] = useState(false);
   const [domainProgress, setDomainProgress] = useState<Record<string, number>>({
+    vestibular: 35,
     attention: 45,
     memory: 30,
     executive: 55,
@@ -228,6 +257,7 @@ const INCOG = () => {
 
   // Create domain segments for wheel
   const domainSegments = [
+    { id: 'vestibular', name: 'Vestibular', progress: domainProgress.vestibular, color: '#0891b2' },
     { id: 'attention', name: 'Attention', progress: domainProgress.attention, color: '#f97316' },
     { id: 'memory', name: 'Memory', progress: domainProgress.memory, color: '#8b5cf6' },
     { id: 'executive', name: 'Executive', progress: domainProgress.executive, color: '#06b6d4' },
@@ -239,10 +269,11 @@ const INCOG = () => {
   const getActiveRegions = () => {
     const module = modules.find(m => m.id === activeModule);
     const regionMap: Record<string, string[]> = {
+      vestibular: ['cerebellum', 'parietal'],
       executive: ['frontal'],
       memory: ['temporal', 'limbic'],
       attention: ['frontal', 'parietal'],
-      communication: ['temporal'],
+      communication: ['temporal', 'frontal'],
       social: ['limbic', 'frontal'],
     };
     return regionMap[module?.domain || ''] || [];
@@ -267,7 +298,9 @@ const INCOG = () => {
 
   const renderModuleContent = (moduleId: string) => {
     switch (moduleId) {
+      case 'vestibular': return <VestibularModule onComplete={handleModuleComplete.bind(null, 'vestibular')} />;
       case 'gmt': return <GMTDashboard />;
+      case 'speech': return <SpeechLanguageModule onComplete={(type, score) => handleModuleComplete('speech', 10, score)} />;
       case 'music': return <MusicTherapy />;
       case 'memory': return <SpacedRepetition />;
       case 'adl': return <ADLTraining />;
