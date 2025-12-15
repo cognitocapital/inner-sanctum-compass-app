@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Play, Pause, RotateCcw, Thermometer, Snowflake, Timer, Trophy, TrendingUp, Flame, BookOpen, Zap, ShieldCheck, AlertTriangle } from "lucide-react";
+import { ArrowLeft, Play, Pause, RotateCcw, Thermometer, Snowflake, Timer, Trophy, TrendingUp, Flame, BookOpen, Zap, ShieldCheck, AlertTriangle, FileDown } from "lucide-react";
+import { SessionExport } from "@/components/ui/session-export";
 import { useToast } from "@/hooks/use-toast";
 import EvidenceBadge from "@/components/clinical/EvidenceBadge";
 import SafetyPreScreen from "@/components/clinical/SafetyPreScreen";
@@ -450,29 +451,34 @@ const ColdExposure = () => {
             )}
 
             {activeTab === "science" && (
-              <Card className="bg-gradient-to-br from-slate-900/80 to-cyan-900/50 border-cyan-500/30">
-                <CardHeader>
-                  <CardTitle className="text-xl text-cyan-100">The Science of Cold Exposure</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4 text-cyan-200 text-sm">
-                  <div>
-                    <h3 className="font-semibold text-cyan-100 mb-1">🧠 Neurological Benefits</h3>
-                    <p>Cold activates the sympathetic nervous system, increasing norepinephrine by up to 530%.</p>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-cyan-100 mb-1">🔥 Metabolic Enhancement</h3>
-                    <p>Regular cold exposure activates brown adipose tissue, increasing metabolic rate up to 15%.</p>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-cyan-100 mb-1">🛡️ Immune System</h3>
-                    <p>Cold therapy increases white blood cell count. Regular practitioners show 29% fewer sick days.</p>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-cyan-100 mb-1">💪 Recovery</h3>
-                    <p>Reduces inflammation and accelerates recovery. Athletes reduce muscle soreness by up to 20%.</p>
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="space-y-4">
+                <Card className="bg-gradient-to-br from-slate-900/80 to-cyan-900/50 border-cyan-500/30">
+                  <CardHeader>
+                    <CardTitle className="text-xl text-cyan-100">The Science of Cold Exposure</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4 text-cyan-200 text-sm">
+                    <div>
+                      <h3 className="font-semibold text-cyan-100 mb-1">🧠 Neurological Benefits</h3>
+                      <p>Cold activates the sympathetic nervous system, increasing norepinephrine by up to 530%.</p>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-cyan-100 mb-1">🔥 Metabolic Enhancement</h3>
+                      <p>Regular cold exposure activates brown adipose tissue, increasing metabolic rate up to 15%.</p>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-cyan-100 mb-1">🛡️ Immune System</h3>
+                      <p>Cold therapy increases white blood cell count. Regular practitioners show 29% fewer sick days.</p>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-cyan-100 mb-1">💪 Recovery</h3>
+                      <p>Reduces inflammation and accelerates recovery. Athletes reduce muscle soreness by up to 20%.</p>
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                {/* Session Export for Clinicians */}
+                <SessionExport />
+              </div>
             )}
           </div>
         </div>
