@@ -1,62 +1,126 @@
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from "react";
 
+// Sound categories for organization
+export type SoundCategory = "nature" | "binaural" | "therapeutic";
+
 export interface AmbientSoundConfig {
   id: string;
   name: string;
   description: string;
   audioUrl: string;
   color: string;
+  category: SoundCategory;
+  frequency?: string;
+  therapeuticUse?: string[];
+  incogLevel?: "A" | "B" | "C";
+  manuscriptQuanta?: string;
 }
 
 export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
+  // Nature sounds
   breath: {
     id: "breath",
     name: "Ocean Waves",
     description: "Gentle ocean waves for breathing exercises",
     audioUrl: "https://archive.org/download/naturesounds-soundtheraphy/Birds%20With%20Ocean%20Waves%20on%20the%20Beach.mp3",
-    color: "from-orange-500 to-red-500"
+    color: "from-orange-500 to-red-500",
+    category: "nature",
+    therapeuticUse: ["relaxation", "breathing"],
+    manuscriptQuanta: "Ch3: The overwhelming chaos that eventually gives way to peace"
   },
   ice: {
     id: "ice",
     name: "Arctic Wind",
     description: "Crisp wind sounds for cold exposure focus",
     audioUrl: "https://archive.org/download/78_wind-around-house-or-barn_gbia0409024a/WIND%20%28Around%20House%20or%20Barn%29.mp3",
-    color: "from-cyan-500 to-blue-600"
-  },
-  computer: {
-    id: "computer",
-    name: "Neural Focus",
-    description: "Ambient electronic tones for cognitive training",
-    audioUrl: "https://archive.org/download/freefloatingmusic-aic2011/11%20-%20Benjamin%20Dauer%20Alluvial.mp3",
-    color: "from-indigo-500 to-blue-600"
-  },
-  mind: {
-    id: "mind",
-    name: "Deep Meditation",
-    description: "Tibetan bowls for mental clarity",
-    audioUrl: "https://archive.org/download/RestorativeSleepMusicBinauralBeatsSleepInTheClouds432Hz/Powerful%20Om%20Chanting%20432%20Hz%20-%20Tibetan%20Om%20Meditation.mp3",
-    color: "from-purple-500 to-red-600"
-  },
-  heart: {
-    id: "heart",
-    name: "Gentle Chimes",
-    description: "Soft wind chimes for emotional healing",
-    audioUrl: "https://archive.org/download/CelticChristmasAWindhamHillCollection2001/02%20Lisa%20Lynne_%20Circle%20Of%20Joy.mp3",
-    color: "from-pink-500 to-red-500"
-  },
-  incog: {
-    id: "incog",
-    name: "Focus Frequencies",
-    description: "Binaural beats for cognitive rehabilitation",
-    audioUrl: "https://archive.org/download/1hr-30-min-theta-binaural-beat-7-hz-pure-tone/1hr%2030%20min%20Theta%20Binaural%20Beat%20%287Hz%29%20-%20Pure%20Tone.mp3",
-    color: "from-emerald-500 to-teal-600"
+    color: "from-cyan-500 to-blue-600",
+    category: "nature",
+    therapeuticUse: ["alertness", "grounding"],
+    manuscriptQuanta: "Ch4: Slow comeback, learning resilience"
   },
   circle: {
     id: "circle",
-    name: "Community Warmth",
+    name: "Forest Sanctuary",
     description: "Ambient nature sounds for connection",
     audioUrl: "https://archive.org/download/RestorativeSleepMusicBinauralBeatsSleepInTheClouds432Hz/Musique%20Paisible%20Nature%20%20Sons%20de%20la%20Nature%20%28Anti%20Stress%29%20-%20432%20Hz.mp3",
-    color: "from-teal-500 to-blue-600"
+    color: "from-teal-500 to-blue-600",
+    category: "nature",
+    therapeuticUse: ["stress-reduction", "grounding"],
+    manuscriptQuanta: "Intro: Gratitude for the journey"
+  },
+  
+  // Binaural beats - INCOG Level A evidence
+  thetaVertigo: {
+    id: "thetaVertigo",
+    name: "Theta Balance",
+    description: "Theta waves (4-7Hz) for vertigo & vestibular calm",
+    audioUrl: "https://archive.org/download/1hr-30-min-theta-binaural-beat-7-hz-pure-tone/1hr%2030%20min%20Theta%20Binaural%20Beat%20%287Hz%29%20-%20Pure%20Tone.mp3",
+    color: "from-violet-500 to-purple-700",
+    category: "binaural",
+    frequency: "7Hz Theta",
+    therapeuticUse: ["vertigo", "balance", "vestibular"],
+    incogLevel: "A",
+    manuscriptQuanta: "Ch4: Vertigo slowly subsides"
+  },
+  alphaCalm: {
+    id: "alphaCalm",
+    name: "Alpha Serenity",
+    description: "Alpha waves (8-12Hz) for anxiety relief & calm",
+    audioUrl: "https://archive.org/download/BinauralBeatsDeltaWaves/Binaural%20Beats%20Alpha%20Waves.mp3",
+    color: "from-blue-400 to-indigo-600",
+    category: "binaural",
+    frequency: "10Hz Alpha",
+    therapeuticUse: ["anxiety", "calm", "emotional-regulation"],
+    incogLevel: "A",
+    manuscriptQuanta: "Ch3: The roller coaster of anxiety that finds stillness"
+  },
+  betaFocus: {
+    id: "betaFocus",
+    name: "Beta Focus",
+    description: "Beta waves (15-20Hz) for attention & executive function",
+    audioUrl: "https://archive.org/download/beta-wave-subliminal-with-relaxing-music/Beta%20Wave%20Subliminal%20%28With%20Relaxing%20Music%29.mp3",
+    color: "from-amber-400 to-orange-600",
+    category: "binaural",
+    frequency: "18Hz Beta",
+    therapeuticUse: ["attention", "focus", "executive-function"],
+    incogLevel: "A",
+    manuscriptQuanta: "Mind training through dedicated practice"
+  },
+  
+  // Therapeutic sounds
+  mind: {
+    id: "mind",
+    name: "Tibetan Resonance",
+    description: "432Hz Tibetan bowls for mental clarity",
+    audioUrl: "https://archive.org/download/RestorativeSleepMusicBinauralBeatsSleepInTheClouds432Hz/Powerful%20Om%20Chanting%20432%20Hz%20-%20Tibetan%20Om%20Meditation.mp3",
+    color: "from-purple-500 to-red-600",
+    category: "therapeutic",
+    frequency: "432Hz",
+    therapeuticUse: ["meditation", "clarity", "mindfulness"],
+    incogLevel: "B",
+    manuscriptQuanta: "Deep meditation and inner peace"
+  },
+  heart: {
+    id: "heart",
+    name: "Heart Coherence",
+    description: "Soft melodies for emotional healing & HRV",
+    audioUrl: "https://archive.org/download/CelticChristmasAWindhamHillCollection2001/02%20Lisa%20Lynne_%20Circle%20Of%20Joy.mp3",
+    color: "from-pink-500 to-red-500",
+    category: "therapeutic",
+    therapeuticUse: ["emotional-healing", "heart-coherence", "gratitude"],
+    incogLevel: "B",
+    manuscriptQuanta: "Heart-centered gratitude and emotional recovery"
+  },
+  computer: {
+    id: "computer",
+    name: "Neural Flow",
+    description: "Ambient electronic tones for cognitive training",
+    audioUrl: "https://archive.org/download/freefloatingmusic-aic2011/11%20-%20Benjamin%20Dauer%20Alluvial.mp3",
+    color: "from-indigo-500 to-blue-600",
+    category: "therapeutic",
+    therapeuticUse: ["cognitive-training", "neuroplasticity"],
+    incogLevel: "B",
+    manuscriptQuanta: "Rebuilding neural pathways"
   }
 };
 
