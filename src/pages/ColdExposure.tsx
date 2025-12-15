@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Play, Pause, RotateCcw, Thermometer, Snowflake, Timer, Trophy, TrendingUp, Flame, BookOpen, Zap } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Play, Pause, RotateCcw, Thermometer, Snowflake, Timer, Trophy, TrendingUp, Flame, BookOpen, Zap, ShieldCheck, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import EvidenceBadge from "@/components/clinical/EvidenceBadge";
 import SafetyPreScreen from "@/components/clinical/SafetyPreScreen";
@@ -23,11 +24,37 @@ const coldContraindications = [
   { id: 'recent_injury', question: 'Have you had a recent TBI episode or symptoms flare-up?', severity: 'caution' as const, advice: 'During active symptom phases, gentle rest may be more appropriate.' },
 ];
 
+// Progressive protocols with 2025 TBI safety caps
 const coldProtocols = [
-  { name: "Beginner", duration: 30, tempF: "50-60°F", tempC: "10-15°C", description: "Perfect for newcomers", level: 1 },
-  { name: "Warrior", duration: 60, tempF: "45-55°F", tempC: "7-13°C", description: "Building toughness", level: 2 },
-  { name: "Arctic", duration: 120, tempF: "40-50°F", tempC: "4-10°C", description: "Experienced", level: 3 },
-  { name: "Polar", duration: 180, tempF: "35-45°F", tempC: "2-7°C", description: "Elite protocol", level: 4 }
+  { name: "Gentle", duration: 30, tempF: "55-65°F", tempC: "13-18°C", description: "Recommended for TBI recovery", level: 1, tbiSafe: true },
+  { name: "Beginner", duration: 45, tempF: "50-60°F", tempC: "10-15°C", description: "Build tolerance slowly", level: 2, tbiSafe: true },
+  { name: "Warrior", duration: 60, tempF: "45-55°F", tempC: "7-13°C", description: "Max recommended for TBI", level: 3, tbiSafe: true },
+  { name: "Arctic", duration: 90, tempF: "40-50°F", tempC: "4-10°C", description: "Advanced - consult doctor", level: 4, tbiSafe: false },
+];
+
+// Manuscript quanta reflections for different phases
+const quantaReflections = {
+  prepare: [
+    "Ch3: \"The overwhelming chaos that eventually gives way to peace...\"",
+    "Remember: Every cold plunge is a metaphor for facing the unknown.",
+  ],
+  endure: [
+    "Ch4: \"The vertigo slowly subsides... learning to trust the process.\"",
+    "Ch6: \"The roller coaster of emotions, finding stillness in the storm.\"",
+  ],
+  exit: [
+    "You emerged stronger. Like the phoenix, you transform through challenge.",
+    "Ch4: \"Finding my footing again, one brave step at a time.\"",
+  ],
+};
+
+// Post-session dopamine/mood self-report options
+const moodOptions = [
+  { emoji: "😔", label: "Low", value: 1 },
+  { emoji: "😐", label: "Neutral", value: 2 },
+  { emoji: "🙂", label: "Good", value: 3 },
+  { emoji: "😊", label: "Great", value: 4 },
+  { emoji: "🔥", label: "Euphoric", value: 5 },
 ];
 
 const ColdExposure = () => {
@@ -43,6 +70,9 @@ const ColdExposure = () => {
   const [completedSessions, setCompletedSessions] = useState(0);
   const [showProtocolModal, setShowProtocolModal] = useState(false);
   const [showScienceModal, setShowScienceModal] = useState(false);
+  const [showMoodReport, setShowMoodReport] = useState(false);
+  const [currentReflection, setCurrentReflection] = useState("");
+  const [moodHistory, setMoodHistory] = useState<number[]>([]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
 
@@ -52,11 +82,13 @@ const ColdExposure = () => {
     const savedBest = localStorage.getItem('coldExposureBest');
     const savedSessions = localStorage.getItem('coldExposureSessions');
     const savedTotal = localStorage.getItem('coldExposureTotal');
+    const savedMoodHistory = localStorage.getItem('coldExposureMoodHistory');
     
     if (savedStreak) setStreak(parseInt(savedStreak));
     if (savedBest) setPersonalBest(parseInt(savedBest));
     if (savedSessions) setCompletedSessions(parseInt(savedSessions));
     if (savedTotal) setTotalTime(parseInt(savedTotal));
+    if (savedMoodHistory) setMoodHistory(JSON.parse(savedMoodHistory));
   }, []);
 
   const phaseInstructions = {
@@ -65,6 +97,15 @@ const ColdExposure = () => {
     endure: "Focus on your breath! 💪",
     exit: "Well done, ice warrior! 🏆"
   };
+
+  // Update reflection when phase changes
+  useEffect(() => {
+    const reflections = quantaReflections[phase as keyof typeof quantaReflections];
+    if (reflections) {
+      const randomIndex = Math.floor(Math.random() * reflections.length);
+      setCurrentReflection(reflections[randomIndex]);
+    }
+  }, [phase]);
 
   useEffect(() => {
     if (isActive && timeLeft > 0) {
@@ -88,6 +129,9 @@ const ColdExposure = () => {
 
   const completeSession = () => {
     setIsActive(false);
+    setPhase('exit');
+    setShowMoodReport(true); // Trigger mood report
+    
     const newSessions = completedSessions + 1;
     const newTotal = totalTime + selectedDuration;
     const newStreak = streak + 1;
@@ -99,14 +143,24 @@ const ColdExposure = () => {
     if (selectedDuration > personalBest) {
       setPersonalBest(selectedDuration);
       localStorage.setItem('coldExposureBest', selectedDuration.toString());
-      toast({ title: "New Personal Best! 🏆", description: `${selectedDuration}s of pure ice warrior spirit!` });
-    } else {
-      toast({ title: "Session Complete! ❄️", description: `${selectedDuration}s of cold mastery!` });
     }
     
     localStorage.setItem('coldExposureStreak', newStreak.toString());
     localStorage.setItem('coldExposureSessions', newSessions.toString());
     localStorage.setItem('coldExposureTotal', newTotal.toString());
+  };
+
+  const handleMoodReport = (mood: number) => {
+    const newHistory = [...moodHistory, mood];
+    setMoodHistory(newHistory);
+    localStorage.setItem('coldExposureMoodHistory', JSON.stringify(newHistory));
+    setShowMoodReport(false);
+    
+    if (selectedDuration > (personalBest || 0)) {
+      toast({ title: "New Personal Best! 🏆", description: `${selectedDuration}s of pure ice warrior spirit!` });
+    } else {
+      toast({ title: "Session Complete! ❄️", description: `${selectedDuration}s of cold mastery! Mood: ${moodOptions[mood - 1]?.emoji}` });
+    }
   };
 
   const startSession = (duration: number) => {
@@ -250,17 +304,49 @@ const ColdExposure = () => {
             <div className="space-y-4">
               {/* Protocol Selection (if no active session) */}
               {!isActive && timeLeft === 0 && (
-                <div className="grid grid-cols-2 gap-3">
-                  {coldProtocols.map((protocol) => (
-                    <MobileActionCard
-                      key={protocol.name}
-                      title={protocol.name}
-                      description={`${protocol.duration}s • ${protocol.tempC}`}
-                      accentColor="cyan"
-                      onClick={() => startSession(protocol.duration)}
-                      icon={<Snowflake className="h-6 w-6 text-cyan-400" />}
-                    />
-                  ))}
+                <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    {coldProtocols.map((protocol) => (
+                      <button
+                        key={protocol.name}
+                        onClick={() => startSession(protocol.duration)}
+                        className={cn(
+                          "p-4 rounded-xl border text-left transition-all",
+                          protocol.tbiSafe 
+                            ? "bg-gradient-to-br from-slate-900/80 to-cyan-900/50 border-cyan-500/30 hover:border-cyan-400"
+                            : "bg-gradient-to-br from-slate-900/80 to-amber-900/30 border-amber-500/30 hover:border-amber-400"
+                        )}
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <Snowflake className={cn("h-5 w-5", protocol.tbiSafe ? "text-cyan-400" : "text-amber-400")} />
+                          <span className="font-semibold text-white">{protocol.name}</span>
+                        </div>
+                        <div className="text-sm text-cyan-300 mb-2">
+                          {protocol.duration}s • {protocol.tempC}
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          {protocol.tbiSafe ? (
+                            <Badge variant="outline" className="text-[10px] border-green-500/50 text-green-400 flex items-center gap-1">
+                              <ShieldCheck className="h-3 w-3" /> TBI Safe
+                            </Badge>
+                          ) : (
+                            <Badge variant="outline" className="text-[10px] border-amber-500/50 text-amber-400 flex items-center gap-1">
+                              <AlertTriangle className="h-3 w-3" /> Consult MD
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-xs text-white/60 mt-2">{protocol.description}</p>
+                      </button>
+                    ))}
+                  </div>
+                  
+                  {/* 2025 TBI Safety Note */}
+                  <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                    <p className="text-xs text-amber-200 flex items-start gap-2">
+                      <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" />
+                      <span><strong>2025 TBI Guidelines:</strong> Start with 30s max. Progress only after 2+ weeks of consistent practice without symptom flares.</span>
+                    </p>
+                  </div>
                 </div>
               )}
 
@@ -293,8 +379,17 @@ const ColdExposure = () => {
                     </div>
 
                     {/* Phase Instructions */}
-                    <div className="text-center">
+                    <div className="text-center space-y-2">
                       <p className="text-lg md:text-xl text-cyan-100">{phaseInstructions[phase]}</p>
+                      {/* Manuscript Quanta Reflection */}
+                      {currentReflection && (phase === 'endure' || phase === 'exit') && (
+                        <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 max-w-sm mx-auto">
+                          <div className="flex items-start gap-2">
+                            <BookOpen className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
+                            <p className="text-sm text-amber-200 italic">{currentReflection}</p>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Controls */}
@@ -482,6 +577,81 @@ const ColdExposure = () => {
           
           <ClinicalDisclaimer type="info" title="Research Note">
             While cold exposure shows promising benefits, always consult your healthcare provider, especially for TBI recovery.
+          </ClinicalDisclaimer>
+        </div>
+      </MobileFullScreenModal>
+
+      {/* Post-Session Mood Report Modal */}
+      <MobileFullScreenModal
+        isOpen={showMoodReport}
+        onClose={() => setShowMoodReport(false)}
+        title="How Do You Feel?"
+        accentColor="cyan"
+      >
+        <div className="p-6 space-y-6">
+          <div className="text-center">
+            <Snowflake className="h-12 w-12 text-cyan-400 mx-auto mb-4 animate-pulse" />
+            <h3 className="text-xl font-bold text-cyan-100 mb-2">Session Complete!</h3>
+            <p className="text-cyan-300 text-sm">Track your dopamine response to optimize your practice</p>
+          </div>
+
+          {/* Quanta Reflection */}
+          {currentReflection && (
+            <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/30">
+              <div className="flex items-start gap-3">
+                <BookOpen className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-xs text-amber-400 font-medium mb-1">Reflection</p>
+                  <p className="text-sm text-amber-200 italic">{currentReflection}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Mood Selection */}
+          <div className="space-y-3">
+            <p className="text-center text-cyan-200 text-sm">How is your mood right now?</p>
+            <div className="flex justify-center gap-2">
+              {moodOptions.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => handleMoodReport(option.value)}
+                  className="flex flex-col items-center p-3 rounded-xl bg-slate-800/50 hover:bg-cyan-500/20 border border-cyan-500/20 hover:border-cyan-500/50 transition-all"
+                >
+                  <span className="text-2xl mb-1">{option.emoji}</span>
+                  <span className="text-xs text-cyan-300">{option.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Average Mood Display */}
+          {moodHistory.length > 0 && (
+            <div className="p-3 rounded-lg bg-slate-800/50 border border-cyan-500/20">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-cyan-400">Average Post-Session Mood</span>
+                <span className="text-lg font-bold text-cyan-100">
+                  {moodOptions[Math.round(moodHistory.reduce((a, b) => a + b, 0) / moodHistory.length) - 1]?.emoji || "🙂"}
+                </span>
+              </div>
+              <div className="mt-2 flex gap-1">
+                {moodHistory.slice(-10).map((mood, i) => (
+                  <div 
+                    key={i} 
+                    className="flex-1 h-2 rounded-full transition-all"
+                    style={{ 
+                      background: `linear-gradient(to right, 
+                        ${mood <= 2 ? '#6366f1' : mood === 3 ? '#06b6d4' : mood === 4 ? '#22c55e' : '#f97316'}
+                        , transparent)`
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          <ClinicalDisclaimer type="info" title="2025 TBI Safety Note" className="text-xs">
+            Cold exposure duration is capped for TBI safety. Progress gradually and always listen to your body.
           </ClinicalDisclaimer>
         </div>
       </MobileFullScreenModal>
