@@ -1,28 +1,14 @@
 import { useState } from "react";
-import { Volume2, VolumeX, Music, ChevronDown, Sparkles, Waves, Brain, Heart } from "lucide-react";
+import { Volume2, VolumeX, Music, ChevronDown, Sparkles, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { useAudio, AMBIENT_SOUNDS, SoundCategory } from "@/contexts/AudioContext";
+import { useAudio, AMBIENT_SOUNDS } from "@/contexts/AudioContext";
 import { BinauralVisualizer } from "@/components/ui/binaural-visualizer";
-
-const categoryIcons: Record<SoundCategory, React.ElementType> = {
-  nature: Waves,
-  binaural: Brain,
-  therapeutic: Heart
-};
-
-const categoryLabels: Record<SoundCategory, string> = {
-  nature: "Nature",
-  binaural: "Binaural",
-  therapeutic: "Therapy"
-};
 
 export const GlobalAmbientControl = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activeTab, setActiveTab] = useState<SoundCategory>("binaural");
   const { 
     activeSounds, 
     globalVolume, 
@@ -31,11 +17,14 @@ export const GlobalAmbientControl = () => {
     isAudiobookPlaying 
   } = useAudio();
 
-  const soundsByCategory = Object.entries(AMBIENT_SOUNDS).reduce((acc, [id, sound]) => {
-    if (!acc[sound.category]) acc[sound.category] = [];
-    acc[sound.category].push({ id, ...sound });
-    return acc;
-  }, {} as Record<SoundCategory, (typeof AMBIENT_SOUNDS[string] & { id: string })[]>);
+  const sounds = Object.entries(AMBIENT_SOUNDS).map(([id, sound]) => ({ id, ...sound }));
+
+  const getFrequencyType = (beatFrequency?: number) => {
+    if (!beatFrequency) return "alpha";
+    if (beatFrequency <= 7) return "theta";
+    if (beatFrequency <= 12) return "alpha";
+    return "beta";
+  };
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
@@ -45,7 +34,7 @@ export const GlobalAmbientControl = () => {
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-white font-semibold flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary" />
-              Phoenix Soundscapes
+              Binaural Soundscapes
             </h3>
             <Button
               variant="ghost"
@@ -66,27 +55,12 @@ export const GlobalAmbientControl = () => {
             </div>
           )}
 
-          {/* Category Tabs */}
-          <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as SoundCategory)} className="mb-3">
-            <TabsList className="w-full bg-white/5 p-1">
-              {(Object.keys(categoryLabels) as SoundCategory[]).map(cat => {
-                const Icon = categoryIcons[cat];
-                return (
-                  <TabsTrigger
-                    key={cat}
-                    value={cat}
-                    className="flex-1 text-xs data-[state=active]:bg-primary/30"
-                  >
-                    <Icon className="h-3 w-3 mr-1" />
-                    {categoryLabels[cat]}
-                  </TabsTrigger>
-                );
-              })}
-            </TabsList>
-          </Tabs>
+          <p className="text-xs text-white/50 mb-3">
+            Use headphones for best binaural effect
+          </p>
           
-          <div className="space-y-2 max-h-56 overflow-y-auto scrollbar-thin">
-            {soundsByCategory[activeTab]?.map((sound) => (
+          <div className="space-y-2 max-h-72 overflow-y-auto scrollbar-thin">
+            {sounds.map((sound) => (
               <button
                 key={sound.id}
                 onClick={() => toggleSound(sound.id)}
@@ -99,32 +73,11 @@ export const GlobalAmbientControl = () => {
                   isAudiobookPlaying && "opacity-50 cursor-not-allowed"
                 )}
               >
-                {/* Visual indicator based on category */}
-                {sound.category === "binaural" && sound.frequency ? (
-                  <BinauralVisualizer
-                    frequency={
-                      sound.frequency.includes("Theta") ? "theta" :
-                      sound.frequency.includes("Alpha") ? "alpha" :
-                      sound.frequency.includes("Beta") ? "beta" : "nature"
-                    }
-                    isActive={activeSounds.has(sound.id)}
-                    size="sm"
-                  />
-                ) : (
-                  <div
-                    className={cn(
-                      "w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br shrink-0",
-                      sound.color,
-                      activeSounds.has(sound.id) && "binaural-aura shadow-lg"
-                    )}
-                  >
-                    {activeSounds.has(sound.id) ? (
-                      <Volume2 className="h-5 w-5 text-white" />
-                    ) : (
-                      <VolumeX className="h-5 w-5 text-white/70" />
-                    )}
-                  </div>
-                )}
+                <BinauralVisualizer
+                  frequency={getFrequencyType(sound.beatFrequency)}
+                  isActive={activeSounds.has(sound.id)}
+                  size="sm"
+                />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-medium text-white truncate">{sound.name}</p>
@@ -132,16 +85,14 @@ export const GlobalAmbientControl = () => {
                       <Badge 
                         variant="outline" 
                         className="text-[10px] px-1 py-0 h-4 border-primary/50 text-primary"
-                        role="status"
-                        aria-label={`INCOG evidence level ${sound.incogLevel}`}
                       >
                         {sound.incogLevel}
                       </Badge>
                     )}
                   </div>
                   <p className="text-xs text-white/50 truncate">{sound.description}</p>
-                  {sound.frequency && (
-                    <span className="text-[10px] text-primary/80">{sound.frequency}</span>
+                  {sound.beatFrequency && (
+                    <span className="text-[10px] text-primary/80">{sound.beatFrequency} Hz beat</span>
                   )}
                 </div>
               </button>
