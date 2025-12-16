@@ -43,6 +43,7 @@ import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
 // TBI Programs & NeuroRehab consolidated into unified Neurotech Arsenal (INCOG)
 import INCOG from "./pages/INCOG";
+import Install from "./pages/Install";
 
 const queryClient = new QueryClient();
 
@@ -116,6 +117,7 @@ const AppContent = () => {
           <Route path="/gratitude" element={<GratitudeJourney />} />
           <Route path="/unwritten" element={<UnwrittenChapters />} />
           <Route path="/resources" element={<Resources />} />
+          <Route path="/install" element={<Install />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
