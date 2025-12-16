@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   ArrowLeft, Brain, Target, Music, Repeat, ClipboardList, Sparkles, 
-  BookOpen, Zap, Users, Settings, Trophy, Eye, Volume2, Compass, MessageSquare
+  BookOpen, Zap, Users, Settings, Trophy, Eye, Volume2, Compass, MessageSquare,
+  Download, ExternalLink
 } from "lucide-react";
 import GMTDashboard from "@/components/gmt/GMTDashboard";
 import MusicTherapy from "@/components/therapy/MusicTherapy";
@@ -16,6 +17,9 @@ import SpacedRepetition from "@/components/memory/SpacedRepetition";
 import ProfessionalAssessments from "@/components/assessments/ProfessionalAssessments";
 import VestibularModule from "@/components/vestibular/VestibularModule";
 import SpeechLanguageModule from "@/components/speech/SpeechLanguageModule";
+import DomainExercises from "@/components/tbi/DomainExercises";
+import ExternalProgramLinks from "@/components/tbi/ExternalProgramLinks";
+import InteractiveBrainMap from "@/components/tbi/InteractiveBrainMap";
 import { MobileBottomNav, MobilePageContainer } from "@/components/ui/mobile-nav";
 import { MobileFullScreenModal } from "@/components/ui/mobile-modal";
 import { AnimatedDomainWheel } from "@/components/ui/animated-domain-wheel";
@@ -38,6 +42,17 @@ const modules = [
     xpReward: 80,
     domain: 'vestibular',
     cogLoad: 'medium',
+  },
+  { 
+    id: 'nback', 
+    label: 'N-Back', 
+    icon: Zap, 
+    title: 'Dual N-Back Training', 
+    description: 'Working memory & attention',
+    evidenceLevel: 'A',
+    xpReward: 75,
+    domain: 'attention',
+    cogLoad: 'high',
   },
   { 
     id: 'gmt', 
@@ -292,13 +307,17 @@ const INCOG = () => {
 
   const navItems = [
     { id: "modules", label: "Modules", icon: <Brain className="h-5 w-5" /> },
+    { id: "exercises", label: "Exercises", icon: <Zap className="h-5 w-5" /> },
+    { id: "programs", label: "Programs", icon: <ExternalLink className="h-5 w-5" /> },
     { id: "progress", label: "Progress", icon: <Target className="h-5 w-5" /> },
-    { id: "caregiver", label: "Report", icon: <Users className="h-5 w-5" /> },
   ];
+
+  const [activeDomain, setActiveDomain] = useState<string | null>(null);
 
   const renderModuleContent = (moduleId: string) => {
     switch (moduleId) {
       case 'vestibular': return <VestibularModule onComplete={handleModuleComplete.bind(null, 'vestibular')} />;
+      case 'nback': return <DomainExercises domain="attention" onComplete={(score, xp) => handleModuleComplete('nback', 10, score)} />;
       case 'gmt': return <GMTDashboard />;
       case 'speech': return <SpeechLanguageModule onComplete={(type, score) => handleModuleComplete('speech', 10, score)} />;
       case 'music': return <MusicTherapy />;
@@ -310,9 +329,9 @@ const INCOG = () => {
   };
 
   return (
-    <MobilePageContainer className="bg-gradient-to-b from-gray-900 via-slate-900 to-orange-950">
+    <MobilePageContainer className="bg-gradient-to-b from-slate-900 via-blue-950 to-purple-950">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-gray-900/95 backdrop-blur border-b border-orange-500/20">
+      <div className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur border-b border-blue-500/20">
         <div className="px-4 py-3">
           <div className="flex items-center justify-between">
             <Link to="/dashboard">
@@ -321,20 +340,20 @@ const INCOG = () => {
               </Button>
             </Link>
             <div className="flex items-center gap-2">
-              <Brain className="w-5 h-5 text-orange-500" />
-              <span className="font-semibold text-white text-sm">INCOG 2.0</span>
-              <Badge variant="outline" className="text-xs border-green-500/50 text-green-400">
-                Level A
+              <Brain className="w-5 h-5 text-blue-400" />
+              <span className="font-semibold text-white text-sm">Neurotech Arsenal</span>
+              <Badge variant="outline" className="text-xs border-blue-500/50 text-blue-400">
+                INCOG 2.0
               </Badge>
             </div>
             <div className="flex items-center gap-1">
               <Button
                 variant="ghost"
                 size="sm"
-                className={cn("p-2", voiceEnabled && "bg-orange-500/20")}
+                className={cn("p-2", voiceEnabled && "bg-blue-500/20")}
                 onClick={() => setVoiceEnabled(!voiceEnabled)}
               >
-                <Volume2 className="w-4 h-4 text-orange-300" />
+                <Volume2 className="w-4 h-4 text-blue-300" />
               </Button>
               <PhoenixLevelBadge 
                 level={gamification.level} 
@@ -360,7 +379,7 @@ const INCOG = () => {
             <DomainQuiz onComplete={handleQuizComplete} />
             <Button
               variant="ghost"
-              className="w-full mt-3 text-orange-300"
+              className="w-full mt-3 text-blue-300"
               onClick={() => setShowQuiz(false)}
             >
               Skip Assessment
@@ -376,7 +395,7 @@ const INCOG = () => {
             <div className="px-4 py-4">
               <div className="text-center mb-4">
                 <h1 className="text-xl font-bold text-white mb-1">
-                  Cognitive Rehabilitation
+                  Neurotech Arsenal
                 </h1>
                 <p className="text-xs text-gray-400">
                   Evidence-based interventions • INCOG 2.0 Guidelines
@@ -393,18 +412,18 @@ const INCOG = () => {
 
               {/* Personalize Button */}
               {prioritizedDomains.length === 0 && (
-                <Card className="bg-gradient-to-r from-orange-500/20 to-amber-500/20 border-orange-500/30 mb-4">
+                <Card className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-blue-500/30 mb-4">
                   <CardContent className="p-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Sparkles className="w-5 h-5 text-amber-400" />
                       <div>
                         <p className="text-sm font-medium text-white">Personalize Your Protocol</p>
-                        <p className="text-xs text-orange-300/70">Take the domain assessment</p>
+                        <p className="text-xs text-blue-300/70">Take the domain assessment</p>
                       </div>
                     </div>
                     <Button
                       size="sm"
-                      className="bg-orange-500 hover:bg-orange-600"
+                      className="bg-blue-500 hover:bg-blue-600"
                       onClick={() => setShowQuiz(true)}
                     >
                       Start
@@ -415,9 +434,9 @@ const INCOG = () => {
 
               {/* Domain Wheel & Brain Viz */}
               <div className="grid grid-cols-2 gap-3 mb-4">
-                <Card className="bg-slate-900/60 border-orange-500/20">
+                <Card className="bg-slate-900/60 border-blue-500/20">
                   <CardContent className="p-3 flex flex-col items-center">
-                    <p className="text-xs text-orange-300 mb-2">Domain Progress</p>
+                    <p className="text-xs text-blue-300 mb-2">Domain Progress</p>
                     <AnimatedDomainWheel
                       domains={domainSegments}
                       size={140}
@@ -430,9 +449,9 @@ const INCOG = () => {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-slate-900/60 border-orange-500/20">
+                <Card className="bg-slate-900/60 border-blue-500/20">
                   <CardContent className="p-3 flex flex-col items-center">
-                    <p className="text-xs text-orange-300 mb-2">Active Regions</p>
+                    <p className="text-xs text-blue-300 mb-2">Active Regions</p>
                     <NeuralNetworkViz
                       nodes={brainNetwork.nodes}
                       connections={brainNetwork.connections}
@@ -446,15 +465,15 @@ const INCOG = () => {
 
               {/* Current Quanta */}
               {currentModule && domainQuanta[currentModule.domain] && (
-                <Card className="bg-white/5 border-orange-500/10 mb-4">
+                <Card className="bg-white/5 border-blue-500/10 mb-4">
                   <CardContent className="p-3">
                     <div className="flex items-start gap-2">
-                      <Sparkles className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" />
+                      <Sparkles className="w-4 h-4 text-purple-400 mt-0.5 flex-shrink-0" />
                       <div>
-                        <p className="text-xs text-orange-200/80 italic">
+                        <p className="text-xs text-blue-200/80 italic">
                           "{domainQuanta[currentModule.domain].quote}"
                         </p>
-                        <p className="text-xs text-orange-400/60 mt-1">
+                        <p className="text-xs text-purple-400/60 mt-1">
                           — {domainQuanta[currentModule.domain].chapter}
                         </p>
                       </div>
@@ -464,12 +483,12 @@ const INCOG = () => {
               )}
             </div>
 
-            {/* Tab Content */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="px-4 pb-24">
-              <TabsList className="grid w-full grid-cols-3 bg-slate-800/50 mb-4">
+              <TabsList className="grid w-full grid-cols-4 bg-slate-800/50 mb-4">
                 <TabsTrigger value="modules" className="text-xs">Modules</TabsTrigger>
+                <TabsTrigger value="exercises" className="text-xs">Exercises</TabsTrigger>
+                <TabsTrigger value="programs" className="text-xs">Programs</TabsTrigger>
                 <TabsTrigger value="progress" className="text-xs">Progress</TabsTrigger>
-                <TabsTrigger value="quests" className="text-xs">Quests</TabsTrigger>
               </TabsList>
 
               <TabsContent value="modules" className="space-y-3">
@@ -508,9 +527,9 @@ const INCOG = () => {
                       >
                         <Card 
                           className={cn(
-                            "cursor-pointer border-orange-500/20 bg-slate-900/80 transition-all",
-                            activeModule === module.id && "ring-2 ring-orange-500",
-                            isPriority && "border-amber-500/40"
+                            "cursor-pointer border-blue-500/20 bg-slate-900/80 transition-all",
+                            activeModule === module.id && "ring-2 ring-blue-500",
+                            isPriority && "border-purple-500/40"
                           )}
                           onClick={() => {
                             setSelectedModule(module);
@@ -521,18 +540,18 @@ const INCOG = () => {
                             <div className="flex items-center gap-3">
                               <div className={cn(
                                 "w-12 h-12 rounded-xl flex items-center justify-center",
-                                isPriority ? "bg-amber-500/20" : "bg-orange-500/20"
+                                isPriority ? "bg-purple-500/20" : "bg-blue-500/20"
                               )}>
                                 <module.icon className={cn(
                                   "w-6 h-6",
-                                  isPriority ? "text-amber-400" : "text-orange-400"
+                                  isPriority ? "text-purple-400" : "text-blue-400"
                                 )} />
                               </div>
                               <div className="flex-1">
                                 <div className="flex items-center gap-2">
                                   <span className="font-semibold text-white">{module.title}</span>
                                   {isPriority && (
-                                    <Badge className="text-[10px] bg-amber-500/20 text-amber-300">
+                                    <Badge className="text-[10px] bg-purple-500/20 text-purple-300">
                                       Priority
                                     </Badge>
                                   )}
@@ -559,32 +578,79 @@ const INCOG = () => {
                 </div>
               </TabsContent>
 
-              <TabsContent value="progress">
+              <TabsContent value="exercises" className="space-y-4">
+                {/* Interactive Brain Map */}
+                <Card className="bg-slate-900/60 border-blue-500/20">
+                  <CardContent className="p-4">
+                    <InteractiveBrainMap
+                      activeDomain={activeDomain}
+                      onDomainSelect={setActiveDomain}
+                      deficitScores={prioritizedDomains.reduce(
+                        (acc, domain) => ({ ...acc, [domain]: 0.7 }), {}
+                      )}
+                    />
+                  </CardContent>
+                </Card>
+
+                {/* Domain Exercises */}
+                {activeDomain ? (
+                  <DomainExercises
+                    domain={activeDomain as any}
+                    onComplete={(score, xp) => {
+                      handleModuleComplete('exercises', 10, score);
+                      addXp(xp, `Completed ${activeDomain} exercise`);
+                    }}
+                  />
+                ) : (
+                  <div className="grid gap-4">
+                    {(["attention", "memory", "executive", "communication"] as const).map(domain => (
+                      <DomainExercises
+                        key={domain}
+                        domain={domain}
+                        onComplete={(score, xp) => {
+                          handleModuleComplete('exercises', 10, score);
+                          addXp(xp, `Completed ${domain} exercise`);
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </TabsContent>
+
+              <TabsContent value="programs" className="space-y-4">
+                <ExternalProgramLinks activeDomain={activeDomain} />
+              </TabsContent>
+
+              <TabsContent value="progress" className="space-y-4">
                 <CaregiverView
                   domainProgress={domainProgress}
                   sessionLogs={sessionLogs}
-                  onExport={() => toast({ title: "Report Exported", description: "INCOG progress report downloaded" })}
+                  onExport={() => toast({ title: "Report Exported", description: "Clinical report downloaded" })}
                 />
-              </TabsContent>
 
-              <TabsContent value="quests" className="space-y-3">
-                <p className="text-xs text-orange-300 mb-2">Complete quests to earn XP & unlock achievements</p>
-                {incogQuests.map((quest) => (
-                  <Card key={quest.id} className="bg-slate-900/60 border-orange-500/20">
-                    <CardContent className="p-3 flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-orange-500/20 flex items-center justify-center">
-                          <Trophy className="w-5 h-5 text-orange-400" />
+                {/* Quests Section */}
+                <Card className="bg-slate-900/60 border-blue-500/20">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm flex items-center gap-2 text-white">
+                      <Trophy className="w-4 h-4 text-amber-400" />
+                      Quests & Achievements
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    {incogQuests.slice(0, 3).map((quest) => (
+                      <div key={quest.id} className="flex items-center justify-between p-2 bg-slate-800/50 rounded-lg">
+                        <div className="flex items-center gap-2">
+                          <Trophy className="w-4 h-4 text-amber-400" />
+                          <div>
+                            <p className="font-medium text-white text-xs">{quest.name}</p>
+                            <p className="text-[10px] text-gray-400">{quest.description}</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="font-medium text-white text-sm">{quest.name}</p>
-                          <p className="text-xs text-gray-400">{quest.description}</p>
-                        </div>
+                        <Badge variant="secondary" className="text-[10px]">+{quest.xp} XP</Badge>
                       </div>
-                      <Badge variant="secondary">+{quest.xp} XP</Badge>
-                    </CardContent>
-                  </Card>
-                ))}
+                    ))}
+                  </CardContent>
+                </Card>
               </TabsContent>
             </Tabs>
           </motion.div>
@@ -596,7 +662,7 @@ const INCOG = () => {
         items={navItems}
         activeId={activeTab}
         onSelect={setActiveTab}
-        accentColor="orange"
+        accentColor="blue"
       />
 
       {/* Module Modal */}
@@ -604,7 +670,7 @@ const INCOG = () => {
         isOpen={showModuleModal}
         onClose={() => setShowModuleModal(false)}
         title={selectedModule?.title || 'Module'}
-        accentColor="orange"
+        accentColor="blue"
       >
         <div className="p-4 text-white">
           {selectedModule && (
@@ -619,9 +685,9 @@ const INCOG = () => {
                 </Badge>
               </div>
               {domainQuanta[selectedModule.domain] && (
-                <Card className="bg-white/5 border-orange-500/10 mb-4">
+                <Card className="bg-white/5 border-blue-500/10 mb-4">
                   <CardContent className="p-3">
-                    <p className="text-xs text-orange-200/80 italic">
+                    <p className="text-xs text-blue-200/80 italic">
                       "{domainQuanta[selectedModule.domain].quote}"
                     </p>
                   </CardContent>

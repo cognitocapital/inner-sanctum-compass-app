@@ -41,8 +41,7 @@ import GratitudeJourney from "./pages/GratitudeJourney";
 import UnwrittenChapters from "./pages/UnwrittenChapters";
 import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
-// NeuroRehab removed - consolidated into INCOG 2.0
-import TBIPrograms from "./pages/TBIPrograms";
+// TBI Programs & NeuroRehab consolidated into unified Neurotech Arsenal (INCOG)
 import INCOG from "./pages/INCOG";
 
 const queryClient = new QueryClient();
@@ -84,9 +83,9 @@ const AppContent = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/breathing" element={<BreathingExercise />} />
           <Route path="/cold-exposure" element={<ColdExposure />} />
-          {/* NeuroRehab consolidated into INCOG 2.0 - redirect */}
+          {/* All cognitive rehab consolidated into Neurotech Arsenal */}
           <Route path="/neuro-rehab" element={<INCOG />} />
-          <Route path="/tbi-programs" element={<TBIPrograms />} />
+          <Route path="/tbi-programs" element={<INCOG />} />
           <Route path="/incog" element={<INCOG />} />
           <Route path="/dedication" element={<Dedication />} />
           <Route path="/prologue" element={<Prologue />} />
