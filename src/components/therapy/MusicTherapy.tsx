@@ -1,30 +1,29 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Play, Pause, Volume2, VolumeX, Heart, Waves, Moon, Brain, Sparkles, TreePine } from 'lucide-react';
+import { Play, Pause, Volume2, Waves, Brain, Music2, Sparkles } from 'lucide-react';
 import EvidenceBadge from '@/components/clinical/EvidenceBadge';
 import { useAudio, AMBIENT_SOUNDS, SoundCategory } from '@/contexts/AudioContext';
 
 const categoryInfo: Record<SoundCategory, { icon: React.ElementType; description: string }> = {
-  nature: { 
+  soundscapes: { 
     icon: Waves, 
-    description: "Nature sounds for grounding and relaxation" 
+    description: "Dynamic nature sounds with layered synthesis" 
   },
   binaural: { 
     icon: Brain, 
-    description: "Brainwave entrainment (use headphones)" 
+    description: "Brainwave entrainment with warm undertones (use headphones)" 
   },
-  therapeutic: { 
-    icon: Heart, 
-    description: "Solfeggio frequencies for healing" 
+  music: { 
+    icon: Music2, 
+    description: "Melodic compositions for emotional healing" 
   },
 };
 
 const MusicTherapy = () => {
-  const [activeCategory, setActiveCategory] = useState<SoundCategory>("nature");
+  const [activeCategory, setActiveCategory] = useState<SoundCategory>("soundscapes");
   const { activeSounds, globalVolume, toggleSound, setGlobalVolume, isAudiobookPlaying } = useAudio();
 
   const soundsByCategory = Object.entries(AMBIENT_SOUNDS).reduce((acc, [id, sound]) => {
@@ -42,11 +41,10 @@ const MusicTherapy = () => {
   };
 
   const getIcon = (sound: typeof AMBIENT_SOUNDS[string]) => {
-    if (sound.noiseType === "pink" && sound.id === "ocean") return Waves;
-    if (sound.noiseType === "brown") return TreePine;
+    if (sound.soundType === "ocean") return Waves;
+    if (sound.soundType === "bells" || sound.soundType === "piano" || sound.soundType === "phoenix") return Music2;
     if (sound.beatFrequency) return Brain;
-    if (sound.toneFrequency) return Sparkles;
-    return Waves;
+    return Sparkles;
   };
 
   return (
@@ -54,7 +52,7 @@ const MusicTherapy = () => {
       <EvidenceBadge
         level="A"
         domain="Music & Rhythm Therapy"
-        description="Binaural beats, nature sounds, and therapeutic frequencies support cognitive and emotional recovery after TBI."
+        description="Dynamic soundscapes, binaural beats, and melodic compositions support cognitive and emotional recovery after TBI."
         pubmedId="32180108"
       />
 
@@ -91,10 +89,11 @@ const MusicTherapy = () => {
         <TabsList className="w-full">
           {(Object.keys(categoryInfo) as SoundCategory[]).map(cat => {
             const Icon = categoryInfo[cat].icon;
+            const label = cat === "soundscapes" ? "Soundscapes" : cat === "binaural" ? "Binaural" : "Music";
             return (
               <TabsTrigger key={cat} value={cat} className="flex-1 gap-1">
                 <Icon className="h-4 w-4" />
-                <span className="hidden sm:inline">{cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
+                <span className="hidden sm:inline">{label}</span>
               </TabsTrigger>
             );
           })}
@@ -143,11 +142,6 @@ const MusicTherapy = () => {
                               {sound.beatFrequency}Hz beat
                             </Badge>
                           )}
-                          {sound.toneFrequency && (
-                            <Badge variant="secondary" className="text-xs">
-                              {sound.toneFrequency}Hz
-                            </Badge>
-                          )}
                         </div>
                         <p className="text-sm text-muted-foreground">{sound.description}</p>
                         {sound.therapeuticUse && (
@@ -170,9 +164,9 @@ const MusicTherapy = () => {
       <Card className="bg-muted/30">
         <CardContent className="pt-4">
           <p className="text-sm text-muted-foreground">
-            <strong>Sound Therapy</strong> uses auditory stimulation for cognitive and emotional recovery. 
-            Nature sounds provide grounding, binaural beats entrain brainwaves for focus/calm, 
-            and Solfeggio frequencies support holistic healing—all aligned with INCOG 2.0 guidelines.
+            <strong>Sound Therapy</strong> uses advanced audio synthesis for cognitive and emotional recovery. 
+            Nature soundscapes with dynamic modulation, binaural beats with warm harmonic undertones, 
+            and melodic compositions for emotional healing—all aligned with INCOG 2.0 guidelines.
           </p>
         </CardContent>
       </Card>

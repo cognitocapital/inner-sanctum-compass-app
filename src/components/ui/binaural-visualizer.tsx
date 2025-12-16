@@ -1,13 +1,14 @@
 import { cn } from "@/lib/utils";
 
 interface BinauralVisualizerProps {
-  frequency: "theta" | "alpha" | "beta" | "nature";
+  frequency: "delta" | "theta" | "alpha" | "beta" | "nature";
   isActive: boolean;
   size?: "sm" | "md" | "lg";
   className?: string;
 }
 
 const frequencyColors = {
+  delta: "from-indigo-600 to-purple-900",
   theta: "from-violet-500 to-purple-700",
   alpha: "from-blue-400 to-indigo-600",
   beta: "from-amber-400 to-orange-600",
@@ -15,6 +16,7 @@ const frequencyColors = {
 };
 
 const frequencyLabels = {
+  delta: "1-4 Hz",
   theta: "4-7 Hz",
   alpha: "8-12 Hz",
   beta: "15-20 Hz",
@@ -33,13 +35,15 @@ export const BinauralVisualizer = ({
     lg: "w-32 h-32"
   };
 
-  const waveClass = frequency === "theta" 
-    ? "wave-theta" 
-    : frequency === "alpha" 
-      ? "wave-alpha" 
-      : frequency === "beta"
-        ? "wave-beta"
-        : "wave-alpha";
+  const waveClass = frequency === "delta"
+    ? "wave-theta"
+    : frequency === "theta" 
+      ? "wave-theta" 
+      : frequency === "alpha" 
+        ? "wave-alpha" 
+        : frequency === "beta"
+          ? "wave-beta"
+          : "wave-alpha";
 
   return (
     <div 
