@@ -17,7 +17,7 @@ import { usePhoenixGamification, StreakDisplay, FeatherCount, PhoenixLevelBadge 
 import IceCavernBackground from "@/components/ice/IceCavernBackground";
 import BodyHeatMap from "@/components/ice/BodyHeatMap";
 import DopamineGraph from "@/components/ice/DopamineGraph";
-import FrostSafetyQuiz from "@/components/ice/FrostSafetyQuiz";
+import FrostSafetyQuiz, { SafetyQuizResult, ColdMethod } from "@/components/ice/FrostSafetyQuiz";
 import { cn } from "@/lib/utils";
 
 // Warrior tiers for gamification
@@ -159,21 +159,46 @@ const ColdExposure = () => {
     };
   }, [isActive, timeLeft, phase, selectedDuration]);
 
-  const handleSafetyComplete = (passed: boolean, recommendations: string[]) => {
-    setSafetyPassed(passed);
-    setSafetyRecommendations(recommendations);
+  const handleSafetyComplete = (result: SafetyQuizResult) => {
+    setSafetyPassed(result.passed);
+    setSafetyRecommendations(result.recommendations);
     setShowSafetyQuiz(false);
 
-    if (!passed) {
+    // Store clinical data from safety quiz
+    localStorage.setItem('frostForgeLastABS', result.absScore.toString());
+    localStorage.setItem('frostForgeLastPSS4', result.pss4Score.toString());
+    localStorage.setItem('frostForgeLastMethod', JSON.stringify(result.coldMethod));
+    
+    // Set recommended duration based on cold method
+    setSelectedDuration(result.coldMethod.recommendedDuration);
+
+    if (!result.passed) {
       toast({
         title: "Session Not Recommended",
-        description: "Based on your responses, please skip this session for safety.",
+        description: result.contraindications.length > 0 
+          ? `Contraindication: ${result.contraindications[0]}`
+          : "Based on your responses, please skip this session for safety.",
         variant: "destructive"
       });
-    } else if (recommendations.length > 0) {
+    } else if (result.absScore >= 3) {
+      toast({
+        title: "High Agitation Detected",
+        description: `ABS Score: ${result.absScore}/4. Consider calming breathwork first.`,
+      });
+    } else if (result.pss4Score >= 10) {
+      toast({
+        title: "Elevated Stress Detected",
+        description: `PSS-4 Score: ${result.pss4Score}/16. Shorter session recommended.`,
+      });
+    } else if (result.recommendations.length > 0) {
       toast({
         title: "Proceed with Caution",
-        description: recommendations[0]
+        description: result.recommendations[0]
+      });
+    } else {
+      toast({
+        title: `${result.coldMethod.name} Ready`,
+        description: `Recommended: ${result.coldMethod.recommendedDuration}s at ${result.coldMethod.tempRange}`,
       });
     }
   };
