@@ -8,17 +8,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   ArrowLeft, Play, Pause, RotateCcw, Thermometer, Snowflake, Timer, 
   Trophy, TrendingUp, Flame, BookOpen, Zap, ShieldCheck, AlertTriangle, 
-  FileDown, Award, Target, Volume2, VolumeX, Sparkles
+  FileDown, Award, Target, Volume2, VolumeX, Sparkles, Heart, Brain, Baby, Users
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import EvidenceBadge from "@/components/clinical/EvidenceBadge";
 import ClinicalDisclaimer from "@/components/clinical/ClinicalDisclaimer";
+import AudioSafetyDisclaimer from "@/components/clinical/AudioSafetyDisclaimer";
 import { usePhoenixGamification, StreakDisplay, FeatherCount, PhoenixLevelBadge } from "@/components/ui/phoenix-gamification";
 import IceCavernBackground from "@/components/ice/IceCavernBackground";
 import BodyHeatMap from "@/components/ice/BodyHeatMap";
 import DopamineGraph from "@/components/ice/DopamineGraph";
-import FrostSafetyQuiz, { SafetyQuizResult, ColdMethod } from "@/components/ice/FrostSafetyQuiz";
 import { cn } from "@/lib/utils";
+import { SafetyConsent } from "@/hooks/use-safety-consent";
 
 // Warrior tiers for gamification
 const WARRIOR_TIERS = [
@@ -159,49 +160,7 @@ const ColdExposure = () => {
     };
   }, [isActive, timeLeft, phase, selectedDuration]);
 
-  const handleSafetyComplete = (result: SafetyQuizResult) => {
-    setSafetyPassed(result.passed);
-    setSafetyRecommendations(result.recommendations);
-    setShowSafetyQuiz(false);
-
-    // Store clinical data from safety quiz
-    localStorage.setItem('frostForgeLastABS', result.absScore.toString());
-    localStorage.setItem('frostForgeLastPSS4', result.pss4Score.toString());
-    localStorage.setItem('frostForgeLastMethod', JSON.stringify(result.coldMethod));
-    
-    // Set recommended duration based on cold method
-    setSelectedDuration(result.coldMethod.recommendedDuration);
-
-    if (!result.passed) {
-      toast({
-        title: "Session Not Recommended",
-        description: result.contraindications.length > 0 
-          ? `Contraindication: ${result.contraindications[0]}`
-          : "Based on your responses, please skip this session for safety.",
-        variant: "destructive"
-      });
-    } else if (result.absScore >= 3) {
-      toast({
-        title: "High Agitation Detected",
-        description: `ABS Score: ${result.absScore}/4. Consider calming breathwork first.`,
-      });
-    } else if (result.pss4Score >= 10) {
-      toast({
-        title: "Elevated Stress Detected",
-        description: `PSS-4 Score: ${result.pss4Score}/16. Shorter session recommended.`,
-      });
-    } else if (result.recommendations.length > 0) {
-      toast({
-        title: "Proceed with Caution",
-        description: result.recommendations[0]
-      });
-    } else {
-      toast({
-        title: `${result.coldMethod.name} Ready`,
-        description: `Recommended: ${result.coldMethod.recommendedDuration}s at ${result.coldMethod.tempRange}`,
-      });
-    }
-  };
+  // Old safety handler removed - now using AudioSafetyDisclaimer
 
   const completeSession = () => {
     setIsActive(false);
@@ -292,7 +251,57 @@ const ColdExposure = () => {
     }
   };
 
-  // Safety quiz screen
+  // Ice Warrior safety points
+  const iceWarriorSafetyPoints = [
+    { id: "heart", icon: <Heart className="w-4 h-4" />, text: "No heart conditions or cardiovascular issues", severity: "stop" as const },
+    { id: "vertigo", icon: <Brain className="w-4 h-4" />, text: "No vertigo or dizziness today", severity: "stop" as const },
+    { id: "concussion", icon: <AlertTriangle className="w-4 h-4" />, text: "No recent concussion (< 7 days)", severity: "stop" as const },
+    { id: "pregnancy", icon: <Baby className="w-4 h-4" />, text: "Not pregnant", severity: "stop" as const },
+    { id: "buddy", icon: <Users className="w-4 h-4" />, text: "Someone nearby for safety (advanced sessions)", severity: "caution" as const },
+  ];
+
+  const coldMethodOptions = [
+    { id: "shower", name: "Cold Shower", icon: "🚿", description: "Easiest start", recommendedDuration: 30 },
+    { id: "bath", name: "Ice Bath", icon: "🛁", description: "Intermediate", recommendedDuration: 60 },
+    { id: "plunge", name: "Cold Plunge", icon: "❄️", description: "Advanced", recommendedDuration: 90 },
+    { id: "nordic", name: "Nordic Cycle", icon: "🌡️", description: "Hot-cold contrast", recommendedDuration: 45 },
+  ];
+
+  const safetyScript = `Welcome, Phoenix warrior. I'm here to guide you safely through your cold exposure journey.
+
+Before we begin, please take a moment to check in with yourself. If you're experiencing vertigo, dizziness, or any heart-related symptoms today, this session is not recommended. Your safety always comes first.
+
+If you've had a recent concussion within the last 7 days, please skip today and return when you're feeling stronger.
+
+Make sure you have someone nearby who knows you're doing cold exposure—a safety buddy is important for longer sessions.
+
+Remember: cold exposure is about building resilience over time, not pushing through pain. Listen to your body, and honor its wisdom.`;
+
+  const handleSafetyProceed = (consent: Omit<SafetyConsent, "moduleId" | "timestamp" | "expiresAt">) => {
+    setSafetyPassed(true);
+    setShowSafetyQuiz(false);
+    
+    // Set duration based on selected method
+    const method = coldMethodOptions.find(m => m.id === consent.selectedMethod);
+    if (method?.recommendedDuration) {
+      setSelectedDuration(method.recommendedDuration);
+    }
+    
+    // Show toast based on ABS score
+    if (consent.absScore && consent.absScore >= 3) {
+      toast({
+        title: "High Agitation Detected",
+        description: "Consider calming breathwork first, or try a shorter session.",
+      });
+    } else {
+      toast({
+        title: "Ready to Begin",
+        description: `${method?.name || "Cold exposure"} session prepared.`,
+      });
+    }
+  };
+
+  // Safety screen using new AudioSafetyDisclaimer
   if (showSafetyQuiz) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-950 to-cyan-950 relative overflow-hidden">
@@ -307,17 +316,7 @@ const ColdExposure = () => {
           </Button>
 
           <div className="text-center mb-8">
-            <motion.div 
-              className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-2xl shadow-cyan-500/30"
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <Snowflake className="w-10 h-10 text-white" />
-            </motion.div>
-            <h1 className="text-3xl font-bold text-white mb-2">Resilient Frost Forge</h1>
-            <p className="text-cyan-300">Transform fear into dopamine resilience</p>
-            
-            <div className="flex justify-center gap-2 mt-4">
+            <div className="flex justify-center gap-2">
               <EvidenceBadge 
                 level="C" 
                 domain="Hormetic Stress"
@@ -331,9 +330,18 @@ const ColdExposure = () => {
             </div>
           </div>
 
-          <FrostSafetyQuiz
-            onComplete={handleSafetyComplete}
-            onCancel={() => window.history.back()}
+          <AudioSafetyDisclaimer
+            moduleId="ice-warrior"
+            moduleName="Frost Forge"
+            accentColor="cyan"
+            phoenixEmoji="❄️"
+            safetyScript={safetyScript}
+            criticalPoints={iceWarriorSafetyPoints}
+            showAbsScale={true}
+            showMethodSelector={true}
+            methodOptions={coldMethodOptions}
+            onProceed={handleSafetyProceed}
+            onSkip={() => window.history.back()}
           />
         </div>
       </div>
