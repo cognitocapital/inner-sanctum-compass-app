@@ -3,27 +3,35 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Play, Pause, Volume2, Waves, Brain, Music2, Sparkles } from 'lucide-react';
+import { Play, Pause, Volume2, Sparkles, Wind, Drum, Brain, Globe } from 'lucide-react';
 import EvidenceBadge from '@/components/clinical/EvidenceBadge';
 import { useAudio, AMBIENT_SOUNDS, SoundCategory } from '@/contexts/AudioContext';
 
-const categoryInfo: Record<SoundCategory, { icon: React.ElementType; description: string }> = {
-  soundscapes: { 
-    icon: Waves, 
-    description: "Dynamic nature sounds with layered synthesis" 
+const categoryInfo: Record<SoundCategory, { icon: React.ElementType; description: string; label: string }> = {
+  sacred: { 
+    icon: Sparkles, 
+    label: "Sacred",
+    description: "Ancient singing bowls, chimes, and gongs for deep meditation" 
+  },
+  wind: { 
+    icon: Wind, 
+    label: "Wind",
+    description: "Traditional flutes from global healing traditions" 
+  },
+  rhythm: { 
+    icon: Drum, 
+    label: "Rhythm",
+    description: "Drums and percussion for grounding and journeying" 
   },
   binaural: { 
     icon: Brain, 
-    description: "Brainwave entrainment with warm undertones (use headphones)" 
-  },
-  music: { 
-    icon: Music2, 
-    description: "Melodic compositions for emotional healing" 
+    label: "Binaural",
+    description: "Brainwave entrainment beats (use headphones)" 
   },
 };
 
 const MusicTherapy = () => {
-  const [activeCategory, setActiveCategory] = useState<SoundCategory>("soundscapes");
+  const [activeCategory, setActiveCategory] = useState<SoundCategory>("sacred");
   const { activeSounds, globalVolume, toggleSound, setGlobalVolume, isAudiobookPlaying } = useAudio();
 
   const soundsByCategory = Object.entries(AMBIENT_SOUNDS).reduce((acc, [id, sound]) => {
@@ -41,9 +49,10 @@ const MusicTherapy = () => {
   };
 
   const getIcon = (sound: typeof AMBIENT_SOUNDS[string]) => {
-    if (sound.soundType === "ocean") return Waves;
-    if (sound.soundType === "bells" || sound.soundType === "piano" || sound.soundType === "phoenix") return Music2;
     if (sound.beatFrequency) return Brain;
+    if (sound.category === "sacred") return Sparkles;
+    if (sound.category === "wind") return Wind;
+    if (sound.category === "rhythm") return Drum;
     return Sparkles;
   };
 
@@ -51,8 +60,8 @@ const MusicTherapy = () => {
     <div className="space-y-6">
       <EvidenceBadge
         level="A"
-        domain="Music & Rhythm Therapy"
-        description="Dynamic soundscapes, binaural beats, and melodic compositions support cognitive and emotional recovery after TBI."
+        domain="Music & Sound Therapy"
+        description="Ancient healing instruments and binaural beats support cognitive and emotional recovery after TBI per INCOG 2.0."
         pubmedId="32180108"
       />
 
@@ -86,14 +95,13 @@ const MusicTherapy = () => {
 
       {/* Category Tabs */}
       <Tabs value={activeCategory} onValueChange={(v) => setActiveCategory(v as SoundCategory)}>
-        <TabsList className="w-full">
+        <TabsList className="w-full grid grid-cols-4">
           {(Object.keys(categoryInfo) as SoundCategory[]).map(cat => {
             const Icon = categoryInfo[cat].icon;
-            const label = cat === "soundscapes" ? "Soundscapes" : cat === "binaural" ? "Binaural" : "Music";
             return (
-              <TabsTrigger key={cat} value={cat} className="flex-1 gap-1">
+              <TabsTrigger key={cat} value={cat} className="flex-1 gap-1 px-2">
                 <Icon className="h-4 w-4" />
-                <span className="hidden sm:inline">{label}</span>
+                <span className="hidden sm:inline text-xs">{categoryInfo[cat].label}</span>
               </TabsTrigger>
             );
           })}
@@ -129,7 +137,7 @@ const MusicTherapy = () => {
                           <Icon className="w-5 h-5 text-white" />
                         )}
                       </div>
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <h4 className="font-medium">{sound.name}</h4>
                           {sound.incogLevel && (
@@ -142,8 +150,14 @@ const MusicTherapy = () => {
                               {sound.beatFrequency}Hz beat
                             </Badge>
                           )}
+                          {sound.origin && (
+                            <Badge variant="outline" className="text-xs flex items-center gap-1">
+                              <Globe className="h-3 w-3" />
+                              {sound.origin}
+                            </Badge>
+                          )}
                         </div>
-                        <p className="text-sm text-muted-foreground">{sound.description}</p>
+                        <p className="text-sm text-muted-foreground truncate">{sound.description}</p>
                         {sound.therapeuticUse && (
                           <div className="flex gap-1 mt-1 flex-wrap">
                             {sound.therapeuticUse.slice(0, 3).map(use => (
@@ -164,9 +178,9 @@ const MusicTherapy = () => {
       <Card className="bg-muted/30">
         <CardContent className="pt-4">
           <p className="text-sm text-muted-foreground">
-            <strong>Sound Therapy</strong> uses advanced audio synthesis for cognitive and emotional recovery. 
-            Nature soundscapes with dynamic modulation, binaural beats with warm harmonic undertones, 
-            and melodic compositions for emotional healing—all aligned with INCOG 2.0 guidelines.
+            <strong>Ancient Healing Instruments</strong> — Tibetan singing bowls, Native American flutes, 
+            shamanic drums, and other sacred instruments from global healing traditions. Combined with 
+            precision binaural beats for comprehensive sound therapy aligned with INCOG 2.0 guidelines.
           </p>
         </CardContent>
       </Card>
