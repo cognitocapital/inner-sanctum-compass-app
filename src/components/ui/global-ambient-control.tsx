@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Volume2, VolumeX, Music, ChevronDown, Sparkles, Waves, Brain, Music2 } from "lucide-react";
+import { Volume2, VolumeX, Music, ChevronDown, Sparkles, Wind, Drum, Brain, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
@@ -9,20 +9,22 @@ import { useAudio, AMBIENT_SOUNDS, SoundCategory } from "@/contexts/AudioContext
 import { BinauralVisualizer } from "@/components/ui/binaural-visualizer";
 
 const categoryIcons: Record<SoundCategory, React.ElementType> = {
-  soundscapes: Waves,
-  binaural: Brain,
-  music: Music2
+  sacred: Sparkles,
+  wind: Wind,
+  rhythm: Drum,
+  binaural: Brain
 };
 
 const categoryLabels: Record<SoundCategory, string> = {
-  soundscapes: "Soundscapes",
-  binaural: "Binaural",
-  music: "Music"
+  sacred: "Sacred",
+  wind: "Wind",
+  rhythm: "Rhythm",
+  binaural: "Binaural"
 };
 
 export const GlobalAmbientControl = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activeTab, setActiveTab] = useState<SoundCategory>("soundscapes");
+  const [activeTab, setActiveTab] = useState<SoundCategory>("sacred");
   const { 
     activeSounds, 
     globalVolume, 
@@ -55,7 +57,7 @@ export const GlobalAmbientControl = () => {
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-white font-semibold flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary" />
-              Healing Soundscapes
+              Ancient Healing Sounds
             </h3>
             <Button
               variant="ghost"
@@ -78,17 +80,17 @@ export const GlobalAmbientControl = () => {
 
           {/* Category Tabs */}
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as SoundCategory)} className="mb-3">
-            <TabsList className="w-full bg-white/5 p-1">
+            <TabsList className="w-full bg-white/5 p-1 grid grid-cols-4">
               {(Object.keys(categoryLabels) as SoundCategory[]).map(cat => {
                 const Icon = categoryIcons[cat];
                 return (
                   <TabsTrigger
                     key={cat}
                     value={cat}
-                    className="flex-1 text-xs data-[state=active]:bg-primary/30"
+                    className="flex-1 text-[10px] data-[state=active]:bg-primary/30 px-1"
                   >
-                    <Icon className="h-3 w-3 mr-1" />
-                    {categoryLabels[cat]}
+                    <Icon className="h-3 w-3 mr-0.5" />
+                    <span className="hidden sm:inline">{categoryLabels[cat]}</span>
                   </TabsTrigger>
                 );
               })}
@@ -149,9 +151,17 @@ export const GlobalAmbientControl = () => {
                     )}
                   </div>
                   <p className="text-xs text-white/50 truncate">{sound.description}</p>
-                  {sound.beatFrequency && (
-                    <span className="text-[10px] text-primary/80">{sound.beatFrequency}Hz beat</span>
-                  )}
+                  <div className="flex items-center gap-2 mt-0.5">
+                    {sound.beatFrequency && (
+                      <span className="text-[10px] text-primary/80">{sound.beatFrequency}Hz beat</span>
+                    )}
+                    {sound.origin && (
+                      <span className="text-[10px] text-white/40 flex items-center gap-0.5">
+                        <Globe className="h-2.5 w-2.5" />
+                        {sound.origin}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </button>
             ))}
