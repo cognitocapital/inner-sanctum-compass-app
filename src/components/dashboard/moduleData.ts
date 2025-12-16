@@ -44,27 +44,6 @@ export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
     ambientSound: "ice"
   },
   {
-    title: "TBI Programs",
-    subtitle: "Evidence-Based",
-    description: "Access research-backed computer programs for traumatic brain injury rehabilitation, including Cogmed and RehaCom.",
-    features: [
-      "Cogmed QM Training",
-      "RehaCom Cognitive",
-      "VR Therapy Programs",
-      "Clinical Evidence"
-    ],
-    iconVariant: "computer",
-    href: "/tbi-programs",
-    buttonText: "Explore Programs",
-    gradient: "bg-gradient-to-br from-indigo-950/90 via-blue-950/80 to-indigo-900/70 border border-indigo-500/30",
-    iconGradient: "from-indigo-400 to-blue-500",
-    textColor: "text-indigo-50",
-    subtextColor: "text-indigo-200/80",
-    badgeColor: "bg-indigo-500/20 text-indigo-300 border border-indigo-500/30",
-    badgeText: "Clinical-Grade",
-    ambientSound: "computer"
-  },
-  {
     title: "Phoenix Mind",
     subtitle: "Clinical Training",
     description: "Evidence-based cognitive training, assessments, and rehabilitation tools used in Brain Injury Units worldwide.",
@@ -107,24 +86,24 @@ export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
     ambientSound: "heart"
   },
   {
-    title: "INCOG 2.0",
-    subtitle: "Evidence-Based Rehab",
-    description: "Interactive cognitive rehabilitation aligned with international INCOG 2.0 guidelines and professional assessments.",
+    title: "Neurotech Arsenal",
+    subtitle: "INCOG 2.0 Clinical Suite",
+    description: "Complete cognitive rehabilitation: VR Vestibular, Speech-Language, N-Back training, GMT, and professional programs.",
     features: [
-      "Goal Management (GMT)",
-      "Spaced Repetition",
-      "Music & Rhythm",
-      "ADL Errorless Learning"
+      "VR Vestibular & Speech",
+      "Dual N-Back & GMT",
+      "Cogmed & RehaCom Links",
+      "Clinician Reports"
     ],
     iconVariant: "incog",
     href: "/incog",
-    buttonText: "Open Modules",
-    gradient: "bg-gradient-to-br from-emerald-950/90 via-teal-950/80 to-green-950/70 border border-emerald-500/30",
-    iconGradient: "from-emerald-400 to-teal-500",
-    textColor: "text-emerald-50",
-    subtextColor: "text-emerald-200/80",
-    badgeColor: "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30",
-    badgeText: "INCOG Aligned",
+    buttonText: "Enter Arsenal",
+    gradient: "bg-gradient-to-br from-blue-950/90 via-purple-950/80 to-indigo-950/70 border border-blue-500/30",
+    iconGradient: "from-blue-400 to-purple-500",
+    textColor: "text-blue-50",
+    subtextColor: "text-blue-200/80",
+    badgeColor: "bg-blue-500/20 text-blue-300 border border-blue-500/30",
+    badgeText: "Hospital-Grade",
     ambientSound: "incog"
   },
   {
