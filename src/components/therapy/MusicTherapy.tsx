@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
@@ -14,23 +14,23 @@ interface AudioTrack {
   purpose: string;
   icon: React.ElementType;
   frequency?: string;
-  soundId: string; // Maps to AMBIENT_SOUNDS
+  soundId: string;
 }
 
 const tracks: AudioTrack[] = [
   {
-    id: 'binaural-calm',
+    id: 'alpha-calm',
     title: 'Alpha Serenity',
-    description: 'Alpha waves (8-12 Hz) for relaxation',
+    description: 'Alpha waves (10Hz) for relaxation',
     purpose: 'Emotional Regulation',
     icon: Waves,
     frequency: '10 Hz Alpha',
     soundId: 'alphaCalm',
   },
   {
-    id: 'focus-rhythm',
+    id: 'beta-focus',
     title: 'Beta Focus',
-    description: 'Beta waves for attention enhancement',
+    description: 'Beta waves (18Hz) for attention',
     purpose: 'Attention Training',
     icon: Brain,
     frequency: '18 Hz Beta',
@@ -39,35 +39,37 @@ const tracks: AudioTrack[] = [
   {
     id: 'theta-balance',
     title: 'Theta Balance',
-    description: 'Theta waves for vestibular calm',
+    description: 'Theta waves (7Hz) for vestibular calm',
     purpose: 'Balance & Grounding',
     icon: Sparkles,
     frequency: '7 Hz Theta',
     soundId: 'thetaVertigo',
   },
   {
-    id: 'tibetan-resonance',
-    title: 'Tibetan Resonance',
-    description: '432Hz bowls for mental clarity',
+    id: 'deep-focus',
+    title: 'Deep Focus',
+    description: 'Low alpha (8Hz) for mental clarity',
     purpose: 'Meditation & Clarity',
     icon: Moon,
-    frequency: '432 Hz',
+    frequency: '8 Hz',
     soundId: 'mind',
   },
   {
     id: 'heart-coherence',
     title: 'Heart Coherence',
-    description: 'Soft melodies for emotional healing',
+    description: 'Delta-theta (5Hz) for emotional healing',
     purpose: 'Stress Reduction',
     icon: Heart,
+    frequency: '5 Hz',
     soundId: 'heart',
   },
   {
     id: 'neural-flow',
     title: 'Neural Flow',
-    description: 'Ambient tones for cognitive training',
+    description: 'High alpha (12Hz) for cognitive training',
     purpose: 'Neuroplasticity',
     icon: Sun,
+    frequency: '12 Hz',
     soundId: 'computer',
   },
 ];
@@ -79,37 +81,31 @@ const MusicTherapy = () => {
   const { activeSounds, globalVolume, toggleSound, setGlobalVolume, isAudiobookPlaying } = useAudio();
 
   const playTrack = async (track: AudioTrack) => {
-    // If this track is playing, pause it
-    if (activeSounds.has(track.soundId)) {
-      await toggleSound(track.soundId);
-      setCurrentTrack(null);
-    } else {
-      // Stop any other playing tracks from this list first
-      for (const t of tracks) {
-        if (activeSounds.has(t.soundId) && t.soundId !== track.soundId) {
-          await toggleSound(t.soundId);
-        }
+    // Stop any other playing tracks first
+    for (const t of tracks) {
+      if (activeSounds.has(t.soundId) && t.soundId !== track.soundId) {
+        await toggleSound(t.soundId);
       }
-      // Play the new track
-      await toggleSound(track.soundId);
-      setCurrentTrack(track.id);
     }
+    
+    // Toggle the selected track
+    await toggleSound(track.soundId);
+    setCurrentTrack(activeSounds.has(track.soundId) ? null : track.id);
   };
 
   const handleVolumeChange = (value: number[]) => {
     setGlobalVolume(value[0] / 100);
   };
 
-  const activeTrack = tracks.find(t => t.id === currentTrack);
-  const isPlaying = activeTrack ? activeSounds.has(activeTrack.soundId) : false;
+  const activeTrack = tracks.find(t => activeSounds.has(t.soundId));
+  const isPlaying = !!activeTrack;
 
   return (
     <div className="space-y-6">
-      {/* INCOG Evidence Badge */}
       <EvidenceBadge
         level="A"
         domain="Music & Rhythm Therapy"
-        description="Rhythmic auditory stimulation and music therapy improve motor, cognitive, and emotional outcomes after TBI."
+        description="Binaural beats and rhythmic stimulation improve cognitive and emotional outcomes after TBI."
         pubmedId="32180108"
       />
 
@@ -129,7 +125,7 @@ const MusicTherapy = () => {
         <Card className="bg-gradient-to-br from-purple-500/20 to-orange-500/10 border-purple-500/30">
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
-              <div className={`p-4 rounded-full bg-orange-500/20 ${isPlaying ? 'animate-pulse' : ''}`}>
+              <div className="p-4 rounded-full bg-orange-500/20 animate-pulse">
                 <activeTrack.icon className="w-8 h-8 text-orange-500" />
               </div>
               <div className="flex-1">
@@ -158,12 +154,8 @@ const MusicTherapy = () => {
                 />
               </div>
             </div>
-            {/* Playing indicator */}
             <div className="mt-4 h-1 bg-muted rounded-full overflow-hidden">
-              <div 
-                className={`h-full bg-gradient-to-r from-purple-500 to-orange-500 transition-all duration-300 ${isPlaying ? 'animate-pulse' : ''}`}
-                style={{ width: isPlaying ? '100%' : '0%' }}
-              />
+              <div className="h-full bg-gradient-to-r from-purple-500 to-orange-500 animate-pulse w-full" />
             </div>
           </CardContent>
         </Card>
@@ -214,13 +206,12 @@ const MusicTherapy = () => {
         })}
       </div>
 
-      {/* Info Card */}
       <Card className="bg-muted/30">
         <CardContent className="pt-4">
           <p className="text-sm text-muted-foreground">
-            <strong>Music & Rhythm Therapy</strong> uses structured auditory stimulation to support 
-            cognitive recovery. Binaural beats and rhythmic entrainment can help with attention, 
-            emotional regulation, and relaxation—key components of TBI rehabilitation per INCOG 2.0 guidelines.
+            <strong>Binaural Beat Therapy</strong> uses precise frequency differences between ears 
+            to create brainwave entrainment. Use headphones for best effect. These tones support 
+            attention, emotional regulation, and relaxation—key INCOG 2.0 therapeutic goals.
           </p>
         </CardContent>
       </Card>

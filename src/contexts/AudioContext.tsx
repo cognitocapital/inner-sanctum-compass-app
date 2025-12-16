@@ -1,138 +1,137 @@
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from "react";
 
 // Sound categories for organization
-export type SoundCategory = "nature" | "binaural" | "therapeutic";
+export type SoundCategory = "binaural";
 
 export interface AmbientSoundConfig {
   id: string;
   name: string;
   description: string;
-  audioUrl: string;
   color: string;
   category: SoundCategory;
-  frequency?: string;
+  frequency?: number; // Base frequency for binaural beats
+  beatFrequency?: number; // Difference frequency for the beat
   therapeuticUse?: string[];
   incogLevel?: "A" | "B" | "C";
-  manuscriptQuanta?: string;
 }
 
+// Binaural beats using Web Audio API - no external URLs needed
 export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
-  // Nature sounds - using reliable CDN sources
-  breath: {
-    id: "breath",
-    name: "Ocean Waves",
-    description: "Gentle ocean waves for breathing exercises",
-    audioUrl: "https://cdn.pixabay.com/audio/2022/05/13/audio_257112ce99.mp3",
-    color: "from-orange-500 to-red-500",
-    category: "nature",
-    therapeuticUse: ["relaxation", "breathing"],
-    manuscriptQuanta: "Ch3: The overwhelming chaos that eventually gives way to peace"
-  },
-  ice: {
-    id: "ice",
-    name: "Arctic Wind",
-    description: "Crisp wind sounds for cold exposure focus",
-    audioUrl: "https://cdn.pixabay.com/audio/2022/03/10/audio_c8c8a73467.mp3",
-    color: "from-cyan-500 to-blue-600",
-    category: "nature",
-    therapeuticUse: ["alertness", "grounding"],
-    manuscriptQuanta: "Ch4: Slow comeback, learning resilience"
-  },
-  circle: {
-    id: "circle",
-    name: "Forest Sanctuary",
-    description: "Ambient nature sounds for connection",
-    audioUrl: "https://cdn.pixabay.com/audio/2022/08/02/audio_884fe92c21.mp3",
-    color: "from-teal-500 to-blue-600",
-    category: "nature",
-    therapeuticUse: ["stress-reduction", "grounding"],
-    manuscriptQuanta: "Intro: Gratitude for the journey"
-  },
-  rain: {
-    id: "rain",
-    name: "Gentle Rain",
-    description: "Calming rain sounds for relaxation",
-    audioUrl: "https://cdn.pixabay.com/audio/2022/05/16/audio_1333c3bad0.mp3",
-    color: "from-slate-500 to-blue-600",
-    category: "nature",
-    therapeuticUse: ["sleep", "calm"],
-    manuscriptQuanta: "Finding peace in the storm"
-  },
-  
-  // Binaural beats - INCOG Level A evidence
   thetaVertigo: {
     id: "thetaVertigo",
     name: "Theta Balance",
-    description: "Theta waves (4-7Hz) for vestibular calm",
-    audioUrl: "https://cdn.pixabay.com/audio/2024/02/22/audio_d7ed0b9025.mp3",
+    description: "Theta waves (7Hz) for vestibular calm",
     color: "from-violet-500 to-purple-700",
     category: "binaural",
-    frequency: "7Hz Theta",
+    frequency: 200,
+    beatFrequency: 7,
     therapeuticUse: ["vertigo", "balance", "vestibular"],
     incogLevel: "A",
-    manuscriptQuanta: "Ch4: Vertigo slowly subsides"
   },
   alphaCalm: {
     id: "alphaCalm",
     name: "Alpha Serenity",
-    description: "Alpha waves (8-12Hz) for anxiety relief & calm",
-    audioUrl: "https://cdn.pixabay.com/audio/2023/10/14/audio_e5f03d41be.mp3",
+    description: "Alpha waves (10Hz) for anxiety relief & calm",
     color: "from-blue-400 to-indigo-600",
     category: "binaural",
-    frequency: "10Hz Alpha",
+    frequency: 220,
+    beatFrequency: 10,
     therapeuticUse: ["anxiety", "calm", "emotional-regulation"],
     incogLevel: "A",
-    manuscriptQuanta: "Ch3: The roller coaster of anxiety that finds stillness"
   },
   betaFocus: {
     id: "betaFocus",
     name: "Beta Focus",
-    description: "Beta waves (15-20Hz) for attention & executive function",
-    audioUrl: "https://cdn.pixabay.com/audio/2024/04/24/audio_6c4f20c1ed.mp3",
+    description: "Beta waves (18Hz) for attention & focus",
     color: "from-amber-400 to-orange-600",
     category: "binaural",
-    frequency: "18Hz Beta",
+    frequency: 250,
+    beatFrequency: 18,
     therapeuticUse: ["attention", "focus", "executive-function"],
     incogLevel: "A",
-    manuscriptQuanta: "Mind training through dedicated practice"
   },
-  
-  // Therapeutic sounds
   mind: {
     id: "mind",
-    name: "Tibetan Resonance",
-    description: "432Hz Tibetan bowls for mental clarity",
-    audioUrl: "https://cdn.pixabay.com/audio/2022/02/07/audio_b9bd4170e4.mp3",
+    name: "Deep Focus",
+    description: "Low alpha (8Hz) for mental clarity",
     color: "from-purple-500 to-red-600",
-    category: "therapeutic",
-    frequency: "432Hz",
+    category: "binaural",
+    frequency: 180,
+    beatFrequency: 8,
     therapeuticUse: ["meditation", "clarity", "mindfulness"],
     incogLevel: "B",
-    manuscriptQuanta: "Deep meditation and inner peace"
   },
   heart: {
     id: "heart",
     name: "Heart Coherence",
-    description: "Soft melodies for emotional healing & HRV",
-    audioUrl: "https://cdn.pixabay.com/audio/2022/08/25/audio_4f3b0a816e.mp3",
+    description: "Delta-theta (5Hz) for emotional healing",
     color: "from-pink-500 to-red-500",
-    category: "therapeutic",
+    category: "binaural",
+    frequency: 160,
+    beatFrequency: 5,
     therapeuticUse: ["emotional-healing", "heart-coherence", "gratitude"],
     incogLevel: "B",
-    manuscriptQuanta: "Heart-centered gratitude and emotional recovery"
   },
   computer: {
     id: "computer",
     name: "Neural Flow",
-    description: "Ambient electronic tones for cognitive training",
-    audioUrl: "https://cdn.pixabay.com/audio/2023/07/21/audio_ee2de6d99c.mp3",
+    description: "High alpha (12Hz) for cognitive training",
     color: "from-indigo-500 to-blue-600",
-    category: "therapeutic",
+    category: "binaural",
+    frequency: 240,
+    beatFrequency: 12,
     therapeuticUse: ["cognitive-training", "neuroplasticity"],
     incogLevel: "B",
-    manuscriptQuanta: "Rebuilding neural pathways"
-  }
+  },
+  breath: {
+    id: "breath",
+    name: "Breathing Calm",
+    description: "Low theta (6Hz) for breathing exercises",
+    color: "from-orange-500 to-red-500",
+    category: "binaural",
+    frequency: 170,
+    beatFrequency: 6,
+    therapeuticUse: ["relaxation", "breathing"],
+  },
+  ice: {
+    id: "ice",
+    name: "Alertness Boost",
+    description: "Beta (15Hz) for cold exposure alertness",
+    color: "from-cyan-500 to-blue-600",
+    category: "binaural",
+    frequency: 260,
+    beatFrequency: 15,
+    therapeuticUse: ["alertness", "grounding"],
+  },
+  circle: {
+    id: "circle",
+    name: "Connection",
+    description: "Alpha (9Hz) for social connection",
+    color: "from-teal-500 to-blue-600",
+    category: "binaural",
+    frequency: 190,
+    beatFrequency: 9,
+    therapeuticUse: ["stress-reduction", "grounding"],
+  },
+  rain: {
+    id: "rain",
+    name: "Gentle Rest",
+    description: "Delta (4Hz) for deep relaxation",
+    color: "from-slate-500 to-blue-600",
+    category: "binaural",
+    frequency: 150,
+    beatFrequency: 4,
+    therapeuticUse: ["sleep", "calm"],
+  },
 };
+
+interface BinauralOscillator {
+  leftOsc: OscillatorNode;
+  rightOsc: OscillatorNode;
+  leftGain: GainNode;
+  rightGain: GainNode;
+  merger: ChannelMergerNode;
+}
 
 interface AudioContextType {
   // Ambient sounds
@@ -163,78 +162,134 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [globalVolume, setGlobalVolume] = useState(0.3);
   const [isAudiobookPlaying, setIsAudiobookPlaying] = useState(false);
   const [pausedSounds, setPausedSounds] = useState<Set<string>>(new Set());
-  const audioRefs = useRef<Map<string, HTMLAudioElement>>(new Map());
+  
+  const audioCtxRef = useRef<globalThis.AudioContext | null>(null);
+  const oscillatorsRef = useRef<Map<string, BinauralOscillator>>(new Map());
+
+  // Initialize Web Audio Context on first interaction
+  const getAudioContext = useCallback(() => {
+    if (!audioCtxRef.current) {
+      audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+    }
+    return audioCtxRef.current;
+  }, []);
+
+  // Create binaural beat oscillators
+  const createBinauralBeat = useCallback((soundId: string): BinauralOscillator | null => {
+    const config = AMBIENT_SOUNDS[soundId];
+    if (!config || !config.frequency || !config.beatFrequency) return null;
+
+    const ctx = getAudioContext();
+    
+    // Left ear oscillator
+    const leftOsc = ctx.createOscillator();
+    leftOsc.type = 'sine';
+    leftOsc.frequency.value = config.frequency;
+    
+    // Right ear oscillator (slightly different frequency for binaural beat)
+    const rightOsc = ctx.createOscillator();
+    rightOsc.type = 'sine';
+    rightOsc.frequency.value = config.frequency + config.beatFrequency;
+    
+    // Gain nodes for volume control
+    const leftGain = ctx.createGain();
+    const rightGain = ctx.createGain();
+    leftGain.gain.value = globalVolume * 0.3;
+    rightGain.gain.value = globalVolume * 0.3;
+    
+    // Channel merger for stereo separation
+    const merger = ctx.createChannelMerger(2);
+    
+    // Connect left to left channel, right to right channel
+    leftOsc.connect(leftGain);
+    rightOsc.connect(rightGain);
+    leftGain.connect(merger, 0, 0);
+    rightGain.connect(merger, 0, 1);
+    merger.connect(ctx.destination);
+    
+    leftOsc.start();
+    rightOsc.start();
+    
+    return { leftOsc, rightOsc, leftGain, rightGain, merger };
+  }, [getAudioContext, globalVolume]);
 
   // Pause all ambient sounds when audiobook starts
   useEffect(() => {
     if (isAudiobookPlaying) {
-      // Store currently playing sounds and pause them
       const currentlyPlaying = new Set(activeSounds);
       setPausedSounds(currentlyPlaying);
       
-      audioRefs.current.forEach((audio, soundId) => {
+      // Stop all oscillators
+      oscillatorsRef.current.forEach((osc, soundId) => {
         if (activeSounds.has(soundId)) {
-          audio.pause();
+          osc.leftGain.gain.value = 0;
+          osc.rightGain.gain.value = 0;
         }
       });
       setActiveSounds(new Set());
     } else if (pausedSounds.size > 0) {
       // Resume previously playing sounds
-      pausedSounds.forEach(async (soundId) => {
-        const audio = audioRefs.current.get(soundId);
-        if (audio) {
-          try {
-            await audio.play();
-            setActiveSounds(prev => new Set([...prev, soundId]));
-          } catch (error) {
-            console.log("Failed to resume audio:", error);
-          }
+      pausedSounds.forEach((soundId) => {
+        const osc = oscillatorsRef.current.get(soundId);
+        if (osc) {
+          osc.leftGain.gain.value = globalVolume * 0.3;
+          osc.rightGain.gain.value = globalVolume * 0.3;
+          setActiveSounds(prev => new Set([...prev, soundId]));
         }
       });
       setPausedSounds(new Set());
     }
-  }, [isAudiobookPlaying]);
+  }, [isAudiobookPlaying, globalVolume]);
 
   // Update volume on all active sounds
   useEffect(() => {
-    audioRefs.current.forEach(audio => {
-      audio.volume = globalVolume;
+    oscillatorsRef.current.forEach((osc, soundId) => {
+      if (activeSounds.has(soundId)) {
+        osc.leftGain.gain.value = globalVolume * 0.3;
+        osc.rightGain.gain.value = globalVolume * 0.3;
+      }
     });
-  }, [globalVolume]);
+  }, [globalVolume, activeSounds]);
 
   const toggleSound = useCallback(async (soundId: string) => {
-    if (isAudiobookPlaying) return; // Don't allow ambient sounds while audiobook plays
+    if (isAudiobookPlaying) return;
     
-    let audio = audioRefs.current.get(soundId);
-    
-    if (!audio) {
-      audio = new Audio(AMBIENT_SOUNDS[soundId].audioUrl);
-      audio.loop = true;
-      audio.volume = globalVolume;
-      audioRefs.current.set(soundId, audio);
-    }
+    let osc = oscillatorsRef.current.get(soundId);
     
     if (activeSounds.has(soundId)) {
-      audio.pause();
+      // Stop the sound
+      if (osc) {
+        osc.leftGain.gain.value = 0;
+        osc.rightGain.gain.value = 0;
+      }
       setActiveSounds(prev => {
         const next = new Set(prev);
         next.delete(soundId);
         return next;
       });
     } else {
-      try {
-        await audio.play();
+      // Start the sound
+      if (!osc) {
+        osc = createBinauralBeat(soundId);
+        if (osc) {
+          oscillatorsRef.current.set(soundId, osc);
+        }
+      } else {
+        osc.leftGain.gain.value = globalVolume * 0.3;
+        osc.rightGain.gain.value = globalVolume * 0.3;
+      }
+      
+      if (osc) {
         setActiveSounds(prev => new Set([...prev, soundId]));
-      } catch (error) {
-        console.log("Audio playback failed:", error);
       }
     }
-  }, [activeSounds, globalVolume, isAudiobookPlaying]);
+  }, [activeSounds, globalVolume, isAudiobookPlaying, createBinauralBeat]);
 
   const pauseAllAmbient = useCallback(() => {
-    audioRefs.current.forEach((audio, soundId) => {
+    oscillatorsRef.current.forEach((osc, soundId) => {
       if (activeSounds.has(soundId)) {
-        audio.pause();
+        osc.leftGain.gain.value = 0;
+        osc.rightGain.gain.value = 0;
       }
     });
     setPausedSounds(new Set(activeSounds));
@@ -245,30 +300,34 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (isAudiobookPlaying) return;
     
     for (const soundId of pausedSounds) {
-      const audio = audioRefs.current.get(soundId);
-      if (audio) {
-        try {
-          await audio.play();
-          setActiveSounds(prev => new Set([...prev, soundId]));
-        } catch (error) {
-          console.log("Failed to resume audio:", error);
-        }
+      const osc = oscillatorsRef.current.get(soundId);
+      if (osc) {
+        osc.leftGain.gain.value = globalVolume * 0.3;
+        osc.rightGain.gain.value = globalVolume * 0.3;
+        setActiveSounds(prev => new Set([...prev, soundId]));
       }
     }
     setPausedSounds(new Set());
-  }, [pausedSounds, isAudiobookPlaying]);
+  }, [pausedSounds, isAudiobookPlaying, globalVolume]);
 
-  const setAudiobookPlaying = useCallback((playing: boolean) => {
+  const setAudiobookPlayingState = useCallback((playing: boolean) => {
     setIsAudiobookPlaying(playing);
   }, []);
 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      audioRefs.current.forEach(audio => {
-        audio.pause();
-        audio.src = "";
+      oscillatorsRef.current.forEach((osc) => {
+        try {
+          osc.leftOsc.stop();
+          osc.rightOsc.stop();
+        } catch (e) {
+          // Already stopped
+        }
       });
+      if (audioCtxRef.current) {
+        audioCtxRef.current.close();
+      }
     };
   }, []);
 
@@ -282,7 +341,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         pauseAllAmbient,
         resumeAllAmbient,
         isAudiobookPlaying,
-        setAudiobookPlaying,
+        setAudiobookPlaying: setAudiobookPlayingState,
       }}
     >
       {children}
