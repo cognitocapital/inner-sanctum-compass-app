@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Volume2, VolumeX, Music, ChevronDown, Sparkles, Waves, Brain, Heart } from "lucide-react";
+import { Volume2, VolumeX, Music, ChevronDown, Sparkles, Waves, Brain, Music2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
@@ -9,20 +9,20 @@ import { useAudio, AMBIENT_SOUNDS, SoundCategory } from "@/contexts/AudioContext
 import { BinauralVisualizer } from "@/components/ui/binaural-visualizer";
 
 const categoryIcons: Record<SoundCategory, React.ElementType> = {
-  nature: Waves,
+  soundscapes: Waves,
   binaural: Brain,
-  therapeutic: Heart
+  music: Music2
 };
 
 const categoryLabels: Record<SoundCategory, string> = {
-  nature: "Nature",
+  soundscapes: "Soundscapes",
   binaural: "Binaural",
-  therapeutic: "Healing"
+  music: "Music"
 };
 
 export const GlobalAmbientControl = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activeTab, setActiveTab] = useState<SoundCategory>("nature");
+  const [activeTab, setActiveTab] = useState<SoundCategory>("soundscapes");
   const { 
     activeSounds, 
     globalVolume, 
@@ -39,7 +39,7 @@ export const GlobalAmbientControl = () => {
 
   const getFrequencyType = (sound: typeof AMBIENT_SOUNDS[string]) => {
     if (sound.beatFrequency) {
-      if (sound.beatFrequency <= 4) return "theta";
+      if (sound.beatFrequency <= 4) return "delta";
       if (sound.beatFrequency <= 8) return "theta";
       if (sound.beatFrequency <= 13) return "alpha";
       return "beta";
@@ -151,9 +151,6 @@ export const GlobalAmbientControl = () => {
                   <p className="text-xs text-white/50 truncate">{sound.description}</p>
                   {sound.beatFrequency && (
                     <span className="text-[10px] text-primary/80">{sound.beatFrequency}Hz beat</span>
-                  )}
-                  {sound.toneFrequency && (
-                    <span className="text-[10px] text-pink-400/80">{sound.toneFrequency}Hz</span>
                   )}
                 </div>
               </button>
