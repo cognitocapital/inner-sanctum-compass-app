@@ -3,109 +3,58 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
-import { Play, Pause, Volume2, VolumeX, Heart, Waves, Sun, Moon, Brain, Sparkles } from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Play, Pause, Volume2, VolumeX, Heart, Waves, Moon, Brain, Sparkles, TreePine } from 'lucide-react';
 import EvidenceBadge from '@/components/clinical/EvidenceBadge';
-import { useAudio, AMBIENT_SOUNDS } from '@/contexts/AudioContext';
+import { useAudio, AMBIENT_SOUNDS, SoundCategory } from '@/contexts/AudioContext';
 
-interface AudioTrack {
-  id: string;
-  title: string;
-  description: string;
-  purpose: string;
-  icon: React.ElementType;
-  frequency?: string;
-  soundId: string;
-}
-
-const tracks: AudioTrack[] = [
-  {
-    id: 'alpha-calm',
-    title: 'Alpha Serenity',
-    description: 'Alpha waves (10Hz) for relaxation',
-    purpose: 'Emotional Regulation',
-    icon: Waves,
-    frequency: '10 Hz Alpha',
-    soundId: 'alphaCalm',
+const categoryInfo: Record<SoundCategory, { icon: React.ElementType; description: string }> = {
+  nature: { 
+    icon: Waves, 
+    description: "Nature sounds for grounding and relaxation" 
   },
-  {
-    id: 'beta-focus',
-    title: 'Beta Focus',
-    description: 'Beta waves (18Hz) for attention',
-    purpose: 'Attention Training',
-    icon: Brain,
-    frequency: '18 Hz Beta',
-    soundId: 'betaFocus',
+  binaural: { 
+    icon: Brain, 
+    description: "Brainwave entrainment (use headphones)" 
   },
-  {
-    id: 'theta-balance',
-    title: 'Theta Balance',
-    description: 'Theta waves (7Hz) for vestibular calm',
-    purpose: 'Balance & Grounding',
-    icon: Sparkles,
-    frequency: '7 Hz Theta',
-    soundId: 'thetaVertigo',
+  therapeutic: { 
+    icon: Heart, 
+    description: "Solfeggio frequencies for healing" 
   },
-  {
-    id: 'deep-focus',
-    title: 'Deep Focus',
-    description: 'Low alpha (8Hz) for mental clarity',
-    purpose: 'Meditation & Clarity',
-    icon: Moon,
-    frequency: '8 Hz',
-    soundId: 'mind',
-  },
-  {
-    id: 'heart-coherence',
-    title: 'Heart Coherence',
-    description: 'Delta-theta (5Hz) for emotional healing',
-    purpose: 'Stress Reduction',
-    icon: Heart,
-    frequency: '5 Hz',
-    soundId: 'heart',
-  },
-  {
-    id: 'neural-flow',
-    title: 'Neural Flow',
-    description: 'High alpha (12Hz) for cognitive training',
-    purpose: 'Neuroplasticity',
-    icon: Sun,
-    frequency: '12 Hz',
-    soundId: 'computer',
-  },
-];
+};
 
 const MusicTherapy = () => {
-  const [currentTrack, setCurrentTrack] = useState<string | null>(null);
-  const [isMuted, setIsMuted] = useState(false);
-  
+  const [activeCategory, setActiveCategory] = useState<SoundCategory>("nature");
   const { activeSounds, globalVolume, toggleSound, setGlobalVolume, isAudiobookPlaying } = useAudio();
 
-  const playTrack = async (track: AudioTrack) => {
-    // Stop any other playing tracks first
-    for (const t of tracks) {
-      if (activeSounds.has(t.soundId) && t.soundId !== track.soundId) {
-        await toggleSound(t.soundId);
-      }
-    }
-    
-    // Toggle the selected track
-    await toggleSound(track.soundId);
-    setCurrentTrack(activeSounds.has(track.soundId) ? null : track.id);
+  const soundsByCategory = Object.entries(AMBIENT_SOUNDS).reduce((acc, [id, sound]) => {
+    if (!acc[sound.category]) acc[sound.category] = [];
+    acc[sound.category].push({ id, ...sound });
+    return acc;
+  }, {} as Record<SoundCategory, (typeof AMBIENT_SOUNDS[string] & { id: string })[]>);
+
+  const playTrack = async (soundId: string) => {
+    await toggleSound(soundId);
   };
 
   const handleVolumeChange = (value: number[]) => {
     setGlobalVolume(value[0] / 100);
   };
 
-  const activeTrack = tracks.find(t => activeSounds.has(t.soundId));
-  const isPlaying = !!activeTrack;
+  const getIcon = (sound: typeof AMBIENT_SOUNDS[string]) => {
+    if (sound.noiseType === "pink" && sound.id === "ocean") return Waves;
+    if (sound.noiseType === "brown") return TreePine;
+    if (sound.beatFrequency) return Brain;
+    if (sound.toneFrequency) return Sparkles;
+    return Waves;
+  };
 
   return (
     <div className="space-y-6">
       <EvidenceBadge
         level="A"
         domain="Music & Rhythm Therapy"
-        description="Binaural beats and rhythmic stimulation improve cognitive and emotional outcomes after TBI."
+        description="Binaural beats, nature sounds, and therapeutic frequencies support cognitive and emotional recovery after TBI."
         pubmedId="32180108"
       />
 
@@ -120,98 +69,110 @@ const MusicTherapy = () => {
         </Card>
       )}
 
-      {/* Now Playing */}
-      {activeTrack && !isAudiobookPlaying && (
-        <Card className="bg-gradient-to-br from-purple-500/20 to-orange-500/10 border-purple-500/30">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <div className="p-4 rounded-full bg-orange-500/20 animate-pulse">
-                <activeTrack.icon className="w-8 h-8 text-orange-500" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-semibold">{activeTrack.title}</h3>
-                <p className="text-sm text-muted-foreground">{activeTrack.purpose}</p>
-                {activeTrack.frequency && (
-                  <Badge variant="secondary" className="mt-1 text-xs">
-                    {activeTrack.frequency}
-                  </Badge>
-                )}
-              </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => setIsMuted(!isMuted)}
+      {/* Volume Control */}
+      <Card className="bg-muted/30">
+        <CardContent className="py-4">
+          <div className="flex items-center gap-4">
+            <Volume2 className="h-5 w-5 text-muted-foreground" />
+            <Slider
+              value={[globalVolume * 100]}
+              onValueChange={handleVolumeChange}
+              max={100}
+              step={1}
+              className="flex-1"
+            />
+            <span className="text-sm text-muted-foreground w-12">{Math.round(globalVolume * 100)}%</span>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Category Tabs */}
+      <Tabs value={activeCategory} onValueChange={(v) => setActiveCategory(v as SoundCategory)}>
+        <TabsList className="w-full">
+          {(Object.keys(categoryInfo) as SoundCategory[]).map(cat => {
+            const Icon = categoryInfo[cat].icon;
+            return (
+              <TabsTrigger key={cat} value={cat} className="flex-1 gap-1">
+                <Icon className="h-4 w-4" />
+                <span className="hidden sm:inline">{cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
+              </TabsTrigger>
+            );
+          })}
+        </TabsList>
+
+        {(Object.keys(categoryInfo) as SoundCategory[]).map(category => (
+          <TabsContent key={category} value={category} className="space-y-3 mt-4">
+            <p className="text-sm text-muted-foreground mb-4">
+              {categoryInfo[category].description}
+            </p>
+
+            {soundsByCategory[category]?.map((sound) => {
+              const Icon = getIcon(sound);
+              const isActive = activeSounds.has(sound.id);
+              const isPlaying = isActive && !isAudiobookPlaying;
+
+              return (
+                <Card
+                  key={sound.id}
+                  className={`cursor-pointer transition-all hover:border-primary/50 ${
+                    isActive ? 'border-primary bg-primary/5' : ''
+                  } ${isAudiobookPlaying ? 'opacity-50' : ''}`}
+                  onClick={() => !isAudiobookPlaying && playTrack(sound.id)}
                 >
-                  {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
-                </Button>
-                <Slider
-                  value={[globalVolume * 100]}
-                  onValueChange={handleVolumeChange}
-                  max={100}
-                  step={1}
-                  className="w-24"
-                />
-              </div>
-            </div>
-            <div className="mt-4 h-1 bg-muted rounded-full overflow-hidden">
-              <div className="h-full bg-gradient-to-r from-purple-500 to-orange-500 animate-pulse w-full" />
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Track List */}
-      <div className="grid gap-3">
-        {tracks.map((track) => {
-          const Icon = track.icon;
-          const isActive = activeSounds.has(track.soundId);
-          const isCurrentlyPlaying = isActive && !isAudiobookPlaying;
-
-          return (
-            <Card
-              key={track.id}
-              className={`cursor-pointer transition-all hover:border-orange-500/50 ${
-                isActive ? 'border-orange-500 bg-orange-500/5' : ''
-              } ${isAudiobookPlaying ? 'opacity-50' : ''}`}
-              onClick={() => !isAudiobookPlaying && playTrack(track)}
-            >
-              <CardContent className="py-4">
-                <div className="flex items-center gap-4">
-                  <div className={`p-3 rounded-full ${
-                    isActive ? 'bg-orange-500 text-white' : 'bg-muted'
-                  }`}>
-                    {isCurrentlyPlaying ? (
-                      <Pause className="w-5 h-5" />
-                    ) : (
-                      <Icon className="w-5 h-5" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-medium">{track.title}</h4>
-                      {track.frequency && (
-                        <span className="text-xs text-muted-foreground">{track.frequency}</span>
-                      )}
+                  <CardContent className="py-4">
+                    <div className="flex items-center gap-4">
+                      <div className={`p-3 rounded-full bg-gradient-to-br ${sound.color} ${
+                        isPlaying ? 'animate-pulse' : ''
+                      }`}>
+                        {isPlaying ? (
+                          <Pause className="w-5 h-5 text-white" />
+                        ) : (
+                          <Icon className="w-5 h-5 text-white" />
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h4 className="font-medium">{sound.name}</h4>
+                          {sound.incogLevel && (
+                            <Badge variant="outline" className="text-xs">
+                              Level {sound.incogLevel}
+                            </Badge>
+                          )}
+                          {sound.beatFrequency && (
+                            <Badge variant="secondary" className="text-xs">
+                              {sound.beatFrequency}Hz beat
+                            </Badge>
+                          )}
+                          {sound.toneFrequency && (
+                            <Badge variant="secondary" className="text-xs">
+                              {sound.toneFrequency}Hz
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground">{sound.description}</p>
+                        {sound.therapeuticUse && (
+                          <div className="flex gap-1 mt-1 flex-wrap">
+                            {sound.therapeuticUse.slice(0, 3).map(use => (
+                              <span key={use} className="text-xs text-primary/70">#{use}</span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <p className="text-sm text-muted-foreground">{track.description}</p>
-                  </div>
-                  <Badge variant="outline" className="text-xs">
-                    {track.purpose}
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </TabsContent>
+        ))}
+      </Tabs>
 
       <Card className="bg-muted/30">
         <CardContent className="pt-4">
           <p className="text-sm text-muted-foreground">
-            <strong>Binaural Beat Therapy</strong> uses precise frequency differences between ears 
-            to create brainwave entrainment. Use headphones for best effect. These tones support 
-            attention, emotional regulation, and relaxation—key INCOG 2.0 therapeutic goals.
+            <strong>Sound Therapy</strong> uses auditory stimulation for cognitive and emotional recovery. 
+            Nature sounds provide grounding, binaural beats entrain brainwaves for focus/calm, 
+            and Solfeggio frequencies support holistic healing—all aligned with INCOG 2.0 guidelines.
           </p>
         </CardContent>
       </Card>
