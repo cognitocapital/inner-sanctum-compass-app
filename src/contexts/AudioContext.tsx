@@ -17,12 +17,12 @@ export interface AmbientSoundConfig {
 }
 
 export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
-  // Nature sounds
+  // Nature sounds - using reliable CDN sources
   breath: {
     id: "breath",
     name: "Ocean Waves",
     description: "Gentle ocean waves for breathing exercises",
-    audioUrl: "https://archive.org/download/naturesounds-soundtheraphy/Birds%20With%20Ocean%20Waves%20on%20the%20Beach.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/05/13/audio_257112ce99.mp3",
     color: "from-orange-500 to-red-500",
     category: "nature",
     therapeuticUse: ["relaxation", "breathing"],
@@ -32,7 +32,7 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
     id: "ice",
     name: "Arctic Wind",
     description: "Crisp wind sounds for cold exposure focus",
-    audioUrl: "https://archive.org/download/78_wind-around-house-or-barn_gbia0409024a/WIND%20%28Around%20House%20or%20Barn%29.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/03/10/audio_c8c8a73467.mp3",
     color: "from-cyan-500 to-blue-600",
     category: "nature",
     therapeuticUse: ["alertness", "grounding"],
@@ -42,19 +42,29 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
     id: "circle",
     name: "Forest Sanctuary",
     description: "Ambient nature sounds for connection",
-    audioUrl: "https://archive.org/download/RestorativeSleepMusicBinauralBeatsSleepInTheClouds432Hz/Musique%20Paisible%20Nature%20%20Sons%20de%20la%20Nature%20%28Anti%20Stress%29%20-%20432%20Hz.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/08/02/audio_884fe92c21.mp3",
     color: "from-teal-500 to-blue-600",
     category: "nature",
     therapeuticUse: ["stress-reduction", "grounding"],
     manuscriptQuanta: "Intro: Gratitude for the journey"
+  },
+  rain: {
+    id: "rain",
+    name: "Gentle Rain",
+    description: "Calming rain sounds for relaxation",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/05/16/audio_1333c3bad0.mp3",
+    color: "from-slate-500 to-blue-600",
+    category: "nature",
+    therapeuticUse: ["sleep", "calm"],
+    manuscriptQuanta: "Finding peace in the storm"
   },
   
   // Binaural beats - INCOG Level A evidence
   thetaVertigo: {
     id: "thetaVertigo",
     name: "Theta Balance",
-    description: "Theta waves (4-7Hz) for vertigo & vestibular calm",
-    audioUrl: "https://archive.org/download/1hr-30-min-theta-binaural-beat-7-hz-pure-tone/1hr%2030%20min%20Theta%20Binaural%20Beat%20%287Hz%29%20-%20Pure%20Tone.mp3",
+    description: "Theta waves (4-7Hz) for vestibular calm",
+    audioUrl: "https://cdn.pixabay.com/audio/2024/02/22/audio_d7ed0b9025.mp3",
     color: "from-violet-500 to-purple-700",
     category: "binaural",
     frequency: "7Hz Theta",
@@ -66,7 +76,7 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
     id: "alphaCalm",
     name: "Alpha Serenity",
     description: "Alpha waves (8-12Hz) for anxiety relief & calm",
-    audioUrl: "https://archive.org/download/BinauralBeatsDeltaWaves/Binaural%20Beats%20Alpha%20Waves.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2023/10/14/audio_e5f03d41be.mp3",
     color: "from-blue-400 to-indigo-600",
     category: "binaural",
     frequency: "10Hz Alpha",
@@ -78,7 +88,7 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
     id: "betaFocus",
     name: "Beta Focus",
     description: "Beta waves (15-20Hz) for attention & executive function",
-    audioUrl: "https://archive.org/download/beta-wave-subliminal-with-relaxing-music/Beta%20Wave%20Subliminal%20%28With%20Relaxing%20Music%29.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2024/04/24/audio_6c4f20c1ed.mp3",
     color: "from-amber-400 to-orange-600",
     category: "binaural",
     frequency: "18Hz Beta",
@@ -92,7 +102,7 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
     id: "mind",
     name: "Tibetan Resonance",
     description: "432Hz Tibetan bowls for mental clarity",
-    audioUrl: "https://archive.org/download/RestorativeSleepMusicBinauralBeatsSleepInTheClouds432Hz/Powerful%20Om%20Chanting%20432%20Hz%20-%20Tibetan%20Om%20Meditation.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/02/07/audio_b9bd4170e4.mp3",
     color: "from-purple-500 to-red-600",
     category: "therapeutic",
     frequency: "432Hz",
@@ -104,7 +114,7 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
     id: "heart",
     name: "Heart Coherence",
     description: "Soft melodies for emotional healing & HRV",
-    audioUrl: "https://archive.org/download/CelticChristmasAWindhamHillCollection2001/02%20Lisa%20Lynne_%20Circle%20Of%20Joy.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/08/25/audio_4f3b0a816e.mp3",
     color: "from-pink-500 to-red-500",
     category: "therapeutic",
     therapeuticUse: ["emotional-healing", "heart-coherence", "gratitude"],
@@ -115,7 +125,7 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
     id: "computer",
     name: "Neural Flow",
     description: "Ambient electronic tones for cognitive training",
-    audioUrl: "https://archive.org/download/freefloatingmusic-aic2011/11%20-%20Benjamin%20Dauer%20Alluvial.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2023/07/21/audio_ee2de6d99c.mp3",
     color: "from-indigo-500 to-blue-600",
     category: "therapeutic",
     therapeuticUse: ["cognitive-training", "neuroplasticity"],
