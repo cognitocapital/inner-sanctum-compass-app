@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, AlertTriangle, CheckCircle2, XCircle, Heart } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface ContraindicationItem {
   id: string;
@@ -31,6 +32,36 @@ const SafetyPreScreen: React.FC<SafetyPreScreenProps> = ({
 }) => {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [showWarnings, setShowWarnings] = useState(false);
+
+  // Map accent colors to Tailwind classes (Tailwind JIT requires full class names)
+  const accentClasses = {
+    orange: {
+      border: 'border-orange-500/30',
+      bg: 'bg-orange-500/20',
+      text: 'text-orange-500',
+      button: 'bg-orange-500 hover:bg-orange-600',
+    },
+    cyan: {
+      border: 'border-cyan-500/30',
+      bg: 'bg-cyan-500/20',
+      text: 'text-cyan-500',
+      button: 'bg-cyan-500 hover:bg-cyan-600',
+    },
+    purple: {
+      border: 'border-purple-500/30',
+      bg: 'bg-purple-500/20',
+      text: 'text-purple-500',
+      button: 'bg-purple-500 hover:bg-purple-600',
+    },
+    green: {
+      border: 'border-green-500/30',
+      bg: 'bg-green-500/20',
+      text: 'text-green-500',
+      button: 'bg-green-500 hover:bg-green-600',
+    },
+  };
+
+  const accent = accentClasses[accentColor as keyof typeof accentClasses] || accentClasses.orange;
 
   const handleCheck = (id: string, checked: boolean) => {
     setCheckedItems(prev => ({ ...prev, [id]: checked }));
@@ -72,7 +103,7 @@ const SafetyPreScreen: React.FC<SafetyPreScreenProps> = ({
 
   if (showWarnings && activeWarnings.length > 0) {
     return (
-      <Card className={`bg-gradient-to-br from-gray-900 to-gray-800 border-${accentColor}-500/30`}>
+      <Card className={cn("bg-gradient-to-br from-gray-900 to-gray-800", accent.border)}>
         <CardHeader className="text-center">
           <div className="mx-auto w-16 h-16 rounded-full bg-yellow-500/20 flex items-center justify-center mb-4">
             <AlertTriangle className="w-8 h-8 text-yellow-500" />
@@ -124,7 +155,7 @@ const SafetyPreScreen: React.FC<SafetyPreScreenProps> = ({
                 </Button>
                 <Button
                   onClick={onProceed}
-                  className={`flex-1 bg-${accentColor}-500 hover:bg-${accentColor}-600`}
+                  className={cn("flex-1", accent.button)}
                 >
                   Proceed with Caution
                 </Button>
@@ -141,10 +172,10 @@ const SafetyPreScreen: React.FC<SafetyPreScreenProps> = ({
   }
 
   return (
-    <Card className={`bg-gradient-to-br from-gray-900 to-gray-800 border-${accentColor}-500/30`}>
+    <Card className={cn("bg-gradient-to-br from-gray-900 to-gray-800", accent.border)}>
       <CardHeader className="text-center">
-        <div className={`mx-auto w-16 h-16 rounded-full bg-${accentColor}-500/20 flex items-center justify-center mb-4`}>
-          <Shield className={`w-8 h-8 text-${accentColor}-500`} />
+        <div className={cn("mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4", accent.bg)}>
+          <Shield className={cn("w-8 h-8", accent.text)} />
         </div>
         <CardTitle className="text-xl text-white">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
@@ -158,11 +189,12 @@ const SafetyPreScreen: React.FC<SafetyPreScreenProps> = ({
           {contraindications.map((item) => (
             <div
               key={item.id}
-              className={`flex items-start gap-3 p-3 rounded-lg border transition-all ${
+              className={cn(
+                "flex items-start gap-3 p-3 rounded-lg border transition-all",
                 checkedItems[item.id] 
                   ? getSeverityColor(item.severity)
                   : 'border-border bg-muted/20'
-              }`}
+              )}
             >
               <Checkbox
                 id={item.id}
@@ -186,7 +218,7 @@ const SafetyPreScreen: React.FC<SafetyPreScreenProps> = ({
           )}
           <Button
             onClick={handleContinue}
-            className={`flex-1 bg-${accentColor}-500 hover:bg-${accentColor}-600`}
+            className={cn("flex-1", accent.button)}
           >
             <CheckCircle2 className="w-4 h-4 mr-2" />
             Continue to Session
