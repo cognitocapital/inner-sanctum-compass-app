@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   ArrowLeft, Brain, Target, Music, Repeat, ClipboardList, Sparkles, 
-  BookOpen, Zap, Users, Settings, Trophy, Eye, Volume2, Compass, MessageSquare,
+  BookOpen, Zap, Users, Settings, Trophy, Eye, Volume2, MessageSquare,
   Download, ExternalLink
 } from "lucide-react";
 import GMTDashboard from "@/components/gmt/GMTDashboard";
@@ -15,7 +15,7 @@ import MusicTherapy from "@/components/therapy/MusicTherapy";
 import ADLTraining from "@/components/adl/ADLTraining";
 import SpacedRepetition from "@/components/memory/SpacedRepetition";
 import ProfessionalAssessments from "@/components/assessments/ProfessionalAssessments";
-import VestibularModule from "@/components/vestibular/VestibularModule";
+
 import SpeechLanguageModule from "@/components/speech/SpeechLanguageModule";
 import DomainExercises from "@/components/tbi/DomainExercises";
 import ExternalProgramLinks from "@/components/tbi/ExternalProgramLinks";
@@ -32,17 +32,6 @@ import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 
 const modules = [
-  { 
-    id: 'vestibular', 
-    label: 'VR', 
-    icon: Compass, 
-    title: 'VR Vestibular Rehab', 
-    description: 'Balance, gaze stability & VOR',
-    evidenceLevel: 'A',
-    xpReward: 80,
-    domain: 'vestibular',
-    cogLoad: 'medium',
-  },
   { 
     id: 'nback', 
     label: 'N-Back', 
@@ -124,11 +113,7 @@ const modules = [
 
 // Manuscript quanta per domain
 const domainQuanta: Record<string, { quote: string; chapter: string }> = {
-  vestibular: { 
-    quote: "The vertigo was relentless... but day by day, the world stopped spinning.", 
-    chapter: "Ch4" 
-  },
-  executive: { 
+  executive: {
     quote: "My brain felt like it was constantly misfiring...", 
     chapter: "Ch7" 
   },
@@ -171,7 +156,6 @@ const INCOG = () => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [showCaregiverView, setShowCaregiverView] = useState(false);
   const [domainProgress, setDomainProgress] = useState<Record<string, number>>({
-    vestibular: 35,
     attention: 45,
     memory: 30,
     executive: 55,
@@ -272,7 +256,6 @@ const INCOG = () => {
 
   // Create domain segments for wheel
   const domainSegments = [
-    { id: 'vestibular', name: 'Vestibular', progress: domainProgress.vestibular, color: '#0891b2' },
     { id: 'attention', name: 'Attention', progress: domainProgress.attention, color: '#f97316' },
     { id: 'memory', name: 'Memory', progress: domainProgress.memory, color: '#8b5cf6' },
     { id: 'executive', name: 'Executive', progress: domainProgress.executive, color: '#06b6d4' },
@@ -284,7 +267,6 @@ const INCOG = () => {
   const getActiveRegions = () => {
     const module = modules.find(m => m.id === activeModule);
     const regionMap: Record<string, string[]> = {
-      vestibular: ['cerebellum', 'parietal'],
       executive: ['frontal'],
       memory: ['temporal', 'limbic'],
       attention: ['frontal', 'parietal'],
@@ -316,7 +298,6 @@ const INCOG = () => {
 
   const renderModuleContent = (moduleId: string) => {
     switch (moduleId) {
-      case 'vestibular': return <VestibularModule onComplete={handleModuleComplete.bind(null, 'vestibular')} />;
       case 'nback': return <DomainExercises domain="attention" onComplete={(score, xp) => handleModuleComplete('nback', 10, score)} />;
       case 'gmt': return <GMTDashboard />;
       case 'speech': return <SpeechLanguageModule onComplete={(type, score) => handleModuleComplete('speech', 10, score)} />;
