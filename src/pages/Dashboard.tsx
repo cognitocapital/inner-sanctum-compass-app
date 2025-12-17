@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Play, BookOpen, Headphones } from "lucide-react";
@@ -6,6 +6,7 @@ import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { ModuleCard } from "@/components/dashboard/ModuleCard";
 import { MODULE_DATA } from "@/components/dashboard/moduleData";
 import { useOpenAudiobook } from "@/hooks/use-audiobook";
+import UniversalDisclaimer, { hasValidConsent } from "@/components/clinical/UniversalDisclaimer";
 
 // Audiobook trigger button component
 const AudiobookButton = () => {
@@ -24,9 +25,24 @@ const AudiobookButton = () => {
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [showIntro, setShowIntro] = useState(true);
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
+  const [showIntro, setShowIntro] = useState(false);
   const [videoStarted, setVideoStarted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Check consent on mount
+  useEffect(() => {
+    if (!hasValidConsent()) {
+      setShowDisclaimer(true);
+    } else {
+      setShowIntro(true);
+    }
+  }, []);
+
+  const handleDisclaimerAcknowledge = () => {
+    setShowDisclaimer(false);
+    setShowIntro(true);
+  };
 
   const handleBeginJourney = () => {
     setVideoStarted(true);
@@ -36,6 +52,16 @@ const Dashboard = () => {
   const handleVideoEnd = () => {
     setShowIntro(false);
   };
+
+  // Universal Disclaimer Screen (first-time users)
+  if (showDisclaimer) {
+    return (
+      <UniversalDisclaimer
+        onAcknowledge={handleDisclaimerAcknowledge}
+        onSkip={() => navigate('/')}
+      />
+    );
+  }
 
   // Video Intro Screen
   if (showIntro) {

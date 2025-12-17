@@ -8,18 +8,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   ArrowLeft, Play, Pause, RotateCcw, Thermometer, Snowflake, Timer, 
   Trophy, TrendingUp, Flame, BookOpen, Zap, ShieldCheck, AlertTriangle, 
-  FileDown, Award, Target, Volume2, VolumeX, Sparkles, Heart, Brain, Baby, Users
+  FileDown, Award, Target, Volume2, VolumeX, Sparkles
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import EvidenceBadge from "@/components/clinical/EvidenceBadge";
 import ClinicalDisclaimer from "@/components/clinical/ClinicalDisclaimer";
-import AudioSafetyDisclaimer from "@/components/clinical/AudioSafetyDisclaimer";
 import { usePhoenixGamification, StreakDisplay, FeatherCount, PhoenixLevelBadge } from "@/components/ui/phoenix-gamification";
 import IceCavernBackground from "@/components/ice/IceCavernBackground";
 import BodyHeatMap from "@/components/ice/BodyHeatMap";
 import DopamineGraph from "@/components/ice/DopamineGraph";
 import { cn } from "@/lib/utils";
-import { SafetyConsent } from "@/hooks/use-safety-consent";
 
 // Warrior tiers for gamification
 const WARRIOR_TIERS = [
@@ -75,9 +73,6 @@ const moodOptions = [
 ];
 
 const ColdExposure = () => {
-  const [showSafetyQuiz, setShowSafetyQuiz] = useState(true);
-  const [safetyPassed, setSafetyPassed] = useState(false);
-  const [safetyRecommendations, setSafetyRecommendations] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("forge");
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
@@ -251,103 +246,6 @@ const ColdExposure = () => {
     }
   };
 
-  // Ice Warrior safety points
-  const iceWarriorSafetyPoints = [
-    { id: "heart", icon: <Heart className="w-4 h-4" />, text: "No heart conditions or cardiovascular issues", severity: "stop" as const },
-    { id: "vertigo", icon: <Brain className="w-4 h-4" />, text: "No vertigo or dizziness today", severity: "stop" as const },
-    { id: "concussion", icon: <AlertTriangle className="w-4 h-4" />, text: "No recent concussion (< 7 days)", severity: "stop" as const },
-    { id: "pregnancy", icon: <Baby className="w-4 h-4" />, text: "Not pregnant", severity: "stop" as const },
-    { id: "buddy", icon: <Users className="w-4 h-4" />, text: "Someone nearby for safety (advanced sessions)", severity: "caution" as const },
-  ];
-
-  const coldMethodOptions = [
-    { id: "shower", name: "Cold Shower", icon: "🚿", description: "Easiest start", recommendedDuration: 30 },
-    { id: "bath", name: "Ice Bath", icon: "🛁", description: "Intermediate", recommendedDuration: 60 },
-    { id: "plunge", name: "Cold Plunge", icon: "❄️", description: "Advanced", recommendedDuration: 90 },
-    { id: "nordic", name: "Nordic Cycle", icon: "🌡️", description: "Hot-cold contrast", recommendedDuration: 45 },
-  ];
-
-  const safetyScript = `Welcome, Phoenix warrior. I'm here to guide you safely through your cold exposure journey.
-
-Before we begin, please take a moment to check in with yourself. If you're experiencing vertigo, dizziness, or any heart-related symptoms today, this session is not recommended. Your safety always comes first.
-
-If you've had a recent concussion within the last 7 days, please skip today and return when you're feeling stronger.
-
-Make sure you have someone nearby who knows you're doing cold exposure—a safety buddy is important for longer sessions.
-
-Remember: cold exposure is about building resilience over time, not pushing through pain. Listen to your body, and honor its wisdom.`;
-
-  const handleSafetyProceed = (consent: Omit<SafetyConsent, "moduleId" | "timestamp" | "expiresAt">) => {
-    setSafetyPassed(true);
-    setShowSafetyQuiz(false);
-    
-    // Set duration based on selected method
-    const method = coldMethodOptions.find(m => m.id === consent.selectedMethod);
-    if (method?.recommendedDuration) {
-      setSelectedDuration(method.recommendedDuration);
-    }
-    
-    // Show toast based on ABS score
-    if (consent.absScore && consent.absScore >= 3) {
-      toast({
-        title: "High Agitation Detected",
-        description: "Consider calming breathwork first, or try a shorter session.",
-      });
-    } else {
-      toast({
-        title: "Ready to Begin",
-        description: `${method?.name || "Cold exposure"} session prepared.`,
-      });
-    }
-  };
-
-  // Safety screen using new AudioSafetyDisclaimer
-  if (showSafetyQuiz) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-950 to-cyan-950 relative overflow-hidden">
-        <IceCavernBackground intensity={20} isActive={false} phase="prepare" />
-        
-        <div className="relative z-10 container mx-auto px-4 py-8">
-          <Button asChild variant="ghost" className="text-cyan-300 hover:text-white mb-6">
-            <Link to="/dashboard">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Dashboard
-            </Link>
-          </Button>
-
-          <div className="text-center mb-8">
-            <div className="flex justify-center gap-2">
-              <EvidenceBadge 
-                level="C" 
-                domain="Hormetic Stress"
-                description="Research-backed dopamine protocols. Not core INCOG but aligned with stress adaptation science."
-                pubmedId="37138494"
-              />
-              <Badge variant="outline" className="bg-amber-500/10 border-amber-500/30 text-amber-300">
-                <AlertTriangle className="w-3 h-3 mr-1" />
-                TBI Caution Required
-              </Badge>
-            </div>
-          </div>
-
-          <AudioSafetyDisclaimer
-            moduleId="ice-warrior"
-            moduleName="Frost Forge"
-            accentColor="cyan"
-            phoenixEmoji="❄️"
-            safetyScript={safetyScript}
-            criticalPoints={iceWarriorSafetyPoints}
-            showAbsScale={true}
-            showMethodSelector={true}
-            methodOptions={coldMethodOptions}
-            onProceed={handleSafetyProceed}
-            onSkip={() => window.history.back()}
-          />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Immersive Ice Cavern Background */}
@@ -414,22 +312,7 @@ Remember: cold exposure is about building resilience over time, not pushing thro
           </div>
         </header>
 
-        {/* Safety Recommendations */}
-        {safetyRecommendations.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30"
-          >
-            <div className="flex items-start gap-2">
-              <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-              <div>
-                <p className="text-sm text-amber-200 font-medium">Today's Recommendation</p>
-                <p className="text-sm text-amber-300">{safetyRecommendations[0]}</p>
-              </div>
-            </div>
-          </motion.div>
-        )}
+        {/* Safety covered by universal disclaimer */}
 
         {/* Main Content Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -505,7 +388,6 @@ Remember: cold exposure is about building resilience over time, not pushing thro
                     <Button 
                       onClick={toggleSession}
                       size="lg"
-                      disabled={!safetyPassed}
                       className="flex-1 max-w-[160px] bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500"
                     >
                       {isActive ? <Pause className="mr-2 h-5 w-5" /> : <Play className="mr-2 h-5 w-5" />}
@@ -606,7 +488,6 @@ Remember: cold exposure is about building resilience over time, not pushing thro
                     <button
                       key={level.week}
                       onClick={() => startSession(level.duration)}
-                      disabled={!safetyPassed}
                       className={cn(
                         "p-4 rounded-xl border text-left transition-all",
                         currentWeek === level.week 
