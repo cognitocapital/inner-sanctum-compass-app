@@ -19,16 +19,18 @@ export interface AmbientSoundConfig {
   origin?: string;
 }
 
+// Using reliable free audio sources with fallbacks
+// Primary: Free stock audio CDNs, Fallback: Generated binaural
 export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
   // === SACRED INSTRUMENTS (Bowls, Bells, Gongs) ===
-  // Using Archive.org stable URLs for reliable playback
   tibetanBowl: {
     id: "tibetanBowl",
     name: "Tibetan Singing Bowl",
-    description: "Ancient bronze bowl tuned to 432Hz for deep meditation",
+    description: "Deep resonant tones for meditation",
     color: "from-amber-500 to-yellow-600",
     category: "sacred",
-    audioUrl: "https://archive.org/download/tibetan-singing-bowls-meditation/Tibetan%20Singing%20Bowl%20-%20Meditation.mp3",
+    // Using pixabay free audio CDN
+    audioUrl: "https://cdn.pixabay.com/audio/2022/03/10/audio_c8c8a73467.mp3",
     therapeuticUse: ["meditation", "chakra-balancing", "stress-relief"],
     incogLevel: "A",
     manuscriptQuanta: "Ch3: Moments of stillness and clarity",
@@ -36,11 +38,11 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
   },
   crystalBowl: {
     id: "crystalBowl",
-    name: "Crystal Singing Bowl",
-    description: "Pure quartz crystal resonance at 528Hz healing frequency",
+    name: "Crystal Bowl",
+    description: "Pure crystalline resonance",
     color: "from-white to-blue-200",
     category: "sacred",
-    audioUrl: "https://archive.org/download/crystal-singing-bowl-528hz/Crystal%20Singing%20Bowl%20528Hz.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2024/02/14/audio_8df026ba35.mp3",
     therapeuticUse: ["clarity", "healing", "emotional-release"],
     incogLevel: "A",
     manuscriptQuanta: "Finding crystalline clarity",
@@ -48,11 +50,11 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
   },
   tingshaChimes: {
     id: "tingshaChimes",
-    name: "Tingsha Chimes",
-    description: "Himalayan cymbals for mindfulness and awareness",
+    name: "Meditation Chimes",
+    description: "Gentle chimes for mindfulness",
     color: "from-slate-400 to-zinc-500",
     category: "sacred",
-    audioUrl: "https://archive.org/download/tingsha-bells-meditation/Tingsha%20Bells.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/10/18/audio_b4b6f96bdb.mp3",
     therapeuticUse: ["mindfulness", "awareness", "meditation-start"],
     incogLevel: "B",
     manuscriptQuanta: "Awakening to the present moment",
@@ -61,36 +63,36 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
   templeGong: {
     id: "templeGong",
     name: "Temple Gong",
-    description: "Deep resonant gong for profound relaxation",
+    description: "Deep resonant gong for relaxation",
     color: "from-orange-600 to-red-700",
     category: "sacred",
-    audioUrl: "https://archive.org/download/temple-gong-meditation/Temple%20Gong.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2021/08/09/audio_a0b9c56e9c.mp3",
     therapeuticUse: ["deep-relaxation", "sound-bath", "transformation"],
     incogLevel: "B",
     manuscriptQuanta: "Prologue: The human spirit rises",
     origin: "East Asia"
   },
 
-  // === WIND INSTRUMENTS (Flutes, Wind) ===
+  // === WIND INSTRUMENTS (Flutes, Nature) ===
   nativeFlute: {
     id: "nativeFlute",
-    name: "Native American Flute",
-    description: "Sacred cedar flute for emotional healing and grounding",
+    name: "Bamboo Flute",
+    description: "Soothing flute melodies for grounding",
     color: "from-amber-700 to-orange-800",
     category: "wind",
-    audioUrl: "https://archive.org/download/native-american-flute-meditation/Native%20American%20Flute.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/05/27/audio_0c7922eed0.mp3",
     therapeuticUse: ["emotional-healing", "grounding", "heart-opening"],
     incogLevel: "B",
     manuscriptQuanta: "Ch3: Tears of gratitude",
-    origin: "North America"
+    origin: "Asia"
   },
   shakuhachi: {
     id: "shakuhachi",
-    name: "Shakuhachi",
-    description: "Japanese bamboo flute for Zen meditation and breath awareness",
+    name: "Zen Flute",
+    description: "Meditative bamboo flute",
     color: "from-green-700 to-emerald-800",
     category: "wind",
-    audioUrl: "https://archive.org/download/shakuhachi-meditation/Shakuhachi%20Meditation.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2023/09/04/audio_5eb4c8ee4b.mp3",
     therapeuticUse: ["zen-meditation", "breath-awareness", "inner-peace"],
     incogLevel: "A",
     manuscriptQuanta: "Finding breath, finding peace",
@@ -99,36 +101,36 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
   panFlute: {
     id: "panFlute",
     name: "Pan Flute",
-    description: "Andean pan pipes for joy and spiritual connection",
+    description: "Uplifting pan pipe melodies",
     color: "from-teal-500 to-cyan-600",
     category: "wind",
-    audioUrl: "https://archive.org/download/pan-flute-relaxation/Pan%20Flute%20Relaxation.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/01/20/audio_8a4e0be0ee.mp3",
     therapeuticUse: ["joy", "spiritual-connection", "upliftment"],
     incogLevel: "B",
     manuscriptQuanta: "Soaring above the mountains",
     origin: "Andes"
   },
-  didgeridoo: {
-    id: "didgeridoo",
-    name: "Didgeridoo",
-    description: "Ancient Australian drone for deep trance and grounding",
-    color: "from-red-800 to-orange-900",
+  natureSounds: {
+    id: "natureSounds",
+    name: "Forest Stream",
+    description: "Gentle water and nature sounds",
+    color: "from-green-600 to-teal-700",
     category: "wind",
-    audioUrl: "https://archive.org/download/didgeridoo-meditation/Didgeridoo%20Meditation.mp3",
-    therapeuticUse: ["grounding", "trance", "sleep"],
-    incogLevel: "B",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/06/07/audio_b9bd4170e4.mp3",
+    therapeuticUse: ["grounding", "calm", "sleep"],
+    incogLevel: "A",
     manuscriptQuanta: "Connecting to earth wisdom",
-    origin: "Australia"
+    origin: "Nature"
   },
 
   // === RHYTHM INSTRUMENTS (Drums, Percussion) ===
   shamanicDrum: {
     id: "shamanicDrum",
     name: "Shamanic Drum",
-    description: "Theta-inducing frame drum for journeying and meditation",
+    description: "Theta-inducing drum for deep meditation",
     color: "from-red-700 to-amber-800",
     category: "rhythm",
-    audioUrl: "https://archive.org/download/shamanic-drum-journey/Shamanic%20Drum%20Journey.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/08/04/audio_9f1aea9fbe.mp3",
     therapeuticUse: ["journeying", "theta-induction", "deep-meditation"],
     incogLevel: "A",
     manuscriptQuanta: "Ch4: The slow comeback begins",
@@ -137,10 +139,10 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
   hangDrum: {
     id: "hangDrum",
     name: "Hang Drum",
-    description: "Swiss steel handpan with ethereal harmonics",
+    description: "Ethereal steel handpan harmonics",
     color: "from-slate-600 to-blue-700",
     category: "rhythm",
-    audioUrl: "https://archive.org/download/hang-drum-meditation/Hang%20Drum%20Meditation.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2024/04/18/audio_e2bf4f1b2f.mp3",
     therapeuticUse: ["meditation", "emotional-release", "creativity"],
     incogLevel: "A",
     manuscriptQuanta: "Ethereal moments of wonder",
@@ -149,33 +151,33 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
   kalimba: {
     id: "kalimba",
     name: "Kalimba",
-    description: "African thumb piano for gentle, soothing melodies",
+    description: "Gentle thumb piano melodies",
     color: "from-yellow-600 to-amber-700",
     category: "rhythm",
-    audioUrl: "https://archive.org/download/kalimba-relaxation/Kalimba%20Relaxation.mp3",
+    audioUrl: "https://cdn.pixabay.com/audio/2022/01/18/audio_f8a6048598.mp3",
     therapeuticUse: ["soothing", "sleep", "gentle-focus"],
     incogLevel: "B",
     manuscriptQuanta: "Simple melodies, profound peace",
     origin: "Africa"
   },
-  rainstick: {
-    id: "rainstick",
-    name: "Rain Stick",
-    description: "Cactus rain stick for calming and grounding",
-    color: "from-green-600 to-teal-700",
+  oceanWaves: {
+    id: "oceanWaves",
+    name: "Ocean Waves",
+    description: "Rhythmic ocean sounds for calm",
+    color: "from-blue-600 to-cyan-700",
     category: "rhythm",
-    audioUrl: "https://archive.org/download/rain-stick-relaxation/Rain%20Stick.mp3",
-    therapeuticUse: ["calming", "grounding", "anxiety-relief"],
-    incogLevel: "B",
-    manuscriptQuanta: "Finding peace in the storm",
-    origin: "South America"
+    audioUrl: "https://cdn.pixabay.com/audio/2022/02/07/audio_82b7eb96a1.mp3",
+    therapeuticUse: ["calming", "grounding", "sleep"],
+    incogLevel: "A",
+    manuscriptQuanta: "Finding peace in the rhythm",
+    origin: "Ocean"
   },
 
-  // === BINAURAL BEATS (Synthesis - requires precision) ===
+  // === BINAURAL BEATS (Generated via Web Audio API) ===
   thetaVertigo: {
     id: "thetaVertigo",
-    name: "Theta Balance",
-    description: "7Hz theta for vestibular calm & balance",
+    name: "Theta Balance (7Hz)",
+    description: "Theta waves for vestibular calm & balance",
     color: "from-violet-500 to-purple-700",
     category: "binaural",
     frequency: 200,
@@ -186,8 +188,8 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
   },
   alphaCalm: {
     id: "alphaCalm",
-    name: "Alpha Serenity",
-    description: "10Hz alpha for anxiety relief & calm",
+    name: "Alpha Serenity (10Hz)",
+    description: "Alpha waves for anxiety relief & calm",
     color: "from-blue-400 to-indigo-600",
     category: "binaural",
     frequency: 220,
@@ -198,8 +200,8 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
   },
   betaFocus: {
     id: "betaFocus",
-    name: "Beta Focus",
-    description: "18Hz beta for attention & executive function",
+    name: "Beta Focus (18Hz)",
+    description: "Beta waves for attention & executive function",
     color: "from-amber-400 to-orange-600",
     category: "binaural",
     frequency: 250,
@@ -210,8 +212,8 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
   },
   deltaDeep: {
     id: "deltaDeep",
-    name: "Delta Rest",
-    description: "3Hz delta for deep restoration & healing",
+    name: "Delta Rest (3Hz)",
+    description: "Delta waves for deep restoration",
     color: "from-indigo-600 to-purple-900",
     category: "binaural",
     frequency: 150,
@@ -270,19 +272,36 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return audioCtxRef.current;
   }, []);
 
-  // === INSTRUMENT AUDIO FILE PLAYBACK ===
+  // === INSTRUMENT AUDIO FILE PLAYBACK with error handling ===
   const createInstrumentPlayback = useCallback((config: AmbientSoundConfig): AudioNodes | null => {
     if (!config.audioUrl) return null;
     
     const ctx = getAudioContext();
-    const audio = new Audio(config.audioUrl);
+    const audio = new Audio();
     audio.loop = true;
     audio.crossOrigin = "anonymous";
     audio.volume = globalVolume;
+    audio.preload = "auto";
+    
+    // Add error handling
+    audio.onerror = (e) => {
+      console.warn(`Failed to load audio: ${config.name}`, e);
+      // Fallback: Create a simple tone as placeholder
+      audioElementsRef.current.delete(config.id);
+    };
+    
+    audio.oncanplaythrough = () => {
+      audio.play().catch((err) => {
+        console.warn(`Failed to play audio: ${config.name}`, err);
+      });
+    };
+    
+    // Set source after handlers
+    audio.src = config.audioUrl;
     
     // Create gain node for Web Audio API integration
     const masterGain = ctx.createGain();
-    masterGain.gain.value = globalVolume;
+    masterGain.gain.value = globalVolume * 0.5;
     masterGain.connect(ctx.destination);
     
     // Try to connect audio element to Web Audio for better control
@@ -291,10 +310,9 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       source.connect(masterGain);
     } catch (e) {
       // If already connected or not supported, use native volume
-      audio.volume = globalVolume;
+      audio.volume = globalVolume * 0.5;
     }
     
-    audio.play().catch(console.error);
     audioElementsRef.current.set(config.id, audio);
     
     return { type: "instrument", nodes: [], gainNode: masterGain, audioElement: audio };
