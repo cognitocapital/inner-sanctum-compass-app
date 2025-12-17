@@ -3,12 +3,13 @@ import type { ModuleCardProps } from "./ModuleCard";
 export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
   {
     title: "Phoenix Breath",
-    subtitle: "Breathwork",
-    description: "Guided breathing that rewires your brain and reduces anxiety through HRV training.",
+    subtitle: "Neuroplasticity Training",
+    description: "Rise from the ashes with guided breathing that rewires your brain, reduces anxiety, and accelerates cognitive recovery.",
     features: [
-      "4 Core Patterns",
-      "HRV Biofeedback",
-      "Manuscript Prompts"
+      "Box Breathing (4-4-4-4)",
+      "Wim Hof Method",
+      "HRV Training",
+      "Stress Dissolution"
     ],
     iconVariant: "breath",
     href: "/breathing",
@@ -18,21 +19,22 @@ export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
     textColor: "text-orange-50",
     subtextColor: "text-orange-200/80",
     badgeColor: "bg-orange-500/20 text-orange-300 border border-orange-500/30",
-    badgeText: "INCOG Level A",
+    badgeText: "Neuroplasticity",
     ambientSound: "breath"
   },
   {
-    title: "Frost Forge",
-    subtitle: "Cold Exposure",
-    description: "Build mental resilience through deliberate cold exposure with guided phases.",
+    title: "Ice Warrior Academy",
+    subtitle: "Resilience Building",
+    description: "Transform your mental fortitude through deliberate cold exposure, triggering beneficial stress responses for brain recovery.",
     features: [
-      "Phase-Based Timer",
-      "Progress Tracking",
-      "Mood Feedback"
+      "Progressive Adaptation",
+      "Ice Bath Protocols",
+      "Cold Shower Challenges",
+      "Mental Resilience"
     ],
     iconVariant: "ice",
     href: "/cold-exposure",
-    buttonText: "Enter Forge",
+    buttonText: "Enter Academy",
     gradient: "bg-gradient-to-br from-slate-900/90 via-cyan-950/80 to-blue-950/70 border border-cyan-500/30",
     iconGradient: "from-cyan-400 to-blue-500",
     textColor: "text-cyan-50",
@@ -43,52 +45,55 @@ export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
   },
   {
     title: "Phoenix Mind",
-    subtitle: "N-Back Training",
-    description: "Evidence-based cognitive training to strengthen working memory and attention.",
+    subtitle: "Clinical Training",
+    description: "Evidence-based cognitive training, assessments, and rehabilitation tools used in Brain Injury Units worldwide.",
     features: [
-      "Dual N-Back Game",
-      "Difficulty Levels",
-      "Score Tracking"
+      "PHQ-9 & GAD-7",
+      "Cognitive Rehab",
+      "Progress Analytics",
+      "Professional Tools"
     ],
     iconVariant: "mind",
     href: "/mind",
-    buttonText: "Train Mind",
+    buttonText: "Train Your Mind",
     gradient: "bg-gradient-to-br from-purple-950/90 via-fuchsia-950/80 to-red-950/70 border border-purple-500/30",
     iconGradient: "from-purple-500 to-red-500",
     textColor: "text-purple-50",
     subtextColor: "text-purple-200/80",
     badgeColor: "bg-purple-500/20 text-purple-300 border border-purple-500/30",
-    badgeText: "INCOG Level A",
+    badgeText: "Clinical-Grade",
     ambientSound: "mind"
   },
   {
     title: "Phoenix Heart",
-    subtitle: "Gratitude Journal",
-    description: "Cultivate emotional healing through daily gratitude practice and heart garden.",
+    subtitle: "Emotional Healing",
+    description: "Heal emotional wounds with trauma-informed practices, gratitude journaling, and evidence-based therapeutic techniques.",
     features: [
-      "Visual Heart Garden",
-      "Mood Tracking",
-      "Streak Building"
+      "Gratitude Journaling",
+      "Self-Compassion",
+      "Trauma Processing",
+      "Emotional Regulation"
     ],
     iconVariant: "heart",
     href: "/gratitude",
-    buttonText: "Open Heart",
+    buttonText: "Open Your Heart",
     gradient: "bg-gradient-to-br from-pink-950/90 via-rose-950/80 to-red-950/70 border border-pink-500/30",
     iconGradient: "from-pink-500 to-rose-500",
     textColor: "text-pink-50",
     subtextColor: "text-pink-200/80",
     badgeColor: "bg-pink-500/20 text-pink-300 border border-pink-500/30",
-    badgeText: "INCOG Level B",
+    badgeText: "Trauma-Informed",
     ambientSound: "heart"
   },
   {
     title: "Neurotech Arsenal",
-    subtitle: "Goal Management",
-    description: "INCOG 2.0 Goal Management Training: Plan → Do → Check → Review for executive function.",
+    subtitle: "INCOG 2.0 Clinical Suite",
+    description: "Complete cognitive rehabilitation: VR Vestibular, Speech-Language, N-Back training, GMT, and professional programs.",
     features: [
-      "GMT Dashboard",
-      "Step-by-Step Goals",
-      "Phase Tracking"
+      "VR Vestibular & Speech",
+      "Dual N-Back & GMT",
+      "Cogmed & RehaCom Links",
+      "Clinician Reports"
     ],
     iconVariant: "incog",
     href: "/incog",
@@ -98,27 +103,28 @@ export const MODULE_DATA: Omit<ModuleCardProps, "delay">[] = [
     textColor: "text-blue-50",
     subtextColor: "text-blue-200/80",
     badgeColor: "bg-blue-500/20 text-blue-300 border border-blue-500/30",
-    badgeText: "INCOG Level A",
+    badgeText: "Hospital-Grade",
     ambientSound: "incog"
   },
   {
     title: "Phoenix Circle",
     subtitle: "Peer Support",
-    description: "Share your journey and connect with fellow phoenix warriors through stories.",
+    description: "Connect with fellow phoenix warriors on their recovery journey, share wisdom, and build lasting supportive relationships.",
     features: [
-      "Story Sharing",
-      "Community Feed",
-      "Support Reactions"
+      "Share Your Story",
+      "Peer Connections",
+      "Weekly Circles",
+      "Mentorship"
     ],
     iconVariant: "circle",
     href: "/unwritten",
-    buttonText: "Join Circle",
+    buttonText: "Join the Circle",
     gradient: "bg-gradient-to-br from-teal-950/90 via-blue-950/80 to-cyan-950/70 border border-teal-500/30",
     iconGradient: "from-teal-400 to-blue-500",
     textColor: "text-teal-50",
     subtextColor: "text-teal-200/80",
     badgeColor: "bg-teal-500/20 text-teal-300 border border-teal-500/30",
-    badgeText: "INCOG Level A",
+    badgeText: "Community",
     ambientSound: "circle"
   }
 ];
