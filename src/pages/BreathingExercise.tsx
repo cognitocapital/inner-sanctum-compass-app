@@ -3,11 +3,10 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Play, Pause, RotateCcw, Volume2, VolumeX, Flame, Trophy, Timer, TrendingUp, Wind, Heart, Sparkles, Zap, Settings, Shield } from "lucide-react";
+import { ArrowLeft, Play, Pause, RotateCcw, Volume2, VolumeX, Flame, Trophy, Timer, TrendingUp, Wind, Heart, Sparkles, Zap, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import RetentionBreathing from "@/components/breathing/RetentionBreathing";
 import EvidenceBadge from "@/components/clinical/EvidenceBadge";
-import BreathingSafetyScreen from "@/components/breathing/BreathingSafetyScreen";
 import { MobileBottomNav, MobilePageContainer } from "@/components/ui/mobile-nav";
 import { MobileFullScreenModal } from "@/components/ui/mobile-modal";
 import { MobileStatsGrid } from "@/components/ui/mobile-stats-grid";
@@ -76,8 +75,6 @@ const BreathingExercise = () => {
   const [personalBest, setPersonalBest] = useState(0);
   const [showRetentionModal, setShowRetentionModal] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
-  const [showSafetyScreen, setShowSafetyScreen] = useState(false);
-  const [safetyCleared, setSafetyCleared] = useState(false);
   const [safeForRetention, setSafeForRetention] = useState(true);
   const [currentQuanta, setCurrentQuanta] = useState("");
   const [hrvLevel, setHrvLevel] = useState(40);
@@ -93,19 +90,10 @@ const BreathingExercise = () => {
     const savedSessions = localStorage.getItem('breathingSessions');
     const savedStreak = localStorage.getItem('breathingStreak');
     const savedBest = localStorage.getItem('breathingBest');
-    const savedSafetyCleared = sessionStorage.getItem('breathingSafetyCleared');
     
     if (savedSessions) setTotalSessions(parseInt(savedSessions));
     if (savedStreak) setStreak(parseInt(savedStreak));
     if (savedBest) setPersonalBest(parseInt(savedBest));
-    
-    // Check if safety was cleared this session
-    if (savedSafetyCleared === 'true') {
-      setSafetyCleared(true);
-    } else {
-      // Show safety screen on first visit each session
-      setShowSafetyScreen(true);
-    }
     
     setCurrentQuanta(quantaPrompts.inhale[Math.floor(Math.random() * quantaPrompts.inhale.length)]);
   }, []);
@@ -289,17 +277,6 @@ const BreathingExercise = () => {
     });
   };
 
-  const handleSafetyProceed = () => {
-    setShowSafetyScreen(false);
-    setSafetyCleared(true);
-    sessionStorage.setItem('breathingSafetyCleared', 'true');
-  };
-
-  const handleSafetySkip = () => {
-    setShowSafetyScreen(false);
-    setSafetyCleared(true);
-    sessionStorage.setItem('breathingSafetyCleared', 'true');
-  };
 
   const navItems = [
     { id: "basic", label: "Breathe", icon: <Wind className="h-5 w-5" /> },
@@ -382,19 +359,7 @@ const BreathingExercise = () => {
         {/* Main Content */}
         <div className="px-4 pb-24">
           <AnimatePresence mode="wait">
-            {showSafetyScreen ? (
-              <motion.div
-                key="safety"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-              >
-                <BreathingSafetyScreen 
-                  onProceed={handleSafetyProceed}
-                  onSkip={handleSafetySkip}
-                />
-              </motion.div>
-            ) : showQuiz ? (
+            {showQuiz ? (
               <motion.div
                 key="quiz"
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -422,26 +387,15 @@ const BreathingExercise = () => {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-orange-200">Select Pattern</span>
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="border-green-500/30 text-green-300 text-xs"
-                          onClick={() => setShowSafetyScreen(true)}
-                        >
-                          <Shield className="w-3 h-3 mr-1" />
-                          Safety
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="border-orange-500/30 text-orange-300 text-xs"
-                          onClick={() => setShowQuiz(true)}
-                        >
-                          <Settings className="w-3 h-3 mr-1" />
-                          Personalize
-                        </Button>
-                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-orange-500/30 text-orange-300 text-xs"
+                        onClick={() => setShowQuiz(true)}
+                      >
+                        <Settings className="w-3 h-3 mr-1" />
+                        Personalize
+                      </Button>
                     </div>
                     
                     {/* Retention Safety Warning */}
@@ -452,7 +406,7 @@ const BreathingExercise = () => {
                         className="p-3 rounded-lg border border-yellow-500/30 bg-yellow-500/10"
                       >
                         <div className="flex items-center gap-2 text-yellow-300 text-sm">
-                          <Shield className="w-4 h-4" />
+                          <Zap className="w-4 h-4" />
                           <span>Retention breathing limited based on your current state</span>
                         </div>
                       </motion.div>
