@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Volume2, VolumeX, Music, ChevronDown, Sparkles, Wind, Drum, Brain, Globe } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Volume2, VolumeX, Music, ChevronDown, Sparkles, Wind, Drum, Brain, Globe, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
@@ -182,6 +183,16 @@ export const GlobalAmbientControl = () => {
                 {Math.round(globalVolume * 100)}%
               </span>
             </div>
+            
+            {/* Link to full Sanctuary */}
+            <Link 
+              to="/meditation"
+              className="mt-3 flex items-center justify-center gap-2 p-2 rounded-lg bg-gradient-to-r from-purple-500/20 to-violet-500/20 border border-purple-500/30 text-purple-200 hover:bg-purple-500/30 transition-all text-xs"
+            >
+              <Sparkles className="h-3 w-3" />
+              Open Meditation Sanctuary
+              <ExternalLink className="h-3 w-3" />
+            </Link>
           </div>
         </div>
       )}
