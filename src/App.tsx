@@ -122,15 +122,15 @@ const AppContent = () => {
           <Route path="/meditation" element={<MeditationSanctuary />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        
+        {/* Global Audio Controls - Inside BrowserRouter for Link to work */}
+        <GlobalAmbientControl />
+        <GlobalAudiobookPlayer 
+          isVisible={audiobookVisible}
+          onClose={() => setAudiobookVisible(false)}
+          startChapterId={startChapterId}
+        />
       </BrowserRouter>
-      
-      {/* Global Audio Controls - Always Available */}
-      <GlobalAmbientControl />
-      <GlobalAudiobookPlayer 
-        isVisible={audiobookVisible}
-        onClose={() => setAudiobookVisible(false)}
-        startChapterId={startChapterId}
-      />
     </>
   );
 };
