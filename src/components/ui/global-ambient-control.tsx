@@ -1,199 +1,87 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Volume2, VolumeX, Music, ChevronDown, Sparkles, Wind, Drum, Brain, Globe, ExternalLink } from "lucide-react";
+import { Volume2, VolumeX, Music, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { useAudio, AMBIENT_SOUNDS, SoundCategory } from "@/contexts/AudioContext";
-import { BinauralVisualizer } from "@/components/ui/binaural-visualizer";
-
-const categoryIcons: Record<SoundCategory, React.ElementType> = {
-  sacred: Sparkles,
-  wind: Wind,
-  rhythm: Drum,
-  binaural: Brain
-};
-
-const categoryLabels: Record<SoundCategory, string> = {
-  sacred: "Sacred",
-  wind: "Wind",
-  rhythm: "Rhythm",
-  binaural: "Binaural"
-};
+import { useAudio, AMBIENT_SOUNDS } from "@/contexts/AudioContext";
 
 export const GlobalAmbientControl = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activeTab, setActiveTab] = useState<SoundCategory>("sacred");
-  const { 
-    activeSounds, 
-    globalVolume, 
-    toggleSound, 
-    setGlobalVolume,
-    isAudiobookPlaying 
-  } = useAudio();
+  const { activeSound, volume, isPlaying, toggleSound, setVolume, isAudiobookPlaying } = useAudio();
 
-  const soundsByCategory = Object.entries(AMBIENT_SOUNDS).reduce((acc, [id, sound]) => {
-    if (!acc[sound.category]) acc[sound.category] = [];
-    acc[sound.category].push({ id, ...sound });
-    return acc;
-  }, {} as Record<SoundCategory, (typeof AMBIENT_SOUNDS[string] & { id: string })[]>);
-
-  const getFrequencyType = (sound: typeof AMBIENT_SOUNDS[string]) => {
-    if (sound.beatFrequency) {
-      if (sound.beatFrequency <= 4) return "delta";
-      if (sound.beatFrequency <= 8) return "theta";
-      if (sound.beatFrequency <= 13) return "alpha";
-      return "beta";
-    }
-    return "nature";
-  };
+  const activeConfig = AMBIENT_SOUNDS.find(s => s.id === activeSound);
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
       {/* Expanded Panel */}
       {isExpanded && (
-        <div className="mb-3 p-4 bg-black/95 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl animate-fade-in w-80">
+        <div className="mb-3 p-4 bg-black/95 backdrop-blur-xl rounded-2xl border border-orange-500/30 shadow-2xl animate-fade-in w-72">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-white font-semibold flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary" />
-              Ancient Healing Sounds
-            </h3>
+            <h3 className="text-white font-medium text-sm">Soundscapes</h3>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsExpanded(false)}
               className="h-6 w-6 text-white/60 hover:text-white"
             >
-              <ChevronDown className="h-4 w-4" />
+              <X className="h-4 w-4" />
             </Button>
           </div>
           
           {isAudiobookPlaying && (
-            <div className="mb-4 p-3 rounded-lg bg-orange-500/20 border border-orange-500/30">
-              <p className="text-xs text-orange-200 flex items-center gap-2">
-                <Volume2 className="h-3 w-3 animate-pulse" />
-                Paused while audiobook plays
-              </p>
+            <div className="mb-3 p-2 rounded-lg bg-orange-500/20 border border-orange-500/30">
+              <p className="text-xs text-orange-200">Paused while audiobook plays</p>
             </div>
           )}
 
-          {/* Category Tabs */}
-          <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as SoundCategory)} className="mb-3">
-            <TabsList className="w-full bg-white/5 p-1 grid grid-cols-4">
-              {(Object.keys(categoryLabels) as SoundCategory[]).map(cat => {
-                const Icon = categoryIcons[cat];
-                return (
-                  <TabsTrigger
-                    key={cat}
-                    value={cat}
-                    className="flex-1 text-[10px] data-[state=active]:bg-primary/30 px-1"
-                  >
-                    <Icon className="h-3 w-3 mr-0.5" />
-                    <span className="hidden sm:inline">{categoryLabels[cat]}</span>
-                  </TabsTrigger>
-                );
-              })}
-            </TabsList>
-          </Tabs>
-
-          {activeTab === "binaural" && (
-            <p className="text-[10px] text-white/40 mb-2 px-1">
-              🎧 Use headphones for binaural effect
-            </p>
-          )}
-          
-          <div className="space-y-2 max-h-56 overflow-y-auto scrollbar-thin">
-            {soundsByCategory[activeTab]?.map((sound) => (
+          {/* Sound Grid */}
+          <div className="grid grid-cols-4 gap-2 mb-4">
+            {AMBIENT_SOUNDS.map((sound) => (
               <button
                 key={sound.id}
                 onClick={() => toggleSound(sound.id)}
                 disabled={isAudiobookPlaying}
                 className={cn(
-                  "w-full flex items-center gap-3 p-3 rounded-xl transition-all text-left",
-                  activeSounds.has(sound.id)
-                    ? "bg-primary/20 border border-primary/50"
+                  "flex flex-col items-center p-2 rounded-xl transition-all",
+                  activeSound === sound.id && isPlaying
+                    ? "bg-orange-500/30 border border-orange-500/50 scale-105"
                     : "bg-white/5 hover:bg-white/10 border border-transparent",
                   isAudiobookPlaying && "opacity-50 cursor-not-allowed"
                 )}
+                title={sound.name}
               >
-                {sound.category === "binaural" ? (
-                  <BinauralVisualizer
-                    frequency={getFrequencyType(sound)}
-                    isActive={activeSounds.has(sound.id)}
-                    size="sm"
-                  />
-                ) : (
-                  <div
-                    className={cn(
-                      "w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-br shrink-0",
-                      sound.color,
-                      activeSounds.has(sound.id) && "animate-pulse shadow-lg"
-                    )}
-                  >
-                    {activeSounds.has(sound.id) ? (
-                      <Volume2 className="h-5 w-5 text-white" />
-                    ) : (
-                      <VolumeX className="h-5 w-5 text-white/70" />
-                    )}
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium text-white truncate">{sound.name}</p>
-                    {sound.incogLevel && (
-                      <Badge 
-                        variant="outline" 
-                        className="text-[10px] px-1 py-0 h-4 border-primary/50 text-primary"
-                      >
-                        {sound.incogLevel}
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-xs text-white/50 truncate">{sound.description}</p>
-                  <div className="flex items-center gap-2 mt-0.5">
-                    {sound.beatFrequency && (
-                      <span className="text-[10px] text-primary/80">{sound.beatFrequency}Hz beat</span>
-                    )}
-                    {sound.origin && (
-                      <span className="text-[10px] text-white/40 flex items-center gap-0.5">
-                        <Globe className="h-2.5 w-2.5" />
-                        {sound.origin}
-                      </span>
-                    )}
-                  </div>
-                </div>
+                <span className="text-xl mb-1">{sound.icon}</span>
+                <span className="text-[10px] text-white/70 truncate w-full text-center">
+                  {sound.name}
+                </span>
               </button>
             ))}
           </div>
           
-          {/* Master Volume */}
-          <div className="mt-4 pt-4 border-t border-white/10">
-            <div className="flex items-center gap-3">
-              <Volume2 className="h-4 w-4 text-white/60 shrink-0" />
-              <Slider
-                value={[globalVolume]}
-                onValueChange={(v) => setGlobalVolume(v[0])}
-                max={1}
-                step={0.05}
-                className="flex-1"
-              />
-              <span className="text-xs text-white/60 w-8 text-right">
-                {Math.round(globalVolume * 100)}%
-              </span>
-            </div>
-            
-            {/* Link to full Sanctuary */}
-            <Link 
-              to="/meditation"
-              className="mt-3 flex items-center justify-center gap-2 p-2 rounded-lg bg-gradient-to-r from-purple-500/20 to-violet-500/20 border border-purple-500/30 text-purple-200 hover:bg-purple-500/30 transition-all text-xs"
-            >
-              <Sparkles className="h-3 w-3" />
-              Open Meditation Sanctuary
-              <ExternalLink className="h-3 w-3" />
-            </Link>
+          {/* Volume Control */}
+          <div className="flex items-center gap-3">
+            <Volume2 className="h-4 w-4 text-white/60 shrink-0" />
+            <Slider
+              value={[volume]}
+              onValueChange={(v) => setVolume(v[0])}
+              max={1}
+              step={0.05}
+              className="flex-1"
+            />
+            <span className="text-xs text-white/60 w-8 text-right">
+              {Math.round(volume * 100)}%
+            </span>
           </div>
+          
+          {/* Now Playing */}
+          {activeConfig && isPlaying && (
+            <div className="mt-3 pt-3 border-t border-white/10">
+              <p className="text-xs text-orange-300 flex items-center gap-2">
+                <span className="animate-pulse">♪</span>
+                Now playing: {activeConfig.name}
+              </p>
+            </div>
+          )}
         </div>
       )}
       
@@ -201,28 +89,21 @@ export const GlobalAmbientControl = () => {
       <Button
         onClick={() => setIsExpanded(!isExpanded)}
         className={cn(
-          "rounded-full w-14 h-14 shadow-2xl transition-all hover:scale-110",
-          activeSounds.size > 0
-            ? "bg-gradient-to-br from-primary to-orange-600 ring-2 ring-primary/50 ring-offset-2 ring-offset-black"
-            : "bg-gradient-to-br from-gray-700 to-gray-900 hover:from-primary hover:to-orange-600",
-          isAudiobookPlaying && activeSounds.size === 0 && "opacity-60"
+          "rounded-full w-12 h-12 shadow-2xl transition-all hover:scale-110",
+          activeSound && isPlaying
+            ? "bg-gradient-to-br from-orange-500 to-orange-600 ring-2 ring-orange-400/50"
+            : "bg-gradient-to-br from-gray-700 to-gray-900 hover:from-orange-500 hover:to-orange-600",
+          isAudiobookPlaying && !isPlaying && "opacity-60"
         )}
       >
         {isExpanded ? (
-          <ChevronDown className="h-6 w-6" />
-        ) : activeSounds.size > 0 ? (
-          <Volume2 className="h-6 w-6 animate-pulse" />
+          <X className="h-5 w-5" />
+        ) : activeSound && isPlaying ? (
+          <Volume2 className="h-5 w-5 animate-pulse" />
         ) : (
-          <Music className="h-6 w-6" />
+          <Music className="h-5 w-5" />
         )}
       </Button>
-      
-      {/* Active sound indicator */}
-      {activeSounds.size > 0 && !isExpanded && (
-        <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center text-xs font-bold text-white shadow-lg">
-          {activeSounds.size}
-        </div>
-      )}
     </div>
   );
 };

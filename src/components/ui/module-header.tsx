@@ -30,16 +30,15 @@ export const ModuleHeader = ({
 }: ModuleHeaderProps) => {
   const config = moduleConfig[module];
   const displayTitle = title || config.name;
-  const { activeSounds, pauseAllAmbient, resumeAllAmbient } = useAudio();
+  const { activeSound, isPlaying, stopAll } = useAudio();
   
-  const isAmbientPlaying = activeSounds.size > 0;
+  const isAmbientPlaying = activeSound !== null && isPlaying;
   
   const handleToggleAmbient = () => {
     if (isAmbientPlaying) {
-      pauseAllAmbient();
-    } else {
-      resumeAllAmbient();
+      stopAll();
     }
+    // To resume, user can use the floating control
   };
 
   const getAccentColor = () => {
