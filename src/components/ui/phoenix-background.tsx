@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { type ModuleKey, moduleConfig } from "@/lib/design-tokens";
 
 interface PhoenixBackgroundProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   module?: ModuleKey;
   showEmbers?: boolean;
