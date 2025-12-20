@@ -15,12 +15,12 @@ export const AmbientSoundPlayer = ({
   className,
   compact = false
 }: AmbientSoundPlayerProps) => {
-  const { activeSound, isPlaying, toggleSound, volume, setVolume } = useAudio();
-  const sound = AMBIENT_SOUNDS.find(s => s.id === soundId);
+  const { activeSounds, toggleSound, globalVolume, setGlobalVolume } = useAudio();
+  const sound = AMBIENT_SOUNDS[soundId];
   
   if (!sound) return null;
   
-  const isSoundPlaying = activeSound === soundId && isPlaying;
+  const isPlaying = activeSounds.has(soundId);
 
   if (compact) {
     return (
@@ -30,17 +30,17 @@ export const AmbientSoundPlayer = ({
         size="sm"
         className={cn(
           "flex items-center gap-2 text-xs opacity-80 hover:opacity-100 transition-opacity",
-          isSoundPlaying && "text-primary animate-pulse",
+          isPlaying && "text-primary animate-pulse",
           className
         )}
         title={`${sound.name}: ${sound.description}`}
       >
-        {isSoundPlaying ? (
+        {isPlaying ? (
           <Volume2 className="h-3 w-3" />
         ) : (
           <VolumeX className="h-3 w-3" />
         )}
-        <span className="hidden sm:inline">{isSoundPlaying ? "Playing" : "Ambient"}</span>
+        <span className="hidden sm:inline">{isPlaying ? "Playing" : "Ambient"}</span>
       </Button>
     );
   }
@@ -56,11 +56,12 @@ export const AmbientSoundPlayer = ({
         onClick={() => toggleSound(soundId)}
         size="sm"
         className={cn(
-          "bg-gradient-to-r from-orange-500 to-amber-600 text-white shadow-lg hover:shadow-xl transition-all",
-          isSoundPlaying && "animate-pulse"
+          "bg-gradient-to-r text-white shadow-lg hover:shadow-xl transition-all",
+          sound.color,
+          isPlaying && "animate-pulse"
         )}
       >
-        {isSoundPlaying ? (
+        {isPlaying ? (
           <Volume2 className="h-4 w-4" />
         ) : (
           <Music className="h-4 w-4" />
@@ -74,8 +75,8 @@ export const AmbientSoundPlayer = ({
       
       <div className="w-20 hidden sm:block">
         <Slider
-          value={[volume]}
-          onValueChange={(v) => setVolume(v[0])}
+          value={[globalVolume]}
+          onValueChange={(v) => setGlobalVolume(v[0])}
           max={1}
           step={0.1}
           className="cursor-pointer"

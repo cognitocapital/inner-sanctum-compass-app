@@ -44,7 +44,6 @@ import NotFound from "./pages/NotFound";
 // TBI Programs & NeuroRehab consolidated into unified Neurotech Arsenal (INCOG)
 import INCOG from "./pages/INCOG";
 import Install from "./pages/Install";
-import MeditationSanctuary from "./pages/MeditationSanctuary";
 
 const queryClient = new QueryClient();
 
@@ -119,18 +118,17 @@ const AppContent = () => {
           <Route path="/unwritten" element={<UnwrittenChapters />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/install" element={<Install />} />
-          <Route path="/meditation" element={<MeditationSanctuary />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-        
-        {/* Global Audio Controls - Inside BrowserRouter for Link to work */}
-        <GlobalAmbientControl />
-        <GlobalAudiobookPlayer 
-          isVisible={audiobookVisible}
-          onClose={() => setAudiobookVisible(false)}
-          startChapterId={startChapterId}
-        />
       </BrowserRouter>
+      
+      {/* Global Audio Controls - Always Available */}
+      <GlobalAmbientControl />
+      <GlobalAudiobookPlayer 
+        isVisible={audiobookVisible}
+        onClose={() => setAudiobookVisible(false)}
+        startChapterId={startChapterId}
+      />
     </>
   );
 };

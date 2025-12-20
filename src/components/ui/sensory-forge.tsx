@@ -26,7 +26,7 @@ const symptoms: SymptomOption[] = [
     label: "Vertigo / Balance Issues",
     icon: Eye,
     description: "Dizziness, unsteadiness, or spinning sensations",
-    recommendedSounds: ["tibetanBowl", "crystalBowl"],
+    recommendedSounds: ["thetaVertigo", "circle"],
     manuscriptRef: "Ch4: 'The vertigo slowly subsides...'"
   },
   {
@@ -34,7 +34,7 @@ const symptoms: SymptomOption[] = [
     label: "Anxiety / Overwhelm",
     icon: Heart,
     description: "Racing thoughts, tension, or emotional flooding",
-    recommendedSounds: ["forestStream", "oceanWaves"],
+    recommendedSounds: ["alphaCalm", "breath", "heart"],
     manuscriptRef: "Ch3: The roller coaster of anxiety"
   },
   {
@@ -42,7 +42,7 @@ const symptoms: SymptomOption[] = [
     label: "Cognitive Fatigue",
     icon: Brain,
     description: "Mental exhaustion, brain fog, or difficulty thinking",
-    recommendedSounds: ["kalimba", "chimes"],
+    recommendedSounds: ["mind", "circle", "alphaCalm"],
     manuscriptRef: "The journey of rebuilding mental stamina"
   },
   {
@@ -50,7 +50,7 @@ const symptoms: SymptomOption[] = [
     label: "Attention / Focus Issues",
     icon: Zap,
     description: "Difficulty concentrating or staying on task",
-    recommendedSounds: ["hangDrum", "bambooFlute"],
+    recommendedSounds: ["betaFocus", "computer"],
     manuscriptRef: "Training the mind to focus again"
   },
   {
@@ -58,7 +58,7 @@ const symptoms: SymptomOption[] = [
     label: "Sensory Sensitivity",
     icon: Ear,
     description: "Overwhelmed by sounds, lights, or stimulation",
-    recommendedSounds: ["forestStream", "oceanWaves"],
+    recommendedSounds: ["thetaVertigo", "breath"],
     manuscriptRef: "Ch4: Loss of taste and smell... slow comeback"
   },
   {
@@ -66,7 +66,7 @@ const symptoms: SymptomOption[] = [
     label: "Emotional Dysregulation",
     icon: Wind,
     description: "Mood swings or difficulty managing emotions",
-    recommendedSounds: ["crystalBowl", "kalimba"],
+    recommendedSounds: ["heart", "alphaCalm", "mind"],
     manuscriptRef: "Heart-centered healing and gratitude"
   }
 ];
@@ -74,7 +74,7 @@ const symptoms: SymptomOption[] = [
 export const SensoryForge = () => {
   const [selectedSymptoms, setSelectedSymptoms] = useState<Set<string>>(new Set());
   const [showRecommendations, setShowRecommendations] = useState(false);
-  const { toggleSound, activeSound, isPlaying } = useAudio();
+  const { toggleSound, activeSounds } = useAudio();
 
   const toggleSymptom = (symptomId: string) => {
     setSelectedSymptoms(prev => {
@@ -100,116 +100,204 @@ export const SensoryForge = () => {
       });
     });
     
-    // Sort by score and return top 3
     return Object.entries(soundScores)
-      .sort((a, b) => b[1] - a[1])
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 3)
       .map(([id]) => id);
   };
 
-  const recommendedSoundIds = getRecommendedSounds();
-  const recommendedSounds = recommendedSoundIds
-    .map(id => AMBIENT_SOUNDS.find(s => s.id === id))
-    .filter(Boolean);
+  const recommendedSounds = getRecommendedSounds();
+  const selectedSymptomsList = symptoms.filter(s => selectedSymptoms.has(s.id));
 
   return (
     <div className="space-y-6">
+      {/* Header with Evidence Badge */}
+      <div className="text-center space-y-3">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30">
+          <Sparkles className="h-4 w-4 text-primary" />
+          <span className="text-sm font-medium text-primary">Phoenix Sensory Forge</span>
+        </div>
+        <h3 className="text-xl font-semibold text-foreground">
+          Personalized Soundscape Therapy
+        </h3>
+        <p className="text-sm text-muted-foreground max-w-md mx-auto">
+          Select your current symptoms to receive evidence-based sound recommendations 
+          tailored to your recovery needs.
+        </p>
+      </div>
+
       <EvidenceBadge
         level="A"
-        domain="Sensory Modulation"
-        description="Targeted sound therapy for TBI symptoms"
+        domain="Music & Rhythm Therapy"
+        description="Binaural beats and rhythmic auditory stimulation improve attention, executive function, and emotional regulation after TBI."
         pubmedId="32180108"
       />
 
       {/* Symptom Selection */}
-      <div>
-        <h3 className="text-sm font-medium mb-3 text-muted-foreground">
-          Select your current symptoms:
-        </h3>
-        <div className="grid grid-cols-2 gap-2">
-          {symptoms.map((symptom) => {
-            const Icon = symptom.icon;
-            const isSelected = selectedSymptoms.has(symptom.id);
-            
-            return (
-              <button
-                key={symptom.id}
-                onClick={() => toggleSymptom(symptom.id)}
-                className={cn(
-                  "p-3 rounded-lg border text-left transition-all",
-                  isSelected
-                    ? "border-primary bg-primary/10"
-                    : "border-border hover:border-primary/50"
-                )}
-              >
-                <div className="flex items-center gap-2 mb-1">
-                  <Icon className={cn(
-                    "h-4 w-4",
-                    isSelected ? "text-primary" : "text-muted-foreground"
-                  )} />
-                  <span className="text-sm font-medium">{symptom.label}</span>
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+        {symptoms.map(symptom => {
+          const Icon = symptom.icon;
+          const isSelected = selectedSymptoms.has(symptom.id);
+          
+          return (
+            <button
+              key={symptom.id}
+              onClick={() => toggleSymptom(symptom.id)}
+              className={cn(
+                "p-4 rounded-xl border text-left transition-all",
+                isSelected
+                  ? "bg-primary/10 border-primary/50 ring-2 ring-primary/20"
+                  : "bg-card hover:bg-accent/50 border-border"
+              )}
+            >
+              <div className="flex items-start gap-3">
+                <div className={cn(
+                  "p-2 rounded-lg shrink-0",
+                  isSelected ? "bg-primary text-primary-foreground" : "bg-muted"
+                )}>
+                  <Icon className="h-4 w-4" />
                 </div>
-                <p className="text-xs text-muted-foreground line-clamp-2">
-                  {symptom.description}
-                </p>
-              </button>
-            );
-          })}
-        </div>
+                <div className="min-w-0">
+                  <p className={cn(
+                    "font-medium text-sm truncate",
+                    isSelected ? "text-primary" : "text-foreground"
+                  )}>
+                    {symptom.label}
+                  </p>
+                  <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
+                    {symptom.description}
+                  </p>
+                </div>
+              </div>
+              {isSelected && (
+                <CheckCircle2 className="h-4 w-4 text-primary absolute top-2 right-2" />
+              )}
+            </button>
+          );
+        })}
       </div>
 
       {/* Get Recommendations Button */}
       {selectedSymptoms.size > 0 && !showRecommendations && (
-        <Button 
+        <Button
           onClick={() => setShowRecommendations(true)}
-          className="w-full"
+          className="w-full bg-gradient-to-r from-primary to-orange-500 hover:opacity-90"
         >
           <Sparkles className="h-4 w-4 mr-2" />
-          Get Sound Recommendations
+          Get Personalized Soundscape ({selectedSymptoms.size} symptom{selectedSymptoms.size > 1 ? 's' : ''})
+          <ChevronRight className="h-4 w-4 ml-2" />
         </Button>
       )}
 
       {/* Recommendations */}
       {showRecommendations && recommendedSounds.length > 0 && (
-        <Card className="border-primary/30">
-          <CardContent className="pt-4">
-            <h3 className="font-medium mb-3 flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-              Recommended for You
-            </h3>
+        <Card className="border-primary/30 bg-gradient-to-br from-primary/5 to-orange-500/5">
+          <CardContent className="pt-6 space-y-4">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-primary" />
+              <h4 className="font-semibold">Your Personalized Soundscape</h4>
+            </div>
+            
+            {/* Manuscript Quanta Prompt */}
+            {selectedSymptomsList[0]?.manuscriptRef && (
+              <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
+                <div className="flex items-start gap-2">
+                  <BookOpen className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-xs font-medium text-amber-700 dark:text-amber-300">
+                      Reflection from "What a Journey"
+                    </p>
+                    <p className="text-sm text-amber-800 dark:text-amber-200 italic mt-1">
+                      "{selectedSymptomsList[0].manuscriptRef}"
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Recommended Sounds */}
             <div className="space-y-2">
-              {recommendedSounds.map((sound) => {
+              {recommendedSounds.map((soundId, index) => {
+                const sound = AMBIENT_SOUNDS[soundId];
                 if (!sound) return null;
-                const isSoundPlaying = activeSound === sound.id && isPlaying;
+                
+                const isActive = activeSounds.has(soundId);
                 
                 return (
                   <button
-                    key={sound.id}
-                    onClick={() => toggleSound(sound.id)}
+                    key={soundId}
+                    onClick={() => toggleSound(soundId)}
                     className={cn(
-                      "w-full p-3 rounded-lg border flex items-center gap-3 transition-all text-left",
-                      isSoundPlaying
-                        ? "border-primary bg-primary/10"
-                        : "border-border hover:border-primary/50"
+                      "w-full flex items-center gap-3 p-3 rounded-xl transition-all text-left",
+                      isActive
+                        ? "bg-primary/20 border border-primary/50 ring-2 ring-primary/30"
+                        : "bg-background/50 hover:bg-background border border-border"
                     )}
                   >
-                    <span className="text-2xl">{sound.icon}</span>
-                    <div className="flex-1">
-                      <p className="font-medium text-sm">{sound.name}</p>
-                      <p className="text-xs text-muted-foreground">{sound.description}</p>
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-br text-white font-bold text-sm shrink-0"
+                      style={{ 
+                        background: index === 0 
+                          ? 'linear-gradient(135deg, #f97316, #ea580c)' 
+                          : index === 1 
+                            ? 'linear-gradient(135deg, #8b5cf6, #6d28d9)'
+                            : 'linear-gradient(135deg, #06b6d4, #0891b2)'
+                      }}
+                    >
+                      {index + 1}
                     </div>
-                    {isSoundPlaying && (
-                      <Badge variant="secondary" className="animate-pulse">
-                        Playing
-                      </Badge>
-                    )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-sm">{sound.name}</p>
+                        {sound.incogLevel && (
+                          <Badge variant="outline" className="text-xs px-1.5 py-0">
+                            INCOG {sound.incogLevel}
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {sound.description}
+                      </p>
+                      {sound.frequency && (
+                        <span className="text-xs text-primary/80">{sound.frequency}</span>
+                      )}
+                    </div>
+                    <Badge 
+                      variant={isActive ? "default" : "secondary"}
+                      className={cn(isActive && "bg-primary")}
+                    >
+                      {isActive ? "Playing" : "Play"}
+                    </Badge>
                   </button>
                 );
               })}
             </div>
+
+            {/* Info */}
+            <div className="flex items-start gap-2 p-3 rounded-lg bg-muted/50">
+              <AlertCircle className="h-4 w-4 text-muted-foreground shrink-0 mt-0.5" />
+              <p className="text-xs text-muted-foreground">
+                Play multiple sounds together to create your personalized healing soundscape. 
+                Sounds will automatically pause when the audiobook is playing.
+              </p>
+            </div>
+
+            {/* Reset */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setSelectedSymptoms(new Set());
+                setShowRecommendations(false);
+              }}
+              className="w-full"
+            >
+              Start Over
+            </Button>
           </CardContent>
         </Card>
       )}
     </div>
   );
 };
+
+export default SensoryForge;
