@@ -10,11 +10,11 @@ import { useAudio, AMBIENT_SOUNDS, SoundCategory } from '@/contexts/AudioContext
 const categoryInfo: Record<SoundCategory, { icon: React.ElementType; description: string }> = {
   sacred: { 
     icon: Sparkles, 
-    description: "Ancient healing instruments: Tibetan bowls, crystal bowls, gongs & bells" 
+    description: "Synthesized healing instruments: Tibetan bowls, crystal bowls, gongs & bells" 
   },
   nature: { 
     icon: Waves, 
-    description: "Authentic nature recordings & traditional wind instruments" 
+    description: "Procedural nature soundscapes: ocean waves, rain, birdsong, wind chimes" 
   },
   binaural: { 
     icon: Brain, 
@@ -52,7 +52,7 @@ const MusicTherapy = () => {
       <EvidenceBadge
         level="A"
         domain="Sound Healing Therapy"
-        description="Ancient healing instruments and nature soundscapes support cognitive and emotional recovery after TBI. Real acoustic recordings provide authentic therapeutic benefit."
+        description="Synthesized healing sounds support cognitive and emotional recovery. Procedurally generated for instant, reliable playback with zero network dependencies."
         pubmedId="32180108"
       />
 
@@ -169,10 +169,10 @@ const MusicTherapy = () => {
       <Card className="bg-muted/30">
         <CardContent className="pt-4">
           <p className="text-sm text-muted-foreground">
-            <strong>Authentic Sound Healing</strong> uses real recordings of ancient healing instruments 
-            and nature soundscapes. Tibetan singing bowls, crystal bowls, temple gongs, and native flutes—
-            all recorded from genuine instruments. Binaural beats remain synthesized for mathematical precision. 
-            Aligned with INCOG 2.0 guidelines for cognitive rehabilitation.
+            <strong>Synthesized Sound Healing</strong> uses procedurally generated healing sounds 
+            powered by Tone.js. Tibetan bowls, crystal bowls at 528Hz, temple gongs, wind chimes, 
+            ocean waves, rainforest ambience—all synthesized locally for instant, reliable playback.
+            Works offline. No network dependencies. Aligned with INCOG 2.0 guidelines for cognitive rehabilitation.
           </p>
         </CardContent>
       </Card>
