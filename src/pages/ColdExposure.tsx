@@ -17,6 +17,7 @@ import { usePhoenixGamification, StreakDisplay, FeatherCount, PhoenixLevelBadge 
 import IceCavernBackground from "@/components/ice/IceCavernBackground";
 import BodyHeatMap from "@/components/ice/BodyHeatMap";
 import DopamineGraph from "@/components/ice/DopamineGraph";
+import FrostSafetyQuiz from "@/components/ice/FrostSafetyQuiz";
 import { cn } from "@/lib/utils";
 
 // Warrior tiers for gamification
@@ -73,6 +74,9 @@ const moodOptions = [
 ];
 
 const ColdExposure = () => {
+  const [showSafetyQuiz, setShowSafetyQuiz] = useState(true);
+  const [safetyPassed, setSafetyPassed] = useState(false);
+  const [safetyRecommendations, setSafetyRecommendations] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("forge");
   const [isActive, setIsActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
@@ -155,7 +159,24 @@ const ColdExposure = () => {
     };
   }, [isActive, timeLeft, phase, selectedDuration]);
 
-  // Old safety handler removed - now using AudioSafetyDisclaimer
+  const handleSafetyComplete = (passed: boolean, recommendations: string[]) => {
+    setSafetyPassed(passed);
+    setSafetyRecommendations(recommendations);
+    setShowSafetyQuiz(false);
+
+    if (!passed) {
+      toast({
+        title: "Session Not Recommended",
+        description: "Based on your responses, please skip this session for safety.",
+        variant: "destructive"
+      });
+    } else if (recommendations.length > 0) {
+      toast({
+        title: "Proceed with Caution",
+        description: recommendations[0]
+      });
+    }
+  };
 
   const completeSession = () => {
     setIsActive(false);
@@ -246,6 +267,54 @@ const ColdExposure = () => {
     }
   };
 
+  // Safety quiz screen
+  if (showSafetyQuiz) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-950 to-cyan-950 relative overflow-hidden">
+        <IceCavernBackground intensity={20} isActive={false} phase="prepare" />
+        
+        <div className="relative z-10 container mx-auto px-4 py-8">
+          <Button asChild variant="ghost" className="text-cyan-300 hover:text-white mb-6">
+            <Link to="/dashboard">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Dashboard
+            </Link>
+          </Button>
+
+          <div className="text-center mb-8">
+            <motion.div 
+              className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center shadow-2xl shadow-cyan-500/30"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <Snowflake className="w-10 h-10 text-white" />
+            </motion.div>
+            <h1 className="text-3xl font-bold text-white mb-2">Resilient Frost Forge</h1>
+            <p className="text-cyan-300">Transform fear into dopamine resilience</p>
+            
+            <div className="flex justify-center gap-2 mt-4">
+              <EvidenceBadge 
+                level="C" 
+                domain="Hormetic Stress"
+                description="Research-backed dopamine protocols. Not core INCOG but aligned with stress adaptation science."
+                pubmedId="37138494"
+              />
+              <Badge variant="outline" className="bg-amber-500/10 border-amber-500/30 text-amber-300">
+                <AlertTriangle className="w-3 h-3 mr-1" />
+                TBI Caution Required
+              </Badge>
+            </div>
+          </div>
+
+          <FrostSafetyQuiz
+            onComplete={handleSafetyComplete}
+            onCancel={() => window.history.back()}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Immersive Ice Cavern Background */}
@@ -312,7 +381,22 @@ const ColdExposure = () => {
           </div>
         </header>
 
-        {/* Safety covered by universal disclaimer */}
+        {/* Safety Recommendations */}
+        {safetyRecommendations.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30"
+          >
+            <div className="flex items-start gap-2">
+              <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm text-amber-200 font-medium">Today's Recommendation</p>
+                <p className="text-sm text-amber-300">{safetyRecommendations[0]}</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Main Content Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -388,6 +472,7 @@ const ColdExposure = () => {
                     <Button 
                       onClick={toggleSession}
                       size="lg"
+                      disabled={!safetyPassed}
                       className="flex-1 max-w-[160px] bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500"
                     >
                       {isActive ? <Pause className="mr-2 h-5 w-5" /> : <Play className="mr-2 h-5 w-5" />}
@@ -488,6 +573,7 @@ const ColdExposure = () => {
                     <button
                       key={level.week}
                       onClick={() => startSession(level.duration)}
+                      disabled={!safetyPassed}
                       className={cn(
                         "p-4 rounded-xl border text-left transition-all",
                         currentWeek === level.week 

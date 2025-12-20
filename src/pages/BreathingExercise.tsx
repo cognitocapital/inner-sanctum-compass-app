@@ -75,7 +75,6 @@ const BreathingExercise = () => {
   const [personalBest, setPersonalBest] = useState(0);
   const [showRetentionModal, setShowRetentionModal] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
-  const [safeForRetention, setSafeForRetention] = useState(true);
   const [currentQuanta, setCurrentQuanta] = useState("");
   const [hrvLevel, setHrvLevel] = useState(40);
   const [coherenceScore, setCoherenceScore] = useState(30);
@@ -248,7 +247,6 @@ const BreathingExercise = () => {
 
   const handleQuizComplete = (results: QuizResults) => {
     setShowQuiz(false);
-    setSafeForRetention(results.safeForRetention);
     
     const adaptivePattern = {
       name: results.recommendedPattern.name,
@@ -267,20 +265,15 @@ const BreathingExercise = () => {
     setCustomPattern(adaptivePattern);
     setTimeLeft(adaptivePattern.pattern.inhale);
     
-    const safetyNote = !results.safeForRetention 
-      ? ' (Retention breathing not recommended based on your current state)'
-      : '';
-    
     toast({
       title: `${results.recommendedPattern.name} Ready`,
-      description: results.quantaMessage + safetyNote,
+      description: results.quantaMessage,
     });
   };
 
-
   const navItems = [
     { id: "basic", label: "Breathe", icon: <Wind className="h-5 w-5" /> },
-    { id: "retention", label: "Retention", icon: <Flame className="h-5 w-5" />, disabled: !safeForRetention },
+    { id: "retention", label: "Retention", icon: <Flame className="h-5 w-5" /> },
   ];
 
   const currentPattern = customPattern || selectedPattern;
@@ -397,20 +390,6 @@ const BreathingExercise = () => {
                         Personalize
                       </Button>
                     </div>
-                    
-                    {/* Retention Safety Warning */}
-                    {!safeForRetention && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="p-3 rounded-lg border border-yellow-500/30 bg-yellow-500/10"
-                      >
-                        <div className="flex items-center gap-2 text-yellow-300 text-sm">
-                          <Zap className="w-4 h-4" />
-                          <span>Retention breathing limited based on your current state</span>
-                        </div>
-                      </motion.div>
-                    )}
                     
                     <div className="grid grid-cols-2 gap-2">
                       {defaultPatterns.map((pattern) => (
@@ -560,14 +539,6 @@ const BreathingExercise = () => {
         activeId={activeTab}
         onSelect={(id) => {
           if (id === "retention") {
-            if (!safeForRetention) {
-              toast({
-                title: "Retention Not Recommended",
-                description: "Based on your current ABS level, we recommend basic breathing patterns. Re-check with the Personalize quiz when you feel calmer.",
-                variant: "destructive",
-              });
-              return;
-            }
             setShowRetentionModal(true);
           } else {
             setActiveTab(id);

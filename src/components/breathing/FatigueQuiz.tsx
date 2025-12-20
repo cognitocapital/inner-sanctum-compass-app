@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Brain, Wind, Zap, Moon, ArrowRight, AlertTriangle, Activity } from "lucide-react";
+import { Sparkles, Brain, Wind, Zap, Moon, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FatigueQuizProps {
@@ -16,7 +16,6 @@ export interface QuizResults {
   fatigue: number;
   anxiety: number;
   focus: number;
-  agitation: number; // ABS scale 1-4
   recommendedPattern: {
     name: string;
     inhale: number;
@@ -26,29 +25,9 @@ export interface QuizResults {
     description: string;
   };
   quantaMessage: string;
-  safeForRetention: boolean; // Based on ABS and other factors
 }
 
-// ABS Agitation Scale descriptions (simplified for self-report per 2025 Canadian Guidelines)
-const absDescriptions: Record<number, { label: string; description: string }> = {
-  1: { label: 'Calm', description: 'Relaxed, cooperative, no agitation' },
-  2: { label: 'Mild', description: 'Slight restlessness, easily redirected' },
-  3: { label: 'Moderate', description: 'Restless, some difficulty focusing' },
-  4: { label: 'Severe', description: 'Very agitated, difficulty staying still' },
-};
-
 const questions = [
-  {
-    id: 'agitation',
-    question: 'How agitated or restless do you feel?',
-    icon: Activity,
-    lowLabel: 'Calm (1)',
-    highLabel: 'Very Agitated (4)',
-    quanta: 'ABS Scale: Agitation impacts breath safety',
-    isABS: true,
-    min: 1,
-    max: 4,
-  },
   {
     id: 'fatigue',
     question: 'How fatigued do you feel right now?',
@@ -56,9 +35,6 @@ const questions = [
     lowLabel: 'Energized',
     highLabel: 'Exhausted',
     quanta: 'Ch3: "Some days the fatigue was crushing..."',
-    isABS: false,
-    min: 1,
-    max: 10,
   },
   {
     id: 'anxiety',
@@ -67,9 +43,6 @@ const questions = [
     lowLabel: 'Calm',
     highLabel: 'Overwhelmed',
     quanta: 'Ch3: "The emotional rollercoaster was relentless..."',
-    isABS: false,
-    min: 1,
-    max: 10,
   },
   {
     id: 'focus',
@@ -78,9 +51,6 @@ const questions = [
     lowLabel: 'Scattered',
     highLabel: 'Sharp',
     quanta: 'Ch7: "My brain felt like it was constantly misfiring..."',
-    isABS: false,
-    min: 1,
-    max: 10,
   },
 ];
 
@@ -120,25 +90,12 @@ const patterns = {
   },
 };
 
-const determinePattern = (fatigue: number, anxiety: number, focus: number, agitation: number) => {
-  // Check if safe for retention breathing (ABS ≤ 2 recommended)
-  const safeForRetention = agitation <= 2;
-  
-  // High agitation (ABS 3-4) → always calming, no retention
-  if (agitation >= 3) {
-    return {
-      pattern: patterns.calm,
-      message: 'Your agitation level suggests focusing on calming techniques first. Extended exhales will activate your parasympathetic response.',
-      safeForRetention: false,
-    };
-  }
-  
-  // High fatigue + low focus → energizing (but only if ABS allows)
-  if (fatigue >= 7 && focus <= 4 && safeForRetention) {
+const determinePattern = (fatigue: number, anxiety: number, focus: number) => {
+  // High fatigue + low focus → energizing
+  if (fatigue >= 7 && focus <= 4) {
     return {
       pattern: patterns.energize,
       message: 'Rising from the ashes requires energy. This quick breath will awaken your phoenix spirit.',
-      safeForRetention,
     };
   }
   
@@ -147,7 +104,6 @@ const determinePattern = (fatigue: number, anxiety: number, focus: number, agita
     return {
       pattern: patterns.calm,
       message: 'Sitting with uncomfortable feelings... This extended exhale will calm your nervous system.',
-      safeForRetention,
     };
   }
   
@@ -156,7 +112,6 @@ const determinePattern = (fatigue: number, anxiety: number, focus: number, agita
     return {
       pattern: patterns.focus,
       message: 'The brain rebuilds through intentional practice. This pattern enhances concentration.',
-      safeForRetention,
     };
   }
   
@@ -164,14 +119,12 @@ const determinePattern = (fatigue: number, anxiety: number, focus: number, agita
   return {
     pattern: patterns.balance,
     message: 'Balance is the foundation of recovery. This harmonious pattern supports neuroplasticity.',
-    safeForRetention,
   };
 };
 
 export const FatigueQuiz = ({ onComplete, className }: FatigueQuizProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({
-    agitation: 1,
     fatigue: 5,
     anxiety: 5,
     focus: 5,
@@ -182,21 +135,18 @@ export const FatigueQuiz = ({ onComplete, className }: FatigueQuizProps) => {
 
   const handleNext = () => {
     if (isLastStep) {
-      const { pattern, message, safeForRetention } = determinePattern(
+      const { pattern, message } = determinePattern(
         answers.fatigue,
         answers.anxiety,
-        answers.focus,
-        answers.agitation
+        answers.focus
       );
       
       onComplete({
         fatigue: answers.fatigue,
         anxiety: answers.anxiety,
         focus: answers.focus,
-        agitation: answers.agitation,
         recommendedPattern: pattern,
         quantaMessage: message,
-        safeForRetention,
       });
     } else {
       setCurrentStep(prev => prev + 1);
@@ -211,7 +161,6 @@ export const FatigueQuiz = ({ onComplete, className }: FatigueQuizProps) => {
   };
 
   const Icon = currentQuestion.icon;
-  const isABSQuestion = currentQuestion.isABS;
 
   return (
     <Card className={cn("bg-slate-900/80 border-orange-500/20 overflow-hidden", className)}>
@@ -261,8 +210,8 @@ export const FatigueQuiz = ({ onComplete, className }: FatigueQuizProps) => {
               <Slider
                 value={[answers[currentQuestion.id]]}
                 onValueChange={handleSliderChange}
-                max={currentQuestion.max}
-                min={currentQuestion.min}
+                max={10}
+                min={1}
                 step={1}
                 className="py-4"
               />
@@ -274,38 +223,6 @@ export const FatigueQuiz = ({ onComplete, className }: FatigueQuizProps) => {
                 </span>
                 <span>{currentQuestion.highLabel}</span>
               </div>
-              
-              {/* ABS Description */}
-              {isABSQuestion && absDescriptions[answers[currentQuestion.id]] && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={cn(
-                    "p-3 rounded-lg border text-center",
-                    answers.agitation >= 3 
-                      ? "bg-yellow-500/10 border-yellow-500/30" 
-                      : "bg-green-500/10 border-green-500/30"
-                  )}
-                >
-                  <div className="flex items-center justify-center gap-2 mb-1">
-                    {answers.agitation >= 3 && <AlertTriangle className="w-4 h-4 text-yellow-400" />}
-                    <span className={cn(
-                      "font-semibold",
-                      answers.agitation >= 3 ? "text-yellow-300" : "text-green-300"
-                    )}>
-                      {absDescriptions[answers[currentQuestion.id]].label}
-                    </span>
-                  </div>
-                  <p className="text-xs text-white/60">
-                    {absDescriptions[answers[currentQuestion.id]].description}
-                  </p>
-                  {answers.agitation >= 3 && (
-                    <p className="text-xs text-yellow-400/80 mt-2">
-                      Retention breathing not recommended at this level
-                    </p>
-                  )}
-                </motion.div>
-              )}
             </div>
 
             {/* Progress dots */}
