@@ -9,20 +9,20 @@ import { useAudio, AMBIENT_SOUNDS, SoundCategory } from "@/contexts/AudioContext
 import { BinauralVisualizer } from "@/components/ui/binaural-visualizer";
 
 const categoryIcons: Record<SoundCategory, React.ElementType> = {
-  soundscapes: Waves,
-  binaural: Brain,
-  music: Music2
+  sacred: Sparkles,
+  nature: Waves,
+  binaural: Brain
 };
 
 const categoryLabels: Record<SoundCategory, string> = {
-  soundscapes: "Soundscapes",
-  binaural: "Binaural",
-  music: "Music"
+  sacred: "Sacred",
+  nature: "Nature",
+  binaural: "Binaural"
 };
 
 export const GlobalAmbientControl = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activeTab, setActiveTab] = useState<SoundCategory>("soundscapes");
+  const [activeTab, setActiveTab] = useState<SoundCategory>("sacred");
   const { 
     activeSounds, 
     globalVolume, 
