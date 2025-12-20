@@ -1,3 +1,4 @@
+// Audio Context - Provides global sound management for healing soundscapes
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from "react";
 
 export type SoundCategory = "sacred" | "nature" | "binaural";
