@@ -173,7 +173,7 @@ export const AMBIENT_SOUNDS: Record<string, AmbientSoundConfig> = {
 interface AudioNodes {
   type: "binaural" | "audio";
   nodes: AudioNode[];
-  gainNode: GainNode;
+  gainNode?: GainNode;
   audioElement?: HTMLAudioElement;
 }
 
@@ -206,7 +206,6 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   
   const audioCtxRef = useRef<globalThis.AudioContext | null>(null);
   const audioNodesRef = useRef<Map<string, AudioNodes>>(new Map());
-  const audioElementsRef = useRef<Map<string, HTMLAudioElement>>(new Map());
 
   const getAudioContext = useCallback(() => {
     if (!audioCtxRef.current) {
@@ -273,30 +272,17 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return { type: "binaural", nodes: [leftOsc, rightOsc, padOsc1, padOsc2, merger, padFilter], gainNode: masterGain };
   }, [getAudioContext, globalVolume]);
 
-  // === REAL AUDIO PLAYBACK (For sacred instruments and nature sounds) ===
+  // === REAL AUDIO PLAYBACK (Using native HTML5 Audio - no Web Audio API routing issues) ===
   const createAudioPlayer = useCallback((config: AmbientSoundConfig): AudioNodes | null => {
     if (!config.audioUrl) return null;
     
-    const ctx = getAudioContext();
-    
-    // Create or reuse audio element
-    let audioElement = audioElementsRef.current.get(config.id);
-    if (!audioElement) {
-      audioElement = new Audio();
-      audioElement.crossOrigin = "anonymous";
-      audioElement.loop = true;
-      audioElement.preload = "auto";
-      audioElement.src = config.audioUrl;
-      audioElementsRef.current.set(config.id, audioElement);
-    }
-    
-    // Connect to Web Audio API for volume control
-    const source = ctx.createMediaElementSource(audioElement);
-    const masterGain = ctx.createGain();
-    masterGain.gain.value = globalVolume * 0.7;
-    
-    source.connect(masterGain);
-    masterGain.connect(ctx.destination);
+    // Create fresh audio element each time to avoid MediaElementSource issues
+    const audioElement = new Audio();
+    audioElement.crossOrigin = "anonymous";
+    audioElement.loop = true;
+    audioElement.preload = "auto";
+    audioElement.volume = globalVolume * 0.7;
+    audioElement.src = config.audioUrl;
     
     // Start playback
     audioElement.play().catch(e => {
@@ -305,11 +291,10 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     
     return { 
       type: "audio", 
-      nodes: [source], 
-      gainNode: masterGain,
+      nodes: [],
       audioElement 
     };
-  }, [getAudioContext, globalVolume]);
+  }, [globalVolume]);
 
   // Pause/resume for audiobook
   useEffect(() => {
@@ -319,7 +304,9 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       
       audioNodesRef.current.forEach((nodes, soundId) => {
         if (activeSounds.has(soundId)) {
-          nodes.gainNode.gain.value = 0;
+          if (nodes.gainNode) {
+            nodes.gainNode.gain.value = 0;
+          }
           if (nodes.audioElement) {
             nodes.audioElement.pause();
           }
@@ -330,8 +317,11 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       pausedSounds.forEach((soundId) => {
         const nodes = audioNodesRef.current.get(soundId);
         if (nodes) {
-          nodes.gainNode.gain.value = globalVolume * 0.5;
+          if (nodes.gainNode) {
+            nodes.gainNode.gain.value = globalVolume * 0.5;
+          }
           if (nodes.audioElement) {
+            nodes.audioElement.volume = globalVolume * 0.7;
             nodes.audioElement.play().catch(() => {});
           }
           setActiveSounds(prev => new Set([...prev, soundId]));
@@ -345,8 +335,11 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   useEffect(() => {
     audioNodesRef.current.forEach((nodes, soundId) => {
       if (activeSounds.has(soundId)) {
-        const volumeMultiplier = nodes.type === "binaural" ? 0.4 : 0.7;
-        nodes.gainNode.gain.value = globalVolume * volumeMultiplier;
+        if (nodes.type === "binaural" && nodes.gainNode) {
+          nodes.gainNode.gain.value = globalVolume * 0.4;
+        } else if (nodes.audioElement) {
+          nodes.audioElement.volume = globalVolume * 0.7;
+        }
       }
     });
   }, [globalVolume, activeSounds]);
@@ -361,11 +354,14 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       // Stop sound
       const nodes = audioNodesRef.current.get(soundId);
       if (nodes) {
-        nodes.gainNode.gain.value = 0;
+        if (nodes.gainNode) {
+          nodes.gainNode.gain.value = 0;
+        }
         
         if (nodes.audioElement) {
           nodes.audioElement.pause();
           nodes.audioElement.currentTime = 0;
+          nodes.audioElement.src = ""; // Clean up
         }
         
         nodes.nodes.forEach(node => {
@@ -451,10 +447,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           } catch (e) { /* Already stopped */ }
         });
       });
-      audioElementsRef.current.forEach(audio => {
-        audio.pause();
-        audio.src = "";
-      });
+      // Audio elements are now cleaned up in audioNodesRef
       if (audioCtxRef.current) {
         audioCtxRef.current.close();
       }
