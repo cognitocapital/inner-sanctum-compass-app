@@ -14,7 +14,204 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_recommendations: {
+        Row: {
+          created_at: string | null
+          id: string
+          priority_module: string | null
+          reason: string | null
+          recommendation_date: string
+          recommendations: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          priority_module?: string | null
+          reason?: string | null
+          recommendation_date?: string
+          recommendations: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          priority_module?: string | null
+          reason?: string | null
+          recommendation_date?: string
+          recommendations?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
+      daily_checkins: {
+        Row: {
+          check_date: string
+          created_at: string | null
+          energy_level: number | null
+          gratitude_note: string | null
+          id: string
+          mood: number | null
+          pain_level: number | null
+          sleep_quality: number | null
+          symptoms_today: Json | null
+          user_id: string
+        }
+        Insert: {
+          check_date?: string
+          created_at?: string | null
+          energy_level?: number | null
+          gratitude_note?: string | null
+          id?: string
+          mood?: number | null
+          pain_level?: number | null
+          sleep_quality?: number | null
+          symptoms_today?: Json | null
+          user_id: string
+        }
+        Update: {
+          check_date?: string
+          created_at?: string | null
+          energy_level?: number | null
+          gratitude_note?: string | null
+          id?: string
+          mood?: number | null
+          pain_level?: number | null
+          sleep_quality?: number | null
+          symptoms_today?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          current_symptoms: Json | null
+          daily_goal_minutes: number | null
+          display_name: string | null
+          id: string
+          injury_date: string | null
+          injury_type: string | null
+          onboarding_completed: boolean | null
+          primary_goals: string[] | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          current_symptoms?: Json | null
+          daily_goal_minutes?: number | null
+          display_name?: string | null
+          id: string
+          injury_date?: string | null
+          injury_type?: string | null
+          onboarding_completed?: boolean | null
+          primary_goals?: string[] | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          current_symptoms?: Json | null
+          daily_goal_minutes?: number | null
+          display_name?: string | null
+          id?: string
+          injury_date?: string | null
+          injury_type?: string | null
+          onboarding_completed?: boolean | null
+          primary_goals?: string[] | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      session_logs: {
+        Row: {
+          created_at: string | null
+          duration_seconds: number | null
+          exercise_id: string | null
+          id: string
+          metrics: Json | null
+          module_type: string
+          mood_after: number | null
+          mood_before: number | null
+          notes: string | null
+          user_id: string
+          xp_earned: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          duration_seconds?: number | null
+          exercise_id?: string | null
+          id?: string
+          metrics?: Json | null
+          module_type: string
+          mood_after?: number | null
+          mood_before?: number | null
+          notes?: string | null
+          user_id: string
+          xp_earned?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          duration_seconds?: number | null
+          exercise_id?: string | null
+          id?: string
+          metrics?: Json | null
+          module_type?: string
+          mood_after?: number | null
+          mood_before?: number | null
+          notes?: string | null
+          user_id?: string
+          xp_earned?: number | null
+        }
+        Relationships: []
+      }
+      user_progress: {
+        Row: {
+          achievements: Json | null
+          created_at: string | null
+          current_level: number | null
+          current_streak: number | null
+          id: string
+          last_active_date: string | null
+          longest_streak: number | null
+          modules_unlocked: Json | null
+          total_xp: number | null
+          updated_at: string | null
+          user_id: string
+          weekly_goal_sessions: number | null
+        }
+        Insert: {
+          achievements?: Json | null
+          created_at?: string | null
+          current_level?: number | null
+          current_streak?: number | null
+          id?: string
+          last_active_date?: string | null
+          longest_streak?: number | null
+          modules_unlocked?: Json | null
+          total_xp?: number | null
+          updated_at?: string | null
+          user_id: string
+          weekly_goal_sessions?: number | null
+        }
+        Update: {
+          achievements?: Json | null
+          created_at?: string | null
+          current_level?: number | null
+          current_streak?: number | null
+          id?: string
+          last_active_date?: string | null
+          longest_streak?: number | null
+          modules_unlocked?: Json | null
+          total_xp?: number | null
+          updated_at?: string | null
+          user_id?: string
+          weekly_goal_sessions?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
