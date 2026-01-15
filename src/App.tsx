@@ -5,9 +5,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import { AudioProvider } from "@/contexts/AudioContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { GlobalAmbientControl } from "@/components/ui/global-ambient-control";
 import { GlobalAudiobookPlayer } from "@/components/ui/global-audiobook-player";
 import Index from "./pages/Index";
+import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import BreathingExercise from "./pages/BreathingExercise";
 import ColdExposure from "./pages/ColdExposure";
@@ -80,14 +83,11 @@ const AppContent = () => {
       <Sonner />
       <BrowserRouter>
         <Routes>
+          {/* Public routes - accessible without auth */}
           <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/breathing" element={<BreathingExercise />} />
-          <Route path="/cold-exposure" element={<ColdExposure />} />
-          {/* All cognitive rehab consolidated into Neurotech Arsenal */}
-          <Route path="/neuro-rehab" element={<INCOG />} />
-          <Route path="/tbi-programs" element={<INCOG />} />
-          <Route path="/incog" element={<INCOG />} />
+          <Route path="/auth" element={<Auth />} />
+          
+          {/* Book content - accessible without auth (guest friendly) */}
           <Route path="/dedication" element={<Dedication />} />
           <Route path="/prologue" element={<Prologue />} />
           <Route path="/introduction" element={<Introduction />} />
@@ -112,12 +112,61 @@ const AppContent = () => {
           <Route path="/chapter-19" element={<Chapter19 />} />
           <Route path="/chapter-20" element={<Chapter20 />} />
           <Route path="/chapter-21" element={<Chapter21 />} />
-          <Route path="/challenges" element={<ChallengeTracker />} />
-          <Route path="/mind" element={<MindTraining />} />
-          <Route path="/gratitude" element={<GratitudeJourney />} />
-          <Route path="/unwritten" element={<UnwrittenChapters />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/install" element={<Install />} />
+          
+          {/* Protected routes - require auth or guest mode */}
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/breathing" element={
+            <ProtectedRoute>
+              <BreathingExercise />
+            </ProtectedRoute>
+          } />
+          <Route path="/cold-exposure" element={
+            <ProtectedRoute>
+              <ColdExposure />
+            </ProtectedRoute>
+          } />
+          <Route path="/neuro-rehab" element={
+            <ProtectedRoute>
+              <INCOG />
+            </ProtectedRoute>
+          } />
+          <Route path="/tbi-programs" element={
+            <ProtectedRoute>
+              <INCOG />
+            </ProtectedRoute>
+          } />
+          <Route path="/incog" element={
+            <ProtectedRoute>
+              <INCOG />
+            </ProtectedRoute>
+          } />
+          <Route path="/challenges" element={
+            <ProtectedRoute>
+              <ChallengeTracker />
+            </ProtectedRoute>
+          } />
+          <Route path="/mind" element={
+            <ProtectedRoute>
+              <MindTraining />
+            </ProtectedRoute>
+          } />
+          <Route path="/gratitude" element={
+            <ProtectedRoute>
+              <GratitudeJourney />
+            </ProtectedRoute>
+          } />
+          <Route path="/unwritten" element={
+            <ProtectedRoute>
+              <UnwrittenChapters />
+            </ProtectedRoute>
+          } />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
@@ -136,9 +185,11 @@ const AppContent = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <AudioProvider>
-        <AppContent />
-      </AudioProvider>
+      <AuthProvider>
+        <AudioProvider>
+          <AppContent />
+        </AudioProvider>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

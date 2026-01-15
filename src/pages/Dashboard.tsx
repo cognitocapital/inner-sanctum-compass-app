@@ -1,11 +1,15 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Play, BookOpen, Headphones } from "lucide-react";
+import { Play, BookOpen, Headphones, LogOut, User } from "lucide-react";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { ModuleCard } from "@/components/dashboard/ModuleCard";
 import { MODULE_DATA } from "@/components/dashboard/moduleData";
 import { useOpenAudiobook } from "@/hooks/use-audiobook";
+import { useAuth } from "@/contexts/AuthContext";
+import { useProfile } from "@/hooks/use-profile";
+import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
+import { toast } from "sonner";
 
 // Audiobook trigger button component
 const AudiobookButton = () => {
@@ -24,9 +28,23 @@ const AudiobookButton = () => {
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { user, isGuest, signOut } = useAuth();
+  const { profile, isLoading: profileLoading, refetch: refetchProfile } = useProfile();
+  
   const [showIntro, setShowIntro] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [videoStarted, setVideoStarted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Check if onboarding is needed
+  useEffect(() => {
+    if (!profileLoading && user && !isGuest) {
+      if (profile && !profile.onboarding_completed) {
+        setShowOnboarding(true);
+        setShowIntro(false);
+      }
+    }
+  }, [profile, profileLoading, user, isGuest]);
 
   const handleBeginJourney = () => {
     setVideoStarted(true);
@@ -35,7 +53,30 @@ const Dashboard = () => {
 
   const handleVideoEnd = () => {
     setShowIntro(false);
+    // After video, check if onboarding is needed
+    if (user && !isGuest && profile && !profile.onboarding_completed) {
+      setShowOnboarding(true);
+    }
   };
+
+  const handleOnboardingComplete = async () => {
+    setShowOnboarding(false);
+    await refetchProfile();
+    toast.success("Welcome to Yellow Brick Road!", {
+      description: "Your personalized journey awaits."
+    });
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+    toast.success("Signed out successfully");
+  };
+
+  // Show onboarding if needed
+  if (showOnboarding) {
+    return <OnboardingFlow onComplete={handleOnboardingComplete} />;
+  }
 
   // Video Intro Screen
   if (showIntro) {
@@ -109,6 +150,38 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-orange-950 text-white relative overflow-hidden">
+      {/* User menu */}
+      <div className="absolute top-4 right-4 z-20 flex items-center gap-2">
+        {user && !isGuest ? (
+          <>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20">
+              <User className="w-4 h-4 text-orange-400" />
+              <span className="text-sm text-white/80">{profile?.display_name || user.email?.split('@')[0]}</span>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleSignOut}
+              className="text-white/60 hover:text-white hover:bg-white/10"
+            >
+              <LogOut className="w-4 h-4" />
+            </Button>
+          </>
+        ) : isGuest ? (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-white/50">Guest Mode</span>
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="text-orange-400 hover:text-orange-300"
+            >
+              <Link to="/auth">Sign In</Link>
+            </Button>
+          </div>
+        ) : null}
+      </div>
+
       {/* Animated background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Gradient orbs */}
