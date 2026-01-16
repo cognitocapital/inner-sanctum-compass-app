@@ -1,196 +1,176 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { ArrowRight, BookOpen, Flame, ChevronDown } from "lucide-react";
-import { EmberParticles } from "@/components/ui/ember-particles";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
+
+// Chapter titles from manuscript version 6.0
+const chapterTitles: { [key: number]: string } = {
+    1: "Australia Day",
+    2: "Hospital Daze",
+    3: "The Gun to My Head",
+    4: "Finding My Footing",
+    5: "Choose Your Own Adventure",
+    6: "The Roller Coaster",
+    7: "Mind Games",
+    8: "Nourishing the Body",
+    9: "The Business Dilemma",
+    10: "A New Chapter",
+    11: "The Inner Work",
+    12: "Reclaiming Independence",
+    13: "The Power of Gratitude",
+    14: "The Universe's Message",
+    15: "Still Standing",
+    16: "Looking Forward",
+    17: "The Torch Rekindled",
+    18: "Unwritten Chapters",
+    19: "A New Resource",
+    20: "The Next Page",
+};
 
 const Index = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-orange-950 text-white relative overflow-hidden">
-      {/* Ember particles */}
-      <EmberParticles count={25} />
+    const totalChapters = 20;
 
-      {/* Ambient glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-to-b from-orange-500/10 to-transparent rounded-full blur-3xl" />
-      </div>
+    return (
+        <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
+            {/* Animated background elements inspired by phoenix flames */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                {/* Primary flame particles */}
+                <div key="particle-1" className="absolute top-20 left-10 w-3 h-3 bg-orange-500 rounded-full animate-float opacity-80 shadow-lg shadow-orange-500/50"></div>
+                <div key="particle-2" className="absolute top-40 right-20 w-2 h-2 bg-orange-500 rounded-full animate-float opacity-60 shadow-lg shadow-orange-500/40" style={{ animationDelay: '1s' }}></div>
+                <div key="particle-3" className="absolute bottom-60 left-1/4 w-2.5 h-2.5 bg-orange-500 rounded-full animate-float opacity-70 shadow-lg shadow-orange-500/45" style={{ animationDelay: '2s' }}></div>
+                <div key="particle-4" className="absolute bottom-40 right-1/3 w-2 h-2 bg-orange-500 rounded-full animate-float opacity-50 shadow-lg shadow-orange-500/35" style={{ animationDelay: '3s' }}></div>
+                <div key="particle-5" className="absolute top-1/3 left-[16%] w-1.5 h-1.5 bg-orange-500 rounded-full animate-float opacity-45 shadow-lg shadow-orange-500/30" style={{ animationDelay: '1.5s' }}></div>
+                <div key="particle-6" className="absolute bottom-1/3 right-[16%] w-1 h-1 bg-orange-500 rounded-full animate-float opacity-35 shadow-lg shadow-orange-500/25" style={{ animationDelay: '2.5s' }}></div>
+                <div key="particle-7" className="absolute top-2/3 right-[20%] w-2 h-2 bg-orange-500 rounded-full animate-float opacity-55 shadow-lg shadow-orange-500/40" style={{ animationDelay: '0.5s' }}></div>
+                
+                {/* Additional ember particles */}
+                <div key="ember-1" className="absolute top-32 left-[20%] w-1 h-1 bg-yellow-400 rounded-full animate-float opacity-40" style={{ animationDelay: '4s' }}></div>
+                <div key="ember-2" className="absolute top-56 right-1/4 w-1.5 h-1.5 bg-red-400 rounded-full animate-float opacity-35" style={{ animationDelay: '5s' }}></div>
+                <div key="ember-3" className="absolute bottom-72 left-1/3 w-1 h-1 bg-yellow-400 rounded-full animate-float opacity-30" style={{ animationDelay: '6s' }}></div>
+                <div key="ember-4" className="absolute bottom-24 right-[16%] w-1.5 h-1.5 bg-orange-500 rounded-full animate-float opacity-45" style={{ animationDelay: '7s' }}></div>
+                <div key="ember-5" className="absolute top-1/4 right-[12%] w-1 h-1 bg-red-500 rounded-full animate-float opacity-40" style={{ animationDelay: '8s' }}></div>
+                
+                {/* Subtle flame trails */}
+                <div key="trail-1" className="absolute top-16 left-1/2 w-0.5 h-8 bg-gradient-to-t from-orange-500/60 to-transparent animate-float opacity-30" style={{ animationDelay: '3.5s' }}></div>
+                <div key="trail-2" className="absolute bottom-32 right-1/2 w-0.5 h-6 bg-gradient-to-t from-orange-500/50 to-transparent animate-float opacity-25" style={{ animationDelay: '4.5s' }}></div>
+            </div>
+            
+            <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
+                <header className="text-center mb-16">
+                    {/* Phoenix image and title */}
+                    <div className="relative mb-8 group">
+                        <div className="relative mx-auto w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
+                            <div 
+                                className="w-full h-full rounded-full border-4 border-orange-500/40 shadow-2xl hover:scale-110 transition-all duration-700 cursor-pointer"
+                                style={{
+                                    backgroundImage: `url('/lovable-uploads/5d3e9ae0-c18d-4e9a-9d2b-95582494f6bd.png')`,
+                                    backgroundSize: 'cover',
+                                    backgroundPosition: 'center',
+                                    backgroundRepeat: 'no-repeat'
+                                }}
+                            />
+                            {/* Flame particles around phoenix */}
+                            <div key="phoenix-particle-1" className="absolute -top-4 -left-4 w-4 h-4 bg-orange-500 rounded-full animate-float opacity-90"></div>
+                            <div key="phoenix-particle-2" className="absolute -top-6 right-12 w-3 h-3 bg-orange-500 rounded-full animate-float opacity-75" style={{ animationDelay: '0.8s' }}></div>
+                            <div key="phoenix-particle-3" className="absolute top-6 -right-5 w-3.5 h-3.5 bg-orange-500 rounded-full animate-float opacity-85" style={{ animationDelay: '1.2s' }}></div>
+                            <div key="phoenix-particle-4" className="absolute bottom-12 -left-6 w-2.5 h-2.5 bg-orange-500 rounded-full animate-float opacity-65" style={{ animationDelay: '0.3s' }}></div>
+                            <div key="phoenix-particle-5" className="absolute -bottom-5 right-8 w-3 h-3 bg-orange-500 rounded-full animate-float opacity-80" style={{ animationDelay: '1.5s' }}></div>
+                        </div>
+                    </div>
+                    
+                    <h1 className="text-5xl md:text-7xl font-serif font-bold text-white mb-4 drop-shadow-lg">
+                        What a Journey
+                    </h1>
+                    <p className="text-lg md:text-xl text-gray-300 mt-4 max-w-3xl mx-auto leading-relaxed">
+                        An intimate account of recovering from a traumatic brain injury, finding new strength, and embracing life's unwritten chapters.
+                    </p>
+                    <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
+                        <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                            <Link to="/dedication">
+                                Dedication <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        </Button>
+                        <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                            <Link to="/prologue">
+                                Start Reading <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        </Button>
+                        <Button asChild size="lg" className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-300 hover:via-yellow-400 hover:to-yellow-500 text-gray-900 font-bold shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 group border-2 border-yellow-300 relative overflow-hidden">
+                            <Link to="/dashboard">
+                                <span className="flex items-center relative z-10">
+                                    ✨ Yellow Brick Road ✨
+                                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                                </span>
+                                <div className="absolute inset-0 bg-gradient-to-r from-yellow-200/20 to-yellow-400/20 animate-pulse"></div>
+                            </Link>
+                        </Button>
+                        <Button asChild size="lg" className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group border border-green-500">
+                            <Link to="/resources">
+                                Growth Resources <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        </Button>
+                    </div>
+                </header>
 
-      {/* Hero Section - Full Screen */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-4">
-        {/* Phoenix Image with dramatic effects */}
-        <motion.div
-          className="relative mb-10 group"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        >
-          {/* Multi-layer glow */}
-          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-orange-500/40 to-red-600/40 blur-3xl scale-150" />
-          <div className="absolute inset-0 rounded-full bg-gradient-to-t from-yellow-500/20 to-transparent blur-2xl scale-125" />
-          
-          {/* Phoenix image */}
-          <motion.div
-            className="relative w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-2 border-orange-500/50 shadow-2xl"
-            animate={{
-              boxShadow: [
-                '0 0 30px rgba(249, 115, 22, 0.3)',
-                '0 0 60px rgba(249, 115, 22, 0.5)',
-                '0 0 30px rgba(249, 115, 22, 0.3)'
-              ]
-            }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <div
-              className="w-full h-full"
-              style={{
-                backgroundImage: `url('/lovable-uploads/5d3e9ae0-c18d-4e9a-9d2b-95582494f6bd.png')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-            />
-          </motion.div>
-        </motion.div>
+                {/* main content with Table of Contents */}
+                <main>
+                    <Card className="backdrop-blur-sm bg-white/80 border-orange-500/20 shadow-2xl">
+                        <CardHeader className="bg-orange-500/10 rounded-t-lg">
+                            <CardTitle className="text-3xl font-serif text-center text-gray-900">Table of Contents</CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-8">
+                            {/* Pre-chapter sections */}
+                            <div className="mb-8">
+                                <h3 className="text-xl font-semibold text-gray-700 mb-4">Introduction</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <Button asChild variant="outline" className="h-16 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20">
+                                        <Link to="/dedication" className="flex flex-col items-center justify-center h-full w-full">
+                                            <span className="text-sm text-gray-600">Dedication</span>
+                                        </Link>
+                                    </Button>
+                                    <Button asChild variant="outline" className="h-16 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20">
+                                        <Link to="/prologue" className="flex flex-col items-center justify-center h-full w-full">
+                                            <span className="text-sm text-gray-600">Prologue</span>
+                                        </Link>
+                                    </Button>
+                                    <Button asChild variant="outline" className="h-16 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20">
+                                        <Link to="/introduction" className="flex flex-col items-center justify-center h-full w-full">
+                                            <span className="text-sm text-gray-600">Introduction</span>
+                                        </Link>
+                                    </Button>
+                                </div>
+                            </div>
+                            
+                            {/* Chapters */}
+                            <div>
+                                <h3 className="text-xl font-semibold text-gray-700 mb-4">Chapters</h3>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                    {Array.from({ length: totalChapters }, (_, i) => i + 1).map((chapterNum) => (
+                                        <Button 
+                                            key={chapterNum} 
+                                            asChild
+                                            variant="outline" 
+                                            className="h-24 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20"
+                                        >
+                                            <Link to={`/chapter-${chapterNum}`} className="flex flex-col items-center justify-center h-full w-full px-2">
+                                                <span className="text-xs text-gray-500">Chapter {chapterNum}</span>
+                                                <span className="text-sm font-semibold text-orange-600 text-center leading-tight">{chapterTitles[chapterNum]}</span>
+                                            </Link>
+                                        </Button>
+                                    ))}
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </main>
 
-        {/* Headline */}
-        <motion.h1
-          className="text-6xl md:text-8xl lg:text-9xl font-serif font-bold text-center mb-6"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          <span className="text-flame-gradient">Rise Again</span>
-        </motion.h1>
-
-        {/* Subheadline */}
-        <motion.p
-          className="text-xl md:text-2xl text-white/60 text-center max-w-xl mb-12 font-light"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          A 20-week guided transformation
-        </motion.p>
-
-        {/* Single Primary CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.7 }}
-        >
-          <Button
-            asChild
-            size="lg"
-            className="relative bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white text-lg font-semibold px-10 py-7 rounded-full shadow-2xl shadow-orange-500/30 group overflow-hidden"
-          >
-            <Link to="/dashboard">
-              {/* Pulsing border effect */}
-              <motion.span
-                className="absolute inset-0 rounded-full border-2 border-orange-400"
-                animate={{
-                  scale: [1, 1.1, 1],
-                  opacity: [0.5, 0, 0.5]
-                }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <Flame className="mr-2 h-5 w-5" />
-              Begin The Protocol
-              <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </Button>
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/40"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-        >
-          <span className="text-sm mb-2">Discover more</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          >
-            <ChevronDown className="w-5 h-5" />
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Story Section - Scroll Reveal */}
-      <section className="relative py-24 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.p
-            className="text-2xl md:text-3xl text-white/80 font-light leading-relaxed mb-12"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.8 }}
-          >
-            Born from trauma. Backed by science. Built for{' '}
-            <span className="text-orange-400 font-medium">you</span>.
-          </motion.p>
-
-          {/* Three pillars */}
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { number: '20', label: 'Weeks of Transformation', sublabel: 'Structured protocol' },
-              { number: '∞', label: 'Possibilities Await', sublabel: 'Your potential is limitless' },
-              { number: '1', label: 'Your Story', sublabel: 'Uniquely yours' }
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                className="p-8 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.15 }}
-              >
-                <div className="text-4xl md:text-5xl font-bold text-orange-400 mb-2">{item.number}</div>
-                <div className="text-white font-medium mb-1">{item.label}</div>
-                <div className="text-white/50 text-sm">{item.sublabel}</div>
-              </motion.div>
-            ))}
-          </div>
+                {/* footer */}
+                <footer className="text-center mt-16 text-sm text-gray-400">
+                    <p>© 2024 Michael Heron. All rights reserved.</p>
+                </footer>
+            </div>
         </div>
-      </section>
-
-      {/* Manuscript Link - Subtle Secondary Action */}
-      <section className="relative py-24 px-4 border-t border-white/10">
-        <div className="max-w-3xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <BookOpen className="w-10 h-10 text-orange-400/60 mx-auto mb-6" />
-            <h3 className="text-2xl font-serif text-white/80 mb-4">
-              Read the Manuscript
-            </h3>
-            <p className="text-white/50 mb-8 max-w-lg mx-auto">
-              An intimate account of recovering from a traumatic brain injury — the story that became this protocol.
-            </p>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="border-white/20 text-white/70 hover:text-white hover:bg-white/10"
-            >
-              <Link to="/prologue">
-                Start Reading
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="text-center py-12 text-sm text-white/30 border-t border-white/5">
-        <p>© 2024 Michael Heron. All rights reserved.</p>
-      </footer>
-    </div>
-  );
+    );
 };
 
 export default Index;
