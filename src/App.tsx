@@ -15,6 +15,7 @@ import Dashboard from "./pages/Dashboard";
 import BreathingExercise from "./pages/BreathingExercise";
 import ColdExposure from "./pages/ColdExposure";
 import Dedication from "./pages/Dedication";
+import Disclaimer from "./pages/Disclaimer";
 import Prologue from "./pages/Prologue";
 import Introduction from "./pages/Introduction";
 import Chapter1 from "./pages/Chapter1";
@@ -89,6 +90,7 @@ const AppContent = () => {
           
           {/* Book content - accessible without auth (guest friendly) */}
           <Route path="/dedication" element={<Dedication />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
           <Route path="/prologue" element={<Prologue />} />
           <Route path="/introduction" element={<Introduction />} />
           <Route path="/chapter-1" element={<Chapter1 />} />
