@@ -184,7 +184,7 @@ const MindTraining = () => {
       progress: {
         totalSessions: moduleProgress.totalSessions,
         totalMinutes: moduleProgress.totalMinutes,
-        totalXP: moduleProgress.totalXP,
+        totalXp: moduleProgress.totalXp,
       },
       userProgress: userProgress ? {
         level: userProgress.current_level,
