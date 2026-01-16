@@ -8,7 +8,7 @@ import { useProfile } from "@/hooks/use-profile";
 import { useDailyCheckin } from "@/hooks/use-daily-checkin";
 import { useProtocolProgress } from "@/hooks/use-protocol-progress";
 import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
-import { JourneyRoad } from "@/components/protocol/JourneyRoad";
+
 import { WeeklyChapter } from "@/components/protocol/WeeklyChapter";
 import { DailyPractice } from "@/components/protocol/DailyPractice";
 import { ReflectionJournal } from "@/components/protocol/ReflectionJournal";
@@ -39,9 +39,6 @@ const Dashboard = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showCheckIn, setShowCheckIn] = useState(false);
 
-  const completedWeeks = allProgress
-    .filter(p => p.chapter_completed && p.practice_completed && p.reflection_completed)
-    .map(p => p.week_number);
 
   // Show check-in modal if user hasn't checked in today
   useEffect(() => {
@@ -139,10 +136,6 @@ const Dashboard = () => {
           <p className="text-white/60">{weekData?.theme}</p>
         </motion.div>
 
-        {/* Journey Road */}
-        <div className="mb-8">
-          <JourneyRoad currentWeek={currentWeek} completedWeeks={completedWeeks} />
-        </div>
 
         {/* Main Content */}
         {isLoading ? (
