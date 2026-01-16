@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -88,7 +88,11 @@ const initialCards: FlashCard[] = [
   },
 ];
 
-const SpacedRepetition = () => {
+interface SpacedRepetitionProps {
+  onComplete?: (duration: number, score: number) => void;
+}
+
+const SpacedRepetition = ({ onComplete }: SpacedRepetitionProps) => {
   const [cards, setCards] = useState<FlashCard[]>(() => {
     const saved = localStorage.getItem('phoenix-spaced-repetition');
     return saved ? JSON.parse(saved) : initialCards;
@@ -97,6 +101,7 @@ const SpacedRepetition = () => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [sessionStats, setSessionStats] = useState({ correct: 0, incorrect: 0 });
   const [isSessionComplete, setIsSessionComplete] = useState(false);
+  const startTimeRef = useRef<number>(Date.now());
 
   // Get cards due for review
   const dueCards = cards.filter(card => {
@@ -141,6 +146,13 @@ const SpacedRepetition = () => {
 
     if (currentCardIndex + 1 >= dueCards.length) {
       setIsSessionComplete(true);
+      const duration = Math.round((Date.now() - startTimeRef.current) / 1000);
+      const finalStats = {
+        correct: sessionStats.correct + (correct ? 1 : 0),
+        incorrect: sessionStats.incorrect + (correct ? 0 : 1),
+      };
+      const accuracy = Math.round((finalStats.correct / (finalStats.correct + finalStats.incorrect)) * 100);
+      onComplete?.(duration, accuracy);
     } else {
       setCurrentCardIndex(prev => prev + 1);
       setShowAnswer(false);
@@ -148,6 +160,7 @@ const SpacedRepetition = () => {
   };
 
   const resetSession = () => {
+    startTimeRef.current = Date.now();
     setCurrentCardIndex(0);
     setShowAnswer(false);
     setSessionStats({ correct: 0, incorrect: 0 });

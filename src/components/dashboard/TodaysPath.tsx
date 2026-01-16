@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowRight, Sparkles, Wind, Brain, Heart, Snowflake, Zap, RefreshCw, Lightbulb } from "lucide-react";
+import { ArrowRight, Sparkles, Wind, Brain, Heart, Snowflake, Zap, RefreshCw, Lightbulb, TrendingUp, Clock, Trophy } from "lucide-react";
 import { usePhoenixGuide } from "@/hooks/use-phoenix-guide";
 import { useProfile } from "@/hooks/use-profile";
+import { useOverallProgress } from "@/hooks/use-module-progress";
 
 const MODULE_ICONS: Record<string, React.ReactNode> = {
   breathing: <Wind className="w-5 h-5" />,
@@ -34,6 +35,7 @@ const MODULE_GRADIENTS: Record<string, string> = {
 export const TodaysPath = () => {
   const { profile } = useProfile();
   const { recommendation, isLoading, refresh } = usePhoenixGuide();
+  const { stats, isLoading: statsLoading } = useOverallProgress();
 
   if (isLoading) {
     return (
@@ -65,6 +67,40 @@ export const TodaysPath = () => {
 
   return (
     <div className="mb-10 space-y-4">
+      {/* Weekly Stats Bar */}
+      {!statsLoading && stats && (
+        <div className="grid grid-cols-4 gap-2">
+          <div className="p-3 rounded-lg bg-gradient-to-br from-purple-500/20 to-purple-600/10 border border-purple-500/20 text-center">
+            <div className="flex items-center justify-center gap-1 text-purple-400 mb-1">
+              <Trophy className="w-4 h-4" />
+            </div>
+            <div className="text-lg font-bold text-white">{stats.thisWeekSessions}</div>
+            <div className="text-xs text-muted-foreground">This Week</div>
+          </div>
+          <div className="p-3 rounded-lg bg-gradient-to-br from-green-500/20 to-green-600/10 border border-green-500/20 text-center">
+            <div className="flex items-center justify-center gap-1 text-green-400 mb-1">
+              <Clock className="w-4 h-4" />
+            </div>
+            <div className="text-lg font-bold text-white">{stats.thisWeekMinutes}</div>
+            <div className="text-xs text-muted-foreground">Minutes</div>
+          </div>
+          <div className="p-3 rounded-lg bg-gradient-to-br from-orange-500/20 to-orange-600/10 border border-orange-500/20 text-center">
+            <div className="flex items-center justify-center gap-1 text-orange-400 mb-1">
+              <TrendingUp className="w-4 h-4" />
+            </div>
+            <div className="text-lg font-bold text-white">{stats.totalXp}</div>
+            <div className="text-xs text-muted-foreground">Total XP</div>
+          </div>
+          <div className="p-3 rounded-lg bg-gradient-to-br from-cyan-500/20 to-cyan-600/10 border border-cyan-500/20 text-center">
+            <div className="flex items-center justify-center gap-1 text-cyan-400 mb-1">
+              <Zap className="w-4 h-4" />
+            </div>
+            <div className="text-lg font-bold text-white">{stats.modulesUsed}</div>
+            <div className="text-xs text-muted-foreground">Modules</div>
+          </div>
+        </div>
+      )}
+
       {/* AI Message Card */}
       <Card className="bg-gradient-to-br from-orange-500/10 to-red-500/10 border-orange-500/20 backdrop-blur-sm overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-500/10 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />

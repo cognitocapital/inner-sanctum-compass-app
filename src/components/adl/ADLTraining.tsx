@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -25,6 +25,10 @@ interface ADLModule {
   category: string;
   steps: ADLStep[];
   completedCount: number;
+}
+
+interface ADLTrainingProps {
+  onComplete?: (duration: number, score: number) => void;
 }
 
 const initialModules: ADLModule[] = [
@@ -94,13 +98,15 @@ const initialModules: ADLModule[] = [
   },
 ];
 
-const ADLTraining = () => {
+const ADLTraining = ({ onComplete }: ADLTrainingProps) => {
   const [modules, setModules] = useState<ADLModule[]>(() => {
     const saved = localStorage.getItem('phoenix-adl-training');
     return saved ? JSON.parse(saved) : initialModules;
   });
   const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const startTimeRef = useRef<number>(Date.now());
+  const [completedModuleId, setCompletedModuleId] = useState<string | null>(null);
 
   const activeModule = modules.find(m => m.id === activeModuleId);
   const currentStep = activeModule?.steps[currentStepIndex];
@@ -108,6 +114,15 @@ const ADLTraining = () => {
   useEffect(() => {
     localStorage.setItem('phoenix-adl-training', JSON.stringify(modules));
   }, [modules]);
+
+  // Check for module completion
+  useEffect(() => {
+    if (activeModule && activeModule.completedCount === activeModule.steps.length && !completedModuleId) {
+      const duration = Math.round((Date.now() - startTimeRef.current) / 1000);
+      setCompletedModuleId(activeModule.id);
+      onComplete?.(duration, 100); // Errorless = always 100%
+    }
+  }, [activeModule, completedModuleId, onComplete]);
 
   const toggleStepComplete = (stepId: string) => {
     setModules(prev => prev.map(module => {
@@ -149,6 +164,14 @@ const ADLTraining = () => {
       return module;
     }));
     setCurrentStepIndex(0);
+    setCompletedModuleId(null);
+  };
+
+  const startModule = (moduleId: string) => {
+    startTimeRef.current = Date.now();
+    setActiveModuleId(moduleId);
+    setCurrentStepIndex(0);
+    setCompletedModuleId(null);
   };
 
   const getModuleProgress = (module: ADLModule) => {
@@ -179,10 +202,7 @@ const ADLTraining = () => {
                 className={`cursor-pointer transition-all hover:border-orange-500/50 ${
                   isComplete ? 'border-green-500/50 bg-green-500/5' : ''
                 }`}
-                onClick={() => {
-                  setActiveModuleId(module.id);
-                  setCurrentStepIndex(0);
-                }}
+                onClick={() => startModule(module.id)}
               >
                 <CardContent className="pt-6">
                   <div className="flex items-start gap-4">

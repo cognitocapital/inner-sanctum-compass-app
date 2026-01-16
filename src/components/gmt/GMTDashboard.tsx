@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Target, CheckCircle2, RefreshCw, Eye, Sparkles } from 'lucide-react';
+import { Target, CheckCircle2, RefreshCw, Eye, Sparkles, Trophy } from 'lucide-react';
 import EvidenceBadge from '@/components/clinical/EvidenceBadge';
 
 interface Goal {
@@ -15,7 +15,11 @@ interface Goal {
   phase: 'plan' | 'do' | 'check' | 'review';
 }
 
-const GMTDashboard = () => {
+interface GMTDashboardProps {
+  onComplete?: (duration: number, score: number) => void;
+}
+
+const GMTDashboard = ({ onComplete }: GMTDashboardProps) => {
   const [goals, setGoals] = useState<Goal[]>([
     {
       id: '1',
@@ -32,6 +36,8 @@ const GMTDashboard = () => {
   ]);
 
   const [activeGoalId, setActiveGoalId] = useState<string | null>('1');
+  const [startTime] = useState<number>(Date.now());
+  const [isComplete, setIsComplete] = useState(false);
 
   const phases = [
     { key: 'plan', label: 'PLAN', icon: Target, description: 'Define your goal and break it into steps' },
@@ -61,15 +67,44 @@ const GMTDashboard = () => {
 
   const advancePhase = () => {
     const phaseOrder: Goal['phase'][] = ['plan', 'do', 'check', 'review'];
-    setGoals(prev => prev.map(goal => {
-      if (goal.id === activeGoalId) {
-        const currentIndex = phaseOrder.indexOf(goal.phase);
-        const nextPhase = phaseOrder[(currentIndex + 1) % phaseOrder.length];
-        return { ...goal, phase: nextPhase };
-      }
-      return goal;
-    }));
+    const currentIndex = phaseOrder.indexOf(activeGoal?.phase || 'plan');
+    
+    if (currentIndex === phaseOrder.length - 1) {
+      // Complete the session
+      const duration = Math.round((Date.now() - startTime) / 1000);
+      const score = Math.round(progress);
+      setIsComplete(true);
+      onComplete?.(duration, score);
+    } else {
+      setGoals(prev => prev.map(goal => {
+        if (goal.id === activeGoalId) {
+          const nextPhase = phaseOrder[(currentIndex + 1) % phaseOrder.length];
+          return { ...goal, phase: nextPhase };
+        }
+        return goal;
+      }));
+    }
   };
+
+  if (isComplete) {
+    return (
+      <div className="space-y-6">
+        <Card className="bg-gradient-to-br from-green-500/20 to-emerald-500/10 border-green-500/30">
+          <CardContent className="pt-8 text-center">
+            <Trophy className="w-16 h-16 text-green-500 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-white mb-2">GMT Session Complete!</h2>
+            <p className="text-muted-foreground mb-4">
+              You completed {completedSteps}/{totalSteps} steps through the Plan-Do-Check-Review cycle.
+            </p>
+            <div className="p-4 bg-green-500/20 rounded-lg inline-block">
+              <div className="text-2xl font-bold text-green-400">{Math.round(progress)}%</div>
+              <div className="text-xs text-muted-foreground">Goal Progress</div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -164,7 +199,7 @@ const GMTDashboard = () => {
 
             {/* Phase Navigation */}
             <Button onClick={advancePhase} className="w-full bg-orange-500 hover:bg-orange-600">
-              Advance to Next Phase
+              {activeGoal.phase === 'review' ? 'Complete Session' : 'Advance to Next Phase'}
             </Button>
           </CardContent>
         </Card>
