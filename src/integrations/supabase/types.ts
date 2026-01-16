@@ -124,6 +124,7 @@ export type Database = {
           avatar_url: string | null
           created_at: string | null
           current_symptoms: Json | null
+          current_week: number | null
           daily_goal_minutes: number | null
           display_name: string | null
           id: string
@@ -131,12 +132,14 @@ export type Database = {
           injury_type: string | null
           onboarding_completed: boolean | null
           primary_goals: string[] | null
+          protocol_started_at: string | null
           updated_at: string | null
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string | null
           current_symptoms?: Json | null
+          current_week?: number | null
           daily_goal_minutes?: number | null
           display_name?: string | null
           id: string
@@ -144,12 +147,14 @@ export type Database = {
           injury_type?: string | null
           onboarding_completed?: boolean | null
           primary_goals?: string[] | null
+          protocol_started_at?: string | null
           updated_at?: string | null
         }
         Update: {
           avatar_url?: string | null
           created_at?: string | null
           current_symptoms?: Json | null
+          current_week?: number | null
           daily_goal_minutes?: number | null
           display_name?: string | null
           id?: string
@@ -157,6 +162,7 @@ export type Database = {
           injury_type?: string | null
           onboarding_completed?: boolean | null
           primary_goals?: string[] | null
+          protocol_started_at?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -245,6 +251,45 @@ export type Database = {
           updated_at?: string | null
           user_id?: string
           weekly_goal_sessions?: number | null
+        }
+        Relationships: []
+      }
+      week_progress: {
+        Row: {
+          chapter_completed: boolean | null
+          completed_at: string | null
+          created_at: string
+          id: string
+          practice_completed: boolean | null
+          reflection_completed: boolean | null
+          reflection_text: string | null
+          updated_at: string
+          user_id: string
+          week_number: number
+        }
+        Insert: {
+          chapter_completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          practice_completed?: boolean | null
+          reflection_completed?: boolean | null
+          reflection_text?: string | null
+          updated_at?: string
+          user_id: string
+          week_number: number
+        }
+        Update: {
+          chapter_completed?: boolean | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          practice_completed?: boolean | null
+          reflection_completed?: boolean | null
+          reflection_text?: string | null
+          updated_at?: string
+          user_id?: string
+          week_number?: number
         }
         Relationships: []
       }
