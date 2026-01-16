@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Play, BookOpen, Headphones, LogOut, User } from "lucide-react";
+import { Play, BookOpen, Headphones, LogOut, User, TrendingUp } from "lucide-react";
 import { PersonalizedHeader } from "@/components/dashboard/PersonalizedHeader";
 import { TodaysPath } from "@/components/dashboard/TodaysPath";
 import { DailyCheckInModal } from "@/components/dashboard/DailyCheckInModal";
@@ -272,6 +272,17 @@ const Dashboard = () => {
               className="text-white/70 hover:text-white hover:bg-white/10"
             >
               <Link to="/challenges">Recovery Challenges</Link>
+            </Button>
+            <div className="w-px h-6 bg-white/20" />
+            <Button 
+              asChild 
+              variant="ghost" 
+              className="text-white/70 hover:text-white hover:bg-white/10"
+            >
+              <Link to="/insights">
+                <TrendingUp className="mr-2 h-4 w-4" />
+                Insights
+              </Link>
             </Button>
             <div className="w-px h-6 bg-white/20" />
             <Button 

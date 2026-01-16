@@ -44,6 +44,42 @@ export type Database = {
         }
         Relationships: []
       }
+      clinical_assessments: {
+        Row: {
+          administered_by: string | null
+          assessment_type: string
+          created_at: string
+          id: string
+          notes: string | null
+          score: number | null
+          severity: string | null
+          subscores: Json | null
+          user_id: string
+        }
+        Insert: {
+          administered_by?: string | null
+          assessment_type: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          score?: number | null
+          severity?: string | null
+          subscores?: Json | null
+          user_id: string
+        }
+        Update: {
+          administered_by?: string | null
+          assessment_type?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          score?: number | null
+          severity?: string | null
+          subscores?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       daily_checkins: {
         Row: {
           check_date: string
