@@ -1,35 +1,8 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
 
-// Chapter titles from manuscript version 6.0
-const chapterTitles: { [key: number]: string } = {
-    1: "Australia Day",
-    2: "Hospital Daze",
-    3: "The Gun to My Head",
-    4: "Finding My Footing",
-    5: "Choose Your Own Adventure",
-    6: "The Roller Coaster",
-    7: "Mind Games",
-    8: "Nourishing the Body",
-    9: "The Business Dilemma",
-    10: "A New Chapter",
-    11: "The Inner Work",
-    12: "Reclaiming Independence",
-    13: "The Power of Gratitude",
-    14: "The Universe's Message",
-    15: "Still Standing",
-    16: "Looking Forward",
-    17: "The Torch Rekindled",
-    18: "Unwritten Chapters",
-    19: "A New Resource",
-    20: "The Next Page",
-};
-
 const Index = () => {
-    const totalChapters = 20;
-
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
             {/* Animated background elements inspired by phoenix flames */}
@@ -55,8 +28,8 @@ const Index = () => {
                 <div key="trail-2" className="absolute bottom-32 right-1/2 w-0.5 h-6 bg-gradient-to-t from-orange-500/50 to-transparent animate-float opacity-25" style={{ animationDelay: '4.5s' }}></div>
             </div>
             
-            <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
-                <header className="text-center mb-16">
+            <div className="container mx-auto px-4 py-12 md:py-20 relative z-10 flex flex-col items-center justify-center min-h-screen">
+                <header className="text-center">
                     {/* Phoenix image and title */}
                     <div className="relative mb-8 group">
                         <div className="relative mx-auto w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
@@ -111,58 +84,6 @@ const Index = () => {
                         </Button>
                     </div>
                 </header>
-
-                {/* main content with Table of Contents */}
-                <main>
-                    <Card className="backdrop-blur-sm bg-white/80 border-orange-500/20 shadow-2xl">
-                        <CardHeader className="bg-orange-500/10 rounded-t-lg">
-                            <CardTitle className="text-3xl font-serif text-center text-gray-900">Table of Contents</CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-8">
-                            {/* Pre-chapter sections */}
-                            <div className="mb-8">
-                                <h3 className="text-xl font-semibold text-gray-700 mb-4">Introduction</h3>
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                    <Button asChild variant="outline" className="h-16 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20">
-                                        <Link to="/dedication" className="flex flex-col items-center justify-center h-full w-full">
-                                            <span className="text-sm text-gray-600">Dedication</span>
-                                        </Link>
-                                    </Button>
-                                    <Button asChild variant="outline" className="h-16 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20">
-                                        <Link to="/prologue" className="flex flex-col items-center justify-center h-full w-full">
-                                            <span className="text-sm text-gray-600">Prologue</span>
-                                        </Link>
-                                    </Button>
-                                    <Button asChild variant="outline" className="h-16 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20">
-                                        <Link to="/introduction" className="flex flex-col items-center justify-center h-full w-full">
-                                            <span className="text-sm text-gray-600">Introduction</span>
-                                        </Link>
-                                    </Button>
-                                </div>
-                            </div>
-                            
-                            {/* Chapters */}
-                            <div>
-                                <h3 className="text-xl font-semibold text-gray-700 mb-4">Chapters</h3>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                                    {Array.from({ length: totalChapters }, (_, i) => i + 1).map((chapterNum) => (
-                                        <Button 
-                                            key={chapterNum} 
-                                            asChild
-                                            variant="outline" 
-                                            className="h-24 flex-col gap-1 transition-all duration-300 hover:border-orange-500 hover:shadow-lg hover:-translate-y-2 cursor-pointer bg-gradient-to-br from-orange-500/10 to-orange-500/20"
-                                        >
-                                            <Link to={`/chapter-${chapterNum}`} className="flex flex-col items-center justify-center h-full w-full px-2">
-                                                <span className="text-xs text-gray-500">Chapter {chapterNum}</span>
-                                                <span className="text-sm font-semibold text-orange-600 text-center leading-tight">{chapterTitles[chapterNum]}</span>
-                                            </Link>
-                                        </Button>
-                                    ))}
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </main>
 
                 {/* footer */}
                 <footer className="text-center mt-16 text-sm text-gray-400">
