@@ -81,7 +81,7 @@ export const HeroWeekCard = ({ weekData, currentWeek, progress, onStartChapter }
               size="lg"
               className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-semibold px-8 shadow-lg shadow-orange-500/30 group"
             >
-              <Link to={weekData.chapterRoute}>
+              <Link to={weekData.chapterPath}>
                 <Headphones className="mr-2 h-5 w-5" />
                 Listen to Chapter
                 <motion.span
