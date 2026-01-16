@@ -44,9 +44,9 @@ import GratitudeJourney from "./pages/GratitudeJourney";
 import UnwrittenChapters from "./pages/UnwrittenChapters";
 import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
-// TBI Programs & NeuroRehab consolidated into unified Neurotech Arsenal (INCOG)
 import INCOG from "./pages/INCOG";
 import Install from "./pages/Install";
+import Insights from "./pages/Insights";
 
 const queryClient = new QueryClient();
 
@@ -164,6 +164,11 @@ const AppContent = () => {
           <Route path="/unwritten" element={
             <ProtectedRoute>
               <UnwrittenChapters />
+            </ProtectedRoute>
+          } />
+          <Route path="/insights" element={
+            <ProtectedRoute>
+              <Insights />
             </ProtectedRoute>
           } />
           
