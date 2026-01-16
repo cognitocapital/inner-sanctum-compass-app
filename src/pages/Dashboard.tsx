@@ -2,12 +2,16 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Play, BookOpen, Headphones, LogOut, User } from "lucide-react";
-import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
+import { PersonalizedHeader } from "@/components/dashboard/PersonalizedHeader";
+import { TodaysPath } from "@/components/dashboard/TodaysPath";
+import { DailyCheckInModal } from "@/components/dashboard/DailyCheckInModal";
 import { ModuleCard } from "@/components/dashboard/ModuleCard";
 import { MODULE_DATA } from "@/components/dashboard/moduleData";
 import { useOpenAudiobook } from "@/hooks/use-audiobook";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/use-profile";
+import { useUserProgress } from "@/hooks/use-user-progress";
+import { useDailyCheckin } from "@/hooks/use-daily-checkin";
 import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
 import { toast } from "sonner";
 
@@ -30,18 +34,33 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { user, isGuest, signOut } = useAuth();
   const { profile, isLoading: profileLoading, refetch: refetchProfile } = useProfile();
+  const { incrementStreak } = useUserProgress();
+  
+  const { hasCheckedInToday, refetch: refetchCheckin } = useDailyCheckin();
   
   const [showIntro, setShowIntro] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showCheckIn, setShowCheckIn] = useState(false);
   const [videoStarted, setVideoStarted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Check if onboarding is needed
+  // Show check-in modal if user hasn't checked in today
+  useEffect(() => {
+    if (!profileLoading && user && !isGuest && profile?.onboarding_completed && !hasCheckedInToday) {
+      const timer = setTimeout(() => setShowCheckIn(true), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [profile, profileLoading, user, isGuest, hasCheckedInToday]);
+
+  // Check if onboarding is needed and update streak
   useEffect(() => {
     if (!profileLoading && user && !isGuest) {
       if (profile && !profile.onboarding_completed) {
         setShowOnboarding(true);
         setShowIntro(false);
+      } else if (profile?.onboarding_completed) {
+        // Update streak on dashboard visit
+        incrementStreak();
       }
     }
   }, [profile, profileLoading, user, isGuest]);
@@ -53,7 +72,6 @@ const Dashboard = () => {
 
   const handleVideoEnd = () => {
     setShowIntro(false);
-    // After video, check if onboarding is needed
     if (user && !isGuest && profile && !profile.onboarding_completed) {
       setShowOnboarding(true);
     }
@@ -73,13 +91,17 @@ const Dashboard = () => {
     toast.success("Signed out successfully");
   };
 
-  // Show onboarding if needed
+  const handleCheckInComplete = () => {
+    setShowCheckIn(false);
+    refetchCheckin();
+  };
+
   if (showOnboarding) {
     return <OnboardingFlow onComplete={handleOnboardingComplete} />;
   }
 
-  // Video Intro Screen
-  if (showIntro) {
+  // Video Intro Screen (only show on first visit or for guests)
+  if (showIntro && (!profile?.onboarding_completed || isGuest)) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden">
         <video
@@ -92,7 +114,6 @@ const Dashboard = () => {
         
         {!videoStarted && (
           <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center z-10 animate-fade-in">
-            {/* Decorative elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
               {[...Array(20)].map((_, i) => (
                 <div
@@ -122,30 +143,30 @@ const Dashboard = () => {
               >
                 <Play className="mr-3 h-6 w-6" />
                 Begin Your Journey
-                </Button>
+              </Button>
                 
-                <div className="flex justify-center gap-6 mt-6">
-                  <button 
-                    onClick={() => setShowIntro(false)}
-                    className="text-white/40 hover:text-white/70 text-sm transition-colors"
-                  >
-                    Skip
-                  </button>
-                  
-                  <span className="text-white/20">|</span>
-                  
-                  <button 
-                    onClick={() => navigate('/')}
-                    className="text-white/40 hover:text-white/70 text-sm transition-colors"
-                  >
-                    Return Home
-                  </button>
-                </div>
+              <div className="flex justify-center gap-6 mt-6">
+                <button 
+                  onClick={() => setShowIntro(false)}
+                  className="text-white/40 hover:text-white/70 text-sm transition-colors"
+                >
+                  Skip
+                </button>
+                
+                <span className="text-white/20">|</span>
+                
+                <button 
+                  onClick={() => navigate('/')}
+                  className="text-white/40 hover:text-white/70 text-sm transition-colors"
+                >
+                  Return Home
+                </button>
               </div>
             </div>
-          )}
-        </div>
-      );
+          </div>
+        )}
+      </div>
+    );
   }
 
   return (
@@ -184,12 +205,10 @@ const Dashboard = () => {
 
       {/* Animated background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Gradient orbs */}
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-red-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
         <div className="absolute top-1/2 left-0 w-64 h-64 bg-yellow-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
         
-        {/* Floating embers */}
         {[...Array(15)].map((_, i) => (
           <div
             key={`ember-${i}`}
@@ -203,7 +222,6 @@ const Dashboard = () => {
           />
         ))}
         
-        {/* Grid pattern overlay */}
         <div 
           className="absolute inset-0 opacity-[0.02]"
           style={{
@@ -215,7 +233,11 @@ const Dashboard = () => {
       </div>
       
       <div className="container mx-auto px-4 py-12 relative z-10">
-        <DashboardHeader />
+        {/* Personalized Header with greeting, level, streak */}
+        <PersonalizedHeader />
+
+        {/* Today's Path - AI Recommendation */}
+        {!isGuest && profile?.onboarding_completed && <TodaysPath />}
 
         {/* Module Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
@@ -261,6 +283,13 @@ const Dashboard = () => {
             </Button>
           </div>
         </div>
+
+        {/* Daily Check-In Modal */}
+        <DailyCheckInModal
+          isOpen={showCheckIn}
+          onClose={() => setShowCheckIn(false)}
+          onComplete={handleCheckInComplete}
+        />
       </div>
     </div>
   );
