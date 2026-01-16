@@ -8,14 +8,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   ArrowLeft, Brain, Target, Music, Repeat, ClipboardList, Sparkles, 
   BookOpen, Zap, Users, Settings, Trophy, Eye, Volume2, MessageSquare,
-  Download, ExternalLink
+  Download, ExternalLink, AlertCircle
 } from "lucide-react";
 import GMTDashboard from "@/components/gmt/GMTDashboard";
 import MusicTherapy from "@/components/therapy/MusicTherapy";
 import ADLTraining from "@/components/adl/ADLTraining";
 import SpacedRepetition from "@/components/memory/SpacedRepetition";
 import ProfessionalAssessments from "@/components/assessments/ProfessionalAssessments";
-
 import SpeechLanguageModule from "@/components/speech/SpeechLanguageModule";
 import DomainExercises from "@/components/tbi/DomainExercises";
 import ExternalProgramLinks from "@/components/tbi/ExternalProgramLinks";
@@ -26,10 +25,16 @@ import { AnimatedDomainWheel } from "@/components/ui/animated-domain-wheel";
 import { NeuralNetworkViz, createBrainNetwork } from "@/components/ui/neural-network-viz";
 import { DomainQuiz, DomainQuizResults } from "@/components/incog/DomainQuiz";
 import { CaregiverView } from "@/components/incog/CaregiverView";
-import { PhoenixLevelBadge, usePhoenixGamification } from "@/components/ui/phoenix-gamification";
+import { GOSEAssessment } from "@/components/clinical/GOSEAssessment";
 import EvidenceBadge from "@/components/clinical/EvidenceBadge";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { useSessionLogger, calculateXP } from "@/hooks/use-session-logger";
+import { useModuleProgress } from "@/hooks/use-module-progress";
+import { useUserProgress } from "@/hooks/use-user-progress";
+import { supabase } from "@/integrations/supabase/client";
+import { Progress } from "@/components/ui/progress";
 
 const modules = [
   { 
@@ -149,6 +154,12 @@ const incogQuests = [
 ];
 
 const INCOG = () => {
+  const { user, isGuest } = useAuth();
+  const { logSession } = useSessionLogger();
+  const { progress: moduleProgress, refetch: refetchModule } = useModuleProgress("incog");
+  const { progress: userProgress, addXp } = useUserProgress();
+  const { toast } = useToast();
+
   const [activeTab, setActiveTab] = useState("modules");
   const [activeModule, setActiveModule] = useState('gmt');
   const [showModuleModal, setShowModuleModal] = useState(false);
@@ -156,12 +167,12 @@ const INCOG = () => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [showCaregiverView, setShowCaregiverView] = useState(false);
   const [domainProgress, setDomainProgress] = useState<Record<string, number>>({
-    attention: 45,
-    memory: 30,
-    executive: 55,
-    communication: 40,
-    social: 25,
-    pta: 60,
+    attention: 0,
+    memory: 0,
+    executive: 0,
+    communication: 0,
+    social: 0,
+    pta: 0,
   });
   const [prioritizedDomains, setPrioritizedDomains] = useState<string[]>([]);
   const [sessionLogs, setSessionLogs] = useState<Array<{
@@ -173,28 +184,104 @@ const INCOG = () => {
     domain: string;
   }>>([]);
   const [voiceEnabled, setVoiceEnabled] = useState(false);
-  
-  const { state: gamification, addXp, unlockAchievement } = usePhoenixGamification();
-  const { toast } = useToast();
+  const [isLoadingData, setIsLoadingData] = useState(true);
+
   const brainNetwork = createBrainNetwork();
 
-  // Load saved progress
+  // Load data from database
   useEffect(() => {
-    const saved = localStorage.getItem('incogDomainProgress');
-    const savedLogs = localStorage.getItem('incogSessionLogs');
-    const savedPriorities = localStorage.getItem('incogPrioritizedDomains');
-    
-    if (saved) setDomainProgress(JSON.parse(saved));
-    if (savedLogs) setSessionLogs(JSON.parse(savedLogs));
-    if (savedPriorities) setPrioritizedDomains(JSON.parse(savedPriorities));
-  }, []);
+    const fetchData = async () => {
+      if (!user || isGuest) {
+        // Try to load from localStorage for guests
+        const saved = localStorage.getItem('incogDomainProgress');
+        const savedPriorities = localStorage.getItem('incogPrioritizedDomains');
+        if (saved) setDomainProgress(JSON.parse(saved));
+        if (savedPriorities) setPrioritizedDomains(JSON.parse(savedPriorities));
+        setIsLoadingData(false);
+        return;
+      }
 
-  // Save progress
+      try {
+        // Fetch session logs to calculate domain progress
+        const { data: sessions, error } = await supabase
+          .from("session_logs")
+          .select("*")
+          .eq("user_id", user.id)
+          .eq("module_type", "incog")
+          .order("created_at", { ascending: false })
+          .limit(100);
+
+        if (error) throw error;
+
+        if (sessions) {
+          // Calculate domain progress from sessions
+          const domainCounts: Record<string, number> = {
+            attention: 0, memory: 0, executive: 0,
+            communication: 0, social: 0, pta: 0,
+          };
+
+          const logs = sessions.map(s => {
+            const domain = (s.metrics as Record<string, string>)?.domain || 'attention';
+            domainCounts[domain] = (domainCounts[domain] || 0) + 1;
+            
+            return {
+              id: s.id,
+              date: new Date(s.created_at).toLocaleDateString(),
+              module: s.exercise_id || 'exercise',
+              duration: Math.floor(s.duration_seconds / 60),
+              score: (s.metrics as Record<string, number>)?.score,
+              domain,
+            };
+          });
+
+          setSessionLogs(logs);
+
+          // Calculate progress percentages (max 100%)
+          const maxSessions = 20;
+          const progress = Object.keys(domainCounts).reduce((acc, domain) => ({
+            ...acc,
+            [domain]: Math.min(100, (domainCounts[domain] / maxSessions) * 100),
+          }), {} as Record<string, number>);
+          setDomainProgress(progress);
+        }
+
+        // Fetch profile for prioritized domains
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("primary_goals")
+          .eq("id", user.id)
+          .single();
+
+        if (profile?.primary_goals) {
+          const goals = profile.primary_goals as string[];
+          // Map goals to domains
+          const domainMap: Record<string, string> = {
+            'memory': 'memory',
+            'attention': 'attention',
+            'executive': 'executive',
+            'communication': 'communication',
+            'social': 'social',
+          };
+          const mapped = goals.map(g => domainMap[g.toLowerCase()] || g).filter(Boolean);
+          if (mapped.length > 0) setPrioritizedDomains(mapped);
+        }
+      } catch (err) {
+        console.error("Error fetching INCOG data:", err);
+      } finally {
+        setIsLoadingData(false);
+      }
+    };
+
+    fetchData();
+  }, [user, isGuest]);
+
+  // Save domain progress for guests
   useEffect(() => {
-    localStorage.setItem('incogDomainProgress', JSON.stringify(domainProgress));
-    localStorage.setItem('incogSessionLogs', JSON.stringify(sessionLogs));
-    localStorage.setItem('incogPrioritizedDomains', JSON.stringify(prioritizedDomains));
-  }, [domainProgress, sessionLogs, prioritizedDomains]);
+    if (isGuest) {
+      localStorage.setItem('incogDomainProgress', JSON.stringify(domainProgress));
+      localStorage.setItem('incogPrioritizedDomains', JSON.stringify(prioritizedDomains));
+    }
+  }, [domainProgress, prioritizedDomains, isGuest]);
 
   const speak = (text: string) => {
     if (voiceEnabled && 'speechSynthesis' in window) {
@@ -204,23 +291,29 @@ const INCOG = () => {
     }
   };
 
-  const handleQuizComplete = (results: DomainQuizResults) => {
+  const handleQuizComplete = async (results: DomainQuizResults) => {
     setShowQuiz(false);
     setPrioritizedDomains(results.prioritizedDomains);
     
-    // Award XP for completing assessment
-    addXp(50, 'Completed INCOG Domain Assessment');
-    unlockAchievement({
-      id: 'incog_quiz',
-      name: 'Domain Explorer',
-      description: 'Complete the INCOG 2.0 domain assessment',
-      icon: 'target',
-      xpReward: 50,
-      category: 'incog',
-    });
+    if (user && !isGuest) {
+      // Save prioritized domains to profile
+      await supabase
+        .from("profiles")
+        .update({ primary_goals: results.prioritizedDomains })
+        .eq("id", user.id);
+
+      // Log session
+      await logSession({
+        moduleType: "incog",
+        exerciseId: "domain_quiz",
+        durationSeconds: 180,
+        xpEarned: 50,
+        metrics: { domains: results.prioritizedDomains },
+      });
+    }
 
     toast({
-      title: "Assessment Complete!",
+      title: "Assessment Complete! 🎯",
       description: `Focus areas: ${results.prioritizedDomains.map(d => 
         d.charAt(0).toUpperCase() + d.slice(1)
       ).join(', ')}`,
@@ -229,11 +322,23 @@ const INCOG = () => {
     speak(`Your priority domains are: ${results.prioritizedDomains.join(', ')}`);
   };
 
-  const handleModuleComplete = (moduleId: string, duration: number, score?: number) => {
+  const handleModuleComplete = async (moduleId: string, duration: number, score?: number) => {
     const module = modules.find(m => m.id === moduleId);
     if (!module) return;
 
-    // Log session
+    const xpEarned = calculateXP("incog", duration * 60, { score });
+
+    if (user && !isGuest) {
+      await logSession({
+        moduleType: "incog",
+        exerciseId: moduleId,
+        durationSeconds: duration * 60,
+        xpEarned: xpEarned || module.xpReward,
+        metrics: { score, domain: module.domain },
+      });
+    }
+
+    // Log session locally
     const newLog = {
       id: Date.now().toString(),
       date: new Date().toLocaleDateString(),
@@ -250,8 +355,10 @@ const INCOG = () => {
       [module.domain]: Math.min(100, (prev[module.domain] || 0) + 5),
     }));
 
-    // Award XP
-    addXp(module.xpReward, `Completed ${module.title}`);
+    toast({
+      title: `${module.title} Complete! 🧠`,
+      description: `+${xpEarned || module.xpReward} XP earned`,
+    });
   };
 
   // Create domain segments for wheel
@@ -296,17 +403,45 @@ const INCOG = () => {
 
   const [activeDomain, setActiveDomain] = useState<string | null>(null);
 
+  const level = userProgress?.current_level || 1;
+  const xp = userProgress?.total_xp || 0;
+  const xpToNextLevel = level * 100;
+
   const renderModuleContent = (moduleId: string) => {
     switch (moduleId) {
-      case 'nback': return <DomainExercises domain="attention" onComplete={(score, xp) => handleModuleComplete('nback', 10, score)} />;
-      case 'gmt': return <GMTDashboard />;
-      case 'speech': return <SpeechLanguageModule onComplete={(type, score) => handleModuleComplete('speech', 10, score)} />;
-      case 'music': return <MusicTherapy />;
-      case 'memory': return <SpacedRepetition />;
-      case 'adl': return <ADLTraining />;
-      case 'assessments': return <ProfessionalAssessments />;
-      default: return null;
+      case 'nback': 
+        return (
+          <DomainExercises 
+            domain="attention" 
+            onComplete={(score, xp) => handleModuleComplete('nback', 10, score)} 
+          />
+        );
+      case 'gmt': 
+        return <GMTDashboard />;
+      case 'speech': 
+        return (
+          <SpeechLanguageModule 
+            onComplete={(type, score) => handleModuleComplete('speech', 10, score)} 
+          />
+        );
+      case 'music': 
+        return <MusicTherapy />;
+      case 'memory': 
+        return <SpacedRepetition />;
+      case 'adl': 
+        return <ADLTraining />;
+      case 'assessments': 
+        return <ProfessionalAssessments />;
+      default: 
+        return null;
     }
+  };
+
+  // Placeholder to fix type errors - remove unused lines
+  const _unused = (moduleId: string, duration: number, score?: number) => {
+    return (
+      handleModuleComplete(moduleId, duration, score)
+    );
   };
 
   return (
@@ -336,13 +471,10 @@ const INCOG = () => {
               >
                 <Volume2 className="w-4 h-4 text-blue-300" />
               </Button>
-              <PhoenixLevelBadge 
-                level={gamification.level} 
-                xp={gamification.xp} 
-                xpToNextLevel={gamification.xpToNextLevel}
-                size="sm"
-                showProgress={false}
-              />
+              {/* Level Badge */}
+              <div className="flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-amber-500/20 to-orange-500/20 rounded-full">
+                <span className="text-xs font-bold text-amber-400">Lv.{level}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -372,6 +504,18 @@ const INCOG = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
+            {/* Auth Warning for Guests */}
+            {isGuest && (
+              <Card className="mx-4 mt-4 bg-amber-500/10 border-amber-500/30">
+                <CardContent className="p-3 flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 text-amber-400 shrink-0" />
+                  <p className="text-xs text-amber-200">
+                    Guest mode. <Link to="/auth" className="underline font-medium">Sign in</Link> to save progress.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
             {/* Hero Section */}
             <div className="px-4 py-4">
               <div className="text-center mb-4">
@@ -390,6 +534,21 @@ const INCOG = () => {
                   />
                 </div>
               </div>
+
+              {/* Progress Summary */}
+              <Card className="bg-slate-900/60 border-blue-500/20 mb-4">
+                <CardContent className="p-3">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs text-blue-300">Overall Progress</span>
+                    <span className="text-xs text-blue-200">{moduleProgress.totalSessions} sessions</span>
+                  </div>
+                  <Progress value={(xp % xpToNextLevel) / xpToNextLevel * 100} className="h-2" />
+                  <div className="flex justify-between mt-1">
+                    <span className="text-[10px] text-gray-400">{xp} XP</span>
+                    <span className="text-[10px] text-gray-400">{xpToNextLevel} to Lv.{level + 1}</span>
+                  </div>
+                </CardContent>
+              </Card>
 
               {/* Personalize Button */}
               {prioritizedDomains.length === 0 && (
@@ -579,7 +738,6 @@ const INCOG = () => {
                     domain={activeDomain as any}
                     onComplete={(score, xp) => {
                       handleModuleComplete('exercises', 10, score);
-                      addXp(xp, `Completed ${activeDomain} exercise`);
                     }}
                   />
                 ) : (
@@ -590,7 +748,6 @@ const INCOG = () => {
                         domain={domain}
                         onComplete={(score, xp) => {
                           handleModuleComplete('exercises', 10, score);
-                          addXp(xp, `Completed ${domain} exercise`);
                         }}
                       />
                     ))}
@@ -603,10 +760,39 @@ const INCOG = () => {
               </TabsContent>
 
               <TabsContent value="progress" className="space-y-4">
+                {/* GOSE Assessment */}
+                <Card className="bg-slate-900/60 border-cyan-500/20">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm flex items-center gap-2 text-white">
+                      <Target className="w-4 h-4 text-cyan-400" />
+                      Clinical Outcome Tracking
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <GOSEAssessment onComplete={() => {}} onCancel={() => {}}/>
+                  </CardContent>
+                </Card>
+
                 <CaregiverView
                   domainProgress={domainProgress}
                   sessionLogs={sessionLogs}
-                  onExport={() => toast({ title: "Report Exported", description: "Clinical report downloaded" })}
+                  onExport={() => {
+                    const report = {
+                      generatedAt: new Date().toISOString(),
+                      domainProgress,
+                      sessionLogs: sessionLogs.slice(0, 20),
+                      totalSessions: moduleProgress.totalSessions,
+                      totalMinutes: moduleProgress.totalMinutes,
+                    };
+                    const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `INCOG_Clinical_Report_${new Date().toISOString().split('T')[0]}.json`;
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    toast({ title: "Report Exported", description: "Clinical report downloaded" });
+                  }}
                 />
 
                 {/* Quests Section */}
