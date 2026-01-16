@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Brain, Activity, TrendingUp, FileText, Download, ExternalLink, MapPin, Stethoscope, Sparkles, BookOpen } from "lucide-react";
+import { ArrowLeft, Brain, Activity, TrendingUp, FileText, Download, ExternalLink, MapPin, Stethoscope, Sparkles, BookOpen, AlertCircle } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +13,12 @@ import { ClinicalAssessments } from "@/components/mind/ClinicalAssessments";
 import { NBackGame } from "@/components/mind/NBackGame";
 import { NormativeTrendGraph, NORMATIVE_BENCHMARKS } from "@/components/mind/NormativeTrendGraph";
 import { MindGamification, defaultAchievements } from "@/components/mind/MindGamification";
+import { GOSEAssessment } from "@/components/clinical/GOSEAssessment";
+import { useAuth } from "@/contexts/AuthContext";
+import { useSessionLogger, calculateXP } from "@/hooks/use-session-logger";
+import { useModuleProgress } from "@/hooks/use-module-progress";
+import { useUserProgress } from "@/hooks/use-user-progress";
+import { supabase } from "@/integrations/supabase/client";
 
 interface AssessmentResult {
   phq9: number;
@@ -24,103 +30,194 @@ interface AssessmentResult {
 
 const MindTraining = () => {
   const { toast } = useToast();
+  const { user, isGuest } = useAuth();
+  const { logSession } = useSessionLogger();
+  const { progress: moduleProgress, isLoading: moduleLoading, refetch: refetchModule } = useModuleProgress("mind");
+  const { progress: userProgress, addXp, incrementStreak } = useUserProgress();
+  
   const [activeTab, setActiveTab] = useState("overview");
-  const [assessmentResults, setAssessmentResults] = useState<AssessmentResult[]>(() => {
-    const saved = localStorage.getItem('mindAssessmentResults');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [gameScores, setGameScores] = useState<{ score: number; accuracy: number; date: string }[]>(() => {
-    const saved = localStorage.getItem('mindGameScores');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [streak, setStreak] = useState(() => {
-    const saved = localStorage.getItem('mindStreak');
-    return saved ? parseInt(saved) : 0;
-  });
-  const [totalXP, setTotalXP] = useState(() => {
-    const saved = localStorage.getItem('mindXP');
-    return saved ? parseInt(saved) : 0;
-  });
-  const [achievements, setAchievements] = useState(() => {
-    const saved = localStorage.getItem('mindAchievements');
-    return saved ? JSON.parse(saved) : defaultAchievements;
-  });
+  const [assessmentResults, setAssessmentResults] = useState<AssessmentResult[]>([]);
+  const [gameScores, setGameScores] = useState<{ score: number; accuracy: number; date: string }[]>([]);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+
+  // Fetch assessment history from database
+  useEffect(() => {
+    const fetchAssessments = async () => {
+      if (!user || isGuest) {
+        setIsLoadingData(false);
+        return;
+      }
+      
+      try {
+        const { data: assessments, error } = await supabase
+          .from("clinical_assessments")
+          .select("*")
+          .eq("user_id", user.id)
+          .eq("assessment_type", "combined_battery")
+          .order("completed_at", { ascending: false })
+          .limit(20);
+
+        if (error) throw error;
+
+        if (assessments) {
+          const results = assessments.map(a => ({
+            phq9: (a.subscores as Record<string, number>)?.phq9 || 0,
+            gad7: (a.subscores as Record<string, number>)?.gad7 || 0,
+            moca: a.score || 0,
+            abs: (a.subscores as Record<string, number>)?.abs || 0,
+            timestamp: a.created_at || new Date().toISOString(),
+          }));
+          setAssessmentResults(results);
+        }
+
+        // Fetch game scores from session logs
+        const { data: sessions, error: sessionsError } = await supabase
+          .from("session_logs")
+          .select("*")
+          .eq("user_id", user.id)
+          .eq("module_type", "mind")
+          .eq("exercise_id", "nback")
+          .order("created_at", { ascending: false })
+          .limit(20);
+
+        if (sessionsError) throw sessionsError;
+
+        if (sessions) {
+          const scores = sessions.map(s => ({
+            score: (s.metrics as Record<string, number>)?.score || 0,
+            accuracy: (s.metrics as Record<string, number>)?.accuracy || 0,
+            date: new Date(s.created_at).toISOString().split('T')[0],
+          }));
+          setGameScores(scores);
+        }
+      } catch (err) {
+        console.error("Error fetching mind data:", err);
+      } finally {
+        setIsLoadingData(false);
+      }
+    };
+
+    fetchAssessments();
+  }, [user, isGuest]);
 
   const activeRegions = assessmentResults.length > 0 
     ? ['attention', 'memory', 'executive', 'emotional'] 
     : ['attention'];
 
-  useEffect(() => {
-    localStorage.setItem('mindAssessmentResults', JSON.stringify(assessmentResults));
-    localStorage.setItem('mindGameScores', JSON.stringify(gameScores));
-    localStorage.setItem('mindStreak', streak.toString());
-    localStorage.setItem('mindXP', totalXP.toString());
-    localStorage.setItem('mindAchievements', JSON.stringify(achievements));
-  }, [assessmentResults, gameScores, streak, totalXP, achievements]);
-
-  const handleAssessmentComplete = (results: AssessmentResult) => {
-    setAssessmentResults(prev => [...prev, results]);
-    setTotalXP(prev => prev + 50);
-    setStreak(prev => prev + 1);
+  const handleAssessmentComplete = async (results: AssessmentResult) => {
+    const startTime = Date.now();
     
-    // Check achievements
-    const newAchievements = [...achievements];
-    const firstAssessment = newAchievements.find(a => a.id === 'first_assessment');
-    if (firstAssessment && !firstAssessment.earned) {
-      firstAssessment.earned = true;
-      firstAssessment.earnedDate = new Date().toISOString();
-    }
-    const allAssessments = newAchievements.find(a => a.id === 'all_assessments');
-    if (allAssessments && !allAssessments.earned) {
-      allAssessments.earned = true;
-      allAssessments.earnedDate = new Date().toISOString();
-    }
-    setAchievements(newAchievements);
+    if (user && !isGuest) {
+      try {
+        // Store in clinical_assessments table
+        const { error } = await supabase.from("clinical_assessments").insert({
+          user_id: user.id,
+          assessment_type: "combined_battery",
+          score: results.moca,
+          subscores: { phq9: results.phq9, gad7: results.gad7, abs: results.abs },
+          notes: `PHQ-9: ${results.phq9}, GAD-7: ${results.gad7}, MoCA: ${results.moca}, ABS: ${results.abs}`,
+        });
 
-    toast({
-      title: "Assessment Complete",
-      description: `PHQ-9: ${results.phq9} | GAD-7: ${results.gad7} | MoCA: ${results.moca} | ABS: ${results.abs}`,
-    });
+        if (error) throw error;
+
+        // Log session
+        await logSession({
+          moduleType: "clinical",
+          exerciseId: "assessment_battery",
+          durationSeconds: Math.floor((Date.now() - startTime) / 1000) + 600, // Approximate 10 min
+          xpEarned: 50,
+          metrics: results,
+        });
+
+        // Update local state
+        setAssessmentResults(prev => [results, ...prev]);
+        
+        toast({
+          title: "Assessment Saved! 🧠",
+          description: `PHQ-9: ${results.phq9} | GAD-7: ${results.gad7} | MoCA: ${results.moca} | ABS: ${results.abs}`,
+        });
+      } catch (err) {
+        console.error("Error saving assessment:", err);
+        toast({
+          title: "Error Saving",
+          description: "Assessment recorded locally. Sign in to sync.",
+          variant: "destructive",
+        });
+      }
+    } else {
+      setAssessmentResults(prev => [results, ...prev]);
+      toast({
+        title: "Assessment Complete",
+        description: "Sign in to save your progress permanently.",
+      });
+    }
   };
 
-  const handleGameComplete = (score: number, accuracy: number) => {
+  const handleGameComplete = async (score: number, accuracy: number) => {
+    const xpEarned = calculateXP("mind", 300, { score, accuracy });
+    
+    if (user && !isGuest) {
+      await logSession({
+        moduleType: "mind",
+        exerciseId: "nback",
+        durationSeconds: 300, // ~5 min game
+        xpEarned,
+        metrics: { score, accuracy },
+      });
+    }
+
     const newScore = { score, accuracy, date: new Date().toISOString().split('T')[0] };
-    setGameScores(prev => [...prev, newScore]);
-    setTotalXP(prev => prev + score);
+    setGameScores(prev => [newScore, ...prev]);
     
     toast({
-      title: "Game Complete!",
-      description: `Score: ${score} | Accuracy: ${accuracy.toFixed(0)}%`,
+      title: "Game Complete! 🎯",
+      description: `Score: ${score} | Accuracy: ${accuracy.toFixed(0)}% | +${xpEarned} XP`,
     });
   };
 
-  const exportReport = () => {
+  const exportReport = async () => {
     const report = {
       generatedAt: new Date().toISOString(),
-      assessments: assessmentResults,
-      gameScores,
-      streak,
-      totalXP,
-      achievements: achievements.filter((a: any) => a.earned)
+      patient: user?.email || "Guest",
+      assessments: assessmentResults.slice(0, 10),
+      gameScores: gameScores.slice(0, 10),
+      progress: {
+        totalSessions: moduleProgress.totalSessions,
+        totalMinutes: moduleProgress.totalMinutes,
+        totalXP: moduleProgress.totalXP,
+      },
+      userProgress: userProgress ? {
+        level: userProgress.current_level,
+        streak: userProgress.current_streak,
+        totalXP: userProgress.total_xp,
+      } : null,
     };
     
     const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Phoenix_Mind_Report_${new Date().toISOString().split('T')[0]}.json`;
+    a.download = `Phoenix_Mind_Clinical_Report_${new Date().toISOString().split('T')[0]}.json`;
     a.click();
+    window.URL.revokeObjectURL(url);
     
     toast({ title: "Report Exported", description: "Clinical data exported for telehealth review" });
   };
 
-  const level = Math.floor(totalXP / 200) + 1;
+  const level = userProgress?.current_level || Math.floor((moduleProgress.totalXp || 0) / 200) + 1;
+  const streak = userProgress?.current_streak || 0;
+  const totalXP = userProgress?.total_xp || moduleProgress.totalXp || 0;
 
   // Generate trend data from results
   const cognitiveData = assessmentResults.map(r => ({
     date: new Date(r.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-    value: Math.round((30 - r.moca) / 3), // Simplified cognitive index
-  }));
+    value: Math.round((30 - r.moca) / 3),
+  })).reverse();
+
+  const moodData = assessmentResults.map(r => ({
+    date: new Date(r.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    value: r.phq9,
+  })).reverse().slice(-10);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-orange-950/20 to-gray-900 text-white relative overflow-hidden">
@@ -162,6 +259,18 @@ const MindTraining = () => {
           </div>
         </div>
 
+        {/* Auth Warning for Guests */}
+        {isGuest && (
+          <Card className="mb-4 bg-amber-500/10 border-amber-500/30">
+            <CardContent className="p-3 flex items-center gap-2">
+              <AlertCircle className="h-4 w-4 text-amber-400" />
+              <p className="text-sm text-amber-200">
+                You're in guest mode. <Link to="/auth" className="underline font-medium">Sign in</Link> to save your progress permanently.
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Hero Section */}
         <header className="text-center mb-8">
           <motion.div
@@ -185,9 +294,10 @@ const MindTraining = () => {
 
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-5 bg-orange-900/30 border border-orange-600/50 mb-6">
+          <TabsList className="grid w-full grid-cols-6 bg-orange-900/30 border border-orange-600/50 mb-6">
             <TabsTrigger value="overview" className="text-orange-200 data-[state=active]:bg-orange-600">Overview</TabsTrigger>
             <TabsTrigger value="assess" className="text-orange-200 data-[state=active]:bg-orange-600">Assess</TabsTrigger>
+            <TabsTrigger value="clinical" className="text-orange-200 data-[state=active]:bg-orange-600">GOSE</TabsTrigger>
             <TabsTrigger value="train" className="text-orange-200 data-[state=active]:bg-orange-600">Train</TabsTrigger>
             <TabsTrigger value="trends" className="text-orange-200 data-[state=active]:bg-orange-600">Trends</TabsTrigger>
             <TabsTrigger value="resources" className="text-orange-200 data-[state=active]:bg-orange-600">Resources</TabsTrigger>
@@ -200,8 +310,8 @@ const MindTraining = () => {
                 streak={streak}
                 totalXP={totalXP}
                 level={level}
-                achievements={achievements}
-                weeklyGoal={{ current: Math.min(assessmentResults.length, 5), target: 5 }}
+                achievements={defaultAchievements}
+                weeklyGoal={{ current: Math.min(moduleProgress.totalSessions || 0, 5), target: 5 }}
               />
               
               <Card className="bg-black/40 border-orange-600/50">
@@ -216,6 +326,10 @@ const MindTraining = () => {
                     <Brain className="h-4 w-4 mr-2" />
                     Start Clinical Assessment
                   </Button>
+                  <Button onClick={() => setActiveTab("clinical")} variant="outline" className="w-full border-cyan-600 text-cyan-200 hover:bg-cyan-600/20">
+                    <Stethoscope className="h-4 w-4 mr-2" />
+                    GOSE Outcome Tracking
+                  </Button>
                   <Button onClick={() => setActiveTab("train")} variant="outline" className="w-full border-orange-600 text-orange-200">
                     <Activity className="h-4 w-4 mr-2" />
                     Cognitive Training Game
@@ -227,8 +341,38 @@ const MindTraining = () => {
                 </CardContent>
               </Card>
 
+              {/* Stats Card */}
+              <Card className="bg-black/40 border-orange-600/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-orange-100">
+                    <TrendingUp className="h-5 w-5 text-cyan-400" />
+                    Your Progress
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="p-3 bg-orange-500/10 rounded-lg text-center">
+                      <div className="text-2xl font-bold text-orange-400">{moduleProgress.totalSessions}</div>
+                      <div className="text-xs text-orange-200/70">Total Sessions</div>
+                    </div>
+                    <div className="p-3 bg-cyan-500/10 rounded-lg text-center">
+                      <div className="text-2xl font-bold text-cyan-400">{moduleProgress.totalMinutes}</div>
+                      <div className="text-xs text-cyan-200/70">Minutes Trained</div>
+                    </div>
+                    <div className="p-3 bg-purple-500/10 rounded-lg text-center">
+                      <div className="text-2xl font-bold text-purple-400">{assessmentResults.length}</div>
+                      <div className="text-xs text-purple-200/70">Assessments</div>
+                    </div>
+                    <div className="p-3 bg-green-500/10 rounded-lg text-center">
+                      <div className="text-2xl font-bold text-green-400">{gameScores.length}</div>
+                      <div className="text-xs text-green-200/70">Games Played</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Quanta Card */}
-              <Card className="bg-gradient-to-br from-orange-900/40 to-amber-900/40 border-orange-600/50 md:col-span-2">
+              <Card className="bg-gradient-to-br from-orange-900/40 to-amber-900/40 border-orange-600/50">
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
                     <BookOpen className="h-8 w-8 text-orange-400 shrink-0" />
@@ -247,6 +391,11 @@ const MindTraining = () => {
           {/* Assess Tab */}
           <TabsContent value="assess">
             <ClinicalAssessments onComplete={handleAssessmentComplete} />
+          </TabsContent>
+
+          {/* Clinical/GOSE Tab */}
+          <TabsContent value="clinical">
+            <GOSEAssessment onComplete={() => {}} onCancel={() => setActiveTab("overview")} />
           </TabsContent>
 
           {/* Train Tab */}
@@ -271,10 +420,7 @@ const MindTraining = () => {
                 nindsCategory="Attention"
               />
               <NormativeTrendGraph
-                data={assessmentResults.map(r => ({
-                  date: new Date(r.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-                  value: r.phq9
-                })).slice(-10)}
+                data={moodData.length > 0 ? moodData : [{ date: 'Today', value: 5 }]}
                 title="Mood (PHQ-9)"
                 metric="Depression Score"
                 normativeValue={NORMATIVE_BENCHMARKS.phq9.value}
