@@ -28,7 +28,16 @@ export const TodaysFocus = ({ weekData, progress, onStartPractice, onStartReflec
 
   const focus = getCurrentFocus();
 
-  const focusConfig = {
+  const focusConfig: Record<FocusType, {
+    icon: typeof BookOpen;
+    title: string;
+    description: string;
+    color: string;
+    bgColor: string;
+    action: () => void;
+    route?: string;
+    buttonText: string;
+  }> = {
     chapter: {
       icon: BookOpen,
       title: 'Read This Week\'s Chapter',
@@ -36,13 +45,13 @@ export const TodaysFocus = ({ weekData, progress, onStartPractice, onStartReflec
       color: 'from-orange-500 to-red-500',
       bgColor: 'from-orange-500/10 to-red-500/10',
       action: () => {},
-      route: weekData.chapterRoute,
+      route: weekData.chapterPath,
       buttonText: 'Start Reading'
     },
     practice: {
       icon: Wind,
       title: 'Complete Today\'s Practice',
-      description: `${weekData.breathingPattern} • ${weekData.challenge}`,
+      description: `${weekData.practice.breathing.name} • ${weekData.practice.challenge.name}`,
       color: 'from-emerald-500 to-teal-500',
       bgColor: 'from-emerald-500/10 to-teal-500/10',
       action: onStartPractice,
@@ -51,7 +60,7 @@ export const TodaysFocus = ({ weekData, progress, onStartPractice, onStartReflec
     reflection: {
       icon: PenLine,
       title: 'Write Your Reflection',
-      description: weekData.reflectionPrompt,
+      description: weekData.reflection,
       color: 'from-purple-500 to-indigo-500',
       bgColor: 'from-purple-500/10 to-indigo-500/10',
       action: onStartReflection,
