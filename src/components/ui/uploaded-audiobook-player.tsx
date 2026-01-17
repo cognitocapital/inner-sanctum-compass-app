@@ -102,6 +102,7 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
   const handleLoadedMetadata = () => {
     if (audioRef.current) {
       setDuration(audioRef.current.duration);
+      audioRef.current.playbackRate = 0.95;
     }
   };
 
