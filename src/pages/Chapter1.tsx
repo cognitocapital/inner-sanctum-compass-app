@@ -33,7 +33,7 @@ const Chapter1 = () => {
           <Button asChild variant="ghost" className="pl-0 text-gray-300 hover:text-white transition-colors">
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Table of Contents
+              Back Home
             </Link>
           </Button>
         </div>
@@ -96,7 +96,7 @@ const Chapter1 = () => {
               <Button asChild variant="outline" className="border-orange-500/50 hover:bg-orange-500/10 hover:border-orange-500 transition-all duration-300">
                 <Link to="/">
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Table of Contents
+                  Home
                 </Link>
               </Button>
               <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
