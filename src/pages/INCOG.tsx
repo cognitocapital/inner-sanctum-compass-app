@@ -11,7 +11,6 @@ import {
   Download, ExternalLink, AlertCircle
 } from "lucide-react";
 import GMTDashboard from "@/components/gmt/GMTDashboard";
-import MusicTherapy from "@/components/therapy/MusicTherapy";
 import ADLTraining from "@/components/adl/ADLTraining";
 import SpacedRepetition from "@/components/memory/SpacedRepetition";
 import ProfessionalAssessments from "@/components/assessments/ProfessionalAssessments";
@@ -70,18 +69,7 @@ const modules = [
     domain: 'communication',
     cogLoad: 'medium',
   },
-  { 
-    id: 'music', 
-    label: 'Music', 
-    icon: Music, 
-    title: 'Music & Rhythm Therapy', 
-    description: 'Attention & processing speed',
-    evidenceLevel: 'A',
-    xpReward: 50,
-    domain: 'attention',
-    cogLoad: 'low',
-  },
-  { 
+  {
     id: 'memory', 
     label: 'Memory', 
     icon: Repeat, 
@@ -148,7 +136,6 @@ const domainQuanta: Record<string, { quote: string; chapter: string }> = {
 const incogQuests = [
   { id: 'complete_quiz', name: 'Domain Explorer', description: 'Complete the domain assessment', xp: 50, icon: 'target' },
   { id: 'gmt_session', name: 'Goal Setter', description: 'Complete a GMT session', xp: 75, icon: 'target' },
-  { id: 'music_session', name: 'Rhythm Master', description: 'Complete music therapy', xp: 50, icon: 'zap' },
   { id: 'memory_streak', name: 'Memory Champion', description: '3-day spaced repetition streak', xp: 100, icon: 'brain' },
   { id: 'all_domains', name: 'Complete Recovery', description: 'Practice all 5 domains', xp: 200, icon: 'trophy' },
 ];
@@ -424,9 +411,7 @@ const INCOG = () => {
             onComplete={(type, score) => handleModuleComplete('speech', 10, score)} 
           />
         );
-      case 'music': 
-        return <MusicTherapy />;
-      case 'memory': 
+      case 'memory':
         return <SpacedRepetition />;
       case 'adl': 
         return <ADLTraining />;

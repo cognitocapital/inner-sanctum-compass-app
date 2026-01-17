@@ -4,10 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import { AudioProvider } from "@/contexts/AudioContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
-import { GlobalAmbientControl } from "@/components/ui/global-ambient-control";
 import { GlobalAudiobookPlayer } from "@/components/ui/global-audiobook-player";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -178,9 +176,8 @@ const AppContent = () => {
         </Routes>
       </BrowserRouter>
       
-      {/* Global Audio Controls - Always Available */}
-      <GlobalAmbientControl />
-      <GlobalAudiobookPlayer 
+      {/* Global Audiobook Player */}
+      <GlobalAudiobookPlayer
         isVisible={audiobookVisible}
         onClose={() => setAudiobookVisible(false)}
         startChapterId={startChapterId}
@@ -193,9 +190,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AuthProvider>
-        <AudioProvider>
-          <AppContent />
-        </AudioProvider>
+        <AppContent />
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>

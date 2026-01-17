@@ -195,18 +195,6 @@
     }
   }
 
-  /* Binaural wave animations for Sensory Forge */
-  @keyframes binaural-pulse {
-    0%, 100% {
-      transform: scale(1);
-      opacity: 0.6;
-    }
-    50% {
-      transform: scale(1.15);
-      opacity: 1;
-    }
-  }
-
   @keyframes wave-flow {
     0% {
       transform: translateX(-100%);
@@ -261,10 +249,6 @@
     }
   }
 
-  .binaural-aura {
-    animation: binaural-pulse 2s ease-in-out infinite;
-  }
-
   .wave-theta {
     animation: theta-wave 1.75s ease-in-out infinite;
   }
@@ -279,7 +263,6 @@
 
   /* Accessibility: Reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    .binaural-aura,
     .wave-theta,
     .wave-alpha,
     .wave-beta,
