@@ -14,7 +14,6 @@ import {
   List
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAudio } from "@/contexts/AudioContext";
 
 interface Chapter {
   id: string;
@@ -74,13 +73,7 @@ export const GlobalAudiobookPlayer = ({
   const [showChapterList, setShowChapterList] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
-  const { setAudiobookPlaying } = useAudio();
   const currentChapter = chapters[currentChapterIndex];
-
-  // Notify audio context when playing state changes
-  useEffect(() => {
-    setAudiobookPlaying(isPlaying);
-  }, [isPlaying, setAudiobookPlaying]);
 
   useEffect(() => {
     if (audioRef.current) {

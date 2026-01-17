@@ -81,8 +81,6 @@ ${data.cold.moodHistory.slice(-10).map((m: number, i: number) => `  Session ${i 
 --------------------------------------------------------------------------------
 Evidence Base: INCOG 2.0 Guidelines (Level A/B)
 - Cold exposure: Emerging evidence for stress resilience, dopamine regulation
-- Binaural beats: Level A evidence for attention and executive function
-- Music therapy: Level A evidence for emotional regulation
 
 Safety Protocols Followed:
 ✓ Pre-session contraindication screening (vertigo, cardiac, fatigue)
