@@ -65,11 +65,15 @@ const Chapter12 = () => {
               Chapter 12
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              Rediscovering Purpose
+              Reclaiming Independence
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              A major milestone came when I was finally allowed to drive again. For months, I had been dependent on others—Sarah, my dad, friends—to get anywhere. Losing the ability to drive had stripped away a huge part of my independence, and getting it back felt like reclaiming a piece of my identity.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              The first time I drove solo, it was just around the block. But it felt monumental. I was in control of something again. Slowly, my world expanded. I could take the kids to school, run errands, have a life outside the house. It wasn't freedom—my brain still put limits on what I could do—but it was a step closer.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

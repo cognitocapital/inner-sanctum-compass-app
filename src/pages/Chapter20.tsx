@@ -65,11 +65,19 @@ const Chapter20 = () => {
               Chapter 20
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              Embracing the Unknown
+              The Next Page
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              Today is a quiet day. I'm at home, writing these words on the Companion app—a project born from pain, but fueled by purpose. My brain still isn't perfect. Some days are still hard. But I'm no longer the man who lay on that concrete, broken and unaware of what was to come.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              I've built myself up from the pieces. I've found tools, habits, and people that help me keep going. I've discovered depths of resilience I never knew I had. And I've decided to share it all—because maybe, just maybe, it will light the way for someone else.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              This is my story, but it's also an invitation. If you're struggling, reach out. If you're in the darkness, know that light exists. The Phoenix is rising, and you can rise too.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

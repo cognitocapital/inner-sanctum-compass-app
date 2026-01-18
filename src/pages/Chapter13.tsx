@@ -65,11 +65,19 @@ const Chapter13 = () => {
               Chapter 13
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              Adapting to Change
+              The Power of Gratitude
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              One practice that surprised me with its power was gratitude. Every morning, I started writing down three things I was thankful for. At first, it felt forced—I was in pain, struggling, angry. But over time, I noticed a shift. Focusing on gratitude rewired how I saw my situation.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              I'd write simple things: "I'm grateful for Sarah's patience. I'm grateful the sun is shining. I'm grateful I could eat breakfast." It sounds trivial, but these tiny acknowledgments changed my brain. Science backs this up—gratitude practices have been shown to improve mental health and resilience.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              One day, my daughter Bailey brought home a school report, and one of her reflections mentioned something I'd taught her. In that moment, I was overwhelmed with gratitude. Despite everything, I was still a dad, still making an impact. That realization hit me hard—and it was beautiful.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

@@ -65,11 +65,19 @@ const Chapter9 = () => {
               Chapter 9
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              New Perspectives
+              The Business Dilemma
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              Before the accident, I ran a roofing business. I was proud of it—it was something I'd built from the ground up. But in the months after my injury, keeping the business going became almost impossible. I couldn't think clearly, couldn't make decisions, couldn't trust myself to manage anything.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              My Dad stepped in as my proxy, driving me to sites, handling calls, shielding me from stress I couldn't handle. I hated feeling so helpless. One day, the pressure got so bad I had an anxiety attack on a rooftop—my own rooftop. I realized I needed to make changes, or the stress would break me.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              I eventually restructured the business—simplified, delegated, let go of things I couldn't control. It was hard, like losing another part of myself. But it was necessary. Sometimes, survival means knowing when to step back.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

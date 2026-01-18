@@ -65,11 +65,19 @@ const Chapter18 = () => {
               Chapter 18
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              The Phoenix Within
+              Unwritten Chapters
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              The future is uncertain. There's no way to know how much more I'll recover, or what challenges lie ahead. But that's true for everyone. The difference now is that I embrace uncertainty instead of fearing it. Each day is a new page, a new chance to write something good.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              To anyone reading this who is struggling: know that there is hope. The road may be long and winding. You might fall, fail, and feel like giving up. But the human spirit is resilient. You can rise from the ashes. You can become stronger at the broken places. Your story isn't over.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              I write these words as someone who nearly lost everything—and found something new in the wreckage. The Phoenix is not a myth. It's a choice. Choose to rise.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

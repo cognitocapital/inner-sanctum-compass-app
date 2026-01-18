@@ -65,31 +65,19 @@ const Chapter3 = () => {
               Chapter 3
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              Coming Home
+              The Gun to My Head
             </h2>
 
-            <p className="text-sm text-center text-gray-500 italic mb-8">
-              February 2024
+            <p className="text-lg leading-relaxed mb-6">
+              Leaving the hospital didn't mean I was better—far from it. I was handed over to Sarah and my family, fragile and dependent in ways I never imagined I could be. I had no idea what lay ahead, and in some ways, that ignorance was a mercy. If I'd known the road I was about to travel, I might have crumbled right there.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              Going home from the hospital should have felt like a victory, but instead it felt like stepping into an alien world. Everything looked the same—our house, our street, our neighborhood—but I felt fundamentally different. It was as if I was seeing my life through someone else's eyes.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              The simplest tasks became monumental challenges. Making a cup of coffee required intense concentration. Following a conversation on TV was exhausting. Reading more than a paragraph made my head throb. Sarah tried to create a gentle routine, but even that felt overwhelming.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              The emotional toll was perhaps harder than the cognitive challenges. I found myself getting frustrated over things that should have been easy, crying at unexpected moments, and feeling like a stranger in my own body. The person I had been before the accident felt like a distant memory.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              My skateboard sat in the garage, collecting dust. Looking at it brought a mixture of emotions—anger at what it had cost me, but also a strange longing for the freedom it once represented. Sarah suggested we move it out of sight, but something made me want to keep it there, a reminder of both what I'd lost and what I was determined to reclaim.
+              In the weeks that followed, life became an emotional rollercoaster. One day I'd feel a flicker of hope; the next, I'd be swamped by despair. The trauma had rattled my nervous system, leaving me on edge and overwhelmed. Simple things like the sound of traffic or a busy room were unbearable. I was surviving on pure instinct.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              The doctors had given us a rough timeline for recovery, but everyone was careful to mention that traumatic brain injury recovery isn't linear. Some days would be better than others. Some progress might be permanent, others temporary. The uncertainty was almost harder to bear than the symptoms themselves.
+              There was so much I couldn't do. I couldn't work, couldn't drive, could barely care for myself. Looking back, I realize I was stuck in survival mode—just getting through each day was a victory. My brain was in crisis, and it would take months before I truly understood what that meant.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

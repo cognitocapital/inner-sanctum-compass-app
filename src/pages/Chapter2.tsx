@@ -65,32 +65,19 @@ const Chapter2 = () => {
               Chapter 2
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              The Hospital Stay
+              Hospital Daze
             </h2>
 
-            <p className="text-sm text-center text-gray-500 italic mb-8">
-              January 26 - February 2, 2024
-            </p>
-
-
             <p className="text-lg leading-relaxed mb-6">
-              The next few days exist in a haze of sterile hospital corridors, the constant beeping of machines, and the worried faces of family members. The medical team was thorough but cautious—traumatic brain injuries are unpredictable beasts, and no two cases are exactly alike.
+              The first thing I remember after the accident is waking up in a hospital bed at the Mater. Sarah was there, her face drawn with worry and exhaustion. I had no idea how I'd gotten there—my mind was a scrambled mess. Disoriented and frightened, I couldn't piece together what had happened. The doctors later told me I'd been in a state of post-traumatic amnesia, my brain struggling to process the trauma.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              Sarah barely left my side. I could see the fear in her eyes, though she tried to hide it behind forced smiles and optimistic updates about my progress. The doctors spoke in careful, measured tones about swelling, monitoring, and "wait and see" approaches that did nothing to ease anyone's anxiety.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              The hardest part wasn't the physical pain—though the headaches were brutal—it was the fog that had settled over my mind. Simple tasks that I'd done thousands of times before suddenly felt impossible. Remembering names, following conversations, even basic problem-solving seemed beyond my reach.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              It was during one of these foggy moments that I first understood the true impact of what had happened. A neurologist explained that my brain was essentially bruised, and like any bruise, it would take time to heal. But unlike a bruised arm or leg, this injury affected everything—my thoughts, my emotions, my very sense of self.
+              Those first days in the hospital are still a blur. I remember fragments: fluorescent lights, the hum of machines, Sarah holding my hand. I had skull fractures—8 bones in my face were broken, including my eye socket and cheekbone. Fortunately, my brain hadn't bled, but the damage was severe. I was alive, though, and that was something.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              The skateboard accident that caused all this seemed so random, so preventable. One moment of distraction, one patch of uneven pavement, and everything changed. The irony wasn't lost on me—the very activity that had always been my escape, my way of staying active and free, had become the source of my greatest challenge.
+              Even in those early days, I could sense the gravity of what I was facing. The doctors were cautious with their words, careful not to promise too much. I had a long road ahead, they said. How long? They couldn't say for sure. As I lay there, groggy and confused, one thing slowly became clear: surviving this was just the beginning. The real fight was about to start.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

@@ -65,11 +65,19 @@ const Chapter10 = () => {
               Chapter 10
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              Building Resilience
+              A New Chapter
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              As months passed, I finally sought out a specialist who understood traumatic brain injuries. He diagnosed me with post-concussion syndrome. Having a name for what I was experiencing was strangely comforting. I wasn't imagining things—there was a real condition, and a path forward.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              He recommended a range of treatments: rest, cognitive therapy, possibly CBD oil to help with inflammation and sleep. I was open to anything that might help. I started to feel like I wasn't just floundering anymore—I had a plan.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              This marked a turning point. I wasn't just surviving; I was beginning to recover. For the first time since Australia Day, I saw a future where I might actually be okay.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

@@ -65,11 +65,23 @@ const Chapter6 = () => {
               Chapter 6
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              Finding My Footing
+              The Roller Coaster
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              Recovery from a TBI isn't a steady climb. It's a roller coaster—ups and downs, twists and loops. There were good days where I felt almost like my old self, and bad days where I couldn't function at all. The unpredictability was maddening. I'd make progress, then crash. Over and over.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              One day, Sarah took me to Kmart for a quick errand. Within minutes, the lights, the noise, and the crowds overwhelmed me. I had to leave, hands shaking, heart racing. I was a grown man, humbled by a department store. It was a stark reminder that my brain was still healing—still fragile.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              For anyone caring for a TBI survivor, I want you to know: it's not a straight road. Be patient. Celebrate the small wins. And on the bad days, just being there is enough. I leaned on Sarah and my family more than they'll ever know.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              Every good day gave me fuel to face the next storm. And slowly—so slowly—the good days started to outnumber the bad.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">
