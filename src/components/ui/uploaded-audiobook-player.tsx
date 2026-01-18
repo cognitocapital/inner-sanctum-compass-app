@@ -27,7 +27,7 @@ const chapters: Chapter[] = [
   { id: "chapter1", title: "Chapter 1: Australia Day", audioUrl: "/audio/chapter1.mp3", route: "/chapter1" },
   { id: "chapter2", title: "Chapter 2: Hospital Daze", audioUrl: "/audio/chapter2.mp3", route: "/chapter2" },
   { id: "chapter3", title: "Chapter 3: The Gun to My Head", audioUrl: "/audio/chapter3.mp3", route: "/chapter3" },
-  { id: "chapter4", title: "Chapter 4: Finding My Footing", audioUrl: "/audio/chapter4.mp3", route: "/chapter4" },
+  { id: "chapter4", title: "Chapter 4: Finding My Footing", audioUrl: ["/audio/chapter4.mp3", "/audio/chapter4-part2.mp3"], route: "/chapter4" }, // Combined seamless playback
   { id: "chapter5", title: "Chapter 5: Choose Your Own Adventure", audioUrl: "/audio/chapter5.mp3", route: "/chapter5" },
   { id: "chapter6", title: "Chapter 6: The Roller Coaster", audioUrl: "/audio/chapter6.mp3", route: "/chapter6" },
   { id: "chapter7", title: "Chapter 7: Mind Games", audioUrl: "/audio/chapter7.mp3", route: "/chapter7" },
