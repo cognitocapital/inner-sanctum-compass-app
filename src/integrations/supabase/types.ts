@@ -132,7 +132,10 @@ export type Database = {
           injury_type: string | null
           onboarding_completed: boolean | null
           primary_goals: string[] | null
+          protocol_name: string | null
+          protocol_phase: number | null
           protocol_started_at: string | null
+          protocol_type: string | null
           updated_at: string | null
         }
         Insert: {
@@ -147,7 +150,10 @@ export type Database = {
           injury_type?: string | null
           onboarding_completed?: boolean | null
           primary_goals?: string[] | null
+          protocol_name?: string | null
+          protocol_phase?: number | null
           protocol_started_at?: string | null
+          protocol_type?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -162,8 +168,50 @@ export type Database = {
           injury_type?: string | null
           onboarding_completed?: boolean | null
           primary_goals?: string[] | null
+          protocol_name?: string | null
+          protocol_phase?: number | null
           protocol_started_at?: string | null
+          protocol_type?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      protocol_definitions: {
+        Row: {
+          created_at: string
+          description: string | null
+          gradient: string | null
+          icon_variant: string | null
+          id: string
+          name: string
+          protocol_key: string
+          target_audience: string
+          total_phases: number
+          total_weeks: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          gradient?: string | null
+          icon_variant?: string | null
+          id?: string
+          name: string
+          protocol_key: string
+          target_audience: string
+          total_phases: number
+          total_weeks: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          gradient?: string | null
+          icon_variant?: string | null
+          id?: string
+          name?: string
+          protocol_key?: string
+          target_audience?: string
+          total_phases?: number
+          total_weeks?: number
         }
         Relationships: []
       }

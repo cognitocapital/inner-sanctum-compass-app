@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { 
   Brain, Heart, Moon, Zap, Cloud, Activity, 
   ArrowRight, ArrowLeft, Check, Sparkles, Flame,
-  Calendar, Clock, Target
+  Calendar, Clock, Target, Mountain, Snowflake
 } from "lucide-react";
 
 interface OnboardingFlowProps {
@@ -38,6 +38,29 @@ const INJURY_TYPES = [
   { id: "other", label: "Other / Prefer not to say" },
 ];
 
+const PROTOCOL_PATHS = [
+  {
+    id: 'tbi_survivor',
+    protocol: 'phoenix_rising',
+    title: 'Phoenix Rising',
+    subtitle: 'For TBI/ABI Survivors',
+    description: 'A 20-week healing journey with gentle pacing, self-compassion, and science-backed neuroplasticity.',
+    icon: Flame,
+    gradient: 'from-orange-500 to-red-500',
+    weeks: 20
+  },
+  {
+    id: 'peak_performance',
+    protocol: 'one_percent',
+    title: 'The 1% Protocol',
+    subtitle: 'For Peak Performers',
+    description: 'A 16-week elite optimization program. Flow states, deliberate discomfort, and high hard goals.',
+    icon: Mountain,
+    gradient: 'from-cyan-500 to-blue-500',
+    weeks: 16
+  }
+];
+
 export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -45,6 +68,7 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Form state
+  const [selectedProtocol, setSelectedProtocol] = useState<string>("");
   const [selectedGoals, setSelectedGoals] = useState<string[]>([]);
   const [injuryType, setInjuryType] = useState<string>("");
   const [injuryDate, setInjuryDate] = useState<string>("");
@@ -54,10 +78,20 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
   const [painLevel, setPainLevel] = useState(3);
   const [dailyCommitment, setDailyCommitment] = useState(10);
 
-  const steps = [
+  const selectedPath = PROTOCOL_PATHS.find(p => p.id === selectedProtocol);
+  const isTBIPath = selectedProtocol === 'tbi_survivor';
+
+  const steps = isTBIPath ? [
     { title: "Welcome", subtitle: "Let's begin your journey" },
+    { title: "Choose Path", subtitle: "Select your protocol" },
     { title: "Your Goals", subtitle: "What matters most to you?" },
     { title: "Your Story", subtitle: "Help us understand your journey" },
+    { title: "Current State", subtitle: "How are you feeling today?" },
+    { title: "Daily Practice", subtitle: "Set your commitment" },
+  ] : [
+    { title: "Welcome", subtitle: "Let's begin your journey" },
+    { title: "Choose Path", subtitle: "Select your protocol" },
+    { title: "Your Goals", subtitle: "What matters most to you?" },
     { title: "Current State", subtitle: "How are you feeling today?" },
     { title: "Daily Practice", subtitle: "Set your commitment" },
   ];
@@ -91,13 +125,15 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
     setIsSubmitting(true);
     
     try {
-      // Update the profile with onboarding data (using correct column names from schema)
+      // Update the profile with onboarding data including protocol selection
       const { error } = await supabase
         .from("profiles")
         .update({
+          protocol_type: selectedProtocol || null,
+          protocol_name: selectedPath?.protocol || null,
           primary_goals: selectedGoals,
-          injury_type: injuryType || null,
-          injury_date: injuryDate || null,
+          injury_type: isTBIPath ? (injuryType || null) : null,
+          injury_date: isTBIPath ? (injuryDate || null) : null,
           current_symptoms: currentSymptoms,
           daily_goal_minutes: dailyCommitment,
           onboarding_completed: true,
@@ -106,8 +142,9 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
 
       if (error) throw error;
 
-      toast.success("Profile created!", { 
-        description: "Your personalized recovery journey begins now." 
+      const protocolName = selectedPath?.title || "The Phoenix Protocol";
+      toast.success(`Welcome to ${protocolName}!`, { 
+        description: `Your ${selectedPath?.weeks || 20}-week transformation begins now.` 
       });
       onComplete();
     } catch (error: any) {
@@ -121,10 +158,11 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
   const canProceed = () => {
     switch (currentStep) {
       case 0: return true;
-      case 1: return selectedGoals.length > 0;
-      case 2: return true; // Injury info is optional
-      case 3: return true;
-      case 4: return dailyCommitment >= 5;
+      case 1: return selectedProtocol !== "";
+      case 2: return selectedGoals.length > 0;
+      case 3: return true; // Injury info or current state - both optional
+      case 4: return true;
+      case 5: return dailyCommitment >= 5;
       default: return true;
     }
   };
@@ -218,8 +256,54 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
               </Card>
             )}
 
-            {/* Step 1: Goals */}
+            {/* Step 1: Path Selection */}
             {currentStep === 1 && (
+              <Card className="bg-white/10 backdrop-blur-md border-white/20">
+                <CardHeader className="text-center pb-2">
+                  <CardTitle className="text-2xl text-white">Choose Your Path</CardTitle>
+                  <CardDescription className="text-white/60">
+                    Two journeys, one destination: becoming your best self.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-4 space-y-4">
+                  {PROTOCOL_PATHS.map((path) => {
+                    const Icon = path.icon;
+                    const isSelected = selectedProtocol === path.id;
+                    return (
+                      <button
+                        key={path.id}
+                        onClick={() => setSelectedProtocol(path.id)}
+                        className={`w-full p-5 rounded-xl border-2 transition-all duration-300 text-left ${
+                          isSelected 
+                            ? `bg-gradient-to-r ${path.gradient} bg-opacity-20 border-white/40 shadow-lg` 
+                            : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
+                        }`}
+                      >
+                        <div className="flex items-start gap-4">
+                          <div className={`p-3 rounded-xl bg-gradient-to-br ${path.gradient} ${isSelected ? 'shadow-lg' : 'opacity-70'}`}>
+                            <Icon className="w-6 h-6 text-white" />
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-lg text-white">{path.title}</span>
+                              <Badge className={`text-xs ${isSelected ? 'bg-white/20' : 'bg-white/10'}`}>
+                                {path.weeks} weeks
+                              </Badge>
+                            </div>
+                            <div className="text-sm text-white/60 mb-2">{path.subtitle}</div>
+                            <p className="text-sm text-white/70">{path.description}</p>
+                          </div>
+                          {isSelected && <Check className="w-6 h-6 text-white" />}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Step 2: Goals */}
+            {currentStep === 2 && (
               <Card className="bg-white/10 backdrop-blur-md border-white/20">
                 <CardHeader className="text-center pb-2">
                   <CardTitle className="text-2xl text-white">What are your recovery goals?</CardTitle>
