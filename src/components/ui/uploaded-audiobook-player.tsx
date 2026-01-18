@@ -35,7 +35,7 @@ const chapters: Chapter[] = [
   { id: "chapter9", title: "Chapter 9: The Business Dilemma", audioUrl: ["/audio/chapter9.mp3", "/audio/chapter9-part2.mp3", "/audio/chapter9-part3.mp3"], route: "/chapter9" }, // Combined seamless playback
   { id: "chapter10", title: "Chapter 10: A New Chapter", audioUrl: ["/audio/chapter10.mp3", "/audio/chapter10-part2.mp3"], route: "/chapter10" }, // Combined seamless playback
   { id: "chapter11", title: "Chapter 11: The Inner Work", audioUrl: ["/audio/chapter11.mp3", "/audio/chapter11-part2.mp3", "/audio/chapter11-part3.mp3", "/audio/chapter11-part4.mp3"], route: "/chapter11" }, // Combined seamless playback
-  { id: "chapter12", title: "Chapter 12: Reclaiming Independence", audioUrl: "/audio/chapter12.mp3", route: "/chapter12" },
+  { id: "chapter12", title: "Chapter 12: Reclaiming Independence", audioUrl: ["/audio/chapter12.mp3", "/audio/chapter12-part2.mp3"], route: "/chapter12" }, // Combined seamless playback
   { id: "chapter13", title: "Chapter 13: The Power of Gratitude", audioUrl: "/audio/chapter13.mp3", route: "/chapter13" },
   { id: "chapter14", title: "Chapter 14: The Universe's Message", audioUrl: null, route: "/chapter14" },
   { id: "chapter15", title: "Chapter 15: Still Standing", audioUrl: "/audio/chapter15.mp3", route: "/chapter15" },
