@@ -65,11 +65,19 @@ const Chapter19 = () => {
               Chapter 19
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              Looking Forward
+              A New Resource
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              Recently, I came across a book by Dr. Daniel Amen on brain health and neuroplasticity. His work reinforced what I had already started to believe: the brain can heal and change at any age. He outlines practical steps—nutrition, exercise, sleep, mental exercises—that anyone can use to support their brain.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              I'm incorporating his advice into my ongoing recovery. More than that, I want to share these resources with others. That's the heart of the Companion app idea: a toolkit for anyone facing the dark days after a TBI. If I can shorten someone else's struggle by even a little, this whole journey will have been worth it.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              Every new resource is a building block. And each one gives me hope that the best is yet to come.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

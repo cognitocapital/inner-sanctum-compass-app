@@ -65,31 +65,19 @@ const Chapter4 = () => {
               Chapter 4
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              The Long Road to Recovery
+              Finding My Footing
             </h2>
 
-            <p className="text-sm text-center text-gray-500 italic mb-8">
-              March - April 2024
+            <p className="text-lg leading-relaxed mb-6">
+              Slowly, I began to find little things that helped. Walking—just putting one foot in front of the other—became a daily practice. At first, it was hard. My balance was off, my energy non-existent. But every walk felt like a small win against the injury. Movement became medicine.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              Recovery, I learned, is not a straight line. It's more like a winding mountain path—sometimes you're climbing steadily upward, other times you're sliding backwards, and occasionally you find yourself on a plateau wondering if you'll ever move forward again.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              The rehabilitation program became my new reality. Cognitive therapy sessions where I relearned skills I'd taken for granted. Physical therapy to address the balance issues and coordination problems. Occupational therapy to help me navigate daily tasks that had become foreign territory.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              But it was the breathing exercises that surprised me the most. My therapist introduced them as a way to manage the anxiety and overwhelm that came with my new limitations. What started as simple breathing techniques gradually became something more—a way to reconnect with my body, to find moments of calm in the storm of recovery.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              Sarah and I also discovered the power of cold exposure therapy. What began as cold showers recommended for inflammation gradually became a shared ritual of resilience. There was something profound about voluntarily stepping into discomfort, about proving to myself that I could still choose to face difficult things.
+              I tried to focus on what I could control. I started making smoothies packed with brain-healthy ingredients: berries, greens, turmeric. Eating became part of my recovery plan. Sleep, too, was critical—my brain needed rest to heal, even if that rest was fitful and full of strange dreams. I leaned on any small ritual that gave me a sense of control.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              These weren't just therapeutic exercises—they were acts of rebellion against the helplessness I often felt. Each cold shower, each focused breath, each small cognitive victory was a declaration that I was still fighting, still growing, still becoming.
+              My grandfather once told me, "Every step forward counts, even the small ones." I thought of that often in those early weeks. Progress felt glacial, but I clung to the idea that tiny efforts would add up. And sometimes, on the hardest days, that belief was all I had.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

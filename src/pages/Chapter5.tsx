@@ -65,31 +65,19 @@ const Chapter5 = () => {
               Chapter 5
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              Finding My Phoenix
+              Choose Your Own Adventure
             </h2>
 
-            <p className="text-sm text-center text-gray-500 italic mb-8">
-              May 2024
+            <p className="text-lg leading-relaxed mb-6">
+              Somewhere along the way, I stumbled onto the concept of neuroplasticity—the brain's ability to rewire and heal itself. It sounded almost too good to be true. But I read stories of people who had recovered from worse injuries by focusing their minds and consistently pushing their limits. I thought: why not me?
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              Three months into recovery, I discovered something unexpected—I was not just healing, I was transforming. The person emerging from this experience wasn't just the pre-accident me with a fixed brain. I was becoming someone new, someone who had been through fire and was being reborn from the ashes.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              The phoenix metaphor started as a joke. Sarah bought me a small phoenix figurine from a gift shop, saying it reminded her of my journey. But as I looked at that mythical bird, wings spread wide, rising from flames, something clicked. This wasn't just about getting back to who I was—it was about discovering who I could become.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              My relationship with challenges began to shift. The daily cognitive exercises weren't just rehabilitation anymore; they were training. The breathing techniques weren't just anxiety management; they were meditation practices that connected me to something deeper. The cold showers weren't just inflammation therapy; they were daily rituals of courage.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              One morning, I walked into the garage and looked at my skateboard for the first time since the accident without feeling anger or sadness. Instead, I felt... gratitude. Not for the accident—that would be absurd—but for the journey it had forced me to take. For the depths it had shown me, and for the heights I was now discovering were possible.
+              I discovered Dr. Joe Dispenza's work on the mind-body connection. He talked about using meditation and mental focus to heal the brain. Some of it seemed far out, but I was desperate. I started practicing his techniques—meditating, visualizing, reprogramming my thoughts. I figured: I have nothing to lose and everything to gain.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              Recovery wasn't about returning to normal. It was about discovering that normal had been too small for me all along. I was a phoenix, and phoenixes don't return to their old nests. They build new ones, higher and stronger than before.
+              This was the beginning of my Phoenix mindset. I was no longer just a patient waiting to get better. I was actively choosing to rebuild myself. Every positive thought, every healing practice, was like laying a brick in the new version of my life. For the first time since the accident, I felt a glimmer of real hope.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

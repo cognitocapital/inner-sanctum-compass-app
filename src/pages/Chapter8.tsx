@@ -65,11 +65,19 @@ const Chapter8 = () => {
               Chapter 8
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              Breakthrough Moments
+              Nourishing the Body
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              In the early days, food became a source of frustration. My sense of taste was completely distorted—everything tasted metallic, wrong. Eating was a chore, not a pleasure. But I knew nutrition was vital for brain healing, so I forced myself to eat anyway.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              I focused on brain-healthy foods. Smoothies became my go-to: blueberries for antioxidants, spinach for nutrients, a splash of turmeric for inflammation. I experimented with herbs and spices said to support cognition. It wasn't always appetizing, but I was feeding my recovery.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              Slowly, my taste came back—imperfectly, but enough to enjoy food again. Those small pleasures meant more than I can say. A good meal became a tiny victory, proof that healing was happening even when it felt invisible.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

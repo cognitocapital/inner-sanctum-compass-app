@@ -65,11 +65,19 @@ const Chapter17 = () => {
               Chapter 17
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              Finding Balance
+              The Torch Rekindled
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              I discovered Steven Kotler's work on peak performance and "flow" states—those moments when you're fully immersed in an activity and everything clicks. His book, The Art of the Impossible, gave me a new vision. I realized that even with a damaged brain, I could aim high—not despite my injury, but because of what it had taught me.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              Flow became another goal. I found it in small things: playing guitar, helping my kids with their projects, writing this book. Those moments of deep focus and engagement were healing in their own way. They reminded me that my brain was capable of more than just surviving—it could still create, still thrive.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              The torch had been knocked from my hand on Australia Day. But now I was picking it up again, its flame burning brighter than before.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

@@ -65,11 +65,19 @@ const Chapter14 = () => {
               Chapter 14
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              The Learning Process
+              The Universe's Message
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              Along the way, I met some remarkable people who seemed to appear at just the right time. One was Wendy, a Bowen therapist who became a guide on my healing journey. She helped me see the accident not just as a tragedy, but as a wake-up call. Maybe the universe was telling me to slow down, to reassess what truly mattered.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              I started to think about purpose. Before the accident, I was always chasing—more work, more success, more busy-ness. Now, I wondered: what was all that for? My injury forced me to stop and ask hard questions. And in the stillness, I began to find answers.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              Maybe this wasn't just a catastrophe. Maybe it was an invitation to rebuild my life on a stronger foundation—one rooted in meaning, connection, and gratitude. I wasn't sure where this path would lead, but I knew I had to follow it.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

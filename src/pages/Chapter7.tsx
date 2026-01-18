@@ -65,11 +65,19 @@ const Chapter7 = () => {
               Chapter 7
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              The Road to Recovery
+              Mind Games
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              One of the most frustrating aspects of my injury was the cognitive fallout. My concentration was shattered. I couldn't hold a thought for long, couldn't follow a conversation without getting lost. Memory was patchy at best. Reading—something I once loved—was nearly impossible. My brain just wouldn't cooperate.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              I remember trying to respond to a simple email. It took me an hour. An hour for a few sentences. I felt defeated, ashamed. But I kept at it. Cognitive exercises, word games, puzzles—I did them all. Some days the fog lifted; other days, it settled thick. But I refused to give up on my mind.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              Slowly, I regained small pieces of my mental sharpness. It wasn't a miracle—just stubborn effort, day after day. Each tiny improvement reminded me that I was still in there, fighting to come back.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

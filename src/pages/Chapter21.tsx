@@ -62,14 +62,34 @@ const Chapter21 = () => {
         <div className="backdrop-blur-sm bg-white/90 border-orange-500/20 shadow-2xl rounded-lg p-8 md:p-12">
           <article className="prose prose-lg mx-auto text-gray-900 max-w-none">
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-center text-orange-600 mb-2 drop-shadow-sm">
-              Chapter 21
+              Acknowledgments
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              What a Journey
+              With Gratitude
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              To my wife, Sarah: You have been my rock, my caregiver, my best friend through the darkest days. I could not have survived this without you. Thank you for never giving up on me.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              To my daughters, Harper, Matilda, and Bailey: You gave me reasons to keep fighting when I wanted to give up. Your laughter, your hugs, and your belief in Daddy kept me going.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              To my parents, my twin brother Matthew, my mates Tyson and so many others: Your support carried me when I couldn't carry myself. From the Friday breakfasts to the late-night calls—thank you.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              To the medical professionals, therapists, and healers who helped me along the way: Dr. Joe Dispenza, Eckhart Tolle, Steven Kotler, Daniel Amen—your work changed my life. To Wendy, my Bowen therapist—thank you for helping me see the bigger picture.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              To everyone who reached out with a kind word, a check-in, a prayer: it mattered. More than you know.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              And finally, to you, the reader: Thank you for walking this journey with me. I hope my story has given you hope. Remember—no matter how dark things get, the Phoenix can rise. So can you.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

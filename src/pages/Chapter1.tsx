@@ -65,31 +65,19 @@ const Chapter1 = () => {
               Chapter 1
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              The Day Everything Changed
+              Australia Day
             </h2>
 
-            <p className="text-sm text-center text-gray-500 italic mb-8">
-              Australia Day, January 26, 2024
+            <p className="text-lg leading-relaxed mb-6">
+              Australia Day 2024. It was the day that my entire life would change forever. What started out as a relaxing get-together with family and friends and my young family became the catalyst for a journey I never saw coming. That day, on what should have been a carefree celebration, I suffered a devastating head trauma from a skateboarding accident. I cracked my skull—badly—and fractured 8 bones in my face. My twin brother Matthew witnessed everything, from my head hitting the concrete, to the paramedics fighting to keep me conscious and safely in the ambulance. I was rushed to the Mater Hospital, where the surgeons worked to save my life. The impact was severe: I was left battling a traumatic brain injury and the broken pieces of my former self.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              Australia Day 2024. A date I'll never forget, though I wish I could. It was supposed to be a celebration, a day of joy and national pride. Instead, it became the day my world turned upside down, literally and figuratively.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              I remember the morning clearly—too clearly, given what was to come. The sun was shining, the air was warm, and there was that unmistakable buzz of a public holiday. My wife Sarah and I had been looking forward to a relaxing day. We'd planned to spend it with friends, maybe have a barbecue, enjoy the simple pleasures of an Australian summer.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              But life, as I've learned, has a way of derailing our best-laid plans.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              The accident happened so quickly, yet the memory plays in slow motion. One moment I was upright, walking, thinking, being—the next, I was on the ground, my head having made violent contact with concrete. The world went dark, not just literally, but metaphorically too. Everything I thought I knew about myself, about my capabilities, about my future, changed in that instant.
+              However, this isn't just a story about loss or pain—it's about rising from the ashes. Like a Phoenix, I began to transform. What could have defined me as a victim instead became the fire that would forge me anew. This is the story of my rebirth, told in the hopes that it might light the way for anyone else facing their own moment of reckoning.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              They say that traumatic brain injuries are invisible disabilities, and they're right. From the outside, I looked fine. No broken bones, no visible wounds that would make people understand the magnitude of what had happened. But inside my skull, a storm was brewing that would rage for months to come.
+              Let me start from Australia Day 2024—the day my old life ended and my new one began.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

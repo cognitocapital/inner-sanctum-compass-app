@@ -65,11 +65,19 @@ const Chapter16 = () => {
               Chapter 16
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              Overcoming Setbacks
+              Looking Forward
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              As I approached the one-year anniversary of my accident, I began looking to the future. I thought about others who were going through what I'd been through—people who felt lost, overwhelmed, without a roadmap. I wanted to help them.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              The idea of a "Companion" app started to take shape. A place where TBI survivors could find resources, track their progress, and connect with others. I also discovered the Brain Injury Rehabilitation Unit (BIRU) program, which provided structured therapy and support. It gave me hope that a real community existed for people like me.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              My story was still being written. I wasn't fully healed—maybe I never would be in the traditional sense. But I was alive, I was growing, and I had something to offer. The Phoenix wasn't just about rising from ashes; it was about lighting the way for others.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

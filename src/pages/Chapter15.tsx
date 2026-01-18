@@ -65,11 +65,19 @@ const Chapter15 = () => {
               Chapter 15
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              Celebrating Small Wins
+              Still Standing
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              Some days, even now, I still have what I call "scrambled eggs" days. Days where my brain just won't cooperate—where the fog rolls in, and I can barely function. On those days, I remind myself: it's okay. This is part of the journey. Self-compassion became as important as any medical treatment.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              I learned the value of pacing. I couldn't go all-out like I used to. Now I plan rest days, schedule breaks, allow myself to stop before I crash. It was humbling to accept these limits, but it also kept me moving forward. Slow and steady replaced full-throttle.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              Standing still was part of the process. Sometimes the bravest thing was simply getting through the day. And on the hard days, just surviving was victory enough.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

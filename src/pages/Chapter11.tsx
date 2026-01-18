@@ -65,11 +65,23 @@ const Chapter11 = () => {
               Chapter 11
             </h1>
             <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              The Support Network
+              The Inner Work
             </h2>
 
+            <p className="text-lg leading-relaxed mb-6">
+              Healing the body was one thing; healing the mind was another. I discovered the concept of "the observer"—the idea that there's a part of you that can watch your thoughts without being swept away by them. Eckhart Tolle's teachings opened my eyes to mindfulness. I practiced simply noticing my thoughts instead of fighting them.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              Meditation became a daily habit. At first, I could barely sit still for two minutes. But over time, I got better. I learned to breathe through the anxiety, to create space between stimulus and reaction. It wasn't easy—especially with a brain that wouldn't cooperate—but it was transformative.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              I also started journaling. Just a few lines a day about how I felt, what I was grateful for, what I was struggling with. Writing helped me process emotions that were too tangled to speak. On paper, I could make sense of the chaos inside my head.
+            </p>
+
             <p className="text-lg leading-relaxed mb-8">
-              Content coming soon...
+              These practices gave me tools to cope. They didn't cure me, but they made the journey bearable. I was learning to live with my injury, not just suffer through it.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">
