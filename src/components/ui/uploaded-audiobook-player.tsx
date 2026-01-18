@@ -97,7 +97,7 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
       const wasPlaying = isPlaying;
       audioRef.current.src = audioUrl;
       audioRef.current.load();
-      audioRef.current.playbackRate = 0.95;
+      audioRef.current.playbackRate = 0.93;
       setCurrentTime(0);
       
       if (wasPlaying) {
@@ -132,7 +132,7 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
   const handleLoadedMetadata = () => {
     if (audioRef.current) {
       setDuration(audioRef.current.duration);
-      audioRef.current.playbackRate = 0.95;
+      audioRef.current.playbackRate = 0.93;
     }
   };
 
@@ -165,11 +165,17 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
       // Seamlessly play next segment of same chapter
       setCurrentAudioIndex(prev => prev + 1);
     } else {
-      // All segments complete (or single audio), move to next chapter
+      // All segments complete (or single audio), add 4 second pause then move to next chapter
       setCurrentAudioIndex(0);
       setIsPlaying(false);
       if (currentChapterIndex < chapters.length - 1) {
-        setCurrentChapterIndex(currentChapterIndex + 1);
+        setTimeout(() => {
+          setCurrentChapterIndex(currentChapterIndex + 1);
+          if (audioRef.current) {
+            audioRef.current.play().catch(console.error);
+            setIsPlaying(true);
+          }
+        }, 4000);
       }
     }
   };
