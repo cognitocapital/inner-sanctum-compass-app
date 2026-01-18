@@ -22,7 +22,8 @@ interface Chapter {
 // Audio chapters - based on manuscript version 6.0
 const chapters: Chapter[] = [
   { id: "dedication", title: "Dedication", audioUrl: "/audio/dedication.mp3", route: "/dedication" },
-  { id: "prologue", title: "Prologue", audioUrl: "/audio/prologue.mp3", route: "/prologue" },
+  { id: "prologue", title: "Prologue (Part 1)", audioUrl: "/audio/prologue.mp3", route: "/prologue" },
+  { id: "prologue-part2", title: "Prologue (Part 2)", audioUrl: "/audio/prologue-part2.mp3", route: "/prologue" },
   { id: "introduction", title: "Introduction", audioUrl: "/audio/introduction.mp3", route: "/introduction" },
   { id: "chapter1", title: "Chapter 1: Australia Day", audioUrl: "/audio/chapter1.mp3", route: "/chapter1" },
   { id: "chapter2", title: "Chapter 2: Hospital Daze", audioUrl: "/audio/chapter2.mp3", route: "/chapter2" },
