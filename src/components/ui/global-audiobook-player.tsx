@@ -33,7 +33,7 @@ const chapters: Chapter[] = [
   { id: "chapter5", title: "Chapter 5: Choose Your Own Adventure", audioUrl: "/audio/chapter5.mp3" },
   { id: "chapter6", title: "Chapter 6: The Roller Coaster", audioUrl: "/audio/chapter6.mp3" },
   { id: "chapter7", title: "Chapter 7: Mind Games", audioUrl: "/audio/chapter7.mp3" },
-  { id: "chapter8", title: "Chapter 8: Nourishing the Body", audioUrl: "/audio/chapter8.mp3" },
+  { id: "chapter8", title: "Chapter 8: Nourishing the Body", audioUrl: ["/audio/chapter8.mp3", "/audio/chapter8-part2.mp3"] }, // Combined seamless playback
   { id: "chapter9", title: "Chapter 9: The Business Dilemma", audioUrl: "/audio/chapter9.mp3" },
   { id: "chapter10", title: "Chapter 10: A New Chapter", audioUrl: "/audio/chapter10.mp3" },
   { id: "chapter11", title: "Chapter 11: The Inner Work", audioUrl: "/audio/chapter11.mp3" },
