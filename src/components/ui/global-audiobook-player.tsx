@@ -24,7 +24,8 @@ interface Chapter {
 // Audio chapters - all properly sequenced
 const chapters: Chapter[] = [
   { id: "dedication", title: "Dedication", audioUrl: "/audio/dedication.mp3" },
-  { id: "prologue", title: "Prologue", audioUrl: "/audio/prologue.mp3" },
+  { id: "prologue", title: "Prologue (Part 1)", audioUrl: "/audio/prologue.mp3" },
+  { id: "prologue-part2", title: "Prologue (Part 2)", audioUrl: "/audio/prologue-part2.mp3" },
   { id: "introduction", title: "Introduction", audioUrl: "/audio/introduction.mp3" },
   { id: "chapter1", title: "Chapter 1: Australia Day", audioUrl: "/audio/chapter1.mp3" },
   { id: "chapter2", title: "Chapter 2: Hospital Daze", audioUrl: "/audio/chapter2.mp3" },
@@ -87,6 +88,7 @@ export const GlobalAudiobookPlayer = ({
       const wasPlaying = isPlaying;
       audioRef.current.src = currentChapter.audioUrl;
       audioRef.current.load();
+      audioRef.current.playbackRate = 0.95;
       setCurrentTime(0);
       
       if (wasPlaying) {
@@ -117,6 +119,7 @@ export const GlobalAudiobookPlayer = ({
   const handleLoadedMetadata = () => {
     if (audioRef.current) {
       setDuration(audioRef.current.duration);
+      audioRef.current.playbackRate = 0.95;
     }
   };
 
