@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
@@ -15,15 +15,14 @@ import {
 interface Chapter {
   id: string;
   title: string;
-  audioUrl: string | null;
+  audioUrl: string | string[] | null; // Supports single URL or array for multi-part chapters
   route: string;
 }
 
 // Audio chapters - based on manuscript version 6.0
 const chapters: Chapter[] = [
   { id: "dedication", title: "Dedication", audioUrl: "/audio/dedication.mp3", route: "/dedication" },
-  { id: "prologue", title: "Prologue (Part 1)", audioUrl: "/audio/prologue.mp3", route: "/prologue" },
-  { id: "prologue-part2", title: "Prologue (Part 2)", audioUrl: "/audio/prologue-part2.mp3", route: "/prologue" },
+  { id: "prologue", title: "Prologue", audioUrl: ["/audio/prologue.mp3", "/audio/prologue-part2.mp3"], route: "/prologue" }, // Combined seamless playback
   { id: "introduction", title: "Introduction", audioUrl: "/audio/introduction.mp3", route: "/introduction" },
   { id: "chapter1", title: "Chapter 1: Australia Day", audioUrl: "/audio/chapter1.mp3", route: "/chapter1" },
   { id: "chapter2", title: "Chapter 2: Hospital Daze", audioUrl: "/audio/chapter2.mp3", route: "/chapter2" },
@@ -57,6 +56,7 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
     const index = chapters.findIndex(c => c.id === startChapterId);
     return index >= 0 ? index : 0;
   });
+  const [currentAudioIndex, setCurrentAudioIndex] = useState(0); // Track which audio segment in multi-part chapters
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -66,24 +66,53 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
 
   const currentChapter = chapters[currentChapterIndex];
 
+  // Get the current audio URL (handles both single and array formats)
+  const getCurrentAudioUrl = useCallback(() => {
+    const urls = currentChapter.audioUrl;
+    if (!urls) return null;
+    if (Array.isArray(urls)) {
+      return urls[currentAudioIndex] || null;
+    }
+    return urls;
+  }, [currentChapter.audioUrl, currentAudioIndex]);
+
+  // Check if chapter has audio
+  const hasAudio = useCallback(() => {
+    const urls = currentChapter.audioUrl;
+    if (!urls) return false;
+    if (Array.isArray(urls)) return urls.length > 0;
+    return true;
+  }, [currentChapter.audioUrl]);
+
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;
     }
   }, [volume, isMuted]);
 
+  // Handle chapter or audio segment changes
   useEffect(() => {
-    // Reset when chapter changes
-    if (audioRef.current) {
+    const audioUrl = getCurrentAudioUrl();
+    if (audioRef.current && audioUrl) {
+      const wasPlaying = isPlaying;
+      audioRef.current.src = audioUrl;
+      audioRef.current.load();
+      audioRef.current.playbackRate = 0.95;
+      setCurrentTime(0);
+      
+      if (wasPlaying) {
+        audioRef.current.play().catch(console.error);
+      }
+    } else if (audioRef.current) {
       audioRef.current.pause();
       setIsPlaying(false);
       setCurrentTime(0);
       setDuration(0);
     }
-  }, [currentChapterIndex]);
+  }, [currentChapterIndex, currentAudioIndex]);
 
   const handlePlayPause = () => {
-    if (!audioRef.current || !currentChapter.audioUrl) return;
+    if (!audioRef.current || !hasAudio()) return;
 
     if (isPlaying) {
       audioRef.current.pause();
@@ -115,22 +144,33 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
   };
 
   const handlePreviousChapter = () => {
+    setCurrentAudioIndex(0);
     if (currentChapterIndex > 0) {
       setCurrentChapterIndex(currentChapterIndex - 1);
     }
   };
 
   const handleNextChapter = () => {
+    setCurrentAudioIndex(0);
     if (currentChapterIndex < chapters.length - 1) {
       setCurrentChapterIndex(currentChapterIndex + 1);
     }
   };
 
   const handleEnded = () => {
-    setIsPlaying(false);
-    // Auto-advance to next chapter
-    if (currentChapterIndex < chapters.length - 1) {
-      setCurrentChapterIndex(currentChapterIndex + 1);
+    const urls = currentChapter.audioUrl;
+    
+    // If chapter has multiple audio files and we're not at the last one
+    if (Array.isArray(urls) && currentAudioIndex < urls.length - 1) {
+      // Seamlessly play next segment of same chapter
+      setCurrentAudioIndex(prev => prev + 1);
+    } else {
+      // All segments complete (or single audio), move to next chapter
+      setCurrentAudioIndex(0);
+      setIsPlaying(false);
+      if (currentChapterIndex < chapters.length - 1) {
+        setCurrentChapterIndex(currentChapterIndex + 1);
+      }
     }
   };
 
@@ -140,7 +180,12 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const availableChapters = chapters.filter(c => c.audioUrl !== null);
+  const handleChapterSelect = (index: number) => {
+    setCurrentAudioIndex(0);
+    setCurrentChapterIndex(index);
+  };
+
+  const currentAudioUrl = getCurrentAudioUrl();
 
   return (
     <Card className="bg-gradient-to-br from-gray-900 to-orange-950 border-orange-500/30">
@@ -158,7 +203,7 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
           <p className="text-sm text-orange-300/70">
             Chapter {currentChapterIndex + 1} of {chapters.length}
           </p>
-          {!currentChapter.audioUrl && (
+          {!hasAudio() && (
             <p className="text-sm text-orange-400/60 mt-2 italic">
               Audio coming soon...
             </p>
@@ -166,10 +211,10 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
         </div>
 
         {/* Hidden Audio Element */}
-        {currentChapter.audioUrl && (
+        {currentAudioUrl && (
           <audio
             ref={audioRef}
-            src={currentChapter.audioUrl}
+            src={currentAudioUrl}
             onTimeUpdate={handleTimeUpdate}
             onLoadedMetadata={handleLoadedMetadata}
             onEnded={handleEnded}
@@ -183,7 +228,7 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
             max={duration || 100}
             step={1}
             onValueChange={handleSeek}
-            disabled={!currentChapter.audioUrl}
+            disabled={!hasAudio()}
             className="cursor-pointer"
           />
           <div className="flex justify-between text-xs text-orange-300/70 mt-1">
@@ -207,7 +252,7 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
           <Button
             size="icon"
             onClick={handlePlayPause}
-            disabled={!currentChapter.audioUrl}
+            disabled={!hasAudio()}
             className="h-14 w-14 rounded-full bg-orange-500 hover:bg-orange-400 text-white disabled:opacity-30"
           >
             {isPlaying ? (
@@ -260,7 +305,7 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
                 key={chapter.id}
                 variant="ghost"
                 size="sm"
-                onClick={() => setCurrentChapterIndex(index)}
+                onClick={() => handleChapterSelect(index)}
                 disabled={!chapter.audioUrl}
                 className={`text-xs ${
                   index === currentChapterIndex 

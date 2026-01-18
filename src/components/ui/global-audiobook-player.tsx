@@ -18,14 +18,13 @@ import { cn } from "@/lib/utils";
 interface Chapter {
   id: string;
   title: string;
-  audioUrl: string | null;
+  audioUrl: string | string[] | null; // Supports single URL or array for multi-part chapters
 }
 
 // Audio chapters - all properly sequenced
 const chapters: Chapter[] = [
   { id: "dedication", title: "Dedication", audioUrl: "/audio/dedication.mp3" },
-  { id: "prologue", title: "Prologue (Part 1)", audioUrl: "/audio/prologue.mp3" },
-  { id: "prologue-part2", title: "Prologue (Part 2)", audioUrl: "/audio/prologue-part2.mp3" },
+  { id: "prologue", title: "Prologue", audioUrl: ["/audio/prologue.mp3", "/audio/prologue-part2.mp3"] }, // Combined seamless playback
   { id: "introduction", title: "Introduction", audioUrl: "/audio/introduction.mp3" },
   { id: "chapter1", title: "Chapter 1: Australia Day", audioUrl: "/audio/chapter1.mp3" },
   { id: "chapter2", title: "Chapter 2: Hospital Daze", audioUrl: "/audio/chapter2.mp3" },
@@ -65,6 +64,7 @@ export const GlobalAudiobookPlayer = ({
     const index = chapters.findIndex(c => c.id === startChapterId);
     return index >= 0 ? index : 0;
   });
+  const [currentAudioIndex, setCurrentAudioIndex] = useState(0); // Track which audio segment in multi-part chapters
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -76,17 +76,36 @@ export const GlobalAudiobookPlayer = ({
   
   const currentChapter = chapters[currentChapterIndex];
 
+  // Get the current audio URL (handles both single and array formats)
+  const getCurrentAudioUrl = useCallback(() => {
+    const urls = currentChapter.audioUrl;
+    if (!urls) return null;
+    if (Array.isArray(urls)) {
+      return urls[currentAudioIndex] || null;
+    }
+    return urls;
+  }, [currentChapter.audioUrl, currentAudioIndex]);
+
+  // Check if chapter has audio
+  const hasAudio = useCallback(() => {
+    const urls = currentChapter.audioUrl;
+    if (!urls) return false;
+    if (Array.isArray(urls)) return urls.length > 0;
+    return true;
+  }, [currentChapter.audioUrl]);
+
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;
     }
   }, [volume, isMuted]);
 
-  // Handle chapter changes - ensure seamless transition
+  // Handle chapter or audio segment changes - ensure seamless transition
   useEffect(() => {
-    if (audioRef.current && currentChapter.audioUrl) {
+    const audioUrl = getCurrentAudioUrl();
+    if (audioRef.current && audioUrl) {
       const wasPlaying = isPlaying;
-      audioRef.current.src = currentChapter.audioUrl;
+      audioRef.current.src = audioUrl;
       audioRef.current.load();
       audioRef.current.playbackRate = 0.95;
       setCurrentTime(0);
@@ -95,10 +114,10 @@ export const GlobalAudiobookPlayer = ({
         audioRef.current.play().catch(console.error);
       }
     }
-  }, [currentChapterIndex]);
+  }, [currentChapterIndex, currentAudioIndex]);
 
   const handlePlayPause = useCallback(() => {
-    if (!audioRef.current || !currentChapter.audioUrl) return;
+    if (!audioRef.current || !hasAudio()) return;
 
     if (isPlaying) {
       audioRef.current.pause();
@@ -108,7 +127,7 @@ export const GlobalAudiobookPlayer = ({
         setIsPlaying(true);
       }).catch(console.error);
     }
-  }, [isPlaying, currentChapter.audioUrl]);
+  }, [isPlaying, hasAudio]);
 
   const handleTimeUpdate = () => {
     if (audioRef.current) {
@@ -131,6 +150,8 @@ export const GlobalAudiobookPlayer = ({
   };
 
   const handlePreviousChapter = () => {
+    // Reset audio index when changing chapters
+    setCurrentAudioIndex(0);
     // Find previous chapter with audio
     for (let i = currentChapterIndex - 1; i >= 0; i--) {
       if (chapters[i].audioUrl) {
@@ -141,6 +162,8 @@ export const GlobalAudiobookPlayer = ({
   };
 
   const handleNextChapter = () => {
+    // Reset audio index when changing chapters
+    setCurrentAudioIndex(0);
     // Find next chapter with audio
     for (let i = currentChapterIndex + 1; i < chapters.length; i++) {
       if (chapters[i].audioUrl) {
@@ -151,8 +174,17 @@ export const GlobalAudiobookPlayer = ({
   };
 
   const handleEnded = () => {
-    // Auto-advance to next available chapter
-    handleNextChapter();
+    const urls = currentChapter.audioUrl;
+    
+    // If chapter has multiple audio files and we're not at the last one
+    if (Array.isArray(urls) && currentAudioIndex < urls.length - 1) {
+      // Seamlessly play next segment of same chapter
+      setCurrentAudioIndex(prev => prev + 1);
+    } else {
+      // All segments complete (or single audio), move to next chapter
+      setCurrentAudioIndex(0);
+      handleNextChapter();
+    }
   };
 
   const formatTime = (time: number) => {
@@ -170,14 +202,22 @@ export const GlobalAudiobookPlayer = ({
     onClose();
   };
 
+  const handleChapterSelect = (index: number) => {
+    setCurrentAudioIndex(0); // Reset to first audio segment
+    setCurrentChapterIndex(index);
+    setShowChapterList(false);
+  };
+
   if (!isVisible) return null;
+
+  const currentAudioUrl = getCurrentAudioUrl();
 
   return (
     <>
       {/* Hidden Audio Element */}
       <audio
         ref={audioRef}
-        src={currentChapter.audioUrl || undefined}
+        src={currentAudioUrl || undefined}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
         onEnded={handleEnded}
@@ -205,8 +245,7 @@ export const GlobalAudiobookPlayer = ({
                   key={chapter.id}
                   onClick={() => {
                     if (chapter.audioUrl) {
-                      setCurrentChapterIndex(index);
-                      setShowChapterList(false);
+                      handleChapterSelect(index);
                     }
                   }}
                   disabled={!chapter.audioUrl}
@@ -253,7 +292,7 @@ export const GlobalAudiobookPlayer = ({
               max={duration || 100}
               step={0.1}
               onValueChange={handleSeek}
-              disabled={!currentChapter.audioUrl}
+              disabled={!hasAudio()}
               className="cursor-pointer"
             />
             <div className="flex justify-between text-xs text-orange-300/70 mt-1">
@@ -298,7 +337,7 @@ export const GlobalAudiobookPlayer = ({
               <Button
                 size="icon"
                 onClick={handlePlayPause}
-                disabled={!currentChapter.audioUrl}
+                disabled={!hasAudio()}
                 className="h-12 w-12 rounded-full bg-orange-500 hover:bg-orange-400 text-white disabled:opacity-30"
               >
                 {isPlaying ? (
