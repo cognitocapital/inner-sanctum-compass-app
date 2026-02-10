@@ -10,6 +10,10 @@ import { GlobalAudiobookPlayer } from "@/components/ui/global-audiobook-player";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import PhoenixPath from "./pages/PhoenixPath";
+import QuestView from "./pages/QuestView";
+import MyPhoenixChapters from "./pages/MyPhoenixChapters";
+import Directory from "./pages/Directory";
 import BreathingExercise from "./pages/BreathingExercise";
 import ColdExposure from "./pages/ColdExposure";
 import Dedication from "./pages/Dedication";
@@ -118,9 +122,25 @@ const AppContent = () => {
           {/* Protected routes - require auth or guest mode */}
           <Route path="/dashboard" element={
             <ProtectedRoute>
-              <Dashboard />
+              <PhoenixPath />
             </ProtectedRoute>
           } />
+          <Route path="/phoenix-path" element={
+            <ProtectedRoute>
+              <PhoenixPath />
+            </ProtectedRoute>
+          } />
+          <Route path="/quest/:questKey" element={
+            <ProtectedRoute>
+              <QuestView />
+            </ProtectedRoute>
+          } />
+          <Route path="/my-chapters" element={
+            <ProtectedRoute>
+              <MyPhoenixChapters />
+            </ProtectedRoute>
+          } />
+          <Route path="/directory" element={<Directory />} />
           <Route path="/breathing" element={
             <ProtectedRoute>
               <BreathingExercise />
