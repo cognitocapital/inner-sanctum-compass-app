@@ -119,6 +119,54 @@ export type Database = {
         }
         Relationships: []
       }
+      phoenix_quests: {
+        Row: {
+          book_chapter_ref: number | null
+          completed_at: string | null
+          created_at: string
+          id: string
+          metadata: Json
+          phase: number
+          quest_key: string
+          quest_type: string
+          status: string
+          symptom_tags: string[]
+          updated_at: string
+          user_id: string
+          xp_reward: number
+        }
+        Insert: {
+          book_chapter_ref?: number | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          phase?: number
+          quest_key: string
+          quest_type: string
+          status?: string
+          symptom_tags?: string[]
+          updated_at?: string
+          user_id: string
+          xp_reward?: number
+        }
+        Update: {
+          book_chapter_ref?: number | null
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          metadata?: Json
+          phase?: number
+          quest_key?: string
+          quest_type?: string
+          status?: string
+          symptom_tags?: string[]
+          updated_at?: string
+          user_id?: string
+          xp_reward?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -127,10 +175,13 @@ export type Database = {
           current_week: number | null
           daily_goal_minutes: number | null
           display_name: string | null
+          dominant_symptoms: string[]
+          flame_strength: number
           id: string
           injury_date: string | null
           injury_type: string | null
           onboarding_completed: boolean | null
+          phoenix_phase: number
           primary_goals: string[] | null
           protocol_name: string | null
           protocol_phase: number | null
@@ -145,10 +196,13 @@ export type Database = {
           current_week?: number | null
           daily_goal_minutes?: number | null
           display_name?: string | null
+          dominant_symptoms?: string[]
+          flame_strength?: number
           id: string
           injury_date?: string | null
           injury_type?: string | null
           onboarding_completed?: boolean | null
+          phoenix_phase?: number
           primary_goals?: string[] | null
           protocol_name?: string | null
           protocol_phase?: number | null
@@ -163,10 +217,13 @@ export type Database = {
           current_week?: number | null
           daily_goal_minutes?: number | null
           display_name?: string | null
+          dominant_symptoms?: string[]
+          flame_strength?: number
           id?: string
           injury_date?: string | null
           injury_type?: string | null
           onboarding_completed?: boolean | null
+          phoenix_phase?: number
           primary_goals?: string[] | null
           protocol_name?: string | null
           protocol_phase?: number | null
@@ -215,6 +272,42 @@ export type Database = {
         }
         Relationships: []
       }
+      resource_directory: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          id: string
+          is_verified: boolean
+          name: string
+          region: string
+          tags: Json
+          url: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string
+          id?: string
+          is_verified?: boolean
+          name: string
+          region?: string
+          tags?: Json
+          url?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          id?: string
+          is_verified?: boolean
+          name?: string
+          region?: string
+          tags?: Json
+          url?: string
+        }
+        Relationships: []
+      }
       session_logs: {
         Row: {
           created_at: string | null
@@ -254,6 +347,42 @@ export type Database = {
           notes?: string | null
           user_id?: string
           xp_earned?: number | null
+        }
+        Relationships: []
+      }
+      user_journal_entries: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_shared: boolean
+          mood_tag: string | null
+          phase: number
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_shared?: boolean
+          mood_tag?: string | null
+          phase?: number
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_shared?: boolean
+          mood_tag?: string | null
+          phase?: number
+          title?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
