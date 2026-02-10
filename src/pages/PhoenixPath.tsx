@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Home, LogOut, User, Flame, Zap, BookHeart, ExternalLink } from "lucide-react";
+import { Home, LogOut, User, Flame, Zap, BookHeart, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/use-profile";
 import { usePhoenixPath } from "@/hooks/use-phoenix-path";
@@ -10,14 +10,14 @@ import { PHOENIX_QUESTS, PHASES, getQuestsForPhase, type QuestDefinition } from 
 import { FlameStrength } from "@/components/path/FlameStrength";
 import { QuestNode } from "@/components/path/QuestNode";
 import { QuestCard } from "@/components/path/QuestCard";
-import { toast } from "sonner";
 
 const PhoenixPath = () => {
   const navigate = useNavigate();
   const { user, isGuest, signOut } = useAuth();
   const { profile } = useProfile();
-  const { quests, currentPhase, flameStrength, isLoading, totalXp, completedCount, getQuestStatus, phases } = usePhoenixPath();
+  const { currentPhase, flameStrength, isLoading, totalXp, completedCount, getQuestStatus } = usePhoenixPath();
   const [selectedQuest, setSelectedQuest] = useState<QuestDefinition | null>(null);
+  const [expandedPhase, setExpandedPhase] = useState<number | null>(null);
 
   const handleSignOut = async () => {
     await signOut();
@@ -29,56 +29,54 @@ const PhoenixPath = () => {
     navigate(`/quest/${quest.key}`);
   };
 
-  const phaseColors: Record<number, string> = {
-    1: "from-gray-950 via-gray-900 to-amber-950/40",
-    2: "from-amber-950/40 via-orange-950/50 to-red-950/40",
-    3: "from-red-950/30 via-amber-900/30 to-yellow-950/30",
-    4: "from-yellow-950/20 via-orange-900/20 to-sky-950/30",
-  };
+  // Find the next available quest in current phase
+  const currentPhaseQuests = getQuestsForPhase(currentPhase);
+  const nextQuest = currentPhaseQuests.find(q => {
+    const status = getQuestStatus(q.key);
+    return status === 'available' || status === 'in_progress';
+  });
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-orange-950 flex items-center justify-center">
-        <div className="w-12 h-12 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <Flame className="w-12 h-12 text-primary" />
+        </motion.div>
       </div>
     );
   }
 
+  const currentPhaseData = PHASES[currentPhase - 1];
+  const completedInCurrentPhase = currentPhaseQuests.filter(
+    q => getQuestStatus(q.key) === 'completed'
+  ).length;
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 to-gray-900 text-white relative overflow-hidden">
-      {/* Ambient embers */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={`ember-${i}`}
-            className="absolute w-1 h-1 bg-orange-400 rounded-full animate-ember-float"
-            style={{
-              left: `${10 + i * 12}%`,
-              top: `${30 + (i % 3) * 25}%`,
-              animationDelay: `${i * 0.7}s`,
-              opacity: 0.2 + (i % 3) * 0.15,
-            }}
-          />
-        ))}
+    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-white">
+      {/* Subtle ambient glow */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-orange-500/[0.04] rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 left-1/4 w-[300px] h-[200px] bg-amber-500/[0.03] rounded-full blur-[80px]" />
       </div>
 
-      {/* Header */}
-      <header className="sticky top-0 z-30 bg-gray-950/80 backdrop-blur-md border-b border-white/5">
+      {/* Minimal header */}
+      <header className="sticky top-0 z-30 bg-gray-950/90 backdrop-blur-md border-b border-white/[0.04]">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <Button asChild variant="ghost" size="sm" className="text-white/60 hover:text-white">
-            <Link to="/"><Home className="w-4 h-4 mr-2" />Home</Link>
+          <Button asChild variant="ghost" size="sm" className="text-white/50 hover:text-white">
+            <Link to="/"><Home className="w-4 h-4" /></Link>
           </Button>
+          <div className="flex items-center gap-1.5 text-sm text-white/40">
+            <Flame className="w-3.5 h-3.5 text-orange-400" />
+            <span className="font-medium text-orange-300">{totalXp} XP</span>
+          </div>
           <div className="flex items-center gap-2">
             {user && !isGuest ? (
-              <>
-                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20">
-                  <User className="w-4 h-4 text-orange-400" />
-                  <span className="text-sm text-white/80">{profile?.display_name || user.email?.split('@')[0]}</span>
-                </div>
-                <Button variant="ghost" size="sm" onClick={handleSignOut} className="text-white/60 hover:text-white">
-                  <LogOut className="w-4 h-4" />
-                </Button>
-              </>
+              <Button variant="ghost" size="sm" onClick={handleSignOut} className="text-white/50 hover:text-white">
+                <LogOut className="w-4 h-4" />
+              </Button>
             ) : isGuest ? (
               <Button asChild variant="ghost" size="sm" className="text-orange-400">
                 <Link to="/auth">Sign In</Link>
@@ -88,122 +86,234 @@ const PhoenixPath = () => {
         </div>
       </header>
 
-      <div className="container mx-auto px-4 pb-24 relative z-10">
-        {/* Hero Stats */}
+      <div className="container mx-auto px-4 pb-32 relative z-10 max-w-lg">
+        {/* Hero — Current Phase */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="py-6 space-y-4"
+          className="pt-8 pb-6 text-center"
         >
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/20 border border-orange-500/30 mb-3">
-              <Flame className="w-4 h-4 text-orange-400" />
-              <span className="text-sm text-orange-300 font-medium">The Phoenix Path</span>
+          <motion.div
+            animate={{ scale: [1, 1.08, 1] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            className="inline-block mb-4"
+          >
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/20 flex items-center justify-center">
+              <Flame className="w-8 h-8 text-orange-400" style={{ filter: 'drop-shadow(0 0 8px hsl(25, 90%, 55%))' }} />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-serif text-white">
-              {PHASES[currentPhase - 1]?.name}
-            </h1>
-            <p className="text-white/50 text-sm mt-1">{PHASES[currentPhase - 1]?.subtitle}</p>
-          </div>
+          </motion.div>
 
-          {/* Stats row */}
-          <div className="flex items-center justify-center gap-6 text-sm">
-            <div className="flex items-center gap-1.5 text-orange-400">
-              <Zap className="w-4 h-4" />
-              <span className="font-medium">{totalXp} XP</span>
-            </div>
-            <div className="text-white/40">
-              {completedCount}/{PHOENIX_QUESTS.length} quests
-            </div>
-          </div>
+          <h1 className="text-2xl font-serif text-white mb-1">
+            {currentPhaseData?.name}
+          </h1>
+          <p className="text-sm text-white/40 mb-5">{currentPhaseData?.subtitle}</p>
 
-          {/* Flame Strength */}
-          <div className="max-w-md mx-auto">
+          {/* Flame Strength — clean and prominent */}
+          <div className="max-w-xs mx-auto">
             <FlameStrength
               value={flameStrength}
               phase={currentPhase}
-              phaseName={PHASES[currentPhase - 1]?.name || ""}
+              phaseName={currentPhaseData?.name || ""}
             />
+          </div>
+
+          <p className="text-xs text-white/30 mt-3">
+            {completedInCurrentPhase} of {currentPhaseQuests.length} quests completed
+          </p>
+        </motion.div>
+
+        {/* Next Quest — Hero Card */}
+        {nextQuest && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mb-8"
+          >
+            <p className="text-xs text-white/30 uppercase tracking-widest mb-3 px-1">Continue your journey</p>
+            <button
+              onClick={() => setSelectedQuest(nextQuest)}
+              className="w-full text-left rounded-2xl p-5 bg-gradient-to-br from-orange-500/10 to-amber-500/5 border border-orange-500/20 hover:border-orange-500/40 transition-all duration-300 group"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <span className="text-[10px] uppercase tracking-wider text-orange-400/70 font-medium">
+                    {nextQuest.type} quest
+                  </span>
+                  <h3 className="text-lg font-serif text-white mt-1 group-hover:text-orange-200 transition-colors">
+                    {nextQuest.title}
+                  </h3>
+                  <p className="text-sm text-white/40 mt-1 line-clamp-2">{nextQuest.description}</p>
+                  <div className="flex items-center gap-3 mt-3 text-xs text-white/30">
+                    <span className="flex items-center gap-1 text-orange-400/70">
+                      <Zap className="w-3 h-3" />{nextQuest.xpReward} XP
+                    </span>
+                    <span>~{nextQuest.estimatedMinutes} min</span>
+                  </div>
+                </div>
+                <div className="flex-shrink-0 mt-2">
+                  <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center group-hover:bg-orange-500/30 transition-colors">
+                    <ChevronDown className="w-5 h-5 text-orange-400 rotate-[-90deg]" />
+                  </div>
+                </div>
+              </div>
+            </button>
+          </motion.div>
+        )}
+
+        {/* Current Phase Quests — Compact Grid */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="mb-8"
+        >
+          <p className="text-xs text-white/30 uppercase tracking-widest mb-3 px-1">
+            {currentPhaseData?.name} quests
+          </p>
+          <div className="grid grid-cols-2 gap-2">
+            {currentPhaseQuests.map((quest) => {
+              const status = getQuestStatus(quest.key);
+              const isCompleted = status === 'completed';
+              const isAvailable = status === 'available' || status === 'in_progress';
+              const isNext = quest.key === nextQuest?.key;
+
+              return (
+                <button
+                  key={quest.key}
+                  onClick={() => isAvailable && setSelectedQuest(quest)}
+                  disabled={status === 'locked'}
+                  className={`text-left rounded-xl p-3 transition-all duration-200 border ${
+                    isNext
+                      ? 'border-orange-500/30 bg-orange-500/10'
+                      : isCompleted
+                      ? 'border-white/[0.06] bg-white/[0.03]'
+                      : isAvailable
+                      ? 'border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/10'
+                      : 'border-transparent bg-white/[0.01] opacity-30 cursor-not-allowed'
+                  }`}
+                >
+                  <div className="flex items-center gap-2 mb-1.5">
+                    {isCompleted && (
+                      <div className="w-4 h-4 rounded-full bg-orange-500/30 flex items-center justify-center">
+                        <span className="text-[8px] text-orange-300">✓</span>
+                      </div>
+                    )}
+                    <span className="text-[10px] text-white/30 uppercase tracking-wider capitalize">{quest.type}</span>
+                  </div>
+                  <h4 className={`text-xs font-medium leading-tight line-clamp-2 ${
+                    isCompleted ? 'text-white/40' : isAvailable ? 'text-white/80' : 'text-white/20'
+                  }`}>
+                    {quest.title}
+                  </h4>
+                  <span className="text-[10px] text-orange-400/50 mt-1 block">{quest.xpReward} XP</span>
+                </button>
+              );
+            })}
           </div>
         </motion.div>
 
-        {/* Phase Sections */}
-        {PHASES.map((phase) => {
-          const phaseQuests = getQuestsForPhase(phase.phase);
-          const isCurrentPhase = phase.phase === currentPhase;
-          const isUnlocked = phase.phase <= currentPhase;
-          const completedInPhase = phaseQuests.filter(
-            q => getQuestStatus(q.key) === 'completed'
-          ).length;
+        {/* Other Phases — Collapsed */}
+        <div className="space-y-2 mb-8">
+          <p className="text-xs text-white/30 uppercase tracking-widest mb-3 px-1">All phases</p>
+          {PHASES.map((phase) => {
+            if (phase.phase === currentPhase) return null;
+            const phaseQuests = getQuestsForPhase(phase.phase);
+            const isUnlocked = phase.phase <= currentPhase;
+            const completedInPhase = phaseQuests.filter(q => getQuestStatus(q.key) === 'completed').length;
+            const isExpanded = expandedPhase === phase.phase;
 
-          return (
-            <motion.section
-              key={phase.phase}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: phase.phase * 0.15 }}
-              className={`mb-8 ${!isUnlocked ? 'opacity-40' : ''}`}
-            >
-              {/* Phase header */}
-              <div className={`sticky top-16 z-20 py-3 mb-4 bg-gradient-to-r ${phaseColors[phase.phase] || ''} backdrop-blur-sm rounded-xl px-4 border ${isCurrentPhase ? 'border-orange-500/30' : 'border-white/5'}`}>
-                <div className="flex items-center justify-between">
+            return (
+              <div key={phase.phase} className={`rounded-xl border transition-all ${
+                isUnlocked ? 'border-white/[0.06] bg-white/[0.02]' : 'border-white/[0.03] bg-white/[0.01] opacity-40'
+              }`}>
+                <button
+                  onClick={() => isUnlocked && setExpandedPhase(isExpanded ? null : phase.phase)}
+                  disabled={!isUnlocked}
+                  className="w-full text-left px-4 py-3 flex items-center justify-between"
+                >
                   <div>
-                    <h2 className="text-lg font-serif text-white">{phase.name}</h2>
-                    <p className="text-xs text-white/50">{phase.subtitle}</p>
+                    <h3 className="text-sm font-medium text-white/70">{phase.name}</h3>
+                    <p className="text-[10px] text-white/30">{phase.subtitle} · {completedInPhase}/{phaseQuests.length}</p>
                   </div>
-                  <span className="text-xs text-white/40">
-                    {completedInPhase}/{phaseQuests.length}
-                  </span>
-                </div>
+                  {isUnlocked && (
+                    <ChevronDown className={`w-4 h-4 text-white/20 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                  )}
+                </button>
+
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-4 pb-3 grid grid-cols-2 gap-2">
+                        {phaseQuests.map((quest) => {
+                          const status = getQuestStatus(quest.key);
+                          const isCompleted = status === 'completed';
+                          const isAvailable = status === 'available' || status === 'in_progress';
+
+                          return (
+                            <button
+                              key={quest.key}
+                              onClick={() => isAvailable && setSelectedQuest(quest)}
+                              disabled={status === 'locked'}
+                              className={`text-left rounded-lg p-2.5 transition-all border ${
+                                isCompleted
+                                  ? 'border-white/[0.06] bg-white/[0.03]'
+                                  : isAvailable
+                                  ? 'border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05]'
+                                  : 'border-transparent opacity-30'
+                              }`}
+                            >
+                              <span className="text-[10px] text-white/30 capitalize">{quest.type}</span>
+                              <h4 className={`text-xs leading-tight line-clamp-2 mt-0.5 ${
+                                isCompleted ? 'text-white/40' : isAvailable ? 'text-white/70' : 'text-white/20'
+                              }`}>
+                                {quest.title}
+                              </h4>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
+            );
+          })}
+        </div>
 
-              {/* Quest nodes - vertical path */}
-              <div className="relative pl-6 pr-2">
-                {/* Vertical line */}
-                <div className="absolute left-[calc(50%)] top-0 bottom-0 w-px bg-gradient-to-b from-orange-500/20 via-orange-500/10 to-transparent" />
-
-                <div className="space-y-3">
-                  {phaseQuests.map((quest, idx) => (
-                    <QuestNode
-                      key={quest.key}
-                      quest={quest}
-                      status={getQuestStatus(quest.key)}
-                      index={idx}
-                      onSelect={setSelectedQuest}
-                    />
-                  ))}
-                </div>
-              </div>
-            </motion.section>
-          );
-        })}
-
-        {/* Bottom nav buttons */}
-        <div className="flex gap-3 mt-8">
+        {/* Bottom links — minimal */}
+        <div className="flex gap-2">
           <Button
             asChild
-            variant="outline"
-            className="flex-1 border-white/10 text-white/70 hover:text-white hover:bg-white/5"
+            variant="ghost"
+            size="sm"
+            className="flex-1 text-white/30 hover:text-white/60 text-xs"
           >
             <Link to="/my-chapters">
-              <BookHeart className="w-4 h-4 mr-2" />
-              My Phoenix Chapters
+              <BookHeart className="w-3.5 h-3.5 mr-1.5" />
+              My Chapters
             </Link>
           </Button>
           <Button
             asChild
-            variant="outline"
-            className="flex-1 border-white/10 text-white/70 hover:text-white hover:bg-white/5"
+            variant="ghost"
+            size="sm"
+            className="flex-1 text-white/30 hover:text-white/60 text-xs"
           >
             <Link to="/directory">
-              <ExternalLink className="w-4 h-4 mr-2" />
-              Resource Directory
+              <ExternalLink className="w-3.5 h-3.5 mr-1.5" />
+              Resources
             </Link>
           </Button>
         </div>
       </div>
 
-      {/* Quest preview bottom sheet */}
+      {/* Quest preview */}
       <QuestCard
         quest={selectedQuest}
         isOpen={!!selectedQuest}
