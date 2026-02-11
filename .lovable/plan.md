@@ -1,258 +1,93 @@
 
 
-# The Phoenix Path -- Refined Implementation Plan
+# Fix Manuscript Content: Word-for-Word Alignment with "What a Journey 6.0"
 
-## Overview
+## The Problem
 
-Transform the platform from a linear 20-week protocol into **The Phoenix Path** -- a flexible, quest-based recovery system with four phases (Ashes, Forge, Ascent, Soar). The book "What a Journey" is the emotional backbone, not just content to convert. Users choose quests freely within their phase, with a "Flame Strength" momentum system replacing rigid phase gates.
+**Every chapter page (Chapter 1 through Chapter 20 + Acknowledgments) contains AI-generated summaries instead of the actual manuscript text.** The content is fabricated -- it loosely follows the themes but uses entirely different words, misses key details, and distorts the author's voice.
 
----
+For example:
+- **Chapter 1 (current):** "Australia Day 2024. It was the day that my entire life would change forever..." (AI-generated)
+- **Chapter 1 (manuscript):** "Australia Day dawned bright and clear; the sun was already warm on my skin. We were at a mate's country property in the Sunshine Coast Hinterland..." (your actual words)
 
-## Architecture: How It Works
+The Dedication, Prologue, and Introduction pages appear correct and match the PDF.
 
-The existing `protocolWeeks.ts` (20 weeks of linear chapter + breathing + challenge + reflection) gets decomposed into ~100 individual quests spread across 4 phases. Users pick and complete quests in any order within their current phase. A "Flame Strength" meter (not a strict gate) determines phase progression -- low-energy days don't lock users out, they just suggest gentler quests.
+## Where the Change Happened
 
-```text
-Phase 1: THE ASHES (Survival & Awakening)
-  Chapters 1-4 narratives, basic breathing, grounding, first gratitude
-  Accent: dark gray + amber embers
+These chapter files were originally created with placeholder/summarized content -- they were never populated with the actual manuscript text. This is a **content issue from the initial build**, not a regression from the Phoenix Path changes.
 
-Phase 2: THE FORGE (Rebuilding & Emotional Work)  
-  Chapters 5-9 narratives, emotional awareness, cognitive training, nutrition, decisions
-  Accent: deep orange + red forge glow
+The Phoenix Path quest system (`phoenixQuests.ts`) also has fabricated `manuscriptExcerpt` fields (e.g., "What a journey. My life, my world, everything I knew changed in an instant..." -- this text doesn't exist in the book). These need correcting too.
 
-Phase 3: THE ASCENT (Independence & Inner Work)
-  Chapters 10-13 narratives, observer practice, mindfulness, independence, gratitude depth
-  Accent: gold + warm white
+## Affected Files (22 total)
 
-Phase 4: THE SOAR (Legacy & Thriving)
-  Chapters 14-15+ narratives, meaning-making, vision, advocacy, mentoring, "My Phoenix Chapters"
-  Accent: bright orange + sky blue + flying phoenix
-```
+### Chapter Pages (20 files -- full content replacement needed):
+| File | Manuscript Source | Status |
+|------|-------------------|--------|
+| `src/pages/Chapter1.tsx` | Chapter 1: Australia Day (PDF pages 5-5) | Wrong content |
+| `src/pages/Chapter2.tsx` | Chapter 2: Hospital Daze (PDF pages 6-7) | Wrong content |
+| `src/pages/Chapter3.tsx` | Chapter 3: The Gun to My Head (PDF pages 8-9) | Wrong content |
+| `src/pages/Chapter4.tsx` | Chapter 4: Finding My Footing (PDF pages 10-11) | Wrong content |
+| `src/pages/Chapter5.tsx` | Chapter 5: Choose Your Own Adventure (PDF page 12) | Wrong content |
+| `src/pages/Chapter6.tsx` | Chapter 6: The Roller Coaster (PDF pages 13-14) | Wrong content |
+| `src/pages/Chapter7.tsx` | Chapter 7: Mind Games (PDF page 15) | Wrong content |
+| `src/pages/Chapter8.tsx` | Chapter 8: Nourishing the Body (PDF page 16) | Wrong content |
+| `src/pages/Chapter9.tsx` | Chapter 9: The Business Dilemma (PDF pages 17-18) | Wrong content |
+| `src/pages/Chapter10.tsx` | Chapter 10: A New Chapter (PDF pages 19-20) | Wrong content |
+| `src/pages/Chapter11.tsx` | Chapter 11: The Inner Work (PDF pages 21-23) | Wrong content |
+| `src/pages/Chapter12.tsx` | Chapter 12: Reclaiming Independence (PDF page 24) | Wrong content |
+| `src/pages/Chapter13.tsx` | Chapter 13: The Power of Gratitude (PDF page 25) | Wrong content |
+| `src/pages/Chapter14.tsx` | Chapter 14: The Universe's Message (PDF pages 26-27) | Wrong content |
+| `src/pages/Chapter15.tsx` | Chapter 15: Still Standing (PDF pages 28-29) | Wrong content |
+| `src/pages/Chapter16.tsx` | Chapter 16: Looking Forward (PDF pages 30-31) | Wrong content |
+| `src/pages/Chapter17.tsx` | Chapter 17: The Torch Rekindled (PDF page 32) | Wrong content |
+| `src/pages/Chapter18.tsx` | Chapter 18: Unwritten Chapters (PDF page 33) | Wrong content |
+| `src/pages/Chapter19.tsx` | Chapter 19: A New Resource (PDF page 34) | Wrong content |
+| `src/pages/Chapter20.tsx` | Chapter 20: The Next Page (PDF page 35) | Wrong content |
 
----
+### Other files:
+| File | Issue |
+|------|-------|
+| `src/pages/Chapter21.tsx` | Contains fabricated Acknowledgments text -- needs to match PDF pages 36-38 |
+| `src/data/phoenixQuests.ts` | `manuscriptExcerpt` and `quote` fields contain fabricated text for all 20 narrative quests |
 
-## Phase 1 MVP: Build Order (7 Steps)
+### Files NOT affected (already correct):
+- `src/pages/Dedication.tsx` -- matches PDF
+- `src/pages/Prologue.tsx` -- matches PDF
+- `src/pages/Introduction.tsx` -- matches PDF
 
-### Step 1: Database Migrations
+## The Fix
 
-**New table: `phoenix_quests`**
-- `id` (uuid, PK)
-- `user_id` (uuid, not null)
-- `quest_key` (text) -- e.g., "narrative_ch1", "breathing_box", "toolkit_energy_budget"
-- `quest_type` (text) -- narrative, breathing, cold, cognitive, mindfulness, reflection, toolkit, echo
-- `phase` (integer, 1-4)
-- `status` (text) -- locked, available, in_progress, completed
-- `xp_reward` (integer, default 50)
-- `completed_at` (timestamptz, nullable)
-- `metadata` (jsonb, default '{}') -- quest-specific data (reflection text, scores, etc.)
-- `book_chapter_ref` (integer, nullable) -- links to manuscript chapter number
-- `symptom_tags` (text[], default '{}') -- e.g., ['memory', 'fatigue', 'vertigo']
-- `created_at`, `updated_at`
-- RLS: users CRUD their own rows only
+### Step 1: Replace chapter content (Chapters 1-20 + Acknowledgments)
+For each chapter file, replace the `<p>` tag content within the `<article>` section with the exact, word-for-word text from the PDF. Preserve:
+- The page layout/structure (background, phoenix header, navigation buttons)
+- Chapter titles and subtitles (these are already correct)
+- Previous/Next chapter navigation links
 
-**New table: `user_journal_entries`** (My Phoenix Chapters)
-- `id` (uuid, PK)
-- `user_id` (uuid, not null)
-- `phase` (integer, 1-4)
-- `title` (text)
-- `content` (text)
-- `mood_tag` (text, nullable)
-- `is_shared` (boolean, default false) -- for anonymous "echoes"
-- `created_at`, `updated_at`
-- RLS: users CRUD own; public read where `is_shared = true`
+Only the paragraph content between the subtitle and the navigation buttons changes.
 
-**New table: `resource_directory`**
-- `id` (uuid, PK)
-- `name` (text)
-- `category` (text) -- telehealth, support_group, financial, app, organization, toolkit
-- `description` (text)
-- `url` (text)
-- `region` (text) -- australia, international, global
-- `tags` (jsonb, default '[]')
-- `is_verified` (boolean, default true)
-- `created_at`
-- RLS: public read for all
+Some chapters are long (e.g., Chapter 11 spans 3 PDF pages with subheadings). These will need multiple paragraphs and may include subheadings (like "Meditation and Mindfulness" and "Practical Tools for You" in Chapter 11).
 
-**Update `profiles` table:**
-- Add `phoenix_phase` (integer, default 1)
-- Add `flame_strength` (integer, default 0) -- momentum meter (0-100 per phase)
-- Add `dominant_symptoms` (text[], default '{}') -- for symptom pathway branching
+### Step 2: Fix phoenixQuests.ts excerpts
+Update the `manuscriptExcerpt` and `quote` fields in all narrative quest definitions to use actual lines from the corresponding chapters in the PDF.
 
-### Step 2: Quest Data Structure
+### Step 3: Verify chapter numbering alignment
+The PDF has 20 chapters (1-20) plus Acknowledgments. The codebase has Chapter1-Chapter21, where Chapter21 is Acknowledgments. This mapping is correct and will be preserved.
 
-Create `src/data/phoenixQuests.ts` containing all quest definitions. This file maps the manuscript chapters, existing breathing patterns, challenges, and reflections into quest objects, plus adds new Synapse-inspired toolkit quests.
+## How to Prevent This in Future
 
-**Quest categories per phase (approximately):**
+The root cause is that chapter content was auto-generated instead of being sourced from the manuscript. Going forward:
+- All narrative content must come directly from the uploaded manuscript PDF
+- Any content changes should be compared against the source document
+- The chapter pages should be treated as "read-only content" that mirrors the published book exactly
 
-| Phase | Narrative | Breathing | Challenge | Reflection | Toolkit | Echo | Total |
-|-------|-----------|-----------|-----------|------------|---------|------|-------|
-| Ashes (1) | 4 | 4 | 4 | 4 | 3 | 2 | ~21 |
-| Forge (2) | 5 | 5 | 5 | 5 | 4 | 2 | ~26 |
-| Ascent (3) | 4 | 4 | 4 | 4 | 4 | 3 | ~23 |
-| Soar (4) | 4 | 4 | 4 | 4 | 5 | 3 | ~24 |
+## Implementation Approach
 
-**New toolkit quests (Synapse-inspired):**
-- "Build a Morning Routine Anchor" (Phase 1)
-- "Create Your Energy Budget" (Phase 1) -- energy bank account visual
-- "Memory System Builder" (Phase 2)
-- "Push vs Rest Decision Tree" (Phase 2)
-- "Pacing Calendar" (Phase 3)
-- "Smoothie Recipe Builder" (Phase 2, taste/smell specific)
-- "Weekly Energy Review" (Phase 3)
-- "Design Your Personal Protocol" (Phase 4)
-- "Write Your Advocacy Story" (Phase 4)
-- "Mentor's Guide: Supporting a New Phoenix" (Phase 4)
+Due to the volume of content (20 chapters worth of text), this will be done in batches:
+1. Chapters 1-5 (Phase 1: The Ashes)
+2. Chapters 6-10 (Phase 2: The Forge)
+3. Chapters 11-15 (Phase 3: The Ascent)
+4. Chapters 16-20 + Acknowledgments (Phase 4: The Soar)
+5. phoenixQuests.ts excerpt corrections
 
-**New echo quests:**
-- "Read a Peer Story" -- shows anonymized journal entries from other users
-- "Send Encouragement" -- write a short message attached to a shared story
-- "Share Your Chapter" -- share one of your journal entries anonymously
-
-### Step 3: Phoenix Path Map Page
-
-Create `src/pages/PhoenixPath.tsx` -- the signature page replacing `/dashboard`.
-
-**Layout (vertical scrollable timeline, mobile-first):**
-- Top: User's flame strength meter + current phase name + XP total
-- Scrollable vertical path with 4 phase sections
-- Each phase shows as a distinct visual zone (color transitions as you scroll)
-- Quest nodes appear as glowing circles along the path (left/right alternating)
-- Completed quests: solid orange/gold with check
-- Available quests: pulsing ember glow, tappable
-- Locked quests (next phase): dimmed with lock icon
-- Phase transitions marked by phoenix milestone art (wings unfurling animation on unlock)
-- Bottom: Quick access buttons for "My Phoenix Chapters" journal and Directory
-
-**Key interaction:** Tapping a quest node opens a bottom sheet / modal with quest preview (title, type icon, XP value, book chapter reference, estimated time). "Begin Quest" navigates to `QuestView`.
-
-**Flame Strength mechanics:**
-- Completing a quest adds flame points (proportional to XP)
-- Daily check-in adds flame points
-- Missing days gently reduces flame (but never locks phases)
-- Reaching 80% flame in a phase shows "Phase Transition" celebration and unlocks next phase
-- Users can always revisit earlier phases ("returning to the ashes to rise stronger")
-
-### Step 4: Quest Execution Page
-
-Create `src/pages/QuestView.tsx` -- a universal quest runner.
-
-Based on `quest_type`, renders the appropriate experience:
-- **narrative**: Chapter text + audio player (reuses existing `WeeklyChapter` audio pattern) + reflection prompt ("How does this mirror your experience?")
-- **breathing**: Guided breathing session (reuses existing `BreathingExercise` page components)
-- **cold**: Cold exposure timer (reuses existing `ColdExposure` components)
-- **cognitive**: N-Back or decision framework (reuses existing `MindTraining` components)
-- **mindfulness**: Guided journaling or meditation prompts
-- **reflection**: Text prompt with rich text area, saves to quest metadata
-- **toolkit**: Interactive step-by-step exercise (energy budget planner, routine builder, etc.)
-- **echo**: Display a peer story + response prompt
-
-On completion: XP animation, flame strength update, toast celebration, return to Phoenix Path with node now glowing gold.
-
-### Step 5: My Phoenix Chapters (Journal)
-
-Create `src/pages/MyPhoenixChapters.tsx` -- personal narrative journal.
-
-- Users write their own story entries parallel to book chapters
-- Each entry tagged with current phase
-- Option to share anonymously as "echoes" for other users' echo quests
-- Simple, clean writing interface (large text area, mood tag selector)
-- Entry list view showing all past entries with phase color coding
-
-### Step 6: Resource Directory
-
-Create `src/pages/Directory.tsx` with initial data seed.
-
-**Categories:**
-- Organizations: Synapse (synapse.org.au), Brain Injury Australia, IBIA, BrainLine
-- Telehealth: listed by region
-- Apps: recommended TBI/recovery apps
-- Support Groups: online peer communities
-- Financial: NDIS info, disability support
-- Toolkits: links to Synapse's practical guides
-
-**Features:**
-- Search bar with category filter chips
-- Region filter (Australia, International)
-- Each resource card: name, description, category badge, link, verified badge
-- Seeded with ~30 initial resources
-
-### Step 7: Navigation and Rebrand
-
-**Route changes:**
-- `/phoenix-path` -- main authenticated hub (new)
-- `/quest/:questKey` -- quest execution (new)
-- `/my-chapters` -- journal (new)
-- `/directory` -- resource directory (new)
-- `/dashboard` -- redirects to `/phoenix-path`
-
-**Landing page (`Index.tsx`) updates:**
-- Rename "Yellow Brick Road" button to "The Phoenix Path" with phoenix-themed gradient (orange-to-gold)
-- Add tagline: "Rising After TBI -- Your personalized roadmap"
-- Update CTA styling to match new brand
-
-**Onboarding updates:**
-- Add symptom selection step (vertigo, memory, taste/smell, fatigue, emotional, cognitive fog)
-- Selected symptoms stored in `profiles.dominant_symptoms`
-- Used to pre-recommend relevant quests and surface symptom-specific toolkit quests
-- Remove rigid "20-week protocol" language, replace with "Your Phoenix Path"
-
----
-
-## What Gets Preserved
-
-- All existing chapter pages (`/chapter-1` through `/chapter-21`) remain accessible
-- All existing module pages (breathing, cold exposure, mind training, etc.) remain as standalone tools
-- Existing `week_progress` table kept for backward compatibility (legacy data)
-- Audio files and audiobook player untouched
-- All existing UI components (cards, buttons, etc.) reused
-
-## What Gets Replaced
-
-- `/dashboard` page redirects to `/phoenix-path`
-- Linear week-by-week progression replaced by quest freedom within phases
-- `JourneyRoad.tsx` (linear week nodes) replaced by vertical phase map
-- `WeekComplete.tsx` replaced by phase transition celebrations
-
-## Non-Linear Recovery Handling
-
-- No hard phase locks -- flame strength is a gentle momentum meter
-- Low-energy days: daily check-in detects low scores and suggests restorative quests (short breathing, gratitude micro-practice, "sit with discomfort" from Chapter 3)
-- Regression is celebrated: "Returning to the ashes makes your next rise stronger"
-- "Brain break" prompts after 10-15 minutes of active questing
-
-## Files Created
-
-| File | Purpose |
-|------|---------|
-| `src/data/phoenixQuests.ts` | All quest definitions with book chapter mappings |
-| `src/data/directoryData.ts` | Curated resource directory entries |
-| `src/pages/PhoenixPath.tsx` | Main journey map page |
-| `src/pages/QuestView.tsx` | Universal quest execution |
-| `src/pages/MyPhoenixChapters.tsx` | Personal narrative journal |
-| `src/pages/Directory.tsx` | Resource directory |
-| `src/components/path/PhaseMap.tsx` | Visual vertical path with 4 phases |
-| `src/components/path/QuestNode.tsx` | Individual quest node on map |
-| `src/components/path/QuestCard.tsx` | Quest preview bottom sheet |
-| `src/components/path/FlameStrength.tsx` | Momentum meter component |
-| `src/components/path/PhaseTransition.tsx` | Phase unlock celebration |
-| `src/components/path/ToolkitExercise.tsx` | Interactive toolkit quest renderer |
-| `src/components/directory/ResourceCard.tsx` | Directory resource card |
-| `src/hooks/use-phoenix-path.ts` | Quest state + flame strength management |
-
-## Files Modified
-
-| File | Change |
-|------|---------|
-| `src/App.tsx` | Add new routes, redirect `/dashboard` |
-| `src/pages/Index.tsx` | Rebrand button + tagline |
-| `src/components/onboarding/OnboardingFlow.tsx` | Add symptom selection, Phoenix Path language |
-
----
-
-## Future Phases (Not Built Now)
-
-- **Phase 2**: AI-powered quest recommendations using daily check-in data, peer matching, community forums
-- **Phase 3**: Carer/supporter view, companion AI, advanced analytics, exportable clinical reports
-- **Branding**: "The Phoenix Path by What A Journey" trademark filing
+Each batch will copy the exact text from the PDF into the corresponding TSX files, paragraph by paragraph, preserving the existing page structure and styling.
 
