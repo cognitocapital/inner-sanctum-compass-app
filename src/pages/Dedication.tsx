@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,6 +6,7 @@ import { ArrowRight, ArrowLeft, Headphones } from "lucide-react";
 import { useOpenAudiobook } from "@/hooks/use-audiobook";
 
 const Dedication = () => {
+    useEffect(() => { window.scrollTo(0, 0); }, []);
     const openAudiobook = useOpenAudiobook();
     
     return (

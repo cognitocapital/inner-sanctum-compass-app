@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const Prologue = () => {
+  useEffect(() => { window.scrollTo(0, 0); }, []);
   const [showIntro, setShowIntro] = useState(true);
 
   // Video Intro - auto-plays immediately

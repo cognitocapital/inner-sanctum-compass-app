@@ -11,6 +11,8 @@ const Disclaimer = () => {
   const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
