@@ -69,15 +69,23 @@ const Chapter7 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              One of the most frustrating aspects of my injury was the cognitive fallout. My concentration was shattered. I couldn't hold a thought for long, couldn't follow a conversation without getting lost. Memory was patchy at best. Reading—something I once loved—was nearly impossible. My brain just wouldn't cooperate.
+              The physical pain of the injury—the headaches, the vertigo—those were tough, no doubt. But the mental challenges, the "mind games" my brain was playing on me, those were in a different league altogether. It was like wading through a thick fog, a constant state of mental fuzziness that made even the simplest tasks feel like climbing Mount Everest.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              I remember trying to respond to a simple email. It took me an hour. An hour for a few sentences. I felt defeated, ashamed. But I kept at it. Cognitive exercises, word games, puzzles—I did them all. Some days the fog lifted; other days, it settled thick. But I refused to give up on my mind.
+              My ability to concentrate had taken a major hit. I could be in the middle of something, like working on a quote for a client, and suddenly, my brain would just… shut down. It wasn't just fatigue; it was like a switch had been flipped. I'd have to close my laptop, walk away, and do something completely different, just to give my brain a chance to reset. Interruptions were another major problem. The slightest distraction—a question from one of the kids, a phone call, even just trying to remove a highlight from a document—could completely derail my train of thought, leaving me frustrated and struggling to regain my focus.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              My memory wasn't much better. I'd walk into a room and forget why I was there. I'd struggle to recall words, names, appointments. It was like my brain was a sieve, information just slipping through the holes. It was impacting my ability to run my business. My executive function—my ability to plan, organize, make decisions, and manage my time—was nowhere near where it was pre-accident. I felt like an underperforming employee in my own life, constantly falling short of my own expectations.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              One incident, in particular, stands out as a stark example of just how impaired I was. I was trying to send an email, a simple task I'd done thousands of times before. But I couldn't, for the life of me, figure out how to open a new message, how to create an email. I sat there, staring at the screen, feeling a mix of frustration and disbelief. It was embarrassing, to be honest. To be so utterly defeated by something so basic.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              Slowly, I regained small pieces of my mental sharpness. It wasn't a miracle—just stubborn effort, day after day. Each tiny improvement reminded me that I was still in there, fighting to come back.
+              These cognitive challenges weren't just frustrating; they were chipping away at my sense of self. I was used to being capable, efficient, on top of things. Now, I felt like a shadow of my former self, struggling to keep up with the demands of daily life, let alone the complexities of running a business. Those cognitive challenges were some of the most insidious aspects of the injury. They chipped away at my confidence, my sense of self. But they also taught me the importance of patience, persistence, and adapting to a new way of working and thinking.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

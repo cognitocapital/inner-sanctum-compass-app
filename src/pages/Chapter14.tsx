@@ -69,15 +69,27 @@ const Chapter14 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              Along the way, I met some remarkable people who seemed to appear at just the right time. One was Wendy, a Bowen therapist who became a guide on my healing journey. She helped me see the accident not just as a tragedy, but as a wake-up call. Maybe the universe was telling me to slow down, to reassess what truly mattered.
+              Sometimes, it takes a major disruption, a metaphorical earthquake, to shake us out of our complacency and force us to re-evaluate our lives. For me, that earthquake was a literal blow to the head. But in the aftermath of the accident, amidst the pain and the uncertainty, I began to glimpse a deeper meaning, a message from the universe, if you will.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              I started to think about purpose. Before the accident, I was always chasing—more work, more success, more busy-ness. Now, I wondered: what was all that for? My injury forced me to stop and ask hard questions. And in the stillness, I began to find answers.
+              It was during a session with Wendy, a Bowen therapist and spiritual healer, that this message began to take shape. I'd gone to her seeking relief from the physical tension I was carrying, but what I found was something much more profound. I was initially sceptical but open to alternative healing modalities. Wendy, with her gentle demeanour and insightful questions, had a way of cutting through the noise and getting to the heart of the matter.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              As she worked on my body, we talked. She explained how she had hurt her back and saw it as the universe forcing her to stop. She had unresolved emotions relating to her late husband, who had passed a year or so prior. She believed those unresolved emotions were the root cause of her physical ailment. Then, she asked me a question that stopped me in my tracks: "What was the purpose of your injury? Why did you need to stop?"
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              At first, the question felt too big, too complicated to answer. I fumbled for a response, unsure of what she was getting at. But as I reflected on it, as I allowed the question to sink in, a realization began to dawn on me. Wendy, like my psychiatrist, affirmed that I was doing well in my recovery, and both suggested I was operating at a higher level of consciousness than before the accident.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              Before the accident, I was living a relatively unconscious life. I was caught up in the busyness of work, family, and the daily grind. I was going through the motions, not really paying attention to the deeper currents of my life. The accident, as devastating as it was, forced me to stop, to turn inward, to re-evaluate my priorities. It was a wake-up call, a harsh but necessary reminder that I wasn't living as fully, as consciously, as I could be. It forced me to slow down. And then it hit me, the answer to Wendy's question. The purpose of my injury, the reason I needed to stop, was to wake up. To become more aware, more present, more conscious. And to use my experience to help others do the same. That's why I'm writing this book—to share my journey, to offer what I've learned in the hope that it might help someone else navigate their own path to healing.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              Maybe this wasn't just a catastrophe. Maybe it was an invitation to rebuild my life on a stronger foundation—one rooted in meaning, connection, and gratitude. I wasn't sure where this path would lead, but I knew I had to follow it.
+              That conversation with Wendy was a turning point. It helped me see my accident not as a tragedy, but as an opportunity—a chance to wake up, to live more consciously, and to use my experience to help others. And that's what this book is all about—sharing my journey in the hope that it might offer some guidance, some solace, some inspiration to those who are also navigating their own difficult paths.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

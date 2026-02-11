@@ -68,16 +68,16 @@ const Chapter17 = () => {
               The Torch Rekindled
             </h2>
 
-            <p className="text-lg leading-relaxed mb-6">
-              I discovered Steven Kotler's work on peak performance and "flow" states—those moments when you're fully immersed in an activity and everything clicks. His book, The Art of the Impossible, gave me a new vision. I realized that even with a damaged brain, I could aim high—not despite my injury, but because of what it had taught me.
+            <p className="text-lg leading-relaxed mb-6 italic text-gray-500">
+              February 22, 2025
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              Flow became another goal. I found it in small things: playing guitar, helping my kids with their projects, writing this book. Those moments of deep focus and engagement were healing in their own way. They reminded me that my brain was capable of more than just surviving—it could still create, still thrive.
+              Yesterday—February 21, 2025—I was flat, knackered after twelve months of pouring my soul into these pages. My torch was flickering, and I wondered if the spark was gone. Then, out of nowhere, I stumbled across Steven Kotler's <em>The Art of the Impossible</em>. It's a bloody gem—Kotler, a peak-performance guru, breaks down how to tackle the undoable: stack your motivation, learn fast, get creative, find flow. He calls the big ones High Hard Goals (HHGs)—dares that scare you stiff but light you up [Kotler, Steven. The Art of the Impossible. Harper Wave, 2021]. It landed in my lap like a lifeline, right when I needed it.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              The torch had been knocked from my hand on Australia Day. But now I was picking it up again, its flame burning brighter than before.
+              It was a jolt, like Wendy's Bowen therapy question, "Why'd you stop?" She gave me my why—family, story, purpose. Kotler clarified the path, showed me flow. Writing this book was my HHG—a bloody beast I've tamed. Flow states, where time melts and focus sharpens, helped me push through the fog. Kotler's nudge aligned with my mindfulness, a perfect fit. Yesterday, I was fading; today, the torch blazes—for Sarah, the girls, every TBI fighter. Time to pass it on.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

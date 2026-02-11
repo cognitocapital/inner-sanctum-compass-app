@@ -69,15 +69,27 @@ const Chapter10 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              As months passed, I finally sought out a specialist who understood traumatic brain injuries. He diagnosed me with post-concussion syndrome. Having a name for what I was experiencing was strangely comforting. I wasn't imagining things—there was a real condition, and a path forward.
+              After nearly ten months of navigating the ups and downs of recovery, relying heavily on my own inner resources and self-developed strategies, I decided it was time to seek additional support. While I had made significant progress, I knew that a specialist's perspective could offer valuable insights and potentially accelerate my healing. So, I reached out to the specialist who had helped me years before, after a workplace accident that resulted in a diagnosis of Post-Traumatic Stress Disorder (PTSD). I was apprehensive, to say the least. I had concerns about potential treatments and, particularly, the side effects of medication.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              He recommended a range of treatments: rest, cognitive therapy, possibly CBD oil to help with inflammation and sleep. I was open to anything that might help. I started to feel like I wasn't just floundering anymore—I had a plan.
+              I remember walking into his office, clutching a printout of the story I'd been writing. I handed it to him, explaining that I wanted him to understand what I'd been going through. He sat there, reading through the pages, nodding occasionally. It felt like an eternity as he absorbed my words. Finally, he looked up and said, "You're doing everything right." He confirmed what I had been feeling—that it was just post-concussion syndrome. I say "just" because that doesn't seem like strong enough wording to describe what I'd been feeling and experiencing. But in a way, it was also a relief. A silver lining. I was developing a great understanding of post-concussion syndrome, and having a name for it, a diagnosis, made it feel more manageable, less like an unknown monster lurking in the shadows.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              We discussed treatment options. He asked me if I wanted to do it without drugs. I told him I was open to medication if he thought it would help, if the pros outweighed the cons. We talked about Zoloft, an antidepressant that, he explained, could potentially help with anxiety and even stimulate the growth of new brain cells. That last part was intriguing, but I was still hesitant. I'd seen firsthand how medication could affect someone's baseline, and I was worried about anything that might further alter my already fragile state.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              To my surprise, he agreed. He didn't think medication was necessary at this point. "Keep doing what you're doing," he said. "You're on the right track." Those words were music to my ears. To have a professional confirm that my self-care strategies—the exercise, the diet, the mindfulness, the inner work I had been cultivating for nearly a year—were working, it was incredibly validating. He suggested I try CBD oil, a natural remedy that could potentially help with some of my symptoms. I was willing to give it a shot.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              Leaving his office that day, I felt like I'd dodged a bullet, or at least, I had bought myself more time before having to contemplate medication. I was relieved to not have to introduce another unknown into my already complex recovery equation. But more than that, I felt empowered. My dedication to the inner work had paid off. I was on the right path, my own path, and I had the support of a specialist who believed in my ability to heal.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              This marked a turning point. I wasn't just surviving; I was beginning to recover. For the first time since Australia Day, I saw a future where I might actually be okay.
+              That appointment was a turning point. Finally having a name for what I was experiencing, being told that I was on the right track, and having a specialist acknowledge the effectiveness of my self-developed strategies—it was incredibly validating. It gave me the confidence to keep moving forward, to trust my instincts, and to continue forging my own path to recovery.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

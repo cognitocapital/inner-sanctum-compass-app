@@ -68,16 +68,24 @@ const Chapter19 = () => {
               A New Resource
             </h2>
 
-            <p className="text-lg leading-relaxed mb-6">
-              Recently, I came across a book by Dr. Daniel Amen on brain health and neuroplasticity. His work reinforced what I had already started to believe: the brain can heal and change at any age. He outlines practical steps—nutrition, exercise, sleep, mental exercises—that anyone can use to support their brain.
+            <p className="text-lg leading-relaxed mb-6 italic text-gray-500">
+              April 1, 2025
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              I'm incorporating his advice into my ongoing recovery. More than that, I want to share these resources with others. That's the heart of the Companion app idea: a toolkit for anyone facing the dark days after a TBI. If I can shorten someone else's struggle by even a little, this whole journey will have been worth it.
+              Recovery has a way of catching you off guard, even when you think you've found your footing. On April 1, 2025, I picked up Daniel Amen's Change Your Brain Every Day. It wasn't planned—just a book that landed in my lap and felt like it belonged there, like life giving me a sly nudge. I didn't expect much at first. I've waded through plenty of advice since the accident, some of it gold, some of it noise. But then Amen started talking about brains—battered ones, like those of NFL players he'd studied, scarred by concussions and CTE. That stopped me cold. My skull fractures aren't the same as a linebacker's war wounds, but the language of a scrambled mind? That's a dialect I speak fluently.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              What hooked me was his take on neuroplasticity—how our brains can rewire, rebuild, even after the worst hits. It wasn't news to me, not exactly. I've been clinging to that hope since the day my world flipped upside down, when coffee started tasting like rust and regret, and vertigo turned every step into a gamble. But hearing it from a bloke who's mapped thousands of broken brains, who's seen the wreckage of CTE up close, made it real in a new way. He wasn't peddling quick fixes—no kale smoothies or miracle cures—just a quiet insistence that no brain's too far gone. That's not optimism. That's a lifeline.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              The book didn't rewrite my playbook. Mindfulness, gratitude, facing the hard stuff—they're still the bedrock I stand on. But it tossed me a few extra tools. Slow breathing to tame the chaos, a nudge to stay in the moment—stuff I'd been doing by instinct, now backed by science. It even got me thinking about the Companion app I've been shaping. Amen's words clicked as I tinkered with it, building something to share the light I'd stumbled into. Recovery's not a straight shot or a finished story—it's alive, messy, full of detours. And this book, landing when it did, felt like a nod from the universe: keep going. There's more to learn, more ways to mend.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              Every new resource is a building block. And each one gives me hope that the best is yet to come.
+              The accident cracked me open—literally—and it hurt like hell. But it let light in too. It forced me to see myself, and the world, through a different lens. Now, as I pass this story to you, I hope it cracks something open in you too. Not to break you, but to show you what's possible. Because our stories don't end—they stretch out, unwritten and wild, and that's where the good stuff lives. That's where resilience takes root and setbacks are a chance to grow. As I tried to hold it all together, these cracks were starting to show, and I didn't realize how close I was to breaking.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

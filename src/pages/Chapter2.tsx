@@ -69,15 +69,31 @@ const Chapter2 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              The first thing I remember after the accident is waking up in a hospital bed at the Mater. Sarah was there, her face drawn with worry and exhaustion. I had no idea how I'd gotten there—my mind was a scrambled mess. Disoriented and frightened, I couldn't piece together what had happened. The doctors later told me I'd been in a state of post-traumatic amnesia, my brain struggling to process the trauma.
+              My world swam back into focus, not with a gentle sunrise, but with the harsh, insistent beeping of a monitor. My head throbbed, a relentless drum solo that echoed the frantic rhythm of my heart. I was in a bed, in a room that smelled of antiseptic and something else… fear? My own, I realized. Panic clawed its way up my throat. "What the hell happened?" The words were a dry rasp in my throat, barely audible even to myself.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              Those first days in the hospital are still a blur. I remember fragments: fluorescent lights, the hum of machines, Sarah holding my hand. I had skull fractures—8 bones in my face were broken, including my eye socket and cheekbone. Fortunately, my brain hadn't bled, but the damage was severe. I was alive, though, and that was something.
+              Then I saw her, Sarah. Her eyes, usually sparkling with laughter, were wide with a fear I'd rarely seen before. Her face was pale, drawn tight with worry. She looked exhausted, like she had been crying for hours. In that instant, the carefree joy of Australia Day evaporated, replaced by a chilling certainty: something was very, very wrong.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              "Post-traumatic amnesia," the doctor called it. A clinical term for a common symptom of traumatic brain injury. It did little to explain the gaping hole in my memory. I had no recollection of the accident, no memory of how I'd ended up here. It was like my brain had hit a reset button, wiping out a crucial chunk of time. They almost sent me home that day. Can you believe it? No tests, no scans, just a pat on the head and a "You'll be right, mate." If it weren't for one doctor, and for Sarah's unwavering insistence, I might have walked out of there with three major skull fractures and multiple minor ones, none the wiser.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              One doctor, out of all the staff in that bustling emergency room, saw something that made him pause. He listened, really listened, when Sarah described what she'd been told by our friends who witnessed the accident. She hadn't seen the fall herself, but she relayed the details with a fierce urgency, painting a picture of the impact, the way I'd been flung from the board. He ordered more scans, refusing to dismiss the persistent headache and the growing confusion that clouded my thoughts. Thank God he did. Sarah, my rock, she wouldn't back down. She questioned, she pushed, she demanded answers when I was in no condition to string a coherent sentence together.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              The hospital days that followed are mostly a blur. A hazy montage of hushed conversations, the rhythmic beeping of machines, and the constant, throbbing pain in my head. I drifted in and out of consciousness, catching snippets of conversations, the concerned faces of my wife and friends, the sterile smell of the hospital. It was all so disorienting, like being trapped in a fog I couldn't escape.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              Those scans, the ones that almost didn't happen, revealed the truth: three major skull fractures, a spiderweb of smaller ones. It was later confirmed that I had suffered a traumatic brain injury (TBI). I was later told by my ENT specialist just how lucky I was. He explained how one of the fractures was dangerously close to a nerve that controlled facial movement. A hair's breadth either way, and my face might have been paralysed. He also confirmed that I was lucky to have retained my hearing, considering the damage to my inner ear. It was a sobering thought.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              Even in those early days, I could sense the gravity of what I was facing. The doctors were cautious with their words, careful not to promise too much. I had a long road ahead, they said. How long? They couldn't say for sure. As I lay there, groggy and confused, one thing slowly became clear: surviving this was just the beginning. The real fight was about to start.
+              Looking back, those hazy hospital days feel like a lifetime ago. The fear, the uncertainty, the pain—it's all a blur now. But I'll never forget the one doctor who saw beyond the obvious and the unwavering strength of my wife, who fought for me when I couldn't fight for myself. They are two of the reasons I'm still here today, able to tell this story.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

@@ -68,16 +68,20 @@ const Chapter20 = () => {
               The Next Page
             </h2>
 
-            <p className="text-lg leading-relaxed mb-6">
-              Today is a quiet day. I'm at home, writing these words on the Companion app—a project born from pain, but fueled by purpose. My brain still isn't perfect. Some days are still hard. But I'm no longer the man who lay on that concrete, broken and unaware of what was to come.
+            <p className="text-lg leading-relaxed mb-6 italic text-gray-500">
+              April 8, 2025
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              I've built myself up from the pieces. I've found tools, habits, and people that help me keep going. I've discovered depths of resilience I never knew I had. And I've decided to share it all—because maybe, just maybe, it will light the way for someone else.
+              Today's a quiet day—coffee's still off, but the vertigo's dialled back a notch. The Companion app's humming along, rough around the edges but growing, a little piece of me I'm sending out into the world. It's not a cure or a grand fix—just a tool, like this book, to help someone find their footing. I'm not done yet, not by a long shot. Recovery's a marathon, not a sprint, and I'm still lacing up my shoes some days. But I'm here, standing taller than I thought I could.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              That's the thing about falling apart—you get to decide what to build from the pieces. For me, it's this: a story, an app, a stubborn belief that we're tougher than we realize. I've done everything I can to claw my way back—read the books, faced the shadows, learned the hard way. And I'll keep going, because that's what we do. We adapt. We grow. We write the next page.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              This is my story, but it's also an invitation. If you're struggling, reach out. If you're in the darkness, know that light exists. The Phoenix is rising, and you can rise too.
+              Now it's your turn. You've got your own road, your own cracks. What'll you make of them? The hurdles might loom, the path might twist, but you've got what it takes. I've seen it in myself, and I see it in you. The future's wide open—yours to shape.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

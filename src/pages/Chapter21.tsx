@@ -69,27 +69,23 @@ const Chapter21 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              To my wife, Sarah: You have been my rock, my caregiver, my best friend through the darkest days. I could not have survived this without you. Thank you for never giving up on me.
+              This book would not have been possible without the unwavering love, support, and encouragement of many people. I am eternally grateful to:
             </p>
 
-            <p className="text-lg leading-relaxed mb-6">
-              To my daughters, Harper, Matilda, and Bailey: You gave me reasons to keep fighting when I wanted to give up. Your laughter, your hugs, and your belief in Daddy kept me going.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              To my parents, my twin brother Matthew, my mates Tyson and so many others: Your support carried me when I couldn't carry myself. From the Friday breakfasts to the late-night calls—thank you.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              To the medical professionals, therapists, and healers who helped me along the way: Dr. Joe Dispenza, Eckhart Tolle, Steven Kotler, Daniel Amen—your work changed my life. To Wendy, my Bowen therapist—thank you for helping me see the bigger picture.
-            </p>
-
-            <p className="text-lg leading-relaxed mb-6">
-              To everyone who reached out with a kind word, a check-in, a prayer: it mattered. More than you know.
-            </p>
+            <ul className="text-lg leading-relaxed mb-6 list-none space-y-4 pl-0">
+              <li>My wife, Sarah, for her strength, her patience, her advocacy, and for simply being there through it all. You are my rock.</li>
+              <li>My children, for their unconditional love and for inspiring me to keep fighting every single day.</li>
+              <li>My parents, for their constant support and understanding.</li>
+              <li>My twin brother, Mathew, for the "use of his frontal lobe," his unwavering support, and our invaluable daily check-ins.</li>
+              <li>My extended family and friends, for surrounding me with love and encouragement.</li>
+              <li>The medical professionals who guided me on this journey, especially the doctor who insisted on those crucial scans and my ENT specialist for his expertise.</li>
+              <li>The team at BIRU, for confirming that I was on the right track. Grace, I'm truly grateful for the sanctuary that your office is, for giving that "sprouting seed" everything it needed to grow.</li>
+              <li>Wendy, for your insightful guidance and for helping me find a deeper meaning in this experience.</li>
+              <li>Eckhart Tolle and Dan Brulé, for their teachings on presence, the observer, and the power of the breath.</li>
+            </ul>
 
             <p className="text-lg leading-relaxed mb-8">
-              And finally, to you, the reader: Thank you for walking this journey with me. I hope my story has given you hope. Remember—no matter how dark things get, the Phoenix can rise. So can you.
+              And to all those who have shared their stories of TBI recovery, thank you for your courage and for reminding me that I am not alone.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

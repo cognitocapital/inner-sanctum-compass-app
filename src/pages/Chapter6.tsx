@@ -69,19 +69,23 @@ const Chapter6 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              Recovery from a TBI isn't a steady climb. It's a roller coaster—ups and downs, twists and loops. There were good days where I felt almost like my old self, and bad days where I couldn't function at all. The unpredictability was maddening. I'd make progress, then crash. Over and over.
+              My recovery happened in phases. If the early days were like being in a fog, the next phase, from about three or four months after the accident, felt like riding a relentless rollercoaster. Not the fun kind, but the kind that makes you sick to your stomach and leaves you wanting to get off. My emotions were all over the place, swinging from extreme highs to crushing lows, often without warning. One minute I'd be feeling relatively normal, the next I'd be fighting back tears or struggling to contain a surge of anger.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              One day, Sarah took me to Kmart for a quick errand. Within minutes, the lights, the noise, and the crowds overwhelmed me. I had to leave, hands shaking, heart racing. I was a grown man, humbled by a department store. It was a stark reminder that my brain was still healing—still fragile.
+              One particular incident stands out. I was in a shopping centre at Kmart, trying to pick out a Mother's Day present for my wife and my mum. I'd had a terrible night's sleep the night before and was feeling particularly vulnerable. I remember standing in the aisle, staring at a display of picture frames and candles, feeling utterly overwhelmed. It wasn't just the choice, though that was part of it; it was the noise, the crowds, the fluorescent lights buzzing above—it all felt like too much. I just wanted something nice for my mum, to show her how much I appreciated everything she had done for me during this time. But nothing felt good enough, and with the prospect of not having anything special for her, I started to lose it. The lights seemed to pulse, the chatter around me turned into a roar, and before I knew it, I was hiding in the pillow section, sobbing uncontrollably. Not just a few tears, but full-on, heaving sobs. A 38-year-old man, hiding amongst the throw pillows, having a meltdown in Kmart.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              For anyone caring for a TBI survivor, I want you to know: it's not a straight road. Be patient. Celebrate the small wins. And on the bad days, just being there is enough. I leaned on Sarah and my family more than they'll ever know.
+              That moment was a stark lesson in pacing and self-compassion. I'd pushed too hard, ignored the signs, and paid the price. It wasn't just about the gift; it was about learning when to step back, when to say, "Enough for today." Social situations, in general, became a minefield. I used to enjoy being around people, but now it often felt like an endurance test. At first, it was fine, even enjoyable. But then, fatigue would set in, and my ability to cope would rapidly diminish. I'd start to feel overwhelmed, anxious, and the tears would be right there, threatening to spill over. I'd go from hoping to get Mother's Day presents sorted to trying not to cry in the pillow section of Kmart.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              From my experience, my advice for anyone caring for someone with a brain injury is that empathy becomes your superpower. Try to gain a basic understanding of the area of the brain that has been affected and what those areas control. This will help you understand where the person you're caring for is likely to struggle. If you're not an empathetic person, try to be patient and understanding. Don't shout, don't try to force them to "snap out of it." They can't. Trust me. When I was on that emotional rollercoaster, the last thing I needed was someone yelling at me to get it together. What I needed was space, understanding, and the knowledge that it was okay to not be okay. If the person you are caring for is having a difficult day, give them the space they need. If they seem frustrated, they probably are. When they calm down and can get back to baseline, it's likely they'll no longer be frustrated, especially if it was something that wouldn't normally bother them. This is where your empathy will be priceless.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              Every good day gave me fuel to face the next storm. And slowly—so slowly—the good days started to outnumber the bad.
+              The emotional rollercoaster was one of the most difficult aspects of the injury to manage. It was unpredictable, exhausting, and often embarrassing. But it taught me a lot about myself and about the importance of having a support system that understands and accepts the ups and downs.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">
