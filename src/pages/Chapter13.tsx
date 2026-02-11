@@ -69,15 +69,23 @@ const Chapter13 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              One practice that surprised me with its power was gratitude. Every morning, I started writing down three things I was thankful for. At first, it felt forced—I was in pain, struggling, angry. But over time, I noticed a shift. Focusing on gratitude rewired how I saw my situation.
+              In the midst of the pain, the frustration, and the uncertainty of recovery, there was one thing that consistently lifted my spirits: gratitude. It's easy to say "be grateful" when things are going well, but it's a lot harder to practice when you're facing challenges that seem insurmountable. But I learned that gratitude, even in the darkest of times, can be a powerful source of strength and resilience.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              I'd write simple things: "I'm grateful for Sarah's patience. I'm grateful the sun is shining. I'm grateful I could eat breakfast." It sounds trivial, but these tiny acknowledgments changed my brain. Science backs this up—gratitude practices have been shown to improve mental health and resilience.
+              It wasn't about ignoring the difficulties or pretending that everything was perfect. It was about consciously shifting my focus from what was wrong to what was right. From what I'd lost to what I still had. And what I had was a lot. A loving family, a supportive network of friends, and the simple fact that I was still alive, still breathing, still able to experience the world, even if it was through a different lens.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              A moment that stands out is when my eldest daughter, Bailey, received her report card. Straight A's. Every single subject. I was overwhelmed with pride and joy. It wasn't just about the grades themselves, but about what they represented: her hard work, her resilience, her ability to thrive despite the challenges our family had faced. It was a powerful reminder that even in the midst of adversity, there is always something to be grateful for.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              Gratitude became a daily practice. I didn't keep a formal journal, but I made a conscious effort to acknowledge the good things in my life, no matter how small. The warmth of the sun on my skin, a good cup of coffee, a hug from my kids—these simple things, things I might have overlooked before, took on a new significance. I don't see any other way to tackle my life at this point.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              One day, my daughter Bailey brought home a school report, and one of her reflections mentioned something I'd taught her. In that moment, I was overwhelmed with gratitude. Despite everything, I was still a dad, still making an impact. That realization hit me hard—and it was beautiful.
+              Practicing gratitude is closely connected to mindfulness, to being present in the moment. When you're fully present, when you're observing your thoughts and emotions without judgment, it's easier to appreciate the good things, the things that often get lost in the shuffle of daily life. Gratitude wasn't a magic cure, but it was a powerful anchor. It helped me stay grounded during the storm, appreciate the good amidst the bad, and find the strength to keep moving forward, even when the road ahead seemed impossibly long.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

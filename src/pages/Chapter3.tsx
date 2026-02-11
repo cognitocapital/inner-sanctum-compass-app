@@ -69,15 +69,31 @@ const Chapter3 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              Leaving the hospital didn't mean I was better—far from it. I was handed over to Sarah and my family, fragile and dependent in ways I never imagined I could be. I had no idea what lay ahead, and in some ways, that ignorance was a mercy. If I'd known the road I was about to travel, I might have crumbled right there.
+              Leaving the hospital felt less like a release and more like stepping into a different kind of battle zone. Gone were the sterile white walls and the rhythmic beeping of monitors, replaced by the familiar chaos of home life. But "home" felt different now, altered in a way I couldn't quite grasp. I was home, but I wasn't myself.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              In the weeks that followed, life became an emotional rollercoaster. One day I'd feel a flicker of hope; the next, I'd be swamped by despair. The trauma had rattled my nervous system, leaving me on edge and overwhelmed. Simple things like the sound of traffic or a busy room were unbearable. I was surviving on pure instinct.
+              Those first few weeks were a blur of raw emotion and overwhelming fatigue. I was in survival mode, just trying to make it through each day, each hour, each minute. It felt like I was constantly on edge, like there was an invisible gun to my head, holstered "for now." The pressure was immense, the fear that any wrong move, any lapse in concentration, could send me spiralling back to square one.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              My emotions were all over the place, a chaotic rollercoaster that I couldn't seem to control. One minute I'd be fine, the next I'd be overwhelmed by a wave of anxiety or frustration. Tears would come out of nowhere, triggered by the smallest things. I remember one night, about six months in, lying next to my youngest daughter, Harper, as she drifted off to sleep. I was trying to be quiet, but the tears started rolling down my cheeks—tears of gratitude for how much I'd achieved in this seemingly impossible situation, for the personal victories I'd clawed out. I can't articulate that exact sense of gratitude; it's bloody hard to paint the picture of what it was like. Mixed with exhaustion, I didn't want to wake her, didn't want to explain why Daddy was crying. Truth is, they were happy tears.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              The emotional rollercoaster was one of the hardest things to deal with. I was easily overwhelmed, and the anxiety came and went like a bad dream. When it did, it was like falling into a pit I couldn't climb out of. It was affecting everyone around me, especially my wife and kids. They were walking on eggshells, trying to navigate my unpredictable moods, my sudden bursts of frustration, my inability to cope with things that used to be simple.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              My brain felt like it was constantly misfiring. Simple tasks became monumental challenges. I remember struggling to spell the word "writing" at one point. "Writing," a word I'd used countless times before. It was like my brain had short-circuited; the connections severed. I had the mental capacity of a goldfish and the energy reserves of a sloth. It was a fight just to survive, to get through each day without collapsing in a heap.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              This isn't a story about sympathy, though. Not at all. I don't want it. I want this to be a story about hope, about resilience. If one person can read this and feel like they're not alone on their journey, then it's worth it. If some of the things I've implemented can help someone else navigate their own recovery, that's a victory. I know I've already said this in my story, but my recovery from TBI is by far the hardest thing I've had to navigate in my entire life. How could someone possibly understand what it's like to have a brain injury when no two brain injuries are the same, and we could argue that no two brains are the same either?
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              There was so much I couldn't do. I couldn't work, couldn't drive, could barely care for myself. Looking back, I realize I was stuck in survival mode—just getting through each day was a victory. My brain was in crisis, and it would take months before I truly understood what that meant.
+              Those early days at home were some of the darkest. It felt like I was constantly on edge, fighting an invisible battle within myself. But even then, in the midst of the struggle, I knew I had to keep going, for myself and for my family.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

@@ -69,15 +69,23 @@ const Chapter18 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              The future is uncertain. There's no way to know how much more I'll recover, or what challenges lie ahead. But that's true for everyone. The difference now is that I embrace uncertainty instead of fearing it. Each day is a new page, a new chance to write something good.
+              This journey, from that fateful Australia Day to this present moment, has been a whirlwind of challenges, triumphs, setbacks, and breakthroughs. It's been a journey of pain and healing, of fear and courage, of despair and hope. I've shared my story with you—the good, the bad, and the ugly—in the hope that it might offer some solace, some guidance, some inspiration to those who are navigating their own difficult paths.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              To anyone reading this who is struggling: know that there is hope. The road may be long and winding. You might fall, fail, and feel like giving up. But the human spirit is resilient. You can rise from the ashes. You can become stronger at the broken places. Your story isn't over.
+              But the truth is, my story is far from over. The ending is still unwritten. And that's the beauty of it. Life is full of uncertainty, and while that can be scary at times, it's also where the magic happens. It's in the unwritten chapters that we have the opportunity to grow, to transform, to become the best versions of ourselves.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              So, to anyone reading this who is facing their own challenges, I urge you to embrace the uncertainty. Don't be afraid of the unknown. See it as an opportunity, a chance to create something new, something beautiful, something meaningful. You are stronger than you think you are. You have within you the resilience, the courage, and the power to overcome whatever obstacles life throws your way. Remember, you are not your symptoms.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              And remember, you're not alone. We're all in this together, navigating our own journeys, writing our own unwritten chapters. Sharing our stories is one of the most powerful things we can do. It connects us, it inspires us, it reminds us that we're not alone in our struggles.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              I write these words as someone who nearly lost everything—and found something new in the wreckage. The Phoenix is not a myth. It's a choice. Choose to rise.
+              What will your unwritten chapters hold? Will you confront the challenges you are facing? Will you pick up your pen and begin to write the next chapter of your life? The future is yours to create. Embrace it. Own it. Live it to the fullest. The journey may be long, the challenges may be great, but the human spirit is capable of extraordinary things. Embrace your unwritten chapters. You are stronger than you know.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

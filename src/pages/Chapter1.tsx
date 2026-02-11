@@ -69,15 +69,15 @@ const Chapter1 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              Australia Day 2024. It was the day that my entire life would change forever. What started out as a relaxing get-together with family and friends and my young family became the catalyst for a journey I never saw coming. That day, on what should have been a carefree celebration, I suffered a devastating head trauma from a skateboarding accident. I cracked my skull—badly—and fractured 8 bones in my face. My twin brother Matthew witnessed everything, from my head hitting the concrete, to the paramedics fighting to keep me conscious and safely in the ambulance. I was rushed to the Mater Hospital, where the surgeons worked to save my life. The impact was severe: I was left battling a traumatic brain injury and the broken pieces of my former self.
+              Australia Day dawned bright and clear; the sun was already warm on my skin. We were at a mate's country property in the Sunshine Coast Hinterland. It was shaping up to be a very memorable day, regardless of the events that were about to unfold. The weather was glorious, a gentle breeze rustling the leaves of the gum trees, good food, a carefree day where everyone could do what they wanted—whether it be swimming in the pool, swinging and jumping into the dam, or taking the kids down to feed the animals. They have chickens, turkeys, ducks, geese, pigeons, and cows—Betty is our favourite. Whenever we go up to their place, the kids absolutely love their time at the farm, as we all do.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              However, this isn't just a story about loss or pain—it's about rising from the ashes. Like a Phoenix, I began to transform. What could have defined me as a victim instead became the fire that would forge me anew. This is the story of my rebirth, told in the hopes that it might light the way for anyone else facing their own moment of reckoning.
+              A few of us were keen to try out the BMX jump into the dam—nothing serious, just a bit of fun. We were all just enjoying each other's company, soaking up the sunshine and the laid-back Aussie vibes. I remember thinking to myself, "This is what life's all about." A fleeting thought, perhaps, but one that, in hindsight, feels oddly significant. I had no idea that this would be my last moment of bliss before my world turned upside down.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              Let me start from Australia Day 2024—the day my old life ended and my new one began.
+              Later in the afternoon, I decided to cruise up and down the driveway on my electric skateboard. It was a spur-of-the-moment thing. The driveway stretched at least 100 metres, a gentle slope that seemed perfect for a leisurely ride. I was simply weaving my way up, enjoying the feel of the board beneath my feet, when suddenly, my wheels came off the bitumen and bit into the grass. The board lost momentum instantly, but I kept going, flung forward into the air. And then… nothing but blackness and a void for possibly hours. It was as if my memory reel had been abruptly snipped, leaving a gaping hole in the film of my life. That's where this part of the journey begins, in the blank space between a perfect Australia Day and the harsh reality of what came next.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

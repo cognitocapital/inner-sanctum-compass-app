@@ -69,15 +69,31 @@ const Chapter15 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              Some days, even now, I still have what I call "scrambled eggs" days. Days where my brain just won't cooperate—where the fog rolls in, and I can barely function. On those days, I remind myself: it's okay. This is part of the journey. Self-compassion became as important as any medical treatment.
+              The road to recovery is rarely a straight line. There are twists and turns, uphill climbs, and unexpected detours. Even now, twelve months after the accident, I still have days when my brain feels like scrambled eggs. It's a frustrating, disorienting sensation, like my thoughts are all jumbled up, my concentration is shot, and the simplest tasks feel overwhelming.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              I learned the value of pacing. I couldn't go all-out like I used to. Now I plan rest days, schedule breaks, allow myself to stop before I crash. It was humbling to accept these limits, but it also kept me moving forward. Slow and steady replaced full-throttle.
+              When my brain is in "scrambled eggs" mode, it's a clear sign that I've pushed myself too hard, even if I hadn't realized it at the time. It's a reminder that pacing is crucial, even when I'm feeling good, even when I think I'm "back to normal." Because the truth is, "normal" has been redefined.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              Self-compassion is essential on those difficult days. It's so easy to get frustrated, to beat myself up for not being able to do what I used to do. But I've learned that self-criticism only makes things worse. It adds another layer of stress and negativity to an already challenging situation. So, I try to be kind to myself, to remember that recovery takes time, and that setbacks are a normal part of the process. Some days, getting out of bed and putting on a load of washing is a monumental achievement.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              On those days, I would sometimes experience a kind of adrenal exhaustion. I'd catch a glimpse of myself in the mirror and see a scared, depleted shadow of a man staring back. It was a stark reminder of the physical and emotional toll this injury has taken. In those moments, I would tell myself, "Everything is okay. You're okay. This will pass." It wasn't about denying the reality of the situation, but about reinforcing a sense of inner safety and stability amidst the turmoil.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              On days when the world feels overwhelming, I know what I need. I need to slow down, to simplify, to give myself permission to rest. Sometimes, that means cancelling plans, saying no to requests, or simply retreating to a quiet space where I can be alone with my thoughts. It's not always easy, but it's necessary. I have found having a day to myself with no distractions to be priceless.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              Those days, when my brain feels like scrambled eggs, it's like I've been transported to an alien world. Everything feels foreign, overwhelming, and just… off. I remember one time, I was at a busy butcher shop, and the noise, the crowds, the smells—it all became too much. I felt a panic attack rising, and I nearly had to bolt out of there. It's moments like those that remind me how far I've come, but also how far I still have to go. When I'm free of stress and I don't have to directly respond to anything work-related, I feel much closer to how I did pre-TBI. When things go off track and need important decisions made, it is so difficult if I'm not in the right headspace.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              Standing still was part of the process. Sometimes the bravest thing was simply getting through the day. And on the hard days, just surviving was victory enough.
+              The self-care practices that I adopted early on—exercise, nutritious food, good sleep, mindfulness, meditation—are still just as important now as they were in the beginning. They're not just temporary measures; they're lifelong tools for well-being. They're the foundation upon which I continue to build my recovery. Recovery is a marathon, not a sprint. There are still days when my brain feels like scrambled eggs, when the world feels overwhelming, when all I want to do is retreat. But I've learned to be patient with myself, to listen to my body, and to keep practicing the things that I know help me heal. I'm still standing, and that's what matters.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

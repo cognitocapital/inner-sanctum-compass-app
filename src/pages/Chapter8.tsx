@@ -69,15 +69,23 @@ const Chapter8 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              In the early days, food became a source of frustration. My sense of taste was completely distorted—everything tasted metallic, wrong. Eating was a chore, not a pleasure. But I knew nutrition was vital for brain healing, so I forced myself to eat anyway.
+              They say you are what you eat. Well, after my accident, I wasn't sure what I was, let alone what I was eating. My sense of taste was like a roulette wheel gone haywire—every spin landed on a different shade of awful. Imagine biting into a banana and tasting rancid chicken or sipping milk that tasted like it had been curdled in the sun for a week. That was my reality.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              I focused on brain-healthy foods. Smoothies became my go-to: blueberries for antioxidants, spinach for nutrients, a splash of turmeric for inflammation. I experimented with herbs and spices said to support cognition. It wasn't always appetizing, but I was feeding my recovery.
+              It was a bloody nightmare, especially in those early days when I was trying to regain my strength and heal my brain. I knew I needed to eat, to fuel the recovery, but the thought of putting anything in my mouth filled me with dread. It was like my body was rejecting the very thing it needed to survive. Smoothies became my lifeline. I'd chuck everything into the NutriBullet—oats, bananas, protein powder, Sustagen, milk, honey—anything I could stomach without gagging. It wasn't exactly gourmet cuisine, but it got the job done. It was fuel, pure and simple, and I clung to it like a life raft in a sea of culinary chaos.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              Gradually, after about eight months, my sense of taste started to crawl back from the abyss, and I was able to introduce more solid foods into my diet. But it was a slow, agonizing process, filled with trial and error. I'd take a bite of something, hoping for a hint of familiarity, only to be met with a flavour that made my stomach churn. Herbs and spices became my weapons in this culinary war—not for flavour, but for camouflage. I'd drown my food in garlic, chili, anything to mask the off-putting tastes that still lingered like unwelcome guests.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              Eating became a bloody science project. I had to pay close attention to how different foods made me feel, both physically and mentally. Some days, a simple piece of toast would send my head spinning. Other days, a plate of scrambled eggs would be my brain's best friend. It was a constant game of detective, trying to decipher the cryptic messages my body was sending me. But through it all, I learned a valuable lesson. Nourishing my body wasn't just about physical healing; it was about mental and emotional well-being too. It was about finding a way to fuel my recovery, even when the very act of eating felt like a battle. It was about taking control, one blended concoction or spice-laden meal at a time.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              Slowly, my taste came back—imperfectly, but enough to enjoy food again. Those small pleasures meant more than I can say. A good meal became a tiny victory, proof that healing was happening even when it felt invisible.
+              Dealing with those distorted senses was one of the most unexpected and frustrating aspects of the injury. It was a constant battle to find ways to nourish my body, even when the very act of eating was a challenge. But it taught me to appreciate the simple pleasure of a good meal and the profound connection between food and well-being.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

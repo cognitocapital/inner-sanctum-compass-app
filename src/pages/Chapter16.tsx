@@ -69,15 +69,23 @@ const Chapter16 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              As I approached the one-year anniversary of my accident, I began looking to the future. I thought about others who were going through what I'd been through—people who felt lost, overwhelmed, without a roadmap. I wanted to help them.
+              Although it's been a long road to recovery, as I look ahead, I'm filled with a sense of hope and anticipation. The journey is far from over, but I'm now able to look forward to the future with a renewed sense of purpose.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              The idea of a "Companion" app started to take shape. A place where TBI survivors could find resources, track their progress, and connect with others. I also discovered the Brain Injury Rehabilitation Unit (BIRU) program, which provided structured therapy and support. It gave me hope that a real community existed for people like me.
+              For my next project, I'm excited to be working on the development of the Companion app. I envision it as a resource, a guide, a companion for others who are navigating their own recovery journeys, whether from TBI or other challenges. The app will offer practical tools and techniques that have helped me so much—guided meditations, journaling prompts, and resources related to mindfulness, "the observer," and "sitting with the uncomfortable." In fact, my recent exploration of the Wim Hof Method, particularly through his app, has inspired me to incorporate a dedicated "Ice Bath Companion" feature. This will provide guided meditations and resources specifically designed to help users gradually increase their cold tolerance and learn to "sit with the uncomfortable" in a safe and structured way. My hope is that it will empower others to take control of their healing and find their own path to well-being. I have learned to think more strategically and clearly. These skills will be invaluable moving forward.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              I've already had the opportunity to participate in the Brain Injury Rehabilitation Unit (BIRU) program. It's a comprehensive program that offers cognitive assessments, vestibular physiotherapy, and access to neuropsychologists if needed. Initially, I saw their vestibular physio, speech pathologist, occupational therapist, and neuropsychologist. After their assessments and a couple of follow-up appointments, they gave me invaluable feedback: I had essentially already done the work myself. I had developed and implemented the tools and strategies necessary for the most effective path forward. This was incredibly validating, confirming that my self-navigated journey and the inner work I had undertaken were aligned with the best practices in TBI recovery. While I initially sought out their expertise, it turned out I was already well on my way.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              Of course, my commitment to my business and my family remains as strong as ever. It hasn't been easy to juggle these responsibilities while dealing with the effects of the injury, but I'm determined to keep moving forward, to keep building a fulfilling life for myself and my loved ones. I'm even kicking butt at times. This journey has changed me in profound ways. It's taught me the importance of resilience, self-compassion, and the power of the human spirit to overcome adversity. It's deepened my appreciation for the simple things in life and given me a newfound sense of purpose. I feel like I have been gifted my executive function.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              My story was still being written. I wasn't fully healed—maybe I never would be in the traditional sense. But I was alive, I was growing, and I had something to offer. The Phoenix wasn't just about rising from ashes; it was about lighting the way for others.
+              To anyone reading this who is facing their own challenges, I offer you this message of hope: You are stronger than you think you are. Recovery is possible. It may take time, it may be difficult, but you have within you the capacity to heal, to grow, and to create a life filled with meaning and joy. The future is still unwritten, and I know there will be more challenges ahead. But I face them now with a newfound sense of strength, resilience, and purpose. I'm grateful for the journey, for the lessons I've learned, and for the opportunity to help others find their own path to healing.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

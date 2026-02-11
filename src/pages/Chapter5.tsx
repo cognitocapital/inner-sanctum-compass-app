@@ -69,15 +69,23 @@ const Chapter5 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              Somewhere along the way, I stumbled onto the concept of neuroplasticity—the brain's ability to rewire and heal itself. It sounded almost too good to be true. But I read stories of people who had recovered from worse injuries by focusing their minds and consistently pushing their limits. I thought: why not me?
+              I didn't know it at first, but I was about to begin a long recovery—at first, it was one day at a time, but then I had to learn how much it was up to me to get through it. I had to accept my brain was damaged, and there were many steps in learning how to fix it. This part is way easier said than done. A near-death experience can change you for better or worse, and I had to choose the outcome.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              I discovered Dr. Joe Dispenza's work on the mind-body connection. He talked about using meditation and mental focus to heal the brain. Some of it seemed far out, but I was desperate. I started practicing his techniques—meditating, visualizing, reprogramming my thoughts. I figured: I have nothing to lose and everything to gain.
+              My doctors did their best to help me, but I also researched online to find out more, including information from Dr. Joe Dispenza, who is a New York Times best-selling author, researcher, and lecturer. He talks about your brain reprogramming after a near-death experience, like TBI. From what I learned from his publications, he gave me inspiration in my recovery. I believe in the opportunity to install a new operating system in my mind, one which leaves the old obsolete. Here is how I rewrote my programming.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              But what does that even mean? I chose my own adventure after my traumatic brain injury. It started with believing that my brain has an incredible capacity to heal and rewire itself—a phenomenon called neuroplasticity. Based on my research, I thought of my brain as a vast network of roads. After my TBI, it's like a major accident has blocked some of those roads. But my brain, like a skilled engineer, can create new pathways and detours to get around those blockages.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              This "reprogramming" is about consciously choosing which roads to build and strengthen. It's about focusing on the positive, cultivating new habits, and embracing the opportunity for growth that this experience presents. It's not about denying the challenges or pretending everything is okay. It's about acknowledging the difficulties, accepting them, and then choosing to move forward with intention and purpose.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              This was the beginning of my Phoenix mindset. I was no longer just a patient waiting to get better. I was actively choosing to rebuild myself. Every positive thought, every healing practice, was like laying a brick in the new version of my life. For the first time since the accident, I felt a glimmer of real hope.
+              Cultivating a positive mindset, nurturing my emotional well-being, and connecting with my inner strength is important. It's about finding gratitude in adversity and choosing to see the light even in the darkest of times. This journey was not easy. There were setbacks, frustrations, and moments of doubt. But by embracing the power of choice, I navigated this new landscape and created a life that is even richer and more meaningful than before.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

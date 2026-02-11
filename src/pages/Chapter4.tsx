@@ -69,15 +69,27 @@ const Chapter4 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              Slowly, I began to find little things that helped. Walking—just putting one foot in front of the other—became a daily practice. At first, it was hard. My balance was off, my energy non-existent. But every walk felt like a small win against the injury. Movement became medicine.
+              As the initial fog began to lift, I realized that staying in bed all day, every day, wasn't going to cut it. My body, as much as my mind, needed to heal. I had to start moving, even if it was just a little. So, I started walking. Short walks at first, around the block, then gradually further afield. It was slow going, and some days it felt like I was wading through molasses, but I kept at it.
             </p>
 
             <p className="text-lg leading-relaxed mb-6">
-              I tried to focus on what I could control. I started making smoothies packed with brain-healthy ingredients: berries, greens, turmeric. Eating became part of my recovery plan. Sleep, too, was critical—my brain needed rest to heal, even if that rest was fitful and full of strange dreams. I leaned on any small ritual that gave me a sense of control.
+              Exercise, I discovered, was a double-edged sword. It helped clear my head, gave me a sense of accomplishment, but it also drained my limited energy reserves. I had to be careful not to push myself too hard. I had a set of dumbbells—4kg, 8kg, and 15kg. About a month after getting out of hospital, even the lightest ones felt heavy. For a while, under doctor's orders, I was restricted from any heavy lifting to avoid putting pressure on my brain. It wasn't until a couple of months later that I could even use the 15kg ones, and even then, sparingly.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              My diet was another challenge. With my sense of taste warped and unreliable, eating had become a chore. I ended up relying on smoothies, which I could make with oats, bananas, protein powder, Sustagen, milk, and honey, all blended in my trusty NutriBullet. It wasn't pretty, but it was fuel, and it was something I could stomach.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              Sleep, or the lack thereof, became a major factor. When I managed to get a good night's sleep, I felt almost human. My brain felt clearer, my energy levels were higher, and I could function, at least for a few hours. But when sleep was elusive, which was often, the next day was a guaranteed struggle. It was like bad sleep compounded the effects of the injury, amplifying the fatigue, the brain fog, the emotional instability.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              It was around this time that my grandfather's words came back to me: "You have to look after number one." Number one, meaning me. It was a simple statement, but it struck a chord. I realized that if I was going to recover, if I was going to be there for my family, I had to prioritize my own well-being. I had to make myself number one, at least for a while. That was a turning point. It wasn't about being selfish; it was about being strategic. It was about understanding that a broken me was no good to anyone. In these early stages, my focus was on the basics: getting enough rest, eating what I could, and starting to move my body again. I knew about the power of breathwork, but I wasn't consistently practicing any specific techniques yet.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              My grandfather once told me, "Every step forward counts, even the small ones." I thought of that often in those early weeks. Progress felt glacial, but I clung to the idea that tiny efforts would add up. And sometimes, on the hardest days, that belief was all I had.
+              Looking back, those first steps towards taking care of myself were tentative, but they were crucial. I was starting to learn that healing wasn't just about resting; it was about actively nourishing my body and mind, finding my footing on the long and winding road to recovery.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">

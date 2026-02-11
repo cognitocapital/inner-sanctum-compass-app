@@ -69,11 +69,23 @@ const Chapter12 = () => {
             </h2>
 
             <p className="text-lg leading-relaxed mb-6">
-              A major milestone came when I was finally allowed to drive again. For months, I had been dependent on others—Sarah, my dad, friends—to get anywhere. Losing the ability to drive had stripped away a huge part of my independence, and getting it back felt like reclaiming a piece of my identity.
+              One of the hardest things about the injury was the loss of independence. Suddenly, I was reliant on others for the simplest things—things I used to take for granted. I couldn't drive, I couldn't work, I could barely string a coherent sentence together. For someone used to being self-sufficient, it was a bitter pill to swallow.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              But as the months passed and the inner work began to take root, something shifted. I started to realize that I was the only one who could truly reclaim my independence. I was the only one who knew what I was capable of, what my limitations were, and what I needed to do to move forward. I was done letting others dictate what I could and couldn't do. I was done being a passive passenger in my own life. I was ready to take the wheel.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              At about eleven months, a major turning point came with the decision to start driving again. I still didn't have official clearance, and I knew the legal ramifications could be significant if I was in an accident. But I also knew that I understood my body, my mind, and my limitations better than any doctor or lawyer. I had developed a keen sense of self-awareness, thanks to the mindfulness and "observer" practices I'd been cultivating. I wasn't going to be reckless, but I wasn't going to be a prisoner either. I started with short drives, close to home, always paying close attention to how I was feeling. Gradually, I expanded my range, always mindful of my energy levels, my focus, my overall state of mind.
+            </p>
+
+            <p className="text-lg leading-relaxed mb-6">
+              This wasn't just about driving. It was about taking back control of my life. It was about becoming the spokesperson, the advocate, the primary carer, and the driver of my own recovery. I made it clear that I wasn't going to compromise my recovery from a health point of view, but within those parameters, I was going to do what I needed to do. That decision to reclaim my independence rippled outwards, affecting other areas of my life. It was a shift in mindset, a willingness to trust my own judgment, to take calculated risks, and to live life on my own terms, even if it meant going against the grain sometimes.
             </p>
 
             <p className="text-lg leading-relaxed mb-8">
-              The first time I drove solo, it was just around the block. But it felt monumental. I was in control of something again. Slowly, my world expanded. I could take the kids to school, run errands, have a life outside the house. It wasn't freedom—my brain still put limits on what I could do—but it was a step closer.
+              Reclaiming my independence wasn't just about getting behind the wheel of a car. It was about reclaiming my life, my sense of self. It was about trusting the inner work I'd done and having the courage to make my own choices, even when they went against conventional wisdom.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">
