@@ -110,7 +110,7 @@ const Auth = () => {
             />
           </div>
           <div>
-            <h1 className="text-3xl font-serif font-bold text-white">Yellow Brick Road</h1>
+            <h1 className="text-3xl font-serif font-bold text-white">Phoenix Journey</h1>
             <p className="text-white/60 mt-2">Your personalized recovery journey</p>
           </div>
         </div>
