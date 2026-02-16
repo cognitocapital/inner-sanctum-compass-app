@@ -1,82 +1,43 @@
 
 
-# SEO Improvement Plan for Phoenix Journey
+# Two Audio Tweaks
 
-## Overview
-The site has basic meta tags in index.html but every page shares the same title, description, and social preview. This plan adds per-page SEO, a sitemap, structured data, and canonical URLs to significantly improve search visibility.
+## Task 1: Add Third Audio Part to Introduction
 
----
+The uploaded MP3 file is a continuation of the Introduction audio. Currently the Introduction has 2 audio parts (`introduction.mp3` and `introduction-part2.mp3`). This new file will be added as a third part for seamless playback.
 
-## 1. Add react-helmet-async for Per-Page Meta Tags
+**Steps:**
+1. Copy the uploaded file to `public/audio/introduction-part3.mp3`
+2. Update the Introduction audio entry in **both** player files to include the third part:
+   - `src/components/ui/global-audiobook-player.tsx` (line 28): change the array to `["/audio/introduction.mp3", "/audio/introduction-part2.mp3", "/audio/introduction-part3.mp3"]`
+   - `src/components/ui/uploaded-audiobook-player.tsx` (line 26): same change
 
-Install `react-helmet-async` and wrap the app with its provider. This lets each page set its own `<title>`, `<meta description>`, and Open Graph tags.
-
-**Changes:**
-- **src/App.tsx**: Wrap `AppContent` with `<HelmetProvider>`
-- **Create `src/components/seo/SEOHead.tsx`**: A reusable component that accepts `title`, `description`, `path`, and optional `image` props and renders the appropriate `<Helmet>` tags (title, meta description, canonical URL, Open Graph, Twitter Card)
-
-## 2. Add SEOHead to Every Public Page
-
-Each page gets a unique title and description optimized for search:
-
-| Page | Title | Description |
-|------|-------|-------------|
-| Index | What a Journey - TBI Recovery Story by Michael Heron | An intimate account of recovering from a traumatic brain injury... |
-| Dedication | Dedication - What a Journey | The dedication page of What a Journey by Michael Heron |
-| Disclaimer | Disclaimer - What a Journey | Important disclaimer for What a Journey |
-| Prologue | Prologue - What a Journey | The prologue to What a Journey... |
-| Introduction | Introduction - What a Journey | Introduction to What a Journey... |
-| Chapter 1 | Chapter 1: Australia Day - What a Journey | The story begins on Australia Day... |
-| Chapter 2-21 | Chapter N: [Title] - What a Journey | (unique per chapter) |
-| Resources | Growth Resources - What a Journey | Resources for TBI recovery and personal growth |
-| Dashboard | Phoenix Journey Dashboard | Your personalized TBI recovery dashboard |
-
-## 3. Generate a Static sitemap.xml
-
-**Create `public/sitemap.xml`** listing all public (non-protected) routes:
-- `/`, `/dedication`, `/disclaimer`, `/prologue`, `/introduction`
-- `/chapter-1` through `/chapter-21`
-- `/resources`, `/install`, `/directory`
-
-Each entry includes `<loc>`, `<lastmod>`, and `<priority>` (homepage = 1.0, chapters = 0.8, others = 0.6).
-
-## 4. Update robots.txt
-
-Add a `Sitemap:` directive pointing to the sitemap:
-```
-Sitemap: https://whatajourney.lovable.app/sitemap.xml
-```
-
-## 5. Add Structured Data (JSON-LD)
-
-**Create `src/components/seo/BookSchema.tsx`**: Renders a `<script type="application/ld+json">` tag with Schema.org `Book` markup including:
-- Book name, author (Michael Heron), description
-- Number of chapters, genre (autobiography/health)
-
-Add this to the Index page. Optionally add `Article` or `Chapter` schema to individual chapter pages.
-
-## 6. Add Canonical URLs
-
-The `SEOHead` component will automatically output `<link rel="canonical" href="https://whatajourney.lovable.app{path}" />` for each page, preventing duplicate content issues.
+No changes needed to `Introduction.tsx` itself -- the audio is handled by the players.
 
 ---
 
-## Technical Details
+## Task 2: Fix Chapter 11 Audio Loop Bug
 
-### New files:
-- `src/components/seo/SEOHead.tsx` — reusable Helmet wrapper
-- `src/components/seo/BookSchema.tsx` — JSON-LD structured data
-- `public/sitemap.xml` — static sitemap
+**Root cause:** When a multi-part chapter finishes its last segment, `handleEnded` calls `setCurrentAudioIndex(0)` before the 4-second `setTimeout` fires. This triggers the `useEffect` watching `[currentChapterIndex, currentAudioIndex]`, which sees the audio index changed while the chapter index is still on Chapter 11 -- so it reloads and plays Chapter 11 part 1 again (the loop).
 
-### Modified files:
-- `src/App.tsx` — add HelmetProvider
-- `public/robots.txt` — add Sitemap directive
-- All public page components (~25 files) — add `<SEOHead>` with unique title/description
+**Fix:** Add a `useRef` transition guard to both player files.
 
-### New dependency:
-- `react-helmet-async`
+**Changes to `global-audiobook-player.tsx`:**
+1. Add ref: `const isTransitioningRef = useRef(false);`
+2. In `handleEnded` else branch (line 184-194): set `isTransitioningRef.current = true` before `setCurrentAudioIndex(0)`, then clear it inside the `setTimeout` callback before changing chapter
+3. In the useEffect at line 104-117: add early return `if (isTransitioningRef.current) return;`
 
-### No impact on:
-- Existing functionality, audio playback, or styling
-- Protected routes (they don't need SEO since they require auth)
+**Changes to `uploaded-audiobook-player.tsx`:**
+1. Same ref addition
+2. In `handleEnded` else branch (line 168-180): same guard pattern
+3. In the useEffect at line 94-112: same early return
+
+This prevents the useEffect from reloading part 1 during the transition window, allowing the 4-second pause to complete and the chapter to advance properly.
+
+---
+
+## Files Modified
+- `public/audio/introduction-part3.mp3` -- new file (copied from upload)
+- `src/components/ui/global-audiobook-player.tsx` -- add intro part 3 to chapter list + transition guard
+- `src/components/ui/uploaded-audiobook-player.tsx` -- add intro part 3 to chapter list + transition guard
 
