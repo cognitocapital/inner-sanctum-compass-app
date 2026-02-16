@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import SEOHead from "@/components/seo/SEOHead";
 
 const Chapter13 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
+      <SEOHead title="Chapter 13: The Power of Gratitude - What a Journey" description="Discovering the transformative power of gratitude in recovery." path="/chapter-13" />
       {/* Animated background elements inspired by phoenix flames */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Primary flame particles */}
