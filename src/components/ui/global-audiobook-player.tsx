@@ -73,6 +73,7 @@ export const GlobalAudiobookPlayer = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [showChapterList, setShowChapterList] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isTransitioningRef = useRef(false);
   
   const currentChapter = chapters[currentChapterIndex];
 
@@ -102,6 +103,7 @@ export const GlobalAudiobookPlayer = ({
 
   // Handle chapter or audio segment changes - ensure seamless transition
   useEffect(() => {
+    if (isTransitioningRef.current) return;
     const audioUrl = getCurrentAudioUrl();
     if (audioRef.current && audioUrl) {
       const wasPlaying = isPlaying;
@@ -182,9 +184,11 @@ export const GlobalAudiobookPlayer = ({
       setCurrentAudioIndex(prev => prev + 1);
     } else {
       // All segments complete (or single audio), add 4 second pause then move to next chapter
+      isTransitioningRef.current = true;
       setCurrentAudioIndex(0);
       setIsPlaying(false);
       setTimeout(() => {
+        isTransitioningRef.current = false;
         handleNextChapter();
         if (audioRef.current) {
           audioRef.current.play().catch(console.error);
