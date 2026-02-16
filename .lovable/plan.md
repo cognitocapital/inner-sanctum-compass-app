@@ -1,23 +1,37 @@
 
 
-# Replace Chapter 11 Audio Files
+# Fix: Published Audio Not Updating (Service Worker Cache Issue)
 
-## What's Changing
-The current Chapter 11 audio files (`chapter11.mp3`, `chapter11-part2.mp3`, `chapter11-part3.mp3`, `chapter11-part4.mp3`) will be replaced with the 4 new uploaded files, maintaining seamless multi-part playback.
+## Problem
+The PWA service worker uses a `CacheFirst` strategy for audio files. This means browsers that previously visited the site have the **old** audio files permanently cached. When you replace files like `chapter11.mp3`, the service worker serves the stale cached version instead of downloading the new one.
 
-## Steps
+## Solution
 
-1. **Copy new audio files to `public/audio/`**
-   - `Chapter_11_The_Inner_Work_1.4.mp3` -> `public/audio/chapter11.mp3`
-   - `Chapter_11_The_Inner_Work_2.4.mp3` -> `public/audio/chapter11-part2.mp3`
-   - `Chapter_11_The_Inner_Work_3.4.mp3` -> `public/audio/chapter11-part3.mp3`
-   - `Chapter_11_The_Inner_Work_4.4.mp3` -> `public/audio/chapter11-part4.mp3`
+Change the audio caching strategy from `CacheFirst` to `StaleWhileRevalidate`. This serves the cached version immediately (fast playback) but also fetches the updated file in the background so the **next** visit uses the new audio.
 
-2. **No code changes needed** -- the player files already reference these exact filenames in the correct order with the transition guard in place.
+Additionally, bump the cache name to force invalidation of the old cache on existing users' devices.
 
-## Files Modified
-- `public/audio/chapter11.mp3` (replaced)
-- `public/audio/chapter11-part2.mp3` (replaced)
-- `public/audio/chapter11-part3.mp3` (replaced)
-- `public/audio/chapter11-part4.mp3` (replaced)
+## Changes
+
+### File: `vite.config.ts`
+
+1. Change the `/audio/` runtime caching rule (lines 78-88):
+   - Strategy: `CacheFirst` to `StaleWhileRevalidate`
+   - Cache name: `local-audio-cache` to `local-audio-cache-v2` (forces old cache eviction)
+   - Keep the 60-day expiration
+
+2. Change the external audio rule (lines 63-77):
+   - Strategy: `CacheFirst` to `StaleWhileRevalidate`  
+   - Cache name: `audio-video-cache` to `audio-video-cache-v2`
+
+Video and font caches can stay `CacheFirst` since those files don't change.
+
+## What This Means for Users
+- **First visit after publish**: Users hear the old cached audio, but the new files download silently in the background
+- **Second visit onward**: Users hear the updated audio
+- Users who have never visited before get the new audio immediately
+- No impact on playback speed, transitions, or any other functionality
+
+## Technical Detail
+Only two lines change in `vite.config.ts` (the `handler` values) plus two cache name bumps. No other files are modified.
 
