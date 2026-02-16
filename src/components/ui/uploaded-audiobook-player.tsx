@@ -63,7 +63,6 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
   const [volume, setVolume] = useState(0.8);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const isTransitioningRef = useRef(false);
 
   const currentChapter = chapters[currentChapterIndex];
 
@@ -93,7 +92,6 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
 
   // Handle chapter or audio segment changes
   useEffect(() => {
-    if (isTransitioningRef.current) return;
     const audioUrl = getCurrentAudioUrl();
     if (audioRef.current && audioUrl) {
       const wasPlaying = isPlaying;
@@ -168,12 +166,10 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
       setCurrentAudioIndex(prev => prev + 1);
     } else {
       // All segments complete (or single audio), add 4 second pause then move to next chapter
-      isTransitioningRef.current = true;
       setCurrentAudioIndex(0);
       setIsPlaying(false);
       if (currentChapterIndex < chapters.length - 1) {
         setTimeout(() => {
-          isTransitioningRef.current = false;
           setCurrentChapterIndex(currentChapterIndex + 1);
           if (audioRef.current) {
             audioRef.current.play().catch(console.error);
