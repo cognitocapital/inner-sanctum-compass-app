@@ -63,7 +63,7 @@ export default defineConfig(({ mode }) => ({
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/.*\.(mp3|mp4|wav|ogg)$/,
-            handler: 'StaleWhileRevalidate',
+            handler: 'NetworkFirst',
             options: {
               cacheName: 'audio-video-cache-v2',
               expiration: {
@@ -77,7 +77,7 @@ export default defineConfig(({ mode }) => ({
           },
           {
             urlPattern: /\/audio\/.*/,
-            handler: 'StaleWhileRevalidate',
+            handler: 'NetworkFirst',
             options: {
               cacheName: 'local-audio-cache-v2',
               expiration: {
