@@ -23,7 +23,7 @@ interface Chapter {
 const chapters: Chapter[] = [
   { id: "dedication", title: "Dedication", audioUrl: "/audio/dedication.mp3", route: "/dedication" },
   { id: "prologue", title: "Prologue", audioUrl: ["/audio/prologue.mp3", "/audio/prologue-part2.mp3"], route: "/prologue" }, // Combined seamless playback
-  { id: "introduction", title: "Introduction", audioUrl: ["/audio/introduction.mp3", "/audio/introduction-part2.mp3"], route: "/introduction" }, // Combined seamless playback
+  { id: "introduction", title: "Introduction", audioUrl: ["/audio/introduction.mp3", "/audio/introduction-part2.mp3", "/audio/introduction-part3.mp3"], route: "/introduction" }, // Combined seamless playback
   { id: "chapter1", title: "Chapter 1: Australia Day", audioUrl: "/audio/chapter1.mp3", route: "/chapter1" },
   { id: "chapter2", title: "Chapter 2: Hospital Daze", audioUrl: "/audio/chapter2.mp3", route: "/chapter2" },
   { id: "chapter3", title: "Chapter 3: The Gun to My Head", audioUrl: "/audio/chapter3.mp3", route: "/chapter3" },
@@ -63,6 +63,7 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
   const [volume, setVolume] = useState(0.8);
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isTransitioningRef = useRef(false);
 
   const currentChapter = chapters[currentChapterIndex];
 
@@ -92,6 +93,7 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
 
   // Handle chapter or audio segment changes
   useEffect(() => {
+    if (isTransitioningRef.current) return;
     const audioUrl = getCurrentAudioUrl();
     if (audioRef.current && audioUrl) {
       const wasPlaying = isPlaying;
@@ -166,16 +168,20 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
       setCurrentAudioIndex(prev => prev + 1);
     } else {
       // All segments complete (or single audio), add 4 second pause then move to next chapter
+      isTransitioningRef.current = true;
       setCurrentAudioIndex(0);
       setIsPlaying(false);
       if (currentChapterIndex < chapters.length - 1) {
         setTimeout(() => {
+          isTransitioningRef.current = false;
           setCurrentChapterIndex(currentChapterIndex + 1);
           if (audioRef.current) {
             audioRef.current.play().catch(console.error);
             setIsPlaying(true);
           }
         }, 4000);
+      } else {
+        isTransitioningRef.current = false;
       }
     }
   };

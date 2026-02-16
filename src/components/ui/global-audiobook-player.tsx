@@ -25,7 +25,7 @@ interface Chapter {
 const chapters: Chapter[] = [
   { id: "dedication", title: "Dedication", audioUrl: "/audio/dedication.mp3" },
   { id: "prologue", title: "Prologue", audioUrl: ["/audio/prologue.mp3", "/audio/prologue-part2.mp3"] }, // Combined seamless playback
-  { id: "introduction", title: "Introduction", audioUrl: ["/audio/introduction.mp3", "/audio/introduction-part2.mp3"] }, // Combined seamless playback
+  { id: "introduction", title: "Introduction", audioUrl: ["/audio/introduction.mp3", "/audio/introduction-part2.mp3", "/audio/introduction-part3.mp3"] }, // Combined seamless playback
   { id: "chapter1", title: "Chapter 1: Australia Day", audioUrl: "/audio/chapter1.mp3" },
   { id: "chapter2", title: "Chapter 2: Hospital Daze", audioUrl: "/audio/chapter2.mp3" },
   { id: "chapter3", title: "Chapter 3: The Gun to My Head", audioUrl: "/audio/chapter3.mp3" },
@@ -73,6 +73,7 @@ export const GlobalAudiobookPlayer = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [showChapterList, setShowChapterList] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isTransitioningRef = useRef(false);
   
   const currentChapter = chapters[currentChapterIndex];
 
@@ -102,6 +103,7 @@ export const GlobalAudiobookPlayer = ({
 
   // Handle chapter or audio segment changes - ensure seamless transition
   useEffect(() => {
+    if (isTransitioningRef.current) return;
     const audioUrl = getCurrentAudioUrl();
     if (audioRef.current && audioUrl) {
       const wasPlaying = isPlaying;
@@ -182,9 +184,11 @@ export const GlobalAudiobookPlayer = ({
       setCurrentAudioIndex(prev => prev + 1);
     } else {
       // All segments complete (or single audio), add 4 second pause then move to next chapter
+      isTransitioningRef.current = true;
       setCurrentAudioIndex(0);
       setIsPlaying(false);
       setTimeout(() => {
+        isTransitioningRef.current = false;
         handleNextChapter();
         if (audioRef.current) {
           audioRef.current.play().catch(console.error);
