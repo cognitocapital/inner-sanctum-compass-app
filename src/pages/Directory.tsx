@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Search, ExternalLink, CheckCircle2, Globe } from "lucide-react";
 import { DIRECTORY_RESOURCES, DIRECTORY_CATEGORIES, DIRECTORY_REGIONS, type DirectoryResource } from "@/data/directoryData";
+import SEOHead from "@/components/seo/SEOHead";
 
 const Directory = () => {
   const [search, setSearch] = useState("");
@@ -19,6 +20,7 @@ const Directory = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-orange-950/10 text-white">
+      <SEOHead title="Resource Directory - What a Journey" description="Directory of TBI recovery resources, support organisations, and helpful links." path="/directory" />
       <header className="sticky top-0 z-20 bg-gray-950/80 backdrop-blur-md border-b border-white/5">
         <div className="container mx-auto px-4 py-3 flex items-center gap-3">
           <Button asChild variant="ghost" size="sm" className="text-white/60 hover:text-white">

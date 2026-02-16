@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import SEOHead from "@/components/seo/SEOHead";
 
 const Prologue = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
@@ -25,6 +26,7 @@ const Prologue = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
+      <SEOHead title="Prologue - What a Journey" description="The prologue to What a Journey, Michael Heron's memoir of traumatic brain injury recovery and resilience." path="/prologue" />
       {/* Animated background elements inspired by phoenix flames */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Primary flame particles */}

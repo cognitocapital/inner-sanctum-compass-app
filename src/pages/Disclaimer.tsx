@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowLeft, Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import SEOHead from "@/components/seo/SEOHead";
 
 const Disclaimer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -84,6 +85,7 @@ const Disclaimer = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
+      <SEOHead title="Disclaimer - What a Journey" description="Important disclaimer for What a Journey, a TBI recovery memoir by Michael Heron." path="/disclaimer" />
       {/* Hidden audio element */}
       <audio ref={audioRef} src="/audio/disclaimer.mp3" preload="auto" />
 

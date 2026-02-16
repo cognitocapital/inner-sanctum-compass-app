@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, ExternalLink, Brain, Heart, BookOpen, Users, Star } from "lucide-react";
+import SEOHead from "@/components/seo/SEOHead";
 
 const Resources = () => {
   const featuredInfluencers = [
@@ -162,6 +163,7 @@ const Resources = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
+      <SEOHead title="Growth Resources - What a Journey" description="Resources for TBI recovery and personal growth, curated by Michael Heron." path="/resources" />
       {/* Animated background elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-20 left-10 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-80 shadow-lg shadow-orange-500/50"></div>
