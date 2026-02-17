@@ -64,6 +64,7 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const isTransitioningRef = useRef(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const currentChapter = chapters[currentChapterIndex];
 
@@ -99,21 +100,27 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
     const audioUrl = getCurrentAudioUrl();
     if (audioRef.current && audioUrl) {
       const audio = audioRef.current;
-      
-      const onReady = () => {
+
+      // Abort any previous canplaythrough listener
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
+      // Stop any current playback before switching
+      audio.pause();
+      audio.src = audioUrl;
+      audio.load();
+      setCurrentTime(0);
+
+      audio.addEventListener('canplaythrough', () => {
         audio.playbackRate = 0.93;
         if (playIntentRef.current) {
           audio.play().catch(console.error);
           setIsPlaying(true);
         }
-      };
-      
-      audio.removeEventListener('canplaythrough', onReady);
-      audio.src = audioUrl;
-      audio.load();
-      setCurrentTime(0);
-      
-      audio.addEventListener('canplaythrough', onReady, { once: true });
+      }, { once: true, signal: controller.signal });
     } else if (audioRef.current) {
       audioRef.current.pause();
       setIsPlaying(false);
