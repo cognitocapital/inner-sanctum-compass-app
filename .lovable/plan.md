@@ -1,82 +1,99 @@
 
 
-# Fix: Audio Playing Twice Due to Stale Event Listeners
+# Secure the App and Expand the Disclaimer
 
-## Root Cause
+This plan covers two areas: (1) backend security hardening to protect user data, and (2) expanding the Disclaimer page with comprehensive legal/liability language appropriate for a health-related prototype in beta testing.
 
-The `canplaythrough` event listener cleanup is broken in both player files. Here's why:
+---
 
-In the useEffect (e.g., line 106-128 of `global-audiobook-player.tsx`):
+## Part 1: Backend Security Fixes
 
-```tsx
-const onReady = () => { /* play audio */ };
-audio.removeEventListener('canplaythrough', onReady);  // This does NOTHING
-audio.src = audioUrl;
-audio.load();
-audio.addEventListener('canplaythrough', onReady, { once: true });
+### 1A. Enable Leaked Password Protection
+The database linter flagged that leaked password protection is disabled. We will enable it so users cannot sign up with passwords found in known data breaches.
+
+### 1B. Fix Public Journal Entry Exposure (Critical)
+The security scan found that journal entries marked `is_shared = true` are readable by **anyone, including unauthenticated users**. These entries may contain sensitive health information.
+
+**Fix:** Replace the open "Anyone can read shared journal entries" RLS policy with one that requires authentication:
+
+```sql
+DROP POLICY "Anyone can read shared journal entries" ON public.user_journal_entries;
+
+CREATE POLICY "Authenticated users can read shared journal entries"
+ON public.user_journal_entries FOR SELECT
+TO authenticated
+USING (is_shared = true);
 ```
 
-The `removeEventListener` call on the previous listener **never works** because `onReady` is a brand-new function created each time the useEffect runs. JavaScript's `removeEventListener` requires the **exact same function reference** to remove a listener. Since each useEffect invocation creates a new `onReady`, the old listener is never removed.
+This ensures only logged-in users can view shared entries, not anonymous scrapers.
 
-When the useEffect fires rapidly (e.g., during segment transitions where both `currentAudioIndex` and `currentChapterIndex` change), multiple `canplaythrough` listeners stack up on the same `<audio>` element. Each one calls `play()`, causing the audio to appear to play twice or produce garbled/overlapping sound.
+### 1C. Add a Prototype/Beta Disclaimer Banner (Global)
+Since this is a beta prototype with intentionally public demonstration data, add a persistent disclaimer banner component that appears across the app to limit liability.
 
-## The Fix
+---
 
-Use an `AbortController` to properly cancel previous listeners before adding new ones. This is the modern, reliable way to clean up event listeners regardless of function reference identity.
+## Part 2: Expand the Disclaimer Page
 
-### File 1: `src/components/ui/global-audiobook-player.tsx`
+The current Disclaimer page (`src/pages/Disclaimer.tsx`) only has an audio player and a one-line intro. We will add comprehensive written disclaimer text covering:
 
-Replace the useEffect (lines 105-128) with:
+1. **Not Medical Advice** -- This app is a personal memoir and recovery journal, not a substitute for professional medical advice, diagnosis, or treatment.
+2. **Beta Prototype Notice** -- This application is a prototype in beta live testing. Features may change, data may be reset, and the experience is provided "as is" without warranty.
+3. **No Guarantee of Outcomes** -- Individual recovery experiences vary. Nothing in this app guarantees similar results.
+4. **Data Privacy Notice** -- User data (check-ins, journals, assessments) is stored securely but users should not enter information they are not comfortable storing digitally.
+5. **Emergency Resources** -- If you are in crisis, contact emergency services (e.g., 988 Suicide & Crisis Lifeline, 000 in Australia).
+6. **Intellectual Property** -- All content is copyright Michael Heron. Unauthorized reproduction is prohibited.
+7. **Liability Limitation** -- The author and app developers are not liable for any damages arising from use of this application.
 
-```tsx
-const abortControllerRef = useRef<AbortController | null>(null);
+The text will appear below the audio player as a scrollable, well-formatted section with clear headings, and users must scroll through it before reaching the "Continue" button.
 
-useEffect(() => {
-  if (isTransitioningRef.current) return;
-  const audioUrl = getCurrentAudioUrl();
-  if (audioRef.current && audioUrl) {
-    const audio = audioRef.current;
+---
 
-    // Abort any previous canplaythrough listener
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
+## Part 3: Add Global Beta Disclaimer Component
 
-    // Stop any current playback before switching
-    audio.pause();
-    audio.src = audioUrl;
-    audio.load();
-    setCurrentTime(0);
+Create a small, non-intrusive banner component (`BetaDisclaimer`) that shows on key pages (Dashboard, chapters, exercises) with text like:
 
-    audio.addEventListener('canplaythrough', () => {
-      audio.playbackRate = 0.93;
-      if (playIntentRef.current) {
-        audio.play().catch(console.error);
-        setIsPlaying(true);
-      }
-    }, { once: true, signal: controller.signal });
-  }
-}, [currentChapterIndex, currentAudioIndex]);
+> "This is a beta prototype for demonstration purposes. Content is not medical advice. See full disclaimer."
+
+With a link to `/disclaimer`.
+
+---
+
+## Files to Create/Modify
+
+| File | Action |
+|------|--------|
+| `src/pages/Disclaimer.tsx` | Expand with full written disclaimer sections below audio player |
+| `src/components/ui/beta-disclaimer-banner.tsx` | New -- small global beta notice banner |
+| `src/pages/Dashboard.tsx` | Add BetaDisclaimer banner |
+| `src/pages/Index.tsx` | Add BetaDisclaimer banner in footer area |
+| Database migration | Drop open journal policy, add authenticated-only policy |
+| Auth config | Enable leaked password protection |
+
+---
+
+## Technical Details
+
+**RLS Migration SQL:**
+```sql
+DROP POLICY IF EXISTS "Anyone can read shared journal entries" 
+  ON public.user_journal_entries;
+
+CREATE POLICY "Authenticated users can read shared journal entries"
+  ON public.user_journal_entries FOR SELECT
+  TO authenticated
+  USING (is_shared = true);
 ```
 
-### File 2: `src/components/ui/uploaded-audiobook-player.tsx`
+**BetaDisclaimer component:** A simple fixed-bottom or top banner with orange/amber styling, dismissible per session via localStorage, linking to `/disclaimer`.
 
-Apply the identical `AbortController` pattern to its useEffect (lines 96-123).
+**Disclaimer page structure:**
+- Audio player (existing, unchanged)
+- Section: "Important Notice" (beta prototype statement)
+- Section: "Not Medical Advice"
+- Section: "No Guarantee of Outcomes"
+- Section: "Your Data"
+- Section: "Emergency Resources"
+- Section: "Limitation of Liability"
+- Section: "Copyright"
+- "I Understand" / Continue button at bottom
 
-### File 3: Replace audio file
-
-Copy the uploaded `introduction_continued...mp3` to `public/audio/introduction-part4.mp3` to ensure it matches the latest manuscript content.
-
-## Why This Works
-
-- `AbortController.abort()` instantly cancels the previous listener, guaranteed -- no function reference matching needed
-- `audio.pause()` before setting new `src` prevents any overlap from a still-playing previous segment
-- Single `canplaythrough` listener at any time means `play()` is only ever called once per load
-- Works identically on web and mobile (standard Web API)
-
-## Files Modified
-- `src/components/ui/global-audiobook-player.tsx` (AbortController pattern for canplaythrough)
-- `src/components/ui/uploaded-audiobook-player.tsx` (same fix)
-- `public/audio/introduction-part4.mp3` (replaced with latest upload)
