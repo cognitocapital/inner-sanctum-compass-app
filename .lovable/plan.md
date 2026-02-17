@@ -1,37 +1,65 @@
 
 
-# Fix: Published Audio Not Updating (Service Worker Cache Issue)
+# Fix: Audio Not Updating on Published Site + Playback Race Condition
 
-## Problem
-The PWA service worker uses a `CacheFirst` strategy for audio files. This means browsers that previously visited the site have the **old** audio files permanently cached. When you replace files like `chapter11.mp3`, the service worker serves the stale cached version instead of downloading the new one.
+## Root Cause
 
-## Solution
+Two separate issues are preventing the published site from playing updated audio correctly.
 
-Change the audio caching strategy from `CacheFirst` to `StaleWhileRevalidate`. This serves the cached version immediately (fast playback) but also fetches the updated file in the background so the **next** visit uses the new audio.
+### Issue 1: Precache Overrides NetworkFirst
 
-Additionally, bump the cache name to force invalidation of the old cache on existing users' devices.
+In `vite.config.ts`, the line:
+```
+includeAssets: ['favicon.ico', 'audio/**/*', 'video/**/*', 'lovable-uploads/**/*']
+```
+...tells the service worker to **precache** every audio file during installation. Precached files are served directly from the precache manifest and **completely bypass** runtime caching rules like `NetworkFirst`. This means:
+- The `NetworkFirst` handler you set up never runs for audio
+- Old visitors' browsers serve the stale precached audio forever
+- New audio files only appear if the entire service worker is reinstalled
+
+### Issue 2: Player Race Condition (AbortError Spam)
+
+The player calls `play()` right after `load()` without waiting for the browser to finish loading the new audio source. Additionally, when a chapter ends, the 4-second timeout calls `play()` which races with the useEffect that also loads + plays the next source. This causes the cascade of `AbortError: The play() request was interrupted by a new load request` errors visible in the console.
+
+---
 
 ## Changes
 
-### File: `vite.config.ts`
+### File 1: `vite.config.ts`
 
-1. Change the `/audio/` runtime caching rule (lines 78-88):
-   - Strategy: `CacheFirst` to `StaleWhileRevalidate`
-   - Cache name: `local-audio-cache` to `local-audio-cache-v2` (forces old cache eviction)
-   - Keep the 60-day expiration
+**Remove `'audio/**/*'`** from the `includeAssets` array (line 18). Audio will now be handled exclusively by the `NetworkFirst` runtime caching rule, which fetches fresh files from the server on every visit and only falls back to cache when offline.
 
-2. Change the external audio rule (lines 63-77):
-   - Strategy: `CacheFirst` to `StaleWhileRevalidate`  
-   - Cache name: `audio-video-cache` to `audio-video-cache-v2`
+Before:
+```
+includeAssets: ['favicon.ico', 'audio/**/*', 'video/**/*', 'lovable-uploads/**/*']
+```
 
-Video and font caches can stay `CacheFirst` since those files don't change.
+After:
+```
+includeAssets: ['favicon.ico', 'video/**/*', 'lovable-uploads/**/*']
+```
 
-## What This Means for Users
-- **First visit after publish**: Users hear the old cached audio, but the new files download silently in the background
-- **Second visit onward**: Users hear the updated audio
-- Users who have never visited before get the new audio immediately
-- No impact on playback speed, transitions, or any other functionality
+### File 2: `src/components/ui/global-audiobook-player.tsx`
 
-## Technical Detail
-Only two lines change in `vite.config.ts` (the `handler` values) plus two cache name bumps. No other files are modified.
+**Fix the race condition** in the chapter/segment transition logic:
+
+1. In the `useEffect` that handles chapter and audio segment changes (lines 105-119): instead of calling `play()` immediately after `load()`, attach a one-time `canplaythrough` event listener so play only fires once the browser has enough data buffered.
+
+2. In the `handleEnded` function (lines 178-198): remove the direct `play()` call from the timeout. The useEffect already handles playback when `currentChapterIndex` changes, so the timeout only needs to update the chapter index -- the useEffect will take care of starting playback once the audio is ready.
+
+3. Track `isPlaying` intent with a ref so the useEffect knows whether to auto-play after loading (the current code uses `isPlaying` state which is stale inside the effect).
+
+---
+
+## What This Means
+
+- **First visit after publish**: Updated audio plays immediately -- no second visit needed
+- **Offline users**: Audio still works from cache as a fallback
+- **No more AbortError spam**: Playback only starts when the browser confirms the audio source is ready
+- **Seamless multi-part chapters**: Chapter 11 (and all other multi-part chapters) transition smoothly between segments
+- **Playback speed**: 0.93x is preserved (set in `canplaythrough` handler)
+
+## Files Modified
+- `vite.config.ts` (1 line change)
+- `src/components/ui/global-audiobook-player.tsx` (transition logic rewrite)
 
