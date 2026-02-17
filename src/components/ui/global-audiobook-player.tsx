@@ -107,30 +107,33 @@ export const GlobalAudiobookPlayer = ({
   useEffect(() => {
     if (isTransitioningRef.current) return;
     const audioUrl = getCurrentAudioUrl();
-    if (audioRef.current && audioUrl) {
-      const audio = audioRef.current;
+    if (!audioRef.current || !audioUrl) return;
+    const audio = audioRef.current;
 
-      // Abort any previous canplaythrough listener
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-      const controller = new AbortController();
-      abortControllerRef.current = controller;
-
-      // Stop any current playback before switching
-      audio.pause();
-      audio.src = audioUrl;
-      audio.load();
-      setCurrentTime(0);
-
-      audio.addEventListener('canplaythrough', () => {
-        audio.playbackRate = 0.93;
-        if (playIntentRef.current) {
-          audio.play().catch(console.error);
-          setIsPlaying(true);
-        }
-      }, { once: true, signal: controller.signal });
+    // Abort any previous canplaythrough listener
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
     }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    // Stop any current playback before switching
+    audio.pause();
+    audio.src = audioUrl;
+    audio.load();
+    setCurrentTime(0);
+
+    audio.addEventListener('canplaythrough', () => {
+      audio.playbackRate = 0.93;
+      if (playIntentRef.current) {
+        audio.play().catch(console.error);
+        setIsPlaying(true);
+      }
+    }, { once: true, signal: controller.signal });
+
+    return () => {
+      controller.abort();
+    };
   }, [currentChapterIndex, currentAudioIndex]);
 
   const handlePlayPause = useCallback(() => {
