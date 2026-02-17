@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import BookSchema from "@/components/seo/BookSchema";
+import BetaDisclaimerBanner from "@/components/ui/beta-disclaimer-banner";
 
 const Index = () => {
     return (
@@ -90,9 +91,10 @@ const Index = () => {
                 </header>
 
                 {/* footer */}
-                <footer className="text-center mt-16 text-sm text-gray-400">
+                <footer className="text-center mt-16 text-sm text-gray-400 mb-12">
                     <p>© 2024 Michael Heron. All rights reserved.</p>
                 </footer>
+                <BetaDisclaimerBanner />
             </div>
         </div>
     );
