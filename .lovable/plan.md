@@ -1,65 +1,39 @@
 
 
-# Fix: Audio Not Updating on Published Site + Playback Race Condition
+# Replace Audio Files for Introduction and Chapter 11
 
-## Root Cause
+## The Problem
 
-Two separate issues are preventing the published site from playing updated audio correctly.
+The code is correct — it already references all the right files. But the actual audio files sitting in `public/audio/` are outdated. Your newly uploaded files need to replace them.
 
-### Issue 1: Precache Overrides NetworkFirst
+## What Will Change
 
-In `vite.config.ts`, the line:
-```
-includeAssets: ['favicon.ico', 'audio/**/*', 'video/**/*', 'lovable-uploads/**/*']
-```
-...tells the service worker to **precache** every audio file during installation. Precached files are served directly from the precache manifest and **completely bypass** runtime caching rules like `NetworkFirst`. This means:
-- The `NetworkFirst` handler you set up never runs for audio
-- Old visitors' browsers serve the stale precached audio forever
-- New audio files only appear if the entire service worker is reinstalled
+### Step 1: Replace Introduction Part 4
+Copy your uploaded `introduction_continued...mp3` to `public/audio/introduction-part4.mp3`, replacing the current file. This is the additional content that completes the Introduction to match the manuscript.
 
-### Issue 2: Player Race Condition (AbortError Spam)
+### Step 2: Replace All 4 Chapter 11 Audio Files
+Copy your uploaded Chapter 11 files to replace the existing ones:
+- `Chapter_11_The_Inner_Work_1.4-2.mp3` replaces `public/audio/chapter11.mp3`
+- `Chapter_11_The_Inner_Work_2.4-2.mp3` replaces `public/audio/chapter11-part2.mp3`
+- `Chapter_11_The_Inner_Work_3.4-2.mp3` replaces `public/audio/chapter11-part3.mp3`
+- `Chapter_11_The_Inner_Work_4.4-2.mp3` replaces `public/audio/chapter11-part4.mp3`
 
-The player calls `play()` right after `load()` without waiting for the browser to finish loading the new audio source. Additionally, when a chapter ends, the 4-second timeout calls `play()` which races with the useEffect that also loads + plays the next source. This causes the cascade of `AbortError: The play() request was interrupted by a new load request` errors visible in the console.
+### Step 3: No Code Changes Needed
+Both `global-audiobook-player.tsx` and `uploaded-audiobook-player.tsx` already reference:
+- Introduction: parts 1-4
+- Chapter 11: parts 1-4
 
----
+The player logic, seamless transitions, and `NetworkFirst` caching strategy are all already in place.
 
-## Changes
+## Why This Will Work After Publishing
 
-### File 1: `vite.config.ts`
-
-**Remove `'audio/**/*'`** from the `includeAssets` array (line 18). Audio will now be handled exclusively by the `NetworkFirst` runtime caching rule, which fetches fresh files from the server on every visit and only falls back to cache when offline.
-
-Before:
-```
-includeAssets: ['favicon.ico', 'audio/**/*', 'video/**/*', 'lovable-uploads/**/*']
-```
-
-After:
-```
-includeAssets: ['favicon.ico', 'video/**/*', 'lovable-uploads/**/*']
-```
-
-### File 2: `src/components/ui/global-audiobook-player.tsx`
-
-**Fix the race condition** in the chapter/segment transition logic:
-
-1. In the `useEffect` that handles chapter and audio segment changes (lines 105-119): instead of calling `play()` immediately after `load()`, attach a one-time `canplaythrough` event listener so play only fires once the browser has enough data buffered.
-
-2. In the `handleEnded` function (lines 178-198): remove the direct `play()` call from the timeout. The useEffect already handles playback when `currentChapterIndex` changes, so the timeout only needs to update the chapter index -- the useEffect will take care of starting playback once the audio is ready.
-
-3. Track `isPlaying` intent with a ref so the useEffect knows whether to auto-play after loading (the current code uses `isPlaying` state which is stale inside the effect).
-
----
-
-## What This Means
-
-- **First visit after publish**: Updated audio plays immediately -- no second visit needed
-- **Offline users**: Audio still works from cache as a fallback
-- **No more AbortError spam**: Playback only starts when the browser confirms the audio source is ready
-- **Seamless multi-part chapters**: Chapter 11 (and all other multi-part chapters) transition smoothly between segments
-- **Playback speed**: 0.93x is preserved (set in `canplaythrough` handler)
+- The `NetworkFirst` caching fix from earlier means browsers will fetch the new files from the server on first visit
+- No code changes means no risk of introducing new bugs
+- The files simply get swapped — same filenames, updated content
 
 ## Files Modified
-- `vite.config.ts` (1 line change)
-- `src/components/ui/global-audiobook-player.tsx` (transition logic rewrite)
-
+- `public/audio/introduction-part4.mp3` (replaced)
+- `public/audio/chapter11.mp3` (replaced)
+- `public/audio/chapter11-part2.mp3` (replaced)
+- `public/audio/chapter11-part3.mp3` (replaced)
+- `public/audio/chapter11-part4.mp3` (replaced)
