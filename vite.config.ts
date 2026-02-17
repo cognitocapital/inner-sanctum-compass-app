@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => ({
     mode === 'development' && componentTagger(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'audio/**/*', 'video/**/*', 'lovable-uploads/**/*'],
+      includeAssets: ['favicon.ico', 'video/**/*', 'lovable-uploads/**/*'],
       manifest: {
         name: 'Phoenix Journey - TBI Recovery',
         short_name: 'Phoenix',
