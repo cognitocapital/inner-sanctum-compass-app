@@ -23,7 +23,7 @@ interface Chapter {
 const chapters: Chapter[] = [
   { id: "dedication", title: "Dedication", audioUrl: "/audio/dedication.mp3", route: "/dedication" },
   { id: "prologue", title: "Prologue", audioUrl: ["/audio/prologue.mp3", "/audio/prologue-part2.mp3"], route: "/prologue" }, // Combined seamless playback
-  { id: "introduction", title: "Introduction", audioUrl: ["/audio/introduction.mp3", "/audio/introduction-part2.mp3", "/audio/introduction-part3.mp3", "/audio/introduction-part4.mp3"], route: "/introduction" }, // Combined seamless playback
+  { id: "introduction", title: "Introduction", audioUrl: ["/audio/introduction.mp3", "/audio/introduction-part2.mp3", "/audio/introduction-part3.mp3"], route: "/introduction" }, // Combined seamless playback
   { id: "chapter1", title: "Chapter 1: Australia Day", audioUrl: "/audio/chapter1.mp3", route: "/chapter1" },
   { id: "chapter2", title: "Chapter 2: Hospital Daze", audioUrl: "/audio/chapter2.mp3", route: "/chapter2" },
   { id: "chapter3", title: "Chapter 3: The Gun to My Head", audioUrl: "/audio/chapter3.mp3", route: "/chapter3" },
