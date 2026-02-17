@@ -74,6 +74,7 @@ export const GlobalAudiobookPlayer = ({
   const [showChapterList, setShowChapterList] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const isTransitioningRef = useRef(false);
+  const playIntentRef = useRef(false); // Track whether we intend to play after loading
   
   const currentChapter = chapters[currentChapterIndex];
 
@@ -101,20 +102,28 @@ export const GlobalAudiobookPlayer = ({
     }
   }, [volume, isMuted]);
 
-  // Handle chapter or audio segment changes - ensure seamless transition
+  // Handle chapter or audio segment changes - wait for canplaythrough before playing
   useEffect(() => {
     if (isTransitioningRef.current) return;
     const audioUrl = getCurrentAudioUrl();
     if (audioRef.current && audioUrl) {
-      const wasPlaying = isPlaying;
-      audioRef.current.src = audioUrl;
-      audioRef.current.load();
-      audioRef.current.playbackRate = 0.93;
+      const audio = audioRef.current;
+      
+      // Remove any previous listener
+      const onReady = () => {
+        audio.playbackRate = 0.93;
+        if (playIntentRef.current) {
+          audio.play().catch(console.error);
+          setIsPlaying(true);
+        }
+      };
+      
+      audio.removeEventListener('canplaythrough', onReady);
+      audio.src = audioUrl;
+      audio.load();
       setCurrentTime(0);
       
-      if (wasPlaying) {
-        audioRef.current.play().catch(console.error);
-      }
+      audio.addEventListener('canplaythrough', onReady, { once: true });
     }
   }, [currentChapterIndex, currentAudioIndex]);
 
@@ -124,7 +133,9 @@ export const GlobalAudiobookPlayer = ({
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
+      playIntentRef.current = false;
     } else {
+      playIntentRef.current = true;
       audioRef.current.play().then(() => {
         setIsPlaying(true);
       }).catch(console.error);
@@ -181,19 +192,19 @@ export const GlobalAudiobookPlayer = ({
     // If chapter has multiple audio files and we're not at the last one
     if (Array.isArray(urls) && currentAudioIndex < urls.length - 1) {
       // Seamlessly play next segment of same chapter
+      playIntentRef.current = true;
       setCurrentAudioIndex(prev => prev + 1);
     } else {
-      // All segments complete (or single audio), add 4 second pause then move to next chapter
+      // All segments complete, pause then auto-advance after 4s
       isTransitioningRef.current = true;
       setCurrentAudioIndex(0);
       setIsPlaying(false);
+      playIntentRef.current = true; // Intent to play next chapter
       setTimeout(() => {
         isTransitioningRef.current = false;
+        // Just update the index — the useEffect will handle loading + playing
+        setCurrentAudioIndex(0);
         handleNextChapter();
-        if (audioRef.current) {
-          audioRef.current.play().catch(console.error);
-          setIsPlaying(true);
-        }
       }, 4000);
     }
   };
