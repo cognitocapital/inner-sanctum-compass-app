@@ -1,63 +1,82 @@
 
-# Fix: Audio Duplication in Playback
+
+# Fix: Audio Playing Twice Due to Stale Event Listeners
 
 ## Root Cause
 
-The `<audio>` HTML element in `global-audiobook-player.tsx` has its `src` attribute set in **two places simultaneously**:
+The `canplaythrough` event listener cleanup is broken in both player files. Here's why:
 
-1. **React JSX prop** (line 242): `src={currentAudioUrl || undefined}` -- React updates this on every re-render
-2. **useEffect** (line 122): `audio.src = audioUrl; audio.load()` -- runs when chapter/segment index changes
+In the useEffect (e.g., line 106-128 of `global-audiobook-player.tsx`):
 
-When a segment transition happens (e.g., Introduction part 3 ends and part 4 should play):
-- React re-renders and sets the new `src` on the DOM element, which starts loading
-- The useEffect then fires, sets `src` again, and calls `load()`, starting a second load
-- Both trigger `canplaythrough`, both call `play()` -- you hear the audio twice or get garbled playback
+```tsx
+const onReady = () => { /* play audio */ };
+audio.removeEventListener('canplaythrough', onReady);  // This does NOTHING
+audio.src = audioUrl;
+audio.load();
+audio.addEventListener('canplaythrough', onReady, { once: true });
+```
 
-## Changes
+The `removeEventListener` call on the previous listener **never works** because `onReady` is a brand-new function created each time the useEffect runs. JavaScript's `removeEventListener` requires the **exact same function reference** to remove a listener. Since each useEffect invocation creates a new `onReady`, the old listener is never removed.
+
+When the useEffect fires rapidly (e.g., during segment transitions where both `currentAudioIndex` and `currentChapterIndex` change), multiple `canplaythrough` listeners stack up on the same `<audio>` element. Each one calls `play()`, causing the audio to appear to play twice or produce garbled/overlapping sound.
+
+## The Fix
+
+Use an `AbortController` to properly cancel previous listeners before adding new ones. This is the modern, reliable way to clean up event listeners regardless of function reference identity.
 
 ### File 1: `src/components/ui/global-audiobook-player.tsx`
 
-**Remove `src` from the `<audio>` JSX element.** The useEffect is the sole controller of audio source loading. This eliminates the double-load that causes duplication.
+Replace the useEffect (lines 105-128) with:
 
-Before:
 ```tsx
-<audio
-  ref={audioRef}
-  src={currentAudioUrl || undefined}
-  onTimeUpdate={handleTimeUpdate}
-  onLoadedMetadata={handleLoadedMetadata}
-  onEnded={handleEnded}
-  preload="auto"
-/>
-```
+const abortControllerRef = useRef<AbortController | null>(null);
 
-After:
-```tsx
-<audio
-  ref={audioRef}
-  onTimeUpdate={handleTimeUpdate}
-  onLoadedMetadata={handleLoadedMetadata}
-  onEnded={handleEnded}
-  preload="auto"
-/>
+useEffect(() => {
+  if (isTransitioningRef.current) return;
+  const audioUrl = getCurrentAudioUrl();
+  if (audioRef.current && audioUrl) {
+    const audio = audioRef.current;
+
+    // Abort any previous canplaythrough listener
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    // Stop any current playback before switching
+    audio.pause();
+    audio.src = audioUrl;
+    audio.load();
+    setCurrentTime(0);
+
+    audio.addEventListener('canplaythrough', () => {
+      audio.playbackRate = 0.93;
+      if (playIntentRef.current) {
+        audio.play().catch(console.error);
+        setIsPlaying(true);
+      }
+    }, { once: true, signal: controller.signal });
+  }
+}, [currentChapterIndex, currentAudioIndex]);
 ```
 
 ### File 2: `src/components/ui/uploaded-audiobook-player.tsx`
 
-Apply the same fix -- remove `src` from the `<audio>` JSX and let the useEffect handle it exclusively. Also apply the same `canplaythrough` buffering pattern used in the global player to prevent race conditions.
+Apply the identical `AbortController` pattern to its useEffect (lines 96-123).
 
-### File 3: Copy the uploaded introduction audio
+### File 3: Replace audio file
 
-Replace `public/audio/introduction-part4.mp3` with the latest uploaded file to ensure the content matches the manuscript.
+Copy the uploaded `introduction_continued...mp3` to `public/audio/introduction-part4.mp3` to ensure it matches the latest manuscript content.
 
-## Why This Fixes It
+## Why This Works
 
-- Single source of truth: only the useEffect sets `audio.src` and calls `load()`
-- No more double-load causing duplicate playback
-- The `canplaythrough` listener ensures `play()` only fires once per load
-- Works identically on web and mobile since both use the same HTML5 Audio API
+- `AbortController.abort()` instantly cancels the previous listener, guaranteed -- no function reference matching needed
+- `audio.pause()` before setting new `src` prevents any overlap from a still-playing previous segment
+- Single `canplaythrough` listener at any time means `play()` is only ever called once per load
+- Works identically on web and mobile (standard Web API)
 
 ## Files Modified
-- `src/components/ui/global-audiobook-player.tsx` (remove src prop from audio element)
-- `src/components/ui/uploaded-audiobook-player.tsx` (same fix plus canplaythrough pattern)
+- `src/components/ui/global-audiobook-player.tsx` (AbortController pattern for canplaythrough)
+- `src/components/ui/uploaded-audiobook-player.tsx` (same fix)
 - `public/audio/introduction-part4.mp3` (replaced with latest upload)
