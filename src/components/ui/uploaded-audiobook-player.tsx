@@ -91,20 +91,29 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
     }
   }, [volume, isMuted]);
 
-  // Handle chapter or audio segment changes
+  const playIntentRef = useRef(false);
+
+  // Handle chapter or audio segment changes - wait for canplaythrough before playing
   useEffect(() => {
     if (isTransitioningRef.current) return;
     const audioUrl = getCurrentAudioUrl();
     if (audioRef.current && audioUrl) {
-      const wasPlaying = isPlaying;
-      audioRef.current.src = audioUrl;
-      audioRef.current.load();
-      audioRef.current.playbackRate = 0.93;
+      const audio = audioRef.current;
+      
+      const onReady = () => {
+        audio.playbackRate = 0.93;
+        if (playIntentRef.current) {
+          audio.play().catch(console.error);
+          setIsPlaying(true);
+        }
+      };
+      
+      audio.removeEventListener('canplaythrough', onReady);
+      audio.src = audioUrl;
+      audio.load();
       setCurrentTime(0);
       
-      if (wasPlaying) {
-        audioRef.current.play().catch(console.error);
-      }
+      audio.addEventListener('canplaythrough', onReady, { once: true });
     } else if (audioRef.current) {
       audioRef.current.pause();
       setIsPlaying(false);
@@ -119,9 +128,12 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
+      playIntentRef.current = false;
     } else {
-      audioRef.current.play();
-      setIsPlaying(true);
+      playIntentRef.current = true;
+      audioRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch(console.error);
     }
   };
 
@@ -162,23 +174,19 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
   const handleEnded = () => {
     const urls = currentChapter.audioUrl;
     
-    // If chapter has multiple audio files and we're not at the last one
     if (Array.isArray(urls) && currentAudioIndex < urls.length - 1) {
-      // Seamlessly play next segment of same chapter
+      playIntentRef.current = true;
       setCurrentAudioIndex(prev => prev + 1);
     } else {
-      // All segments complete (or single audio), add 4 second pause then move to next chapter
       isTransitioningRef.current = true;
       setCurrentAudioIndex(0);
       setIsPlaying(false);
+      playIntentRef.current = true;
       if (currentChapterIndex < chapters.length - 1) {
         setTimeout(() => {
           isTransitioningRef.current = false;
+          setCurrentAudioIndex(0);
           setCurrentChapterIndex(currentChapterIndex + 1);
-          if (audioRef.current) {
-            audioRef.current.play().catch(console.error);
-            setIsPlaying(true);
-          }
         }, 4000);
       } else {
         isTransitioningRef.current = false;
@@ -223,15 +231,13 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
         </div>
 
         {/* Hidden Audio Element */}
-        {currentAudioUrl && (
-          <audio
-            ref={audioRef}
-            src={currentAudioUrl}
-            onTimeUpdate={handleTimeUpdate}
-            onLoadedMetadata={handleLoadedMetadata}
-            onEnded={handleEnded}
-          />
-        )}
+        <audio
+          ref={audioRef}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
+          onEnded={handleEnded}
+          preload="auto"
+        />
 
         {/* Progress Bar */}
         <div className="mb-4">

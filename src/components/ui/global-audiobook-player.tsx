@@ -239,7 +239,6 @@ export const GlobalAudiobookPlayer = ({
       {/* Hidden Audio Element */}
       <audio
         ref={audioRef}
-        src={currentAudioUrl || undefined}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
         onEnded={handleEnded}
