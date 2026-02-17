@@ -1,39 +1,63 @@
 
+# Fix: Audio Duplication in Playback
 
-# Replace Audio Files for Introduction and Chapter 11
+## Root Cause
 
-## The Problem
+The `<audio>` HTML element in `global-audiobook-player.tsx` has its `src` attribute set in **two places simultaneously**:
 
-The code is correct — it already references all the right files. But the actual audio files sitting in `public/audio/` are outdated. Your newly uploaded files need to replace them.
+1. **React JSX prop** (line 242): `src={currentAudioUrl || undefined}` -- React updates this on every re-render
+2. **useEffect** (line 122): `audio.src = audioUrl; audio.load()` -- runs when chapter/segment index changes
 
-## What Will Change
+When a segment transition happens (e.g., Introduction part 3 ends and part 4 should play):
+- React re-renders and sets the new `src` on the DOM element, which starts loading
+- The useEffect then fires, sets `src` again, and calls `load()`, starting a second load
+- Both trigger `canplaythrough`, both call `play()` -- you hear the audio twice or get garbled playback
 
-### Step 1: Replace Introduction Part 4
-Copy your uploaded `introduction_continued...mp3` to `public/audio/introduction-part4.mp3`, replacing the current file. This is the additional content that completes the Introduction to match the manuscript.
+## Changes
 
-### Step 2: Replace All 4 Chapter 11 Audio Files
-Copy your uploaded Chapter 11 files to replace the existing ones:
-- `Chapter_11_The_Inner_Work_1.4-2.mp3` replaces `public/audio/chapter11.mp3`
-- `Chapter_11_The_Inner_Work_2.4-2.mp3` replaces `public/audio/chapter11-part2.mp3`
-- `Chapter_11_The_Inner_Work_3.4-2.mp3` replaces `public/audio/chapter11-part3.mp3`
-- `Chapter_11_The_Inner_Work_4.4-2.mp3` replaces `public/audio/chapter11-part4.mp3`
+### File 1: `src/components/ui/global-audiobook-player.tsx`
 
-### Step 3: No Code Changes Needed
-Both `global-audiobook-player.tsx` and `uploaded-audiobook-player.tsx` already reference:
-- Introduction: parts 1-4
-- Chapter 11: parts 1-4
+**Remove `src` from the `<audio>` JSX element.** The useEffect is the sole controller of audio source loading. This eliminates the double-load that causes duplication.
 
-The player logic, seamless transitions, and `NetworkFirst` caching strategy are all already in place.
+Before:
+```tsx
+<audio
+  ref={audioRef}
+  src={currentAudioUrl || undefined}
+  onTimeUpdate={handleTimeUpdate}
+  onLoadedMetadata={handleLoadedMetadata}
+  onEnded={handleEnded}
+  preload="auto"
+/>
+```
 
-## Why This Will Work After Publishing
+After:
+```tsx
+<audio
+  ref={audioRef}
+  onTimeUpdate={handleTimeUpdate}
+  onLoadedMetadata={handleLoadedMetadata}
+  onEnded={handleEnded}
+  preload="auto"
+/>
+```
 
-- The `NetworkFirst` caching fix from earlier means browsers will fetch the new files from the server on first visit
-- No code changes means no risk of introducing new bugs
-- The files simply get swapped — same filenames, updated content
+### File 2: `src/components/ui/uploaded-audiobook-player.tsx`
+
+Apply the same fix -- remove `src` from the `<audio>` JSX and let the useEffect handle it exclusively. Also apply the same `canplaythrough` buffering pattern used in the global player to prevent race conditions.
+
+### File 3: Copy the uploaded introduction audio
+
+Replace `public/audio/introduction-part4.mp3` with the latest uploaded file to ensure the content matches the manuscript.
+
+## Why This Fixes It
+
+- Single source of truth: only the useEffect sets `audio.src` and calls `load()`
+- No more double-load causing duplicate playback
+- The `canplaythrough` listener ensures `play()` only fires once per load
+- Works identically on web and mobile since both use the same HTML5 Audio API
 
 ## Files Modified
-- `public/audio/introduction-part4.mp3` (replaced)
-- `public/audio/chapter11.mp3` (replaced)
-- `public/audio/chapter11-part2.mp3` (replaced)
-- `public/audio/chapter11-part3.mp3` (replaced)
-- `public/audio/chapter11-part4.mp3` (replaced)
+- `src/components/ui/global-audiobook-player.tsx` (remove src prop from audio element)
+- `src/components/ui/uploaded-audiobook-player.tsx` (same fix plus canplaythrough pattern)
+- `public/audio/introduction-part4.mp3` (replaced with latest upload)
