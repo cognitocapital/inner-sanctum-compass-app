@@ -72,11 +72,13 @@ export const useAudiobookPlayer = () => {
 const AppContent = () => {
   const [audiobookVisible, setAudiobookVisible] = useState(false);
   const [startChapterId, setStartChapterId] = useState("dedication");
+  const [autoPlayOnOpen, setAutoPlayOnOpen] = useState(false);
 
   // Expose global function for opening audiobook
   if (typeof window !== "undefined") {
     (window as any).openAudiobook = (chapterId?: string) => {
       if (chapterId) setStartChapterId(chapterId);
+      setAutoPlayOnOpen(true);
       setAudiobookVisible(true);
     };
   }
@@ -200,8 +202,9 @@ const AppContent = () => {
       {/* Global Audiobook Player */}
       <GlobalAudiobookPlayer
         isVisible={audiobookVisible}
-        onClose={() => setAudiobookVisible(false)}
+        onClose={() => { setAudiobookVisible(false); setAutoPlayOnOpen(false); }}
         startChapterId={startChapterId}
+        autoPlay={autoPlayOnOpen}
       />
     </>
   );
