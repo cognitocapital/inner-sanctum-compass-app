@@ -53,12 +53,14 @@ interface GlobalAudiobookPlayerProps {
   isVisible: boolean;
   onClose: () => void;
   startChapterId?: string;
+  autoPlay?: boolean;
 }
 
 export const GlobalAudiobookPlayer = ({ 
   isVisible, 
   onClose,
-  startChapterId = "dedication" 
+  startChapterId = "dedication",
+  autoPlay = false
 }: GlobalAudiobookPlayerProps) => {
   const [currentChapterIndex, setCurrentChapterIndex] = useState(() => {
     const index = chapters.findIndex(c => c.id === startChapterId);
@@ -117,6 +119,11 @@ export const GlobalAudiobookPlayer = ({
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
+    // ✅ FIX: if opened with autoPlay intent, set the flag before canplaythrough fires
+    if (autoPlay) {
+      playIntentRef.current = true;
+    }
+
     // Stop any current playback before switching
     audio.pause();
     audio.src = audioUrl;
@@ -134,7 +141,7 @@ export const GlobalAudiobookPlayer = ({
     return () => {
       controller.abort();
     };
-  }, [currentChapterIndex, currentAudioIndex]);
+  }, [currentChapterIndex, currentAudioIndex, autoPlay]);
 
   const handlePlayPause = useCallback(() => {
     if (!audioRef.current || !hasAudio()) return;
