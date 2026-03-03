@@ -1,102 +1,49 @@
 
-# Fix: "Start Listening" Button Doesn't Play on First Visit
 
-## Root Cause (Confirmed)
+# Fix Google Search Indexing: Homepage vs Disclaimer
 
-The problem is in `src/components/ui/global-audiobook-player.tsx` line 242:
+## Problem
 
-```tsx
-if (!isVisible) return null;
+There are two issues causing Google to prefer the disclaimer page over the homepage:
+
+1. **Wrong domain in all SEO assets**: The sitemap, robots.txt, canonical URLs, OG tags, and BookSchema all reference `whatajourney.lovable.app` instead of your custom domain `whatajourney.app`. Google sees these as two different sites and may index whichever it crawled first or found more links to.
+
+2. **`index.html` meta tags reference "Phoenix Journey"**: The static HTML `<title>` and `<meta name="description">` say "Phoenix Journey - TBI Recovery" — not "What a Journey". Since SPA crawlers sometimes only see the static HTML (before React renders), Google may be using the less descriptive static metadata and picking a different page that has clearer content.
+
+## Fix
+
+### 1. Update `SITE_URL` to custom domain
+In `src/components/seo/SEOHead.tsx`, change:
+```
+const SITE_URL = "https://whatajourney.app";
 ```
 
-This means the `GlobalAudiobookPlayer` is **completely unmounted** when not visible. Every time the user clicks "Start Listening", the component **mounts fresh** with all refs reset to their defaults — including `playIntentRef.current = false`.
+### 2. Update `index.html` static meta tags
+Change the `<title>` and `<meta description>` to match the homepage SEO:
+- Title: `What a Journey - TBI Recovery Story by Michael Heron`
+- Description: `An intimate account of recovering from a traumatic brain injury...`
+- Update OG/Twitter tags similarly
 
-The `useEffect` that loads audio fires on mount and attaches a `canplaythrough` listener. That listener checks `playIntentRef.current` — but it's `false` because the component just mounted. So even though the audio is ready to play, nothing happens. The user must click the play button manually.
+### 3. Update `sitemap.xml` URLs
+Replace all `whatajourney.lovable.app` with `whatajourney.app`.
 
-## The Fix
+### 4. Update `robots.txt` sitemap reference
+Point to `https://whatajourney.app/sitemap.xml`.
 
-Two small, targeted changes:
+### 5. Update `BookSchema.tsx` URL
+Change the `url` field to `https://whatajourney.app`.
 
-### 1. Add `autoPlay` prop to `GlobalAudiobookPlayer`
-
-Pass an `autoPlay` boolean from `App.tsx`. When `true`, set `playIntentRef.current = true` inside the loading `useEffect` before the `canplaythrough` listener fires.
-
-```tsx
-// In global-audiobook-player.tsx useEffect:
-if (autoPlay) {
-  playIntentRef.current = true;
-}
-```
-
-### 2. Set `autoPlay = true` when opened via `openAudiobook()`
-
-In `App.tsx`, track a separate `autoPlayOnOpen` state. When `window.openAudiobook()` is called (from the "Start Listening" button), set it `true`. Pass it as the `autoPlay` prop. Reset it to `false` once the player has mounted and consumed it.
-
-```tsx
-// App.tsx
-const [autoPlayOnOpen, setAutoPlayOnOpen] = useState(false);
-
-window.openAudiobook = (chapterId?: string) => {
-  if (chapterId) setStartChapterId(chapterId);
-  setAutoPlayOnOpen(true);  // Signal intent to auto-play
-  setAudiobookVisible(true);
-};
-
-<GlobalAudiobookPlayer
-  isVisible={audiobookVisible}
-  onClose={() => setAudiobookVisible(false)}
-  startChapterId={startChapterId}
-  autoPlay={autoPlayOnOpen}
-/>
-```
-
-### 3. Consume `autoPlay` inside the player's mount effect
-
-In `global-audiobook-player.tsx`, the loading `useEffect` already runs on mount. Add one line to set `playIntentRef.current = true` when `autoPlay` is truthy:
-
-```tsx
-useEffect(() => {
-  if (isTransitioningRef.current) return;
-  const audioUrl = getCurrentAudioUrl();
-  if (!audioRef.current || !audioUrl) return;
-  const audio = audioRef.current;
-
-  if (abortControllerRef.current) abortControllerRef.current.abort();
-  const controller = new AbortController();
-  abortControllerRef.current = controller;
-
-  // ✅ THE FIX: if opened with autoPlay intent, set the flag before canplaythrough fires
-  if (autoPlay) {
-    playIntentRef.current = true;
-  }
-
-  audio.pause();
-  audio.src = audioUrl;
-  audio.load();
-  setCurrentTime(0);
-
-  audio.addEventListener('canplaythrough', () => {
-    audio.playbackRate = 0.93;
-    if (playIntentRef.current) {
-      audio.play().catch(console.error);
-      setIsPlaying(true);
-    }
-  }, { once: true, signal: controller.signal });
-
-  return () => { controller.abort(); };
-}, [currentChapterIndex, currentAudioIndex]);
-```
-
-## Files Modified
+## Files to Modify
 
 | File | Change |
 |------|--------|
-| `src/App.tsx` | Add `autoPlayOnOpen` state, set it `true` in `openAudiobook()`, pass as `autoPlay` prop |
-| `src/components/ui/global-audiobook-player.tsx` | Accept `autoPlay` prop, set `playIntentRef.current = true` in load effect when `autoPlay` is truthy |
+| `src/components/seo/SEOHead.tsx` | Update `SITE_URL` |
+| `src/components/seo/BookSchema.tsx` | Update `url` field |
+| `index.html` | Update title, description, OG/Twitter tags |
+| `public/sitemap.xml` | Replace all URLs to custom domain |
+| `public/robots.txt` | Update sitemap URL |
 
-## Why This Is Safe
+## Important Note
 
-- No change to audio loading sequence or AbortController logic
-- `autoPlay` only affects the very first load after the component mounts
-- Subsequent play/pause clicks continue to use `handlePlayPause` as before
-- The fix works identically on mobile and web — both respect user gesture since the gesture (button click) is what calls `openAudiobook()` in the first place
+After publishing, you should submit your updated sitemap to Google Search Console for `whatajourney.app` to speed up re-indexing. Google re-crawling can take days to weeks otherwise.
+
