@@ -14,7 +14,7 @@ const BookSchema = () => {
     genre: ["Autobiography", "Health & Wellness"],
     numberOfPages: 21,
     inLanguage: "en",
-    url: "https://whatajourney.lovable.app",
+    url: "https://whatajourney.app",
   };
 
   return (
