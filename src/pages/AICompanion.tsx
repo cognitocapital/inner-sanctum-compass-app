@@ -21,9 +21,44 @@ const AICompanion = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [historyLoaded, setHistoryLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [speakingIdx, setSpeakingIdx] = useState<number | null>(null);
+  const [autoRead, setAutoRead] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const recognitionRef = useRef<any>(null);
+  const lastReadIdxRef = useRef<number>(-1);
+
+  // Text-to-Speech helpers
+  const stripMarkdown = (md: string) =>
+    md.replace(/[#*_~`>\[\]()!-]/g, "").replace(/\n+/g, ". ").trim();
+
+  const speakText = (text: string, idx: number) => {
+    window.speechSynthesis.cancel();
+    const clean = stripMarkdown(text);
+    if (!clean) return;
+
+    const utterance = new SpeechSynthesisUtterance(clean);
+    utterance.rate = 0.9;
+    utterance.pitch = 0.95;
+
+    // Try to find a warm, natural voice
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find(
+      (v) => v.name.includes("Samantha") || v.name.includes("Karen") || v.name.includes("Daniel") || v.name.includes("Google UK English")
+    );
+    if (preferred) utterance.voice = preferred;
+
+    utterance.onstart = () => setSpeakingIdx(idx);
+    utterance.onend = () => setSpeakingIdx(null);
+    utterance.onerror = () => setSpeakingIdx(null);
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const stopSpeaking = () => {
+    window.speechSynthesis.cancel();
+    setSpeakingIdx(null);
+  };
 
   // Speech Recognition setup
   useEffect(() => {
