@@ -326,9 +326,19 @@ const AICompanion = () => {
               }`}
             >
               {msg.role === "assistant" ? (
-                <div className="prose prose-sm prose-invert max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0">
-                  <ReactMarkdown>{msg.content}</ReactMarkdown>
-                </div>
+                <>
+                  <div className="prose prose-sm prose-invert max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0">
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  </div>
+                  <button
+                    onClick={() => speakingIdx === i ? stopSpeaking() : speakText(msg.content, i)}
+                    className={`mt-2 flex items-center gap-1.5 text-[11px] transition-colors ${speakingIdx === i ? "text-orange-400" : "text-white/25 hover:text-white/50"}`}
+                    aria-label={speakingIdx === i ? "Stop reading" : "Listen to response"}
+                  >
+                    {speakingIdx === i ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                    {speakingIdx === i ? "Stop" : "Listen"}
+                  </button>
+                </>
               ) : (
                 msg.content
               )}
