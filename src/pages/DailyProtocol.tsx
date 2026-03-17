@@ -302,6 +302,11 @@ const DailyProtocol = () => {
               <Button asChild className="rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white min-h-[56px] px-8">
                 <Link to="/dashboard">Return to Path</Link>
               </Button>
+              <AskAgentButton
+                context="I just finished my daily protocol. How did I do?"
+                label="Talk to Phoenix"
+                className="mt-2"
+              />
             </motion.div>
           )}
         </AnimatePresence>

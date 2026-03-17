@@ -205,6 +205,11 @@ const AppContent = () => {
               <Insights />
             </ProtectedRoute>
           } />
+          <Route path="/ai-companion" element={
+            <ProtectedRoute>
+              <AICompanion />
+            </ProtectedRoute>
+          } />
           
           <Route path="*" element={<NotFound />} />
         </Routes>

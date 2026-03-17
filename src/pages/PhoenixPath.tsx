@@ -342,6 +342,24 @@ const PhoenixPath = () => {
           </span>
         </Link>
       </motion.div>
+
+      {/* AI Companion FAB */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.7, type: "spring", stiffness: 200 }}
+        className="fixed bottom-6 left-6 z-40"
+      >
+        <Link
+          to="/ai-companion"
+          className="group relative flex items-center justify-center w-12 h-12 rounded-full bg-white/[0.06] border border-white/[0.1] shadow-lg hover:bg-white/[0.1] hover:scale-110 active:scale-95 transition-all duration-200"
+        >
+          <MessageCircle className="w-5 h-5 text-orange-300" />
+          <span className="absolute left-full ml-3 whitespace-nowrap bg-gray-900/95 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-white/10">
+            Phoenix Companion
+          </span>
+        </Link>
+      </motion.div>
     </div>
   );
 };
