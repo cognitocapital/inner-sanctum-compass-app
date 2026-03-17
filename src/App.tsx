@@ -201,6 +201,7 @@ const AppContent = () => {
           
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <GlobalSoundscapePlayer />
       </BrowserRouter>
       
       {/* Global Audiobook Player */}
@@ -210,7 +211,6 @@ const AppContent = () => {
         startChapterId={startChapterId}
         autoPlay={autoPlayOnOpen}
       />
-      <GlobalSoundscapePlayer />
     </>
   );
 };
