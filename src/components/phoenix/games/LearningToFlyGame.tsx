@@ -36,7 +36,7 @@ export const LearningToFlyGame = ({ gameLevel, onComplete }: LearningToFlyGamePr
   }, [gameLevel]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setInterval>;
     if (gameActive && timeLeft > 0) {
       timer = setInterval(() => {
         setTimeLeft(prev => prev - 1);

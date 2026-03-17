@@ -127,7 +127,7 @@ const SpeechLanguageModule = ({ onComplete }: SpeechLanguageModuleProps) => {
 
   // Voice exercise timer
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     if (isRecording && exerciseTimer > 0) {
       interval = setInterval(() => {
         setExerciseTimer(prev => {

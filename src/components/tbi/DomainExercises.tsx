@@ -580,7 +580,7 @@ const DomainExercises = ({ domain, onComplete, className }: DomainExercisesProps
   const Icon = domainIcons[domain];
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: ReturnType<typeof setInterval> | null = null;
     if (isActive) {
       interval = setInterval(() => {
         setSessionTime(prev => prev + 1);

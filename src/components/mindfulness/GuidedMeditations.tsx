@@ -145,7 +145,7 @@ export const GuidedMeditations = ({ onComplete }: GuidedMeditationsProps) => {
 
   // Meditation timer
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    let interval: ReturnType<typeof setInterval>;
     
     if (isPlaying && timeLeft > 0 && selectedMeditation) {
       interval = setInterval(() => {

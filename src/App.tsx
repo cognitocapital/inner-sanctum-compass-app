@@ -51,6 +51,7 @@ import NotFound from "./pages/NotFound";
 import INCOG from "./pages/INCOG";
 import Install from "./pages/Install";
 import Insights from "./pages/Insights";
+import Soundscapes from "./pages/Soundscapes";
 
 const queryClient = new QueryClient();
 
@@ -121,6 +122,7 @@ const AppContent = () => {
           <Route path="/chapter-21" element={<Chapter21 />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/install" element={<Install />} />
+          <Route path="/soundscapes" element={<Soundscapes />} />
           
           {/* Protected routes - require auth or guest mode */}
           <Route path="/dashboard" element={

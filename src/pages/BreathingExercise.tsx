@@ -80,7 +80,7 @@ const BreathingExercise = () => {
   const [coherenceScore, setCoherenceScore] = useState(30);
   const [breathsPerMinute, setBreathsPerMinute] = useState(6);
   
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const { toast } = useToast();
   const { state: gamification, addXp, unlockAchievement } = usePhoenixGamification();
 
