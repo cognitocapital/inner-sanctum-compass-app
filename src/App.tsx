@@ -50,6 +50,7 @@ import Resources from "./pages/Resources";
 import NotFound from "./pages/NotFound";
 import INCOG from "./pages/INCOG";
 import Install from "./pages/Install";
+import Insights from "./pages/Insights";
 import Soundscapes from "./pages/Soundscapes";
 
 const queryClient = new QueryClient();
