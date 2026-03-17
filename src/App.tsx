@@ -8,6 +8,8 @@ import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { GlobalAudiobookPlayer } from "@/components/ui/global-audiobook-player";
+import { SoundscapeProvider } from "@/contexts/SoundscapeContext";
+import { GlobalSoundscapePlayer } from "@/components/ui/global-soundscape-player";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
