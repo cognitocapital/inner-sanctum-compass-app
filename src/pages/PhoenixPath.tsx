@@ -323,6 +323,25 @@ const PhoenixPath = () => {
         onBegin={handleBeginQuest}
         status={selectedQuest ? getQuestStatus(selectedQuest.key) : 'locked'}
       />
+
+      {/* Daily Protocol FAB */}
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.5, type: "spring", stiffness: 200 }}
+        className="fixed bottom-6 right-6 z-40"
+      >
+        <Link
+          to="/daily-protocol"
+          className="group relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-orange-500 to-rose-600 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-110 active:scale-95 transition-all duration-200"
+        >
+          <Flame className="w-6 h-6 text-white" style={{ filter: 'drop-shadow(0 0 4px rgba(255,255,255,0.4))' }} />
+          <span className="absolute inset-0 rounded-full bg-orange-400/20 animate-ping" style={{ animationDuration: '3s' }} />
+          <span className="absolute right-full mr-3 whitespace-nowrap bg-gray-900/95 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-white/10">
+            Daily Protocol
+          </span>
+        </Link>
+      </motion.div>
     </div>
   );
 };
