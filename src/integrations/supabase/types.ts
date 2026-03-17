@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_companion_logs: {
+        Row: {
+          content: string
+          context_snapshot: Json | null
+          created_at: string | null
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          context_snapshot?: Json | null
+          created_at?: string | null
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          context_snapshot?: Json | null
+          created_at?: string | null
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_recommendations: {
         Row: {
           created_at: string | null
