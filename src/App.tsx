@@ -55,6 +55,7 @@ import Install from "./pages/Install";
 import Insights from "./pages/Insights";
 import Soundscapes from "./pages/Soundscapes";
 import DailyProtocol from "./pages/DailyProtocol";
+import AICompanion from "./pages/AICompanion";
 
 const queryClient = new QueryClient();
 
