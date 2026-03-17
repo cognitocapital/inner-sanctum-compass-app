@@ -377,6 +377,28 @@ const Resources = () => {
               </CardContent>
             </Card>
 
+            {/* Healing Soundscapes CTA */}
+            <Card className="border-primary/30 bg-gradient-to-r from-primary/10 to-primary/5 shadow-lg">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="text-4xl">🔔</div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-foreground mb-1">
+                      Healing Soundscapes
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Human-recorded 432 Hz, 528 Hz, Solfeggio & Tibetan singing bowl tracks for deep healing and nervous system reset.
+                    </p>
+                  </div>
+                  <Link to="/soundscapes">
+                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                      Explore
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Additional Note */}
             <Card className="border-orange-500/20 bg-gradient-to-r from-orange-500/5 to-orange-600/5">
               <CardContent className="p-6">
