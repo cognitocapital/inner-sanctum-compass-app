@@ -275,7 +275,6 @@ const AICompanion = () => {
               {autoRead ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeOff className="w-3.5 h-3.5" />}
               <span className="hidden sm:inline">{autoRead ? "Audio on" : "Audio off"}</span>
             </Button>
-            </Button>
             <Button asChild variant="ghost" size="sm" className="text-white/50 hover:text-white">
               <Link to="/"><Home className="w-4 h-4" /></Link>
             </Button>
