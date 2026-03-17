@@ -177,6 +177,12 @@ const AICompanion = () => {
       const session = await supabase.auth.getSession();
       const token = session.data.session?.access_token;
 
+      if (!token) {
+        toast({ title: "Sign in required", description: "Please sign in to chat with Phoenix.", variant: "destructive" });
+        setIsLoading(false);
+        return;
+      }
+
       const resp = await fetch(COMPANION_URL, {
         method: "POST",
         headers: {
