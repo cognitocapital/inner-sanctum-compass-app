@@ -37,6 +37,11 @@ const Index = () => {
                 <div key="trail-2" className="absolute bottom-32 right-1/2 w-0.5 h-6 bg-gradient-to-t from-orange-500/50 to-transparent animate-float opacity-25" style={{ animationDelay: '4.5s' }}></div>
             </div>
             
+            {/* Soundscapes icon */}
+            <Link to="/soundscapes" className="absolute top-5 right-5 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white transition-all duration-300 hover:scale-110" title="Healing Soundscapes">
+                <Music className="h-5 w-5" />
+            </Link>
+
             <div className="container mx-auto px-4 py-12 md:py-20 relative z-10 flex flex-col items-center justify-center min-h-screen">
                 <header className="text-center">
                     {/* Phoenix image and title */}
@@ -87,10 +92,6 @@ const Index = () => {
                                 Growth Resources <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </Button>
-                        <Link to="/soundscapes" className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition-all duration-300 hover:scale-105 backdrop-blur-sm border border-white/10">
-                            <Music className="h-4 w-4" />
-                            Healing Soundscapes
-                        </Link>
                     </div>
                 </header>
 
