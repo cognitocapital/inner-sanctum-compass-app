@@ -92,7 +92,7 @@ const ColdExposure = () => {
   const [showMoodReport, setShowMoodReport] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(true);
   const [bodyTemp, setBodyTemp] = useState(0); // 0-100 for heat map
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const { toast } = useToast();
   const { state: gamification, addXp, unlockAchievement, incrementStreak } = usePhoenixGamification();
 

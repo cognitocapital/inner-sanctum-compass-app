@@ -31,7 +31,7 @@ const RetentionBreathing = () => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [currentCycle, setCurrentCycle] = useState(0);
   const [completedPatterns, setCompletedPatterns] = useState<string[]>([]);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const { toast } = useToast();
 
   const retentionPatterns: RetentionPattern[] = [
