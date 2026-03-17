@@ -97,6 +97,21 @@ const AICompanion = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const toggleListening = () => {
+    if (!recognitionRef.current) {
+      toast({ title: "Not supported", description: "Voice input isn't available in this browser. Try Chrome or Safari.", variant: "destructive" });
+      return;
+    }
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      setInput("");
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
+
   const sendMessage = async (overrideText?: string) => {
     const text = overrideText || input.trim();
     if (!text || isLoading) return;
