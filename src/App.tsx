@@ -128,6 +128,11 @@ const AppContent = () => {
           <Route path="/soundscapes" element={<Soundscapes />} />
           
           {/* Protected routes - require auth or guest mode */}
+          <Route path="/daily-protocol" element={
+            <ProtectedRoute>
+              <DailyProtocol />
+            </ProtectedRoute>
+          } />
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <PhoenixPath />
