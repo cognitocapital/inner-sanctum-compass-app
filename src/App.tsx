@@ -122,6 +122,7 @@ const AppContent = () => {
           <Route path="/chapter-21" element={<Chapter21 />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/install" element={<Install />} />
+          <Route path="/soundscapes" element={<Soundscapes />} />
           
           {/* Protected routes - require auth or guest mode */}
           <Route path="/dashboard" element={
