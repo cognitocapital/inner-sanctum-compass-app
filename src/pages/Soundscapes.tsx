@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -22,94 +22,37 @@ import {
   SOUNDSCAPE_TRACKS,
   CATEGORIES,
   TIMER_OPTIONS,
-  type SoundscapeTrack,
 } from "@/data/soundscapesData";
+import { useSoundscape } from "@/contexts/SoundscapeContext";
 
 const Soundscapes = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [selectedTrack, setSelectedTrack] = useState<SoundscapeTrack | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.5);
-  const [isMuted, setIsMuted] = useState(false);
-  const [isLooping, setIsLooping] = useState(true);
-  const [timerMinutes, setTimerMinutes] = useState(0); // 0 = no timer
-  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [showManuscript, setShowManuscript] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const {
+    selectedTrack,
+    isPlaying,
+    volume,
+    isMuted,
+    isLooping,
+    timerMinutes,
+    timeRemaining,
+    selectTrack,
+    togglePlay,
+    setVolume,
+    setIsMuted,
+    setIsLooping,
+    startTimer,
+  } = useSoundscape();
 
   const filteredTracks =
     activeCategory === "all"
       ? SOUNDSCAPE_TRACKS
       : SOUNDSCAPE_TRACKS.filter((t) => t.category === activeCategory);
 
-  // Volume sync
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : volume;
-    }
-  }, [volume, isMuted]);
-
-  // Timer countdown
-  useEffect(() => {
-    if (timeRemaining === null || timeRemaining <= 0) {
-      if (timerRef.current) clearInterval(timerRef.current);
-      if (timeRemaining === 0) {
-        // Timer ended — pause
-        if (audioRef.current) audioRef.current.pause();
-        setIsPlaying(false);
-        setTimeRemaining(null);
-      }
-      return;
-    }
-    timerRef.current = setInterval(() => {
-      setTimeRemaining((prev) => (prev !== null ? prev - 1 : null));
-    }, 1000);
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [timeRemaining]);
-
-  const handleSelectTrack = useCallback(
-    (track: SoundscapeTrack) => {
-      if (!track.audioUrl) {
-        setSelectedTrack(track);
-        setShowManuscript(true);
-        return;
-      }
-      const wasPlaying = isPlaying && selectedTrack?.id === track.id;
-      setSelectedTrack(track);
-      setShowManuscript(true);
-
-      if (wasPlaying) return;
-
-      if (audioRef.current) {
-        audioRef.current.src = track.audioUrl;
-        audioRef.current.loop = isLooping;
-        audioRef.current.load();
-        audioRef.current.play().then(() => setIsPlaying(true)).catch(console.error);
-      }
-    },
-    [isPlaying, selectedTrack, isLooping]
-  );
-
-  const togglePlay = useCallback(() => {
-    if (!audioRef.current || !selectedTrack?.audioUrl) return;
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      audioRef.current.play().then(() => setIsPlaying(true)).catch(console.error);
-    }
-  }, [isPlaying, selectedTrack]);
-
-  const startTimer = (minutes: number) => {
-    setTimerMinutes(minutes);
-    if (minutes === 0) {
-      setTimeRemaining(null);
-    } else {
-      setTimeRemaining(minutes * 60);
-    }
+  const handleSelectTrack = (track: typeof SOUNDSCAPE_TRACKS[number]) => {
+    selectTrack(track);
+    setShowManuscript(true);
   };
 
   const formatTimer = (seconds: number) => {
@@ -125,9 +68,6 @@ const Soundscapes = () => {
         description="Human-recorded 432 Hz, 528 Hz, Solfeggio, and Tibetan singing bowl tracks for TBI recovery and deep healing."
         path="/soundscapes"
       />
-
-      {/* Hidden audio element */}
-      <audio ref={audioRef} preload="auto" />
 
       {/* Safety Banner */}
       <div className="bg-primary/10 border-b border-primary/20 px-4 py-2.5">
@@ -335,10 +275,7 @@ const Soundscapes = () => {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => {
-                        setIsLooping(!isLooping);
-                        if (audioRef.current) audioRef.current.loop = !isLooping;
-                      }}
+                      onClick={() => setIsLooping(!isLooping)}
                       className={cn(
                         "h-9 w-9",
                         isLooping ? "text-primary" : "text-muted-foreground"
