@@ -210,6 +210,7 @@ const AppContent = () => {
         startChapterId={startChapterId}
         autoPlay={autoPlayOnOpen}
       />
+      <GlobalSoundscapePlayer />
     </>
   );
 };
