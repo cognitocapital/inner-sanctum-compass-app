@@ -115,6 +115,10 @@ const AICompanion = () => {
   const sendMessage = async (overrideText?: string) => {
     const text = overrideText || input.trim();
     if (!text || isLoading) return;
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+    }
     setInput("");
 
     const userMsg: Msg = { role: "user", content: text };
