@@ -54,6 +54,7 @@ import INCOG from "./pages/INCOG";
 import Install from "./pages/Install";
 import Insights from "./pages/Insights";
 import Soundscapes from "./pages/Soundscapes";
+import DailyProtocol from "./pages/DailyProtocol";
 
 const queryClient = new QueryClient();
 
@@ -127,6 +128,11 @@ const AppContent = () => {
           <Route path="/soundscapes" element={<Soundscapes />} />
           
           {/* Protected routes - require auth or guest mode */}
+          <Route path="/daily-protocol" element={
+            <ProtectedRoute>
+              <DailyProtocol />
+            </ProtectedRoute>
+          } />
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <PhoenixPath />
