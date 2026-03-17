@@ -87,8 +87,10 @@ export type Database = {
           energy_level: number | null
           gratitude_note: string | null
           id: string
+          last_soundscape: string | null
           mood: number | null
           pain_level: number | null
+          post_session_rating: number | null
           sleep_quality: number | null
           symptoms_today: Json | null
           user_id: string
@@ -99,8 +101,10 @@ export type Database = {
           energy_level?: number | null
           gratitude_note?: string | null
           id?: string
+          last_soundscape?: string | null
           mood?: number | null
           pain_level?: number | null
+          post_session_rating?: number | null
           sleep_quality?: number | null
           symptoms_today?: Json | null
           user_id: string
@@ -111,8 +115,10 @@ export type Database = {
           energy_level?: number | null
           gratitude_note?: string | null
           id?: string
+          last_soundscape?: string | null
           mood?: number | null
           pain_level?: number | null
+          post_session_rating?: number | null
           sleep_quality?: number | null
           symptoms_today?: Json | null
           user_id?: string
