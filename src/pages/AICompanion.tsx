@@ -127,6 +127,17 @@ const AICompanion = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [historyLoaded]);
 
+  // Auto-read new assistant messages
+  useEffect(() => {
+    if (!autoRead || isLoading) return;
+    const lastIdx = messages.length - 1;
+    const lastMsg = messages[lastIdx];
+    if (lastMsg?.role === "assistant" && lastIdx > lastReadIdxRef.current) {
+      lastReadIdxRef.current = lastIdx;
+      speakText(lastMsg.content, lastIdx);
+    }
+  }, [messages, isLoading, autoRead]);
+
   // Scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
