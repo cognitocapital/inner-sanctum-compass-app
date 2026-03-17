@@ -302,10 +302,17 @@ const AICompanion = () => {
                 sendMessage();
               }
             }}
-            placeholder="Talk to Phoenix…"
+            placeholder={isListening ? "Listening…" : "Talk to Phoenix…"}
             rows={1}
-            className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder:text-white/20 text-[15px] resize-none focus:outline-none focus:border-orange-500/30 min-h-[48px] max-h-[120px]"
+            className={`flex-1 bg-white/[0.04] border rounded-xl px-4 py-3 text-white placeholder:text-white/20 text-[15px] resize-none focus:outline-none min-h-[48px] max-h-[120px] ${isListening ? "border-orange-500/50 bg-orange-500/[0.06]" : "border-white/[0.08] focus:border-orange-500/30"}`}
           />
+          <Button
+            onClick={toggleListening}
+            className={`rounded-xl min-h-[48px] min-w-[48px] px-3 transition-colors ${isListening ? "bg-red-500/30 hover:bg-red-500/40 text-red-300 border border-red-500/30 animate-pulse" : "bg-white/[0.04] hover:bg-white/[0.08] text-white/40 hover:text-white/70 border border-white/[0.08]"}`}
+            aria-label={isListening ? "Stop listening" : "Start voice input"}
+          >
+            {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+          </Button>
           <Button
             onClick={() => sendMessage()}
             disabled={!input.trim() || isLoading}
