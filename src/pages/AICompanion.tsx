@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Home, Send, Flame, Loader2, Mic, MicOff } from "lucide-react";
+import { ArrowLeft, Home, Send, Flame, Loader2, Mic, MicOff, Volume2, VolumeX, VolumeOff } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -21,9 +21,44 @@ const AICompanion = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [historyLoaded, setHistoryLoaded] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [speakingIdx, setSpeakingIdx] = useState<number | null>(null);
+  const [autoRead, setAutoRead] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const recognitionRef = useRef<any>(null);
+  const lastReadIdxRef = useRef<number>(-1);
+
+  // Text-to-Speech helpers
+  const stripMarkdown = (md: string) =>
+    md.replace(/[#*_~`>\[\]()!-]/g, "").replace(/\n+/g, ". ").trim();
+
+  const speakText = (text: string, idx: number) => {
+    window.speechSynthesis.cancel();
+    const clean = stripMarkdown(text);
+    if (!clean) return;
+
+    const utterance = new SpeechSynthesisUtterance(clean);
+    utterance.rate = 0.9;
+    utterance.pitch = 0.95;
+
+    // Try to find a warm, natural voice
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find(
+      (v) => v.name.includes("Samantha") || v.name.includes("Karen") || v.name.includes("Daniel") || v.name.includes("Google UK English")
+    );
+    if (preferred) utterance.voice = preferred;
+
+    utterance.onstart = () => setSpeakingIdx(idx);
+    utterance.onend = () => setSpeakingIdx(null);
+    utterance.onerror = () => setSpeakingIdx(null);
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const stopSpeaking = () => {
+    window.speechSynthesis.cancel();
+    setSpeakingIdx(null);
+  };
 
   // Speech Recognition setup
   useEffect(() => {
@@ -91,6 +126,17 @@ const AICompanion = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [historyLoaded]);
+
+  // Auto-read new assistant messages
+  useEffect(() => {
+    if (!autoRead || isLoading) return;
+    const lastIdx = messages.length - 1;
+    const lastMsg = messages[lastIdx];
+    if (lastMsg?.role === "assistant" && lastIdx > lastReadIdxRef.current) {
+      lastReadIdxRef.current = lastIdx;
+      speakText(lastMsg.content, lastIdx);
+    }
+  }, [messages, isLoading, autoRead]);
 
   // Scroll to bottom
   useEffect(() => {
@@ -218,9 +264,21 @@ const AICompanion = () => {
             <Flame className="w-4 h-4 text-orange-400" />
             <span className="text-sm font-serif text-white/60">Phoenix Companion</span>
           </div>
-          <Button asChild variant="ghost" size="sm" className="text-white/50 hover:text-white">
-            <Link to="/"><Home className="w-4 h-4" /></Link>
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => { setAutoRead(!autoRead); if (!autoRead) stopSpeaking(); }}
+              className={`text-xs gap-1 ${autoRead ? "text-orange-300" : "text-white/30"}`}
+              title={autoRead ? "Auto-read on" : "Auto-read off"}
+            >
+              {autoRead ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeOff className="w-3.5 h-3.5" />}
+              <span className="hidden sm:inline">{autoRead ? "Audio on" : "Audio off"}</span>
+            </Button>
+            <Button asChild variant="ghost" size="sm" className="text-white/50 hover:text-white">
+              <Link to="/"><Home className="w-4 h-4" /></Link>
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -268,9 +326,19 @@ const AICompanion = () => {
               }`}
             >
               {msg.role === "assistant" ? (
-                <div className="prose prose-sm prose-invert max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0">
-                  <ReactMarkdown>{msg.content}</ReactMarkdown>
-                </div>
+                <>
+                  <div className="prose prose-sm prose-invert max-w-none [&_p]:mb-2 [&_p:last-child]:mb-0">
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  </div>
+                  <button
+                    onClick={() => speakingIdx === i ? stopSpeaking() : speakText(msg.content, i)}
+                    className={`mt-2 flex items-center gap-1.5 text-[11px] transition-colors ${speakingIdx === i ? "text-orange-400" : "text-white/25 hover:text-white/50"}`}
+                    aria-label={speakingIdx === i ? "Stop reading" : "Listen to response"}
+                  >
+                    {speakingIdx === i ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+                    {speakingIdx === i ? "Stop" : "Listen"}
+                  </button>
+                </>
               ) : (
                 msg.content
               )}
