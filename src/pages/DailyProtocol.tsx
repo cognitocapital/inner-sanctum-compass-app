@@ -10,6 +10,7 @@ import { SoundscapeStep } from "@/components/protocol/SoundscapeStep";
 import { PostSessionRating } from "@/components/protocol/PostSessionRating";
 import { SuccessMetrics } from "@/components/protocol/SuccessMetrics";
 import { supabase } from "@/integrations/supabase/client";
+import { AskAgentButton } from "@/components/ui/ask-agent-button";
 
 type ProtocolStep = "breathe" | "cognitive" | "mindset" | "soundscape" | "rating" | "complete";
 
