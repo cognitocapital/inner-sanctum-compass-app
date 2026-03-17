@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Home, Send, Flame, Loader2 } from "lucide-react";
+import { ArrowLeft, Home, Send, Flame, Loader2, Mic, MicOff } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -20,8 +20,47 @@ const AICompanion = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [historyLoaded, setHistoryLoaded] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const recognitionRef = useRef<any>(null);
+
+  // Speech Recognition setup
+  useEffect(() => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "en-AU";
+
+    recognition.onresult = (event: any) => {
+      let transcript = "";
+      for (let i = 0; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      setInput(transcript);
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error:", event.error);
+      setIsListening(false);
+      if (event.error === "not-allowed") {
+        toast({ title: "Microphone blocked", description: "Please allow microphone access in your browser settings.", variant: "destructive" });
+      }
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognitionRef.current = recognition;
+
+    return () => {
+      recognition.abort();
+    };
+  }, [toast]);
 
   // Load conversation history
   useEffect(() => {
@@ -58,9 +97,28 @@ const AICompanion = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const toggleListening = () => {
+    if (!recognitionRef.current) {
+      toast({ title: "Not supported", description: "Voice input isn't available in this browser. Try Chrome or Safari.", variant: "destructive" });
+      return;
+    }
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      setInput("");
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
+
   const sendMessage = async (overrideText?: string) => {
     const text = overrideText || input.trim();
     if (!text || isLoading) return;
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+    }
     setInput("");
 
     const userMsg: Msg = { role: "user", content: text };
@@ -244,10 +302,17 @@ const AICompanion = () => {
                 sendMessage();
               }
             }}
-            placeholder="Talk to Phoenix…"
+            placeholder={isListening ? "Listening…" : "Talk to Phoenix…"}
             rows={1}
-            className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder:text-white/20 text-[15px] resize-none focus:outline-none focus:border-orange-500/30 min-h-[48px] max-h-[120px]"
+            className={`flex-1 bg-white/[0.04] border rounded-xl px-4 py-3 text-white placeholder:text-white/20 text-[15px] resize-none focus:outline-none min-h-[48px] max-h-[120px] ${isListening ? "border-orange-500/50 bg-orange-500/[0.06]" : "border-white/[0.08] focus:border-orange-500/30"}`}
           />
+          <Button
+            onClick={toggleListening}
+            className={`rounded-xl min-h-[48px] min-w-[48px] px-3 transition-colors ${isListening ? "bg-red-500/30 hover:bg-red-500/40 text-red-300 border border-red-500/30 animate-pulse" : "bg-white/[0.04] hover:bg-white/[0.08] text-white/40 hover:text-white/70 border border-white/[0.08]"}`}
+            aria-label={isListening ? "Stop listening" : "Start voice input"}
+          >
+            {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+          </Button>
           <Button
             onClick={() => sendMessage()}
             disabled={!input.trim() || isLoading}
