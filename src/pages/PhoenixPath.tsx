@@ -122,12 +122,31 @@ const PhoenixPath = () => {
           </p>
         </motion.div>
 
+        {/* Daily Protocol CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="mb-6"
+        >
+          <Link
+            to="/daily-protocol"
+            className="block w-full rounded-2xl p-5 bg-gradient-to-br from-orange-600/15 to-rose-500/10 border border-orange-500/25 hover:border-orange-500/40 transition-all duration-300 text-center group"
+          >
+            <Flame className="w-6 h-6 text-orange-400 mx-auto mb-2" style={{ filter: 'drop-shadow(0 0 8px hsl(25, 90%, 55%))' }} />
+            <h3 className="text-base font-serif text-white group-hover:text-orange-200 transition-colors">
+              Daily Phoenix Protocol
+            </h3>
+            <p className="text-xs text-white/40 mt-1">5 min · Breathe → Train → Ground</p>
+          </Link>
+        </motion.div>
+
         {/* Next Quest — Hero Card */}
         {nextQuest && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.25 }}
             className="mb-8"
           >
             <p className="text-xs text-white/30 uppercase tracking-widest mb-3 px-1">Continue your journey</p>
