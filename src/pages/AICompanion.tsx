@@ -264,6 +264,17 @@ const AICompanion = () => {
             <Flame className="w-4 h-4 text-orange-400" />
             <span className="text-sm font-serif text-white/60">Phoenix Companion</span>
           </div>
+          <div className="flex items-center gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => { setAutoRead(!autoRead); if (!autoRead) stopSpeaking(); }}
+              className={`text-xs gap-1 ${autoRead ? "text-orange-300" : "text-white/30"}`}
+              title={autoRead ? "Auto-read on" : "Auto-read off"}
+            >
+              {autoRead ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeOff className="w-3.5 h-3.5" />}
+              <span className="hidden sm:inline">{autoRead ? "Audio on" : "Audio off"}</span>
+            </Button>
           <Button asChild variant="ghost" size="sm" className="text-white/50 hover:text-white">
             <Link to="/"><Home className="w-4 h-4" /></Link>
           </Button>
