@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Home, LogOut, User, Flame, Zap, BookHeart, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
+import { Home, LogOut, User, Flame, Zap, BookHeart, ExternalLink, ChevronDown, ChevronUp, MessageCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/use-profile";
 import { usePhoenixPath } from "@/hooks/use-phoenix-path";
