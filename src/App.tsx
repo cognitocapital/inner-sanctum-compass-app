@@ -220,7 +220,9 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <AuthProvider>
-          <AppContent />
+          <SoundscapeProvider>
+            <AppContent />
+          </SoundscapeProvider>
         </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
