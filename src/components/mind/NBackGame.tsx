@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -73,7 +72,6 @@ export const NBackGame = ({ onComplete, difficulty = 1, className }: NBackGamePr
     const newStimulus = getRandomStimulus();
     const newPosition = getRandomPosition();
     
-    // 30% chance of match for audio, 30% for position
     const shouldMatchAudio = Math.random() < 0.3 && round >= nBack;
     const shouldMatchPosition = Math.random() < 0.3 && round >= nBack;
     
@@ -133,157 +131,163 @@ export const NBackGame = ({ onComplete, difficulty = 1, className }: NBackGamePr
   };
 
   return (
-    <Card className={cn("bg-black/40 border-orange-600/50", className)}>
-      <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-orange-100">
-            <Brain className="h-5 w-5 text-orange-400" />
-            {nBack}-Back Challenge
-          </CardTitle>
-          <Badge className="bg-orange-600/80 text-orange-100">
-            {difficulty === 1 ? "Easy" : difficulty === 2 ? "Medium" : "Hard"}
-          </Badge>
+    <div className={cn("rounded-2xl academy-glass-strong p-6 space-y-5", className)}>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-amber-500/15">
+            <Brain className="h-5 w-5 text-amber-400" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-amber-200">{nBack}-Back Challenge</h3>
+            <p className="text-xs text-white/35">Ch7 "goldfish capacity" training</p>
+          </div>
         </div>
-        <p className="text-orange-200/70 text-sm">
-          Remember stimuli from {nBack} step{nBack > 1 ? 's' : ''} ago. Ch7 "goldfish capacity" training.
-        </p>
-      </CardHeader>
+        <Badge className="bg-amber-500/15 text-amber-300 border border-amber-500/30">
+          {difficulty === 1 ? "Level 1" : difficulty === 2 ? "Level 2" : "Level 3"}
+        </Badge>
+      </div>
+
+      {/* Stats Row */}
+      <div className="flex justify-between text-sm">
+        <div className="flex items-center gap-2">
+          <Trophy className="h-4 w-4 text-yellow-400" />
+          <span className="text-white/60">Score: {score}</span>
+        </div>
+        <span className="text-white/35">Round {round}/{totalRounds}</span>
+      </div>
       
-      <CardContent className="space-y-4">
-        {/* Stats Row */}
-        <div className="flex justify-between text-sm">
-          <div className="flex items-center gap-2">
-            <Trophy className="h-4 w-4 text-yellow-400" />
-            <span className="text-orange-200">Score: {score}</span>
-          </div>
-          <div className="text-orange-300/70">
-            Round {round}/{totalRounds}
-          </div>
-        </div>
-        
-        <Progress 
-          value={(round / totalRounds) * 100} 
-          className="h-2 bg-orange-900/50"
-        />
+      <Progress 
+        value={(round / totalRounds) * 100} 
+        className="h-1.5 bg-white/5"
+      />
 
-        {/* Game Grid */}
-        <div className="relative">
-          <div className="grid grid-cols-3 gap-2 aspect-square max-w-[240px] mx-auto">
-            {GRID_POSITIONS.map((pos) => (
-              <motion.div
-                key={pos}
-                className={cn(
-                  "aspect-square rounded-lg border-2 flex items-center justify-center text-2xl font-bold transition-all",
-                  showStimulus && currentPosition === pos
-                    ? "bg-orange-500 border-orange-400 text-white"
-                    : "bg-orange-900/30 border-orange-700/50 text-transparent"
-                )}
-                animate={showStimulus && currentPosition === pos ? {
-                  scale: [1, 1.1, 1],
-                } : {}}
-                transition={{ duration: 0.2 }}
-              >
-                {showStimulus && currentPosition === pos && currentStimulus}
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Feedback Overlay */}
-          <AnimatePresence>
-            {feedback && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                className={cn(
-                  "absolute inset-0 flex items-center justify-center rounded-lg",
-                  feedback === 'correct' ? "bg-green-500/30" : "bg-red-500/30"
-                )}
-              >
-                <span className={cn(
-                  "text-4xl font-bold",
-                  feedback === 'correct' ? "text-green-400" : "text-red-400"
-                )}>
-                  {feedback === 'correct' ? '✓' : '✗'}
-                </span>
-              </motion.div>
-            )}
-          </AnimatePresence>
+      {/* Game Grid */}
+      <div className="relative">
+        <div className="grid grid-cols-3 gap-2 aspect-square max-w-[240px] mx-auto">
+          {GRID_POSITIONS.map((pos) => (
+            <motion.div
+              key={pos}
+              className={cn(
+                "aspect-square rounded-xl flex items-center justify-center text-2xl font-bold transition-all",
+                showStimulus && currentPosition === pos
+                  ? "bg-gradient-to-br from-amber-500 to-amber-600 text-white shadow-lg shadow-amber-500/30"
+                  : "academy-neomorphic text-transparent"
+              )}
+              animate={showStimulus && currentPosition === pos ? {
+                scale: [1, 1.08, 1],
+              } : {}}
+              transition={{ duration: 0.2 }}
+            >
+              {showStimulus && currentPosition === pos && currentStimulus}
+            </motion.div>
+          ))}
         </div>
 
-        {/* Response Buttons */}
-        {isPlaying && round >= nBack && (
-          <div className="flex justify-center gap-3">
-            <Button
-              onClick={() => checkMatch(true, false)}
-              variant="outline"
-              className="border-purple-500 text-purple-300 hover:bg-purple-500/20"
-              disabled={!showStimulus}
+        {/* Feedback Overlay */}
+        <AnimatePresence>
+          {feedback && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              className={cn(
+                "absolute inset-0 flex items-center justify-center rounded-2xl",
+                feedback === 'correct' ? "bg-emerald-500/20" : "bg-red-500/20"
+              )}
             >
-              <Zap className="h-4 w-4 mr-2" />
-              Letter Match
-            </Button>
-            <Button
-              onClick={() => checkMatch(false, true)}
-              variant="outline"
-              className="border-cyan-500 text-cyan-300 hover:bg-cyan-500/20"
-              disabled={!showStimulus}
-            >
-              <Brain className="h-4 w-4 mr-2" />
-              Position Match
-            </Button>
-          </div>
-        )}
-
-        {/* Game Complete */}
-        {gameComplete && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center space-y-3 py-4"
-          >
-            <Trophy className="h-12 w-12 text-yellow-400 mx-auto" />
-            <div className="text-xl font-bold text-orange-100">Session Complete!</div>
-            <div className="text-orange-200">
-              Accuracy: {totalTrials > 0 ? ((correctResponses / totalTrials) * 100).toFixed(0) : 0}%
-            </div>
-            <div className="text-orange-300/70 text-sm italic">
-              "Like my Ch7 goldfish brain, each rep builds capacity"
-            </div>
-          </motion.div>
-        )}
-
-        {/* Controls */}
-        <div className="flex justify-center gap-3">
-          {!isPlaying ? (
-            <Button
-              onClick={startGame}
-              className="bg-orange-600 hover:bg-orange-500 text-white"
-            >
-              <Play className="h-4 w-4 mr-2" />
-              {gameComplete ? "Play Again" : "Start"}
-            </Button>
-          ) : (
-            <Button
-              onClick={() => setIsPlaying(false)}
-              variant="outline"
-              className="border-orange-600 text-orange-200"
-            >
-              <Pause className="h-4 w-4 mr-2" />
-              Pause
-            </Button>
+              <span className={cn(
+                "text-5xl font-bold",
+                feedback === 'correct' ? "text-emerald-400" : "text-red-400"
+              )}>
+                {feedback === 'correct' ? '✓' : '✗'}
+              </span>
+            </motion.div>
           )}
+        </AnimatePresence>
+      </div>
+
+      {/* Response Buttons */}
+      {isPlaying && round >= nBack && (
+        <div className="flex justify-center gap-3">
           <Button
-            onClick={resetGame}
-            variant="ghost"
-            className="text-orange-300 hover:text-orange-100"
+            onClick={() => checkMatch(true, false)}
+            className="rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-300 hover:bg-purple-500/25 min-h-[48px]"
+            disabled={!showStimulus}
           >
-            <RotateCcw className="h-4 w-4 mr-2" />
-            Reset
+            <Zap className="h-4 w-4 mr-2" />
+            Letter Match
+          </Button>
+          <Button
+            onClick={() => checkMatch(false, true)}
+            className="rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/25 min-h-[48px]"
+            disabled={!showStimulus}
+          >
+            <Brain className="h-4 w-4 mr-2" />
+            Position Match
           </Button>
         </div>
-      </CardContent>
-    </Card>
+      )}
+
+      {/* Game Complete */}
+      {gameComplete && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center space-y-3 py-4"
+        >
+          {/* Ember rise particles on completion */}
+          <div className="relative inline-block">
+            {[...Array(5)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1.5 h-1.5 rounded-full bg-amber-400"
+                style={{ left: `${20 + i * 15}%`, bottom: 0 }}
+                animate={{ y: [-10, -60], opacity: [1, 0], scale: [1, 0.3] }}
+                transition={{ duration: 1.5, delay: i * 0.15, ease: "easeOut" }}
+              />
+            ))}
+            <Trophy className="h-12 w-12 text-yellow-400 mx-auto" />
+          </div>
+          <div className="text-xl font-bold text-amber-200">Session Complete!</div>
+          <div className="text-white/60">
+            Accuracy: {totalTrials > 0 ? ((correctResponses / totalTrials) * 100).toFixed(0) : 0}%
+          </div>
+          <p className="text-white/30 text-sm italic">
+            "Like my Ch7 goldfish brain, each rep builds capacity"
+          </p>
+        </motion.div>
+      )}
+
+      {/* Controls */}
+      <div className="flex justify-center gap-3">
+        {!isPlaying ? (
+          <Button
+            onClick={startGame}
+            className="rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white shadow-lg shadow-amber-500/20 min-h-[48px] px-6"
+          >
+            <Play className="h-4 w-4 mr-2" />
+            {gameComplete ? "Play Again" : "Start"}
+          </Button>
+        ) : (
+          <Button
+            onClick={() => setIsPlaying(false)}
+            className="rounded-xl academy-glass border-amber-500/30 text-amber-300 hover:bg-white/10 min-h-[48px]"
+          >
+            <Pause className="h-4 w-4 mr-2" />
+            Pause
+          </Button>
+        )}
+        <Button
+          onClick={resetGame}
+          variant="ghost"
+          className="text-white/30 hover:text-amber-300 min-h-[48px]"
+        >
+          <RotateCcw className="h-4 w-4 mr-2" />
+          Reset
+        </Button>
+      </div>
+    </div>
   );
 };
 
