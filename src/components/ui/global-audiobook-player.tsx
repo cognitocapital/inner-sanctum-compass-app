@@ -131,7 +131,7 @@ export const GlobalAudiobookPlayer = ({
     setCurrentTime(0);
 
     audio.addEventListener('canplaythrough', () => {
-      audio.playbackRate = 0.90;
+      audio.playbackRate = 0.92;
       if (playIntentRef.current) {
         audio.play().catch(console.error);
         setIsPlaying(true);
@@ -167,7 +167,7 @@ export const GlobalAudiobookPlayer = ({
   const handleLoadedMetadata = () => {
     if (audioRef.current) {
       setDuration(audioRef.current.duration);
-      audioRef.current.playbackRate = 0.90;
+      audioRef.current.playbackRate = 0.92;
     }
   };
 
