@@ -123,7 +123,7 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
     setCurrentTime(0);
 
     audio.addEventListener('canplaythrough', () => {
-      audio.playbackRate = 0.93;
+      audio.playbackRate = 0.90;
       if (playIntentRef.current) {
         audio.play().catch(console.error);
         setIsPlaying(true);
@@ -159,7 +159,7 @@ export const UploadedAudiobookPlayer = ({ startChapterId = "prologue" }: Uploade
   const handleLoadedMetadata = () => {
     if (audioRef.current) {
       setDuration(audioRef.current.duration);
-      audioRef.current.playbackRate = 0.93;
+      audioRef.current.playbackRate = 0.90;
     }
   };
 
