@@ -10,6 +10,7 @@ import { useProtocolProgress } from "@/hooks/use-protocol-progress";
 import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
 
 import BetaDisclaimerBanner from "@/components/ui/beta-disclaimer-banner";
+import { CommunityFooter } from "@/components/ui/community-footer";
 import { WeeklyChapter } from "@/components/protocol/WeeklyChapter";
 import { DailyPractice } from "@/components/protocol/DailyPractice";
 import { ReflectionJournal } from "@/components/protocol/ReflectionJournal";
@@ -184,6 +185,7 @@ const Dashboard = () => {
       </div>
 
       <BetaDisclaimerBanner />
+      <CommunityFooter />
 
       {/* Simple Check-In Modal */}
       <SimpleCheckIn

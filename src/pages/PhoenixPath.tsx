@@ -10,6 +10,7 @@ import { PHOENIX_QUESTS, PHASES, getQuestsForPhase, type QuestDefinition } from 
 import { FlameStrength } from "@/components/path/FlameStrength";
 import { QuestNode } from "@/components/path/QuestNode";
 import { QuestCard } from "@/components/path/QuestCard";
+import { XCommunityLink } from "@/components/ui/community-footer";
 
 const PhoenixPath = () => {
   const navigate = useNavigate();
@@ -359,6 +360,16 @@ const PhoenixPath = () => {
             Phoenix Companion
           </span>
         </Link>
+      </motion.div>
+
+      {/* X Community Link */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        className="fixed bottom-20 left-6 z-40"
+      >
+        <XCommunityLink />
       </motion.div>
     </div>
   );
