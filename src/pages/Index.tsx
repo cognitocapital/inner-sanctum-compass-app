@@ -94,13 +94,6 @@ const Index = () => {
                             </Link>
                         </Button>
                     </div>
-                    <p className="text-sm text-gray-400 mt-6">
-                        We're also building a living community on X{" "}
-                        <a href="https://x.com/WhatajourneyTBI" target="_blank" rel="noopener noreferrer" className="text-orange-400 hover:text-orange-300 underline underline-offset-2">
-                            @WhatajourneyTBI
-                        </a>
-                        {" "}— come share your journey.
-                    </p>
                 </header>
 
                 <BetaDisclaimerBanner />
