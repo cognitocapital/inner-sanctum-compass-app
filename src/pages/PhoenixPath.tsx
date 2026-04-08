@@ -10,6 +10,7 @@ import { PHOENIX_QUESTS, PHASES, getQuestsForPhase, type QuestDefinition } from 
 import { FlameStrength } from "@/components/path/FlameStrength";
 import { QuestNode } from "@/components/path/QuestNode";
 import { QuestCard } from "@/components/path/QuestCard";
+import { XCommunityLink } from "@/components/ui/community-footer";
 
 const PhoenixPath = () => {
   const navigate = useNavigate();

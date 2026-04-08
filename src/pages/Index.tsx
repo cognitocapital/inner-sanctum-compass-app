@@ -4,6 +4,7 @@ import { ArrowRight, Music } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import BookSchema from "@/components/seo/BookSchema";
 import BetaDisclaimerBanner from "@/components/ui/beta-disclaimer-banner";
+import { CommunityFooter } from "@/components/ui/community-footer";
 
 const Index = () => {
     return (
