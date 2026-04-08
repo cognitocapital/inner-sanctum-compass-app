@@ -361,6 +361,16 @@ const PhoenixPath = () => {
           </span>
         </Link>
       </motion.div>
+
+      {/* X Community Link */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        className="fixed bottom-20 left-6 z-40"
+      >
+        <XCommunityLink />
+      </motion.div>
     </div>
   );
 };
