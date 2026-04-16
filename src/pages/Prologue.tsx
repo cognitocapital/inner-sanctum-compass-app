@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -8,25 +8,6 @@ import PageAudioPlayer from "@/components/ui/page-audio-player";
 
 const Prologue = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
-  const [showIntro, setShowIntro] = useState(true);
-
-  // Video Intro - auto-plays immediately
-  if (showIntro) {
-    return (
-      <div className="min-h-screen bg-black">
-      <PageAudioPlayer audioSrc={["/audio/prologue.mp3"]} />
-      <ChapterNavArrows currentPath="/prologue" />
-        <video
-          src="/video/start-reading-intro.mp4"
-          className="w-full h-screen object-contain"
-          onEnded={() => setShowIntro(false)}
-          autoPlay
-          playsInline
-          muted
-        />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
