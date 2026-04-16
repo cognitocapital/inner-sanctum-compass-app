@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,6 +6,7 @@ import { ArrowLeft, ExternalLink, Brain, Heart, BookOpen, Users, Star } from "lu
 import SEOHead from "@/components/seo/SEOHead";
 
 const Resources = () => {
+  useEffect(() => { window.scrollTo(0, 0); }, []);
   const featuredInfluencers = [
     {
       name: "Eckhart Tolle",
