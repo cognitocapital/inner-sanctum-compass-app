@@ -18,7 +18,7 @@ const Prologue = () => {
       <ChapterNavArrows currentPath="/prologue" />
         <video
           src="/video/start-reading-intro.mp4"
-          className="w-full h-screen object-cover"
+          className="w-full h-screen object-contain"
           onEnded={() => setShowIntro(false)}
           autoPlay
           playsInline
