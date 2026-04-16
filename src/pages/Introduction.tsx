@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
+import PageAudioPlayer from "@/components/ui/page-audio-player";
 
 const Introduction = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
+      <PageAudioPlayer audioSrc={["/audio/introduction.mp3"]} />
       <ChapterNavArrows currentPath="/introduction" />
       <SEOHead title="Introduction - What a Journey" description="Introduction to What a Journey, setting the stage for Michael Heron's TBI recovery story." path="/introduction" />
       {/* Animated background elements inspired by phoenix flames */}

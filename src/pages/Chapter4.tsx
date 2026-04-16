@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
+import PageAudioPlayer from "@/components/ui/page-audio-player";
 
 const Chapter4 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
+      <PageAudioPlayer audioSrc={["/audio/chapter4.mp3", "/audio/chapter4-part2.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-4" />
       <SEOHead title="Chapter 4: Finding My Footing - What a Journey" description="Learning to navigate the new reality after a brain injury." path="/chapter-4" />
       {/* Animated background elements inspired by phoenix flames */}

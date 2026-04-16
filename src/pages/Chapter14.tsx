@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
+import PageAudioPlayer from "@/components/ui/page-audio-player";
 
 const Chapter14 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
+      <PageAudioPlayer audioSrc={["/audio/chapter14.mp3", "/audio/chapter14-part2.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-14" />
       <SEOHead title="Chapter 14: The Universe's Message - What a Journey" description="Finding meaning and messages from the universe during recovery." path="/chapter-14" />
       {/* Animated background elements inspired by phoenix flames */}

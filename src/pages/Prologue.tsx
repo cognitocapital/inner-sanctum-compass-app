@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
+import PageAudioPlayer from "@/components/ui/page-audio-player";
 
 const Prologue = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
@@ -13,6 +14,7 @@ const Prologue = () => {
   if (showIntro) {
     return (
       <div className="min-h-screen bg-black">
+      <PageAudioPlayer audioSrc={["/audio/prologue.mp3"]} />
       <ChapterNavArrows currentPath="/prologue" />
         <video
           src="/video/start-reading-intro.mp4"

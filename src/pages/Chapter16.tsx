@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
+import PageAudioPlayer from "@/components/ui/page-audio-player";
 
 const Chapter16 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
+      <PageAudioPlayer audioSrc={["/audio/chapter16.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-16" />
       <SEOHead title="Chapter 16: Looking Forward - What a Journey" description="Setting sights on the future after traumatic brain injury." path="/chapter-16" />
       {/* Animated background elements inspired by phoenix flames */}
