@@ -74,18 +74,13 @@ const Index = () => {
                     </p>
                     <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center flex-wrap">
                         <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                            <Link to="/dedication">
-                                What a Journey <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                        </Button>
-                        <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-                            <Link to="/disclaimer">
-                                Disclaimer <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                            </Link>
-                        </Button>
-                        <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
                             <Link to="/dashboard">
                                 Phoenix Journey <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        </Button>
+                        <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+                            <Link to="/dedication">
+                                Start Reading <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </Button>
                         <Button asChild size="lg" className="bg-green-600 hover:bg-green-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group border border-green-500">
@@ -94,6 +89,12 @@ const Index = () => {
                             </Link>
                         </Button>
                     </div>
+                    <p className="mt-6 text-xs text-white/40 max-w-md mx-auto">
+                        This is a beta prototype for demonstration purposes. Content is not medical advice.{" "}
+                        <Link to="/disclaimer" className="underline text-orange-400/60 hover:text-orange-300 transition-colors">
+                            See full disclaimer
+                        </Link>.
+                    </p>
                 </header>
 
                 <BetaDisclaimerBanner />
