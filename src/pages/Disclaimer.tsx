@@ -221,8 +221,8 @@ const Disclaimer = () => {
           <div className="mt-12 mb-8 flex flex-col items-center gap-4">
             <p className="text-sm text-gray-400 text-center">By continuing, you acknowledge that you have read and understood this disclaimer.</p>
             <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
-              <Link to="/prologue">
-                I Understand — Continue to Prologue <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              <Link to="/dedication">
+                I Understand — Continue to Dedication <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
           </div>
