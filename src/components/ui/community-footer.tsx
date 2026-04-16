@@ -1,4 +1,5 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, X } from "lucide-react";
+import { useState } from "react";
 
 const XIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
@@ -7,33 +8,55 @@ const XIcon = ({ className }: { className?: string }) => (
 );
 
 const X_URL = "https://x.com/WhatajourneyTBI";
+const STORAGE_KEY = "community-footer-dismissed";
 
-export const CommunityFooter = () => (
-  <footer className="relative z-10 border-t border-white/[0.06] bg-black/20 backdrop-blur-sm">
-    <div className="container mx-auto px-4 py-8 text-center max-w-2xl">
-      <p className="text-sm text-white/50 leading-relaxed mb-4">
-        We're also building community on X where survivors share their journeys, wins, and quiet moments.
-        <br className="hidden sm:block" />
-        Come stand under the torch with us.
-      </p>
-      <a
-        href={X_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/[0.06] border border-orange-500/30 hover:border-orange-400/60 hover:bg-white/[0.1] transition-all duration-200 group"
-      >
-        <XIcon className="w-4 h-4 text-orange-400 group-hover:text-orange-300 transition-colors" />
-        <span className="text-sm font-medium text-orange-300 group-hover:text-orange-200 transition-colors">
-          @WhatajourneyTBI
-        </span>
-        <ExternalLink className="w-3 h-3 text-white/30" />
-      </a>
-      <p className="text-xs text-white/30 mt-6">
-        © 2024 Michael Heron. All rights reserved.
-      </p>
-    </div>
-  </footer>
-);
+export const CommunityFooter = () => {
+  const [dismissed, setDismissed] = useState(() => sessionStorage.getItem(STORAGE_KEY) === "true");
+
+  if (dismissed) {
+    return (
+      <footer className="relative z-10 border-t border-white/[0.06] bg-black/20 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-4 text-center">
+          <p className="text-xs text-white/30">© 2024 Michael Heron. All rights reserved.</p>
+        </div>
+      </footer>
+    );
+  }
+
+  return (
+    <footer className="relative z-10 border-t border-white/[0.06] bg-black/20 backdrop-blur-sm">
+      <div className="container mx-auto px-4 py-8 text-center max-w-2xl relative">
+        <button
+          onClick={() => { sessionStorage.setItem(STORAGE_KEY, "true"); setDismissed(true); }}
+          className="absolute top-3 right-3 text-white/30 hover:text-white/60 transition-colors p-1"
+          aria-label="Dismiss"
+        >
+          <X className="w-4 h-4" />
+        </button>
+        <p className="text-sm text-white/50 leading-relaxed mb-4">
+          We're also building community on X where survivors share their journeys, wins, and quiet moments.
+          <br className="hidden sm:block" />
+          Come stand under the torch with us.
+        </p>
+        <a
+          href={X_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/[0.06] border border-orange-500/30 hover:border-orange-400/60 hover:bg-white/[0.1] transition-all duration-200 group"
+        >
+          <XIcon className="w-4 h-4 text-orange-400 group-hover:text-orange-300 transition-colors" />
+          <span className="text-sm font-medium text-orange-300 group-hover:text-orange-200 transition-colors">
+            @WhatajourneyTBI
+          </span>
+          <ExternalLink className="w-3 h-3 text-white/30" />
+        </a>
+        <p className="text-xs text-white/30 mt-6">
+          © 2024 Michael Heron. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  );
+};
 
 export const XCommunityLink = ({ className }: { className?: string }) => (
   <a
