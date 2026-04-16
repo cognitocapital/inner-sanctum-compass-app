@@ -6,7 +6,7 @@ interface PageAudioPlayerProps {
   isVideo?: boolean;
 }
 
-const PageAudioPlayer = ({ audioSrc }: PageAudioPlayerProps) => {
+const PageAudioPlayer = ({ audioSrc, isVideo = false }: PageAudioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentPart, setCurrentPart] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
