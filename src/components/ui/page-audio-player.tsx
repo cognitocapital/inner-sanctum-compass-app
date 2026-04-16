@@ -3,6 +3,7 @@ import { Volume2, Pause, Play } from "lucide-react";
 
 interface PageAudioPlayerProps {
   audioSrc: string | string[];
+  isVideo?: boolean;
 }
 
 const PageAudioPlayer = ({ audioSrc }: PageAudioPlayerProps) => {
