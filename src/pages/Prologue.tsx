@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
+import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 
 const Prologue = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
@@ -12,6 +13,7 @@ const Prologue = () => {
   if (showIntro) {
     return (
       <div className="min-h-screen bg-black">
+      <ChapterNavArrows currentPath="/prologue" />
         <video
           src="/video/start-reading-intro.mp4"
           className="w-full h-screen object-cover"
