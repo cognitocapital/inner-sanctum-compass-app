@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
+import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 
 const Chapter18 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
+      <ChapterNavArrows currentPath="/chapter-18" />
       <SEOHead title="Chapter 18: Unwritten Chapters - What a Journey" description="Embracing the unknown and the chapters yet to be written." path="/chapter-18" />
       {/* Animated background elements inspired by phoenix flames */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">

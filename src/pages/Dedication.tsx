@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, ArrowLeft, Headphones } from "lucide-react";
 import { useOpenAudiobook } from "@/hooks/use-audiobook";
 import SEOHead from "@/components/seo/SEOHead";
+import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 
 const Dedication = () => {
     useEffect(() => { window.scrollTo(0, 0); }, []);
@@ -12,6 +13,7 @@ const Dedication = () => {
     
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-foreground relative overflow-hidden">
+      <ChapterNavArrows currentPath="/dedication" />
             <SEOHead title="Dedication - What a Journey" description="The dedication page of What a Journey by Michael Heron, a TBI recovery memoir." path="/dedication" />
             {/* Animated background elements */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
