@@ -10,26 +10,33 @@ const Prologue = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   const [showIntro, setShowIntro] = useState(true);
 
-  // Video Intro - auto-plays immediately
+  // Video Intro - auto-plays immediately, no audio listen icon during video
   if (showIntro) {
     return (
-      <div className="min-h-screen bg-black">
-      <PageAudioPlayer audioSrc={["/audio/prologue.mp3"]} />
-      <ChapterNavArrows currentPath="/prologue" />
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <video
           src="/video/start-reading-intro.mp4"
           className="w-full h-screen object-contain"
           onEnded={() => setShowIntro(false)}
+          onError={() => setShowIntro(false)}
           autoPlay
           playsInline
-          muted
+          controls
         />
+        <button
+          onClick={() => setShowIntro(false)}
+          className="absolute top-4 right-4 z-50 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white text-sm transition-all"
+        >
+          Skip
+        </button>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
+      <PageAudioPlayer audioSrc={["/audio/prologue.mp3"]} />
+      <ChapterNavArrows currentPath="/prologue" />
       <SEOHead title="Prologue - What a Journey" description="The prologue to What a Journey, Michael Heron's memoir of traumatic brain injury recovery and resilience." path="/prologue" />
       {/* Animated background elements inspired by phoenix flames */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
