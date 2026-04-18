@@ -196,6 +196,50 @@ const Resources = () => {
           </div>
 
           <div className="grid gap-8">
+            {/* Phoenix Brain Compass — Clinical Edition (premium hero) */}
+            <Card className="border-blue-500/30 bg-gradient-to-br from-slate-900 to-blue-950 text-blue-50 shadow-2xl overflow-hidden relative">
+              <div className="absolute inset-0 pointer-events-none opacity-30">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/20 rounded-full blur-3xl" />
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl" />
+              </div>
+              <CardContent className="relative p-6 md:p-8">
+                <div className="flex flex-col md:flex-row md:items-center gap-6">
+                  <div className="flex-shrink-0 h-16 w-16 rounded-2xl bg-blue-500/20 border border-blue-400/40 flex items-center justify-center">
+                    <Brain className="h-8 w-8 text-blue-300" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
+                      <span className="text-xs uppercase tracking-wider text-blue-300/80 font-semibold">
+                        Clinical Tier
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider bg-amber-500/20 text-amber-200 border border-amber-500/30">
+                        Beta — Not medical advice
+                      </span>
+                    </div>
+                    <h2 className="text-2xl md:text-3xl font-semibold text-white mb-2">
+                      Phoenix Brain Compass
+                      <span className="text-blue-300"> — Clinical Edition</span>
+                    </h2>
+                    <p className="text-base text-blue-100/80 mb-4 max-w-2xl">
+                      A 3D, evidence-informed atlas of the brain regions most affected
+                      by TBI — and exactly how those changes show up in daily life.
+                      Each region links back to a manuscript chapter and a recovery
+                      protocol you can practice today.
+                    </p>
+                    <Button
+                      asChild
+                      className="bg-blue-500 hover:bg-blue-400 text-slate-950 font-semibold"
+                    >
+                      <Link to="/brain-compass">
+                        <Brain className="h-4 w-4 mr-2" />
+                        Launch Brain Compass
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Featured Influences from "What a Journey" */}
             <Card className="border-orange-500/30 bg-gradient-to-r from-orange-500/10 to-orange-600/10">
               <CardHeader>
