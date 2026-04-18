@@ -10,7 +10,7 @@ const Prologue = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   const [showIntro, setShowIntro] = useState(true);
 
-  // Video Intro - auto-plays immediately, no audio listen icon during video
+  // Video Intro - auto-plays seamlessly, then transitions to prologue
   if (showIntro) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -21,14 +21,7 @@ const Prologue = () => {
           onError={() => setShowIntro(false)}
           autoPlay
           playsInline
-          controls
         />
-        <button
-          onClick={() => setShowIntro(false)}
-          className="absolute top-4 right-4 z-50 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white text-sm transition-all"
-        >
-          Skip
-        </button>
       </div>
     );
   }
