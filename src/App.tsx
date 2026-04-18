@@ -56,6 +56,7 @@ import Insights from "./pages/Insights";
 import Soundscapes from "./pages/Soundscapes";
 import DailyProtocol from "./pages/DailyProtocol";
 import AICompanion from "./pages/AICompanion";
+import BrainCompass from "./pages/BrainCompass";
 
 const queryClient = new QueryClient();
 
@@ -127,6 +128,7 @@ const AppContent = () => {
           <Route path="/resources" element={<Resources />} />
           <Route path="/install" element={<Install />} />
           <Route path="/soundscapes" element={<Soundscapes />} />
+          <Route path="/brain-compass" element={<BrainCompass />} />
           
           {/* Protected routes - require auth or guest mode */}
           <Route path="/daily-protocol" element={
