@@ -66,7 +66,7 @@ serve(async (req) => {
     // Service client for data operations
     const supabase = createClient(supabaseUrl, serviceKey);
 
-    const { messages: userMessages } = await req.json();
+    const { messages: userMessages, regionContext } = await req.json();
     const latestUserMessage = userMessages?.[userMessages.length - 1]?.content || "";
 
     // Fetch context in parallel
@@ -136,10 +136,24 @@ RECENT SESSIONS (last 20):
 ${sessions.slice(0, 10).map((s: any) => `${s.module_type} ${Math.round((s.duration_seconds || 0) / 60)}min +${s.xp_earned || 0}XP ${new Date(s.created_at).toLocaleDateString()}`).join("\n") || "None"}
 `.trim();
 
-    // Build messages array: system + context + history + new user message
+    // Optional Brain Compass region context
+    let regionContextStr = "";
+    if (regionContext && regionContext.label) {
+      regionContextStr = `
+BRAIN COMPASS REGION FOCUS:
+Region: ${regionContext.label}${regionContext.shortLabel ? ` (${regionContext.shortLabel})` : ""}
+Function: ${regionContext.function || ""}
+Common TBI sequelae: ${regionContext.tbiSequelae || ""}
+Evidence note: ${regionContext.evidenceNote || ""}
+
+The user is asking about this specific brain region. Tie your answer to their actual session/check-in patterns above. Reference the manuscript chapter (${regionContext.manuscriptLabel || ""}) and the protocol (${regionContext.protocolLabel || ""}) only if it fits naturally. Keep the science gentle and the tone Michael's.`.trim();
+    }
+
+    // Build messages array: system + context + (optional region) + history + new user message
     const aiMessages = [
       { role: "system", content: SYSTEM_PROMPT },
       { role: "system", content: `CURRENT USER CONTEXT:\n${contextStr}` },
+      ...(regionContextStr ? [{ role: "system", content: regionContextStr }] : []),
       ...history.map((h: any) => ({ role: h.role, content: h.content })),
       { role: "user", content: latestUserMessage },
     ];
