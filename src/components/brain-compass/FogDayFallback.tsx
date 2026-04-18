@@ -8,8 +8,25 @@ interface FogDayFallbackProps {
   onSelect: (id: string) => void;
 }
 
+// Generate a 2D top-down layout from the 3D positions so any new regions
+// added in brainRegions.ts auto-appear on the fog-day map.
+function buildLayout() {
+  const W = 400;
+  const H = 480;
+  const cx = W / 2;
+  const cy = H / 2;
+  // 3D X is lateral (right +), Z is anterior (front +). Map to 2D top-down.
+  return brainRegions.map((r) => {
+    const px = cx + r.position[0] * 90;
+    // Anterior in 3D = +Z; on a top-down 2D map, anterior is up (smaller y).
+    const py = cy - r.position[2] * 100 - r.position[1] * 20;
+    return { region: r, cx: px, cy: py, radius: 18 + (r.size?.[0] ?? 0.15) * 30 };
+  });
+}
+
 export const FogDayFallback = ({ selectedId, onSelect }: FogDayFallbackProps) => {
   const [speaking, setSpeaking] = useState(false);
+  const layout = buildLayout();
 
   useEffect(() => {
     return () => {
@@ -39,72 +56,57 @@ export const FogDayFallback = ({ selectedId, onSelect }: FogDayFallbackProps) =>
     }
   };
 
-  // Simple 2D ellipse layout — top-down view of the brain
-  const layout: Record<string, { cx: number; cy: number; rx: number; ry: number }> = {
-    dlpfc: { cx: 200, cy: 70, rx: 110, ry: 45 },
-    ofc: { cx: 200, cy: 130, rx: 90, ry: 30 },
-    amygdala_hippocampus: { cx: 200, cy: 200, rx: 70, ry: 35 },
-    dmn: { cx: 200, cy: 250, rx: 80, ry: 30 },
-    temporal: { cx: 80, cy: 200, rx: 50, ry: 70 },
-    occipital: { cx: 200, cy: 320, rx: 110, ry: 45 },
-    vestibular_cerebellum: { cx: 200, cy: 380, rx: 100, ry: 35 },
-  };
-
   const selected = brainRegions.find((r) => r.id === selectedId);
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center p-6">
+    <div className="w-full h-full flex flex-col items-center justify-center p-6 overflow-auto">
       <p className="text-amber-300 text-base font-medium mb-3">
         Fog Day Mode — simplified 2D view
       </p>
       <svg
-        viewBox="0 0 400 440"
+        viewBox="0 0 400 480"
         className="max-w-full max-h-[60vh] w-auto"
         role="img"
         aria-label="Simplified brain region map"
       >
-        {/* Skull outline */}
+        {/* Brain outline (top-down) */}
         <ellipse
-          cx="200"
-          cy="220"
-          rx="180"
-          ry="200"
+          cx={200}
+          cy={240}
+          rx={170}
+          ry={210}
           fill="none"
           stroke="hsl(var(--border))"
-          strokeWidth="2"
+          strokeWidth={2}
           strokeDasharray="4 4"
-          opacity="0.4"
+          opacity={0.4}
         />
-        {brainRegions.map((region) => {
-          const l = layout[region.id];
-          if (!l) return null;
+        {/* Longitudinal fissure */}
+        <line x1={200} y1={40} x2={200} y2={440} stroke="hsl(var(--border))" strokeWidth={1} opacity={0.25} />
+
+        {layout.map(({ region, cx, cy, radius }) => {
           const isSelected = selectedId === region.id;
           return (
-            <g
-              key={region.id}
-              onClick={() => onSelect(region.id)}
-              className="cursor-pointer"
-            >
-              <ellipse
-                cx={l.cx}
-                cy={l.cy}
-                rx={l.rx}
-                ry={l.ry}
+            <g key={region.id} onClick={() => onSelect(region.id)} className="cursor-pointer">
+              <circle
+                cx={cx}
+                cy={cy}
+                r={radius}
                 fill={region.color}
-                fillOpacity={isSelected ? 0.85 : 0.35}
+                fillOpacity={isSelected ? 0.85 : 0.32}
                 stroke={region.color}
-                strokeWidth={isSelected ? 3 : 1.5}
+                strokeWidth={isSelected ? 3 : 1.2}
               />
               <text
-                x={l.cx}
-                y={l.cy + 4}
+                x={cx}
+                y={cy + 3}
                 textAnchor="middle"
                 fill="#f8fafc"
-                fontSize="13"
-                fontWeight="600"
+                fontSize={10}
+                fontWeight={600}
                 style={{ pointerEvents: "none" }}
               >
-                {region.label.split(" ")[0]}
+                {region.shortLabel || region.label.split(" ")[0]}
               </text>
             </g>
           );
@@ -112,7 +114,8 @@ export const FogDayFallback = ({ selectedId, onSelect }: FogDayFallbackProps) =>
       </svg>
 
       {selected && (
-        <div className="mt-4">
+        <div className="mt-4 text-center max-w-md">
+          <p className="text-blue-100 text-sm mb-3">{selected.label}</p>
           <Button
             onClick={() => (speaking ? stopSpeaking() : speak(selected))}
             variant="outline"
