@@ -442,6 +442,7 @@ export const brainRegions: BrainRegion[] = [
     protocolLink: "/breathing",
     protocolLabel: "HRV-Paced Breathing",
     aiSeedPrompt: "Wired and tired again. What does my HRV / mood pattern look like?",
+  },
   // ============ EXPANDED CLINICAL ATLAS (2026) ============
   // Subcortical detail
   {
