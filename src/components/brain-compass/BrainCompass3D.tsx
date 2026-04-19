@@ -186,15 +186,80 @@ function BrainAnatomy({ deepView }: BrainAnatomyProps) {
 
 // ---------- Region markers ----------
 
+export type AffectedSeverity = "mild" | "moderate" | "severe" | "unknown";
+export interface AffectedHighlight {
+  severity: AffectedSeverity;
+  source?: string | null;
+}
+
+const SEVERITY_COLOR: Record<AffectedSeverity, string> = {
+  mild: "#34d399",      // emerald
+  moderate: "#fbbf24",  // amber
+  severe: "#f43f5e",    // rose
+  unknown: "#94a3b8",   // slate
+};
+
+interface AffectedRingProps {
+  radius: number;
+  color: string;
+}
+
+const AffectedRing = ({ radius, color }: AffectedRingProps) => {
+  const inner = useRef<THREE.Mesh>(null);
+  const outer = useRef<THREE.Mesh>(null);
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const pulse = 1 + Math.sin(t * 2.4) * 0.18;
+    if (inner.current) {
+      inner.current.scale.setScalar(pulse);
+      const m = inner.current.material as THREE.MeshBasicMaterial;
+      m.opacity = 0.55 + Math.sin(t * 2.4) * 0.2;
+    }
+    if (outer.current) {
+      outer.current.scale.setScalar(1 + Math.sin(t * 2.4 + 0.9) * 0.28);
+      const m = outer.current.material as THREE.MeshBasicMaterial;
+      m.opacity = 0.28 + Math.sin(t * 2.4 + 0.9) * 0.18;
+      outer.current.rotation.z = t * 0.4;
+    }
+  });
+  return (
+    <group renderOrder={4}>
+      <mesh ref={inner}>
+        <ringGeometry args={[radius * 1.55, radius * 1.85, 64]} />
+        <meshBasicMaterial
+          color={color}
+          transparent
+          opacity={0.6}
+          side={THREE.DoubleSide}
+          depthTest={false}
+          toneMapped={false}
+        />
+      </mesh>
+      <mesh ref={outer}>
+        <ringGeometry args={[radius * 2.0, radius * 2.25, 64]} />
+        <meshBasicMaterial
+          color={color}
+          transparent
+          opacity={0.3}
+          side={THREE.DoubleSide}
+          depthTest={false}
+          toneMapped={false}
+        />
+      </mesh>
+    </group>
+  );
+};
+
 interface RegionMarkerProps {
   region: BrainRegion;
   isSelected: boolean;
   isDimmed: boolean;
   deepView: boolean;
+  affected?: AffectedHighlight | null;
   onSelect: (id: string) => void;
 }
 
-const RegionMarker = ({ region, isSelected, isDimmed, deepView, onSelect }: RegionMarkerProps) => {
+const RegionMarker = ({ region, isSelected, isDimmed, deepView, affected, onSelect }: RegionMarkerProps) => {
   const ref = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
