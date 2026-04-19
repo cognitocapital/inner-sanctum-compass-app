@@ -21,6 +21,22 @@ const BrainCompass = () => {
   const [deepView, setDeepView] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState<RegionCategory | "all">("all");
   const infoCardRef = useRef<HTMLDivElement | null>(null);
+  const { regions: affectedRows } = useAffectedRegions();
+
+  const affectedMap = useMemo(() => {
+    const map: Record<string, AffectedHighlight> = {};
+    const rank: Record<string, number> = { mild: 1, unknown: 1, moderate: 2, severe: 3 };
+    for (const r of affectedRows) {
+      const sev = (r.severity ?? "unknown") as AffectedSeverity;
+      const normalized: AffectedSeverity =
+        sev === "mild" || sev === "moderate" || sev === "severe" ? sev : "unknown";
+      const existing = map[r.region_id];
+      if (!existing || (rank[normalized] ?? 0) > (rank[existing.severity] ?? 0)) {
+        map[r.region_id] = { severity: normalized, source: r.source };
+      }
+    }
+    return map;
+  }, [affectedRows]);
 
   const handleSelectRegion = (id: string) => {
     setSelectedId(id);
