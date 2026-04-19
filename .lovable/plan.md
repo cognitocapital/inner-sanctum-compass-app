@@ -1,66 +1,82 @@
 
 
-## Phoenix Brain Compass — Clinical Edition
+The user re-pasted the brief with explicit file list. Most of this aligns with my prior plan. New nuances: "artist.io voice-over" (likely meant ElevenLabs/realistic TTS rather than browser SpeechSynthesis), opt-in encrypted storage flag (`profiles.personal_scan_optin`), and "regions viewed" logging table. DB already has `brain_scan_uploads`, `brain_scan_markers`, `ai_companion_logs` — good. Need a new `brain_region_views` table + `personal_scan_optin` column. Voice-over: I'll use browser SpeechSynthesis as default (offline, free, Fog-Day appropriate) and note ElevenLabs as a follow-up since it requires an API key + cost.
 
-A 3D interactive neuroanatomical atlas added to the Growth Resources page, showing exactly which brain regions TBI affects and how those changes manifest in daily life — linked back to manuscript chapters and protocol tools.
+# Phoenix Brain Compass — 2026 Clinical Upgrade
 
-### Where it lives
+## What ships
 
-- **Entry point**: New flagship card at the **top** of `/resources` (above "Featured Influences"), styled as a premium clinical hero — dark glassmorphic card with a "Launch Brain Compass" CTA so it stands out from the warm orange resources cards.
-- **Full experience**: New route `/brain-compass` with the interactive 3D viewer.
+A bespoke offline-first 3D atlas with ~60 clinically-curated regions, every one tied to a manuscript chapter, Daily Protocol step, soundscape, and live AI Companion seed. Personal scan overlay gets a real opacity slider, 56px taps, DICOM/NIfTI guidance, and opt-in encrypted persistence. Fog Day swaps to a calm labeled SVG with voice-over. Safety banners on every screen. Region views logged for future personalisation.
 
-### New files
+## Build
 
-**1. `src/pages/BrainCompass.tsx`** — Full-screen clinical viewer
-- Dark mode `#0A0A0A` base with cool clinical blue (`#3b82f6`) and amber (`#f59e0b`) accents
-- Layout: 3D canvas left/center, glassmorphic floating info card right (stacks on mobile)
-- Persistent "Not medical advice — consult your neurologist" disclaimer banner at top
-- Region selector chips + tap-on-3D-region both work
-- Back link to `/resources`
+**1. Expand atlas → ~60 regions** (`src/data/brainRegions.ts`)
+Add subcortical (hippocampus L/R, thalamus L/R, caudate, putamen, globus pallidus, amygdala L/R, nucleus accumbens, substantia nigra, PAG), brainstem (midbrain, pons, medulla, locus coeruleus, raphe), vestibular nuclei, cerebellar lobes (vermis, flocculus, posterior), DMN (PCC, precuneus, mPFC, angular), salience (insula L/R, dACC), executive (DLPFC L/R, VLPFC), language (Broca, Wernicke, arcuate), visual (V1, V4, MT), white-matter (corpus callosum splenium/genu, fornix, uncinate). New fields per region: `soundscapeId`, `dailyProtocolStep`, `aiSeedPrompt` (already partially present — extend uniformly).
 
-**2. `src/components/brain-compass/BrainCompass3D.tsx`** — R3F scene
-- `@react-three/fiber@^8.18` + `@react-three/drei@^9.122.0` + `three@>=0.133` (versions per project rules)
-- Brain represented as a stylised anatomical mesh built from primitives (spheres/lobed geometries positioned to MNI-152-inspired anatomy) — no external GLB needed, keeps bundle light and offline-cacheable
-- 7 selectable region meshes color-coded; soft emissive glow on hover/selected
-- `OrbitControls` with damping, pinch-zoom, single-finger orbit; auto-rotate slowed when Fog Day flag set
-- 60 fps target with `frameloop="demand"` on idle; `dpr={[1,2]}` cap
+**2. Live AI Companion wiring** (`RegionInfoCard.tsx`)
+Already has `askPhoenix` streaming. Extend the request body to include last 3 `daily_checkins` + last `session_logs` row + region's `aiSeedPrompt`. Add a soundscape quick-link button next to manuscript/protocol.
 
-**3. `src/components/brain-compass/RegionInfoCard.tsx`** — Clinical info panel
-- Glassmorphic card showing for selected region:
-  - Anatomical name + 1-line primary function
-  - Common TBI sequelae (1–2 sentences, manuscript voice)
-  - Evidence note (2025 meta-analysis style, 1 line)
-  - Two action links: relevant manuscript chapter + relevant protocol/quest
-- 18–20px text minimum, high contrast amber-on-dark
+**3. Scan overlay upgrade** (`PersonalScanOverlay.tsx`)
+- Replace number inputs with `Slider` for opacity (0–100%).
+- 56px min tap targets on pins + controls.
+- DICOM/NIfTI file detection → friendly modal with link to free converter (e.g. MicroDicom, dcm2niix).
+- Reuse existing `brain-scans` bucket + `brain_scan_uploads`/`brain_scan_markers` tables for opt-in persistence.
+- Default: session-only in-memory; only persist if `profiles.personal_scan_optin = true`.
+- Persistent footer banner: "Not diagnostic. Visualisation only."
 
-**4. `src/data/brainRegions.ts`** — Clinically grounded region dataset
-The 7 regions from the spec, each with: id, label, position, color, function, tbiSequelae, evidenceNote, manuscriptLink (e.g. `/chapter-6`, `/chapter-11`), protocolLink (e.g. `/breathing`, `/mind`, `/daily-protocol`).
+**4. Fog Day 2D diagram + voice-over** (`FogDayFallback.tsx`)
+Rewrite as labeled SVG (sagittal + coronal split view) showing 12 high-traffic regions with 56px tap zones. Add "Listen" button per region using browser `SpeechSynthesis` to read TBI-impact aloud (offline, free). Note: ElevenLabs/realistic TTS is a follow-up (needs API key + cost) — browser TTS keeps Fog Day fully offline.
 
-**5. `src/components/brain-compass/FogDayFallback.tsx`** — Accessibility mode
-- Detects Fog Day state (existing localStorage flag from Fog Day mode memory)
-- Shows 2D labelled SVG diagram (reuse style from `AnimatedNeuralBrain`) + voice-over button (Web Speech API `speechSynthesis`) instead of 3D scene
-- Toggle in header lets any user switch manually
+**5. Region view logging**
+New table `brain_region_views` (user_id, region_id, viewed_at) with insert-only RLS for own user. Fire-and-forget insert when a region card opens (signed-in users only).
 
-### Resources page changes
+**6. Persistent safety banners** (`BrainCompass.tsx`)
+Top banner exists. Add a slimmer footer banner pinned across all states (atlas, scan overlay, Fog Day): "Educational visualisation only — not diagnostic. Consult your neurologist."
 
-`src/pages/Resources.tsx` — insert new clinical hero card above the "Featured Influences" card:
-- Dark gradient (`from-slate-900 to-blue-950`) breaking the warm orange theme deliberately to signal clinical tier
-- Brain icon + title "Phoenix Brain Compass — Clinical Edition"
-- 1-paragraph pitch + "Launch Brain Compass" button → `/brain-compass`
-- Small "Beta — Not medical advice" pill
+**7. Offline cache** (`vite.config.ts`)
+Add `/brain-compass` route + region data to PWA precache `globPatterns`.
 
-### Routing
+## Database migration
 
-`src/App.tsx` — add public route `<Route path="/brain-compass" element={<BrainCompass />} />` (public so guests can explore).
+```sql
+-- Opt-in for scan persistence
+ALTER TABLE profiles ADD COLUMN personal_scan_optin boolean NOT NULL DEFAULT false;
 
-### Dependencies to install
+-- Lightweight region view log
+CREATE TABLE brain_region_views (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  region_id text NOT NULL,
+  viewed_at timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE brain_region_views ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "own insert" ON brain_region_views FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "own select" ON brain_region_views FOR SELECT USING (auth.uid() = user_id);
+CREATE INDEX brain_region_views_user_idx ON brain_region_views(user_id, viewed_at DESC);
+```
 
-- `three@^0.160.0`
-- `@react-three/fiber@^8.18.0`
-- `@react-three/drei@^9.122.0`
+## Confirmed decisions (carry-over)
 
-### Out of scope (future)
+- **Mesh**: keep procedural (offline, <0.1MB). No glTF download.
+- **Regions**: ~60 curated > 200 generic. Every entry has real links.
+- **DICOM/NIfTI**: detect + guide users to convert (no client-side parser).
+- **Storage**: session-only by default; opt-in encrypted persistence via existing private `brain-scans` bucket.
+- **Voice-over**: browser SpeechSynthesis (offline). ElevenLabs noted as future upgrade.
 
-- AI Companion personalisation tie-in ("Your 7-day focus score…") — stubbed with static copy now; can wire to `phoenix-companion` edge function later
-- Real MNI-152 NIfTI loader — current stylised mesh is the credible MVP; swap for a true GLB atlas in a follow-up if desired
+## Files touched
+
+- `src/data/brainRegions.ts`
+- `src/components/brain-compass/RegionInfoCard.tsx`
+- `src/components/brain-compass/PersonalScanOverlay.tsx`
+- `src/components/brain-compass/FogDayFallback.tsx`
+- `src/pages/BrainCompass.tsx`
+- `vite.config.ts`
+- New migration (above)
+
+## Out of scope
+
+- Real glTF MNI mesh (deferred — would break offline-first).
+- Client-side NIfTI parsing (deferred — bundle + edge cases).
+- ElevenLabs TTS (deferred — cost/API key).
+- Auto-lesion detection (manual marker is the spec).
 
