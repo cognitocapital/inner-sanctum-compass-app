@@ -278,15 +278,15 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
                   <SelectTrigger className="h-9 text-sm">
                     <SelectValue placeholder="Choose a region…" />
                   </SelectTrigger>
-                  <SelectContent className="max-h-72">
+                  <SelectContent className="max-h-72 z-[60]">
                     {REGION_CATEGORIES.map((cat) => {
                       const list = groupedAvailable.get(cat.id);
                       if (!list || list.length === 0) return null;
                       return (
-                        <div key={cat.id}>
-                          <div className="px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">
+                        <SelectGroup key={cat.id}>
+                          <SelectLabel className="text-[10px] uppercase tracking-wider text-muted-foreground">
                             {cat.label}
-                          </div>
+                          </SelectLabel>
                           {list.map((r) => (
                             <SelectItem key={r.id} value={r.id}>
                               <span className="flex items-center gap-2">
@@ -298,7 +298,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
                               </span>
                             </SelectItem>
                           ))}
-                        </div>
+                        </SelectGroup>
                       );
                     })}
                   </SelectContent>
