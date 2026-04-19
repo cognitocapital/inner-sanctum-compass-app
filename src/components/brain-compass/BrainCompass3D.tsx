@@ -366,6 +366,7 @@ interface BrainCompass3DProps {
   fogDay?: boolean;
   deepView: boolean;
   categoryFilter: RegionCategory | "all";
+  affectedMap?: Record<string, AffectedHighlight>;
 }
 
 export const BrainCompass3D = ({
@@ -374,6 +375,7 @@ export const BrainCompass3D = ({
   fogDay,
   deepView,
   categoryFilter,
+  affectedMap,
 }: BrainCompass3DProps) => {
   return (
     <Canvas
@@ -400,6 +402,7 @@ export const BrainCompass3D = ({
         {brainRegions.map((region) => {
           const inFilter = categoryFilter === "all" || region.category === categoryFilter;
           const isDimmed = !inFilter && selectedId !== region.id;
+          const affected = affectedMap?.[region.id] ?? null;
           return (
             <RegionMarker
               key={region.id}
@@ -407,6 +410,7 @@ export const BrainCompass3D = ({
               isSelected={selectedId === region.id}
               isDimmed={isDimmed}
               deepView={deepView}
+              affected={affected}
               onSelect={onSelect}
             />
           );
