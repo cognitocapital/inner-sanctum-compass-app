@@ -19,6 +19,10 @@ export interface BrainRegion {
   protocolLabel: string;
   /** Seed prompt for the AI Companion when the user asks "how does this show up in my logs?" */
   aiSeedPrompt: string;
+  /** Optional curated soundscape track ID from src/data/soundscapesData.ts. */
+  soundscapeId?: string;
+  /** Optional Daily Phoenix Protocol step name. */
+  dailyProtocolStep?: string;
 }
 
 // Stylised MNI-152-inspired anatomical positions (centered on origin).
