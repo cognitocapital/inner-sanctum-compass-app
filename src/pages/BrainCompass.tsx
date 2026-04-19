@@ -22,6 +22,8 @@ const BrainCompass = () => {
   const [forceFallback, setForceFallback] = useState(false);
   const [deepView, setDeepView] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<RegionCategory | "all">("all");
+  const [showFullAtlas, setShowFullAtlas] = useState(false);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -36,10 +38,35 @@ const BrainCompass = () => {
     }
   }, []);
 
-  const selectedRegion = useMemo(
-    () => brainRegions.find((r) => r.id === selectedId) ?? null,
-    [selectedId]
-  );
+  // Offline atlas cache — primes localStorage with the atlas version so the
+  // app can fall back to the last-good dataset if a future deploy fails.
+  useEffect(() => {
+    try {
+      const cached = localStorage.getItem(ATLAS_CACHE_KEY);
+      if (!cached) {
+        localStorage.setItem(
+          ATLAS_CACHE_KEY,
+          JSON.stringify({
+            version: EXTENDED_ATLAS_VERSION,
+            curatedCount: brainRegions.length,
+            extendedCount: extendedAtlasRegions.length,
+            cachedAt: Date.now(),
+          })
+        );
+      }
+    } catch {
+      /* localStorage may be unavailable */
+    }
+  }, []);
+
+  // Resolve selection from EITHER curated regions OR extended atlas (which routes back to its parent).
+  const selectedRegion = useMemo(() => {
+    const curated = brainRegions.find((r) => r.id === selectedId);
+    if (curated) return curated;
+    const ext = extendedAtlasRegions.find((r) => r.id === selectedId);
+    if (ext) return brainRegions.find((c) => c.id === ext.parentId) ?? null;
+    return null;
+  }, [selectedId]);
 
   // If the selected region is deep, automatically enable deep view
   useEffect(() => {
