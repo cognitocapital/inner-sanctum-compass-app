@@ -113,14 +113,19 @@ const BrainCompass = () => {
             </Button>
             <Button
               size="sm"
-              variant="outline"
+              variant={forceFallback ? "default" : "outline"}
               onClick={() => setForceFallback((v) => !v)}
-              className="border-blue-500/30 text-blue-200 hover:bg-blue-500/10 hover:text-white"
-              aria-label={useFallback ? "Switch to 3D view" : "Switch to Fog Day 2D view"}
+              className={
+                forceFallback
+                  ? "bg-pink-500 hover:bg-pink-600 text-white"
+                  : "border-pink-500/30 text-pink-200 hover:bg-pink-500/10 hover:text-white"
+              }
+              aria-pressed={forceFallback}
+              aria-label={forceFallback ? "Switch to 3D view" : "Switch to Fog Day 2D view"}
             >
-              {useFallback ? (
+              {forceFallback ? (
                 <>
-                  <Box className="h-4 w-4 mr-1.5 opacity-50" /> 3D
+                  <Box className="h-4 w-4 mr-1.5" /> 3D
                 </>
               ) : (
                 <>
