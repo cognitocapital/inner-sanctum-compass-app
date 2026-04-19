@@ -211,11 +211,12 @@ const BrainCompass = () => {
             )}
           </div>
 
-          {/* Info card + Personal scan */}
+          {/* Info card + Self-reported affected regions + Personal scan */}
           <div className="space-y-4" ref={infoCardRef}>
             <RegionInfoCard region={selectedRegion} />
+            <AffectedRegionsSelector onRegionFocus={handleSelectRegion} />
             <PersonalScanOverlay
-              onRegionFocus={setSelectedId}
+              onRegionFocus={handleSelectRegion}
               disabled={fogDay}
             />
           </div>
