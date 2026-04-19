@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, AlertTriangle, Cloud, Box, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,7 @@ const BrainCompass = () => {
   const [forceFallback, setForceFallback] = useState(false);
   const [deepView, setDeepView] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState<RegionCategory | "all">("all");
-  const infoCardRef = useRef<HTMLDivElement>(null);
+  
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -204,7 +204,7 @@ const BrainCompass = () => {
           </div>
 
           {/* Info card + Personal scan + Affected regions */}
-          <div className="space-y-4" ref={infoCardRef}>
+          <div className="space-y-4">
             <RegionInfoCard region={selectedRegion} />
             <AffectedRegionsManager
               onFocusRegion={setSelectedId}
@@ -231,29 +231,24 @@ const BrainCompass = () => {
             {visibleRegions.map((region) => {
               const isActive = selectedId === region.id;
               return (
-                <button
-                  key={region.id}
-                  onClick={() => {
-                    setSelectedId(region.id);
-                    requestAnimationFrame(() => {
-                      infoCardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-                    });
-                  }}
-                  className={`px-3 py-2 rounded-full border text-sm transition-all ${
-                    isActive
-                      ? "text-slate-950 font-semibold"
-                      : "text-blue-100 hover:bg-blue-500/10 border-blue-500/30 bg-slate-950/40"
-                  }`}
-                  style={
-                    isActive
-                      ? {
-                          backgroundColor: region.color,
-                          borderColor: region.color,
-                          boxShadow: `0 0 20px -4px ${region.color}`,
-                        }
-                      : undefined
+          <button
+            key={region.id}
+            onClick={() => setSelectedId(region.id)}
+            className={`px-3 py-2 rounded-full border text-sm transition-all ${
+              isActive
+                ? "text-slate-950 font-semibold"
+                : "text-blue-100 hover:bg-blue-500/10 border-blue-500/30 bg-slate-950/40"
+            }`}
+            style={
+              isActive
+                ? {
+                    backgroundColor: region.color,
+                    borderColor: region.color,
+                    boxShadow: `0 0 20px -4px ${region.color}`,
                   }
-                >
+                : undefined
+            }
+          >
                   <span
                     className="inline-block h-2 w-2 rounded-full mr-2 align-middle"
                     style={{ backgroundColor: region.color }}
