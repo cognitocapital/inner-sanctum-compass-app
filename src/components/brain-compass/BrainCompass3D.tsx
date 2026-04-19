@@ -186,15 +186,80 @@ function BrainAnatomy({ deepView }: BrainAnatomyProps) {
 
 // ---------- Region markers ----------
 
+export type AffectedSeverity = "mild" | "moderate" | "severe" | "unknown";
+export interface AffectedHighlight {
+  severity: AffectedSeverity;
+  source?: string | null;
+}
+
+const SEVERITY_COLOR: Record<AffectedSeverity, string> = {
+  mild: "#34d399",      // emerald
+  moderate: "#fbbf24",  // amber
+  severe: "#f43f5e",    // rose
+  unknown: "#94a3b8",   // slate
+};
+
+interface AffectedRingProps {
+  radius: number;
+  color: string;
+}
+
+const AffectedRing = ({ radius, color }: AffectedRingProps) => {
+  const inner = useRef<THREE.Mesh>(null);
+  const outer = useRef<THREE.Mesh>(null);
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const pulse = 1 + Math.sin(t * 2.4) * 0.18;
+    if (inner.current) {
+      inner.current.scale.setScalar(pulse);
+      const m = inner.current.material as THREE.MeshBasicMaterial;
+      m.opacity = 0.55 + Math.sin(t * 2.4) * 0.2;
+    }
+    if (outer.current) {
+      outer.current.scale.setScalar(1 + Math.sin(t * 2.4 + 0.9) * 0.28);
+      const m = outer.current.material as THREE.MeshBasicMaterial;
+      m.opacity = 0.28 + Math.sin(t * 2.4 + 0.9) * 0.18;
+      outer.current.rotation.z = t * 0.4;
+    }
+  });
+  return (
+    <group renderOrder={4}>
+      <mesh ref={inner}>
+        <ringGeometry args={[radius * 1.55, radius * 1.85, 64]} />
+        <meshBasicMaterial
+          color={color}
+          transparent
+          opacity={0.6}
+          side={THREE.DoubleSide}
+          depthTest={false}
+          toneMapped={false}
+        />
+      </mesh>
+      <mesh ref={outer}>
+        <ringGeometry args={[radius * 2.0, radius * 2.25, 64]} />
+        <meshBasicMaterial
+          color={color}
+          transparent
+          opacity={0.3}
+          side={THREE.DoubleSide}
+          depthTest={false}
+          toneMapped={false}
+        />
+      </mesh>
+    </group>
+  );
+};
+
 interface RegionMarkerProps {
   region: BrainRegion;
   isSelected: boolean;
   isDimmed: boolean;
   deepView: boolean;
+  affected?: AffectedHighlight | null;
   onSelect: (id: string) => void;
 }
 
-const RegionMarker = ({ region, isSelected, isDimmed, deepView, onSelect }: RegionMarkerProps) => {
+const RegionMarker = ({ region, isSelected, isDimmed, deepView, affected, onSelect }: RegionMarkerProps) => {
   const ref = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
 
@@ -223,8 +288,11 @@ const RegionMarker = ({ region, isSelected, isDimmed, deepView, onSelect }: Regi
 
   if (!visible) return null;
 
+  const affectedColor = affected ? SEVERITY_COLOR[affected.severity] : null;
+
   return (
     <group position={region.position}>
+      {affectedColor && <AffectedRing radius={radius} color={affectedColor} />}
       <mesh
         ref={ref}
         onPointerOver={(e) => {
@@ -272,8 +340,17 @@ const RegionMarker = ({ region, isSelected, isDimmed, deepView, onSelect }: Regi
           center
           style={{ pointerEvents: "none" }}
         >
-          <div className="px-2.5 py-1 rounded-md bg-slate-950/95 border border-blue-400/40 text-blue-100 text-xs whitespace-nowrap shadow-lg backdrop-blur-sm">
+          <div className="px-2.5 py-1 rounded-md bg-slate-950/95 border border-blue-400/40 text-blue-100 text-xs whitespace-nowrap shadow-lg backdrop-blur-sm flex items-center gap-1.5">
+            {affectedColor && (
+              <span
+                className="inline-block h-1.5 w-1.5 rounded-full"
+                style={{ backgroundColor: affectedColor, boxShadow: `0 0 6px ${affectedColor}` }}
+              />
+            )}
             {region.shortLabel || region.label}
+            {affected && (
+              <span className="opacity-70 capitalize">· {affected.severity}</span>
+            )}
           </div>
         </Html>
       )}
@@ -289,6 +366,7 @@ interface BrainCompass3DProps {
   fogDay?: boolean;
   deepView: boolean;
   categoryFilter: RegionCategory | "all";
+  affectedMap?: Record<string, AffectedHighlight>;
 }
 
 export const BrainCompass3D = ({
@@ -297,6 +375,7 @@ export const BrainCompass3D = ({
   fogDay,
   deepView,
   categoryFilter,
+  affectedMap,
 }: BrainCompass3DProps) => {
   return (
     <Canvas
@@ -323,6 +402,7 @@ export const BrainCompass3D = ({
         {brainRegions.map((region) => {
           const inFilter = categoryFilter === "all" || region.category === categoryFilter;
           const isDimmed = !inFilter && selectedId !== region.id;
+          const affected = affectedMap?.[region.id] ?? null;
           return (
             <RegionMarker
               key={region.id}
@@ -330,6 +410,7 @@ export const BrainCompass3D = ({
               isSelected={selectedId === region.id}
               isDimmed={isDimmed}
               deepView={deepView}
+              affected={affected}
               onSelect={onSelect}
             />
           );

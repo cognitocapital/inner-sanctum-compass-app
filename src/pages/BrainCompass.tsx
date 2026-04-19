@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import SEOHead from "@/components/seo/SEOHead";
 import { brainRegions, REGION_CATEGORIES, type RegionCategory } from "@/data/brainRegions";
-import { BrainCompass3D } from "@/components/brain-compass/BrainCompass3D";
+import { BrainCompass3D, type AffectedHighlight, type AffectedSeverity } from "@/components/brain-compass/BrainCompass3D";
 import { RegionInfoCard } from "@/components/brain-compass/RegionInfoCard";
 import { FogDayFallback } from "@/components/brain-compass/FogDayFallback";
 import { PersonalScanOverlay } from "@/components/brain-compass/PersonalScanOverlay";
 import { AffectedRegionsSelector } from "@/components/brain-compass/AffectedRegionsSelector";
+import { useAffectedRegions } from "@/hooks/use-affected-regions";
 
 const FOG_DAY_KEY = "fog-day-mode";
 
@@ -20,6 +21,22 @@ const BrainCompass = () => {
   const [deepView, setDeepView] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState<RegionCategory | "all">("all");
   const infoCardRef = useRef<HTMLDivElement | null>(null);
+  const { regions: affectedRows } = useAffectedRegions();
+
+  const affectedMap = useMemo(() => {
+    const map: Record<string, AffectedHighlight> = {};
+    const rank: Record<string, number> = { mild: 1, unknown: 1, moderate: 2, severe: 3 };
+    for (const r of affectedRows) {
+      const sev = (r.severity ?? "unknown") as AffectedSeverity;
+      const normalized: AffectedSeverity =
+        sev === "mild" || sev === "moderate" || sev === "severe" ? sev : "unknown";
+      const existing = map[r.region_id];
+      if (!existing || (rank[normalized] ?? 0) > (rank[existing.severity] ?? 0)) {
+        map[r.region_id] = { severity: normalized, source: r.source };
+      }
+    }
+    return map;
+  }, [affectedRows]);
 
   const handleSelectRegion = (id: string) => {
     setSelectedId(id);
@@ -202,11 +219,33 @@ const BrainCompass = () => {
                 fogDay={fogDay}
                 deepView={deepView}
                 categoryFilter={categoryFilter}
+                affectedMap={affectedMap}
               />
             )}
             {!useFallback && deepView && (
               <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-pink-500/20 border border-pink-400/40 text-pink-100 text-xs font-semibold backdrop-blur-sm">
                 Deep View — cortex transparent
+              </div>
+            )}
+            {!useFallback && Object.keys(affectedMap).length > 0 && (
+              <div className="absolute bottom-3 left-3 px-3 py-2 rounded-lg bg-slate-950/80 border border-blue-500/30 text-blue-100 text-[11px] backdrop-blur-sm space-y-1">
+                <div className="font-semibold text-blue-200/90 uppercase tracking-wider text-[10px]">
+                  Your affected regions
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="flex items-center gap-1.5">
+                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: "#34d399", boxShadow: "0 0 8px #34d399" }} />
+                    Mild
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: "#fbbf24", boxShadow: "0 0 8px #fbbf24" }} />
+                    Moderate
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: "#f43f5e", boxShadow: "0 0 8px #f43f5e" }} />
+                    Severe
+                  </span>
+                </div>
               </div>
             )}
           </div>
