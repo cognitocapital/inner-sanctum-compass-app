@@ -1,6 +1,6 @@
-// Analyse an uploaded scan image and/or radiology report and return likely
-// affected brain regions, mapped strictly to our atlas region IDs.
-// Educational only — never diagnostic. The UI must surface the disclaimer.
+// Multi-input scan + report analyser. Accepts arrays of images and/or report
+// snippets and synthesises a holistic list of likely affected regions.
+// Educational only — never diagnostic.
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -8,8 +8,6 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Mirror of region IDs from src/data/brainRegions.ts.
-// Keep in sync — the model is constrained to pick from this exact list.
 const ALLOWED_REGION_IDS = [
   // cortical
   "dlpfc", "vlpfc", "ofc", "mpfc", "acc", "dacc",
@@ -34,23 +32,22 @@ const ALLOWED_REGION_IDS = [
   "dmn", "salience_network", "executive_network",
 ];
 
-const SYSTEM_PROMPT = `You are a clinical neuroanatomy assistant helping a TBI survivor cross-reference their imaging or radiology report with an educational brain atlas.
+const MAX_IMAGES = 6;
+const MAX_REPORTS = 6;
+const MAX_REPORT_CHARS = 8000;
 
-You will be given EITHER:
-- a brain scan image (CT/MRI slice — could be axial, coronal, or sagittal),
-- a radiology report text,
-- or both.
+const SYSTEM_PROMPT = `You are a clinical neuroanatomy assistant helping a TBI survivor cross-reference MULTIPLE pieces of imaging and/or radiology reports against an educational brain atlas.
 
-Your job: identify which brain regions are most likely affected, mapped to our fixed atlas IDs.
+You may receive several scan images (different slices, modalities, or timepoints) AND/OR several radiology report snippets. Synthesise them into ONE holistic list of likely affected regions — do NOT repeat the same region per input. Combine evidence: e.g. if two reports mention the right hippocampus, merge into a single high-confidence entry.
 
 CRITICAL RULES:
 1. Only return region IDs from the allowed list. Never invent IDs.
-2. If the input is unclear, ambiguous, or you genuinely cannot tell, return an empty regions array and explain in the summary.
-3. NEVER diagnose. Frame everything as "areas to discuss with your neurologist".
-4. Confidence must be honest: 'low' for educational guesses, 'high' only when the report explicitly names a structure.
-5. Severity should reflect what's described/visible, not your assumption. Use 'unknown' if not stated.
-6. Maximum 8 regions returned — pick the most relevant.
-7. Always include a short, plain-English summary the user can take to their clinician.`;
+2. Maximum 10 regions in the final synthesised list.
+3. Confidence reflects combined evidence: 'high' only when explicitly named in a report or clearly visible across multiple inputs.
+4. Severity reflects what's described/visible. Use 'unknown' if not stated.
+5. NEVER diagnose. Frame as "areas to discuss with your neurologist".
+6. Summary should mention how many inputs were considered and any agreement/disagreement between them.
+7. If inputs are unclear or unrelated to brain anatomy, return an empty regions array and explain in the summary.`;
 
 async function callLovableAI(messages: any[], tools: any[]) {
   const apiKey = Deno.env.get("LOVABLE_API_KEY");
@@ -72,17 +69,15 @@ async function callLovableAI(messages: any[], tools: any[]) {
 
   if (!resp.ok) {
     const text = await resp.text();
-    if (resp.status === 429) {
-      throw new Error("RATE_LIMIT");
-    }
-    if (resp.status === 402) {
-      throw new Error("PAYMENT_REQUIRED");
-    }
+    if (resp.status === 429) throw new Error("RATE_LIMIT");
+    if (resp.status === 402) throw new Error("PAYMENT_REQUIRED");
     throw new Error(`AI gateway ${resp.status}: ${text}`);
   }
-
   return await resp.json();
 }
+
+interface InputImage { base64: string; mimeType?: string; fileName?: string }
+interface InputReport { text: string; label?: string }
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -91,67 +86,74 @@ Deno.serve(async (req) => {
 
   try {
     const body = await req.json().catch(() => ({}));
-    const { imageBase64, imageMimeType, reportText, fileName } = body || {};
 
-    if (!imageBase64 && !reportText) {
+    // Backwards compatibility: accept old single-input shape too.
+    let images: InputImage[] = Array.isArray(body.images) ? body.images : [];
+    let reports: InputReport[] = Array.isArray(body.reports) ? body.reports : [];
+
+    if (body.imageBase64) {
+      images.push({
+        base64: body.imageBase64,
+        mimeType: body.imageMimeType,
+        fileName: body.fileName,
+      });
+    }
+    if (body.reportText) {
+      reports.push({ text: body.reportText });
+    }
+
+    images = images.slice(0, MAX_IMAGES);
+    reports = reports.slice(0, MAX_REPORTS);
+
+    if (images.length === 0 && reports.length === 0) {
       return new Response(
-        JSON.stringify({ error: "Provide an image (imageBase64) or reportText." }),
+        JSON.stringify({ error: "Provide at least one image or report." }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
 
-    // Build user message — multimodal if image present
     const userContent: any[] = [];
-    const intro = `Please analyse this ${imageBase64 ? "brain scan" : "radiology report"}${
-      fileName ? ` (file: ${fileName})` : ""
-    } and identify likely affected regions from the allowed atlas.`;
-    userContent.push({ type: "text", text: intro });
+    userContent.push({
+      type: "text",
+      text: `Synthesise these ${images.length} scan image(s) and ${reports.length} report snippet(s) into one holistic list of likely affected regions from the allowed atlas.`,
+    });
 
-    if (reportText) {
+    reports.forEach((r, i) => {
       userContent.push({
         type: "text",
-        text: `\n\nReport text:\n"""\n${String(reportText).slice(0, 8000)}\n"""`,
+        text: `\n--- Report ${i + 1}${r.label ? ` (${r.label})` : ""} ---\n${String(r.text).slice(0, MAX_REPORT_CHARS)}`,
       });
-    }
-    if (imageBase64) {
-      const mime = imageMimeType || "image/jpeg";
+    });
+
+    images.forEach((img, i) => {
+      userContent.push({ type: "text", text: `\n--- Image ${i + 1}${img.fileName ? ` (${img.fileName})` : ""} ---` });
       userContent.push({
         type: "image_url",
-        image_url: { url: `data:${mime};base64,${imageBase64}` },
+        image_url: { url: `data:${img.mimeType || "image/jpeg"};base64,${img.base64}` },
       });
-    }
+    });
 
     const tools = [
       {
         type: "function",
         function: {
           name: "report_affected_regions",
-          description: "Return likely affected brain regions for educational review.",
+          description: "Return a synthesised list of likely affected brain regions across all inputs.",
           parameters: {
             type: "object",
             properties: {
               regions: {
                 type: "array",
-                description: "Up to 8 affected regions. Empty array if nothing identifiable.",
+                description: "Up to 10 regions. Merged across inputs — no duplicates.",
                 items: {
                   type: "object",
                   properties: {
-                    regionId: {
-                      type: "string",
-                      enum: ALLOWED_REGION_IDS,
-                      description: "Atlas region ID. MUST be from the allowed list.",
-                    },
-                    severity: {
-                      type: "string",
-                      enum: ["mild", "moderate", "severe", "unknown"],
-                    },
-                    confidence: {
-                      type: "string",
-                      enum: ["low", "medium", "high"],
-                    },
+                    regionId: { type: "string", enum: ALLOWED_REGION_IDS },
+                    severity: { type: "string", enum: ["mild", "moderate", "severe", "unknown"] },
+                    confidence: { type: "string", enum: ["low", "medium", "high"] },
                     rationale: {
                       type: "string",
-                      description: "One short sentence (<25 words) on why this region was flagged.",
+                      description: "One short sentence (<30 words) referencing which input(s) supported this.",
                     },
                   },
                   required: ["regionId", "severity", "confidence", "rationale"],
@@ -160,7 +162,7 @@ Deno.serve(async (req) => {
               },
               summary: {
                 type: "string",
-                description: "Plain-English overview to share with a clinician (1-3 sentences).",
+                description: "Plain-English overview (1-3 sentences) noting how inputs agreed/disagreed.",
               },
               clinicianQuestions: {
                 type: "array",
@@ -186,9 +188,10 @@ Deno.serve(async (req) => {
       return new Response(
         JSON.stringify({
           regions: [],
-          summary: "The AI couldn't structure a response. Please try again or paste the report text directly.",
+          summary: "The AI couldn't structure a response. Please try again.",
           clinicianQuestions: [],
           disclaimer: "Educational only — not diagnostic.",
+          inputCounts: { images: images.length, reports: reports.length },
         }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
@@ -201,7 +204,6 @@ Deno.serve(async (req) => {
       parsed = { regions: [], summary: "Could not parse AI response.", clinicianQuestions: [] };
     }
 
-    // Defensive filter: drop any region IDs that slipped past the enum.
     const cleanRegions = (parsed.regions || []).filter((r: any) =>
       ALLOWED_REGION_IDS.includes(r.regionId),
     );
@@ -211,8 +213,8 @@ Deno.serve(async (req) => {
         regions: cleanRegions,
         summary: parsed.summary || "",
         clinicianQuestions: parsed.clinicianQuestions || [],
-        disclaimer:
-          "Educational AI suggestion only — not a diagnosis. Always review imaging with your neurologist.",
+        disclaimer: "Educational AI suggestion only — not a diagnosis. Always review imaging with your neurologist.",
+        inputCounts: { images: images.length, reports: reports.length },
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
@@ -220,20 +222,17 @@ Deno.serve(async (req) => {
     console.error("analyze-scan error:", err);
     const msg = err?.message || "Unknown error";
     if (msg === "RATE_LIMIT") {
-      return new Response(
-        JSON.stringify({ error: "Rate limit reached. Please wait a moment and try again." }),
-        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
+      return new Response(JSON.stringify({ error: "Rate limit reached. Please wait a moment and try again." }), {
+        status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
     if (msg === "PAYMENT_REQUIRED") {
-      return new Response(
-        JSON.stringify({ error: "AI credits exhausted. Please add credits in workspace settings." }),
-        { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
+      return new Response(JSON.stringify({ error: "AI credits exhausted. Please add credits in workspace settings." }), {
+        status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
     return new Response(JSON.stringify({ error: msg }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });
