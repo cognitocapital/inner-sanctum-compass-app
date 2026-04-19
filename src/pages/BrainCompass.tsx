@@ -75,7 +75,7 @@ const BrainCompass = () => {
 
   const useFallback = forceFallback;
 
-  const visibleRegions = useMemo(
+  const curatedVisible = useMemo(
     () =>
       categoryFilter === "all"
         ? brainRegions
@@ -83,11 +83,25 @@ const BrainCompass = () => {
     [categoryFilter]
   );
 
+  // Extended atlas chips, optionally filtered by category + search query
+  const extendedVisible = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return extendedAtlasRegions.filter((r) => {
+      if (categoryFilter !== "all" && r.category !== categoryFilter) return false;
+      if (!q) return true;
+      return (
+        r.label.toLowerCase().includes(q) ||
+        (r.shortLabel?.toLowerCase().includes(q) ?? false) ||
+        (r.aliases?.some((a) => a.toLowerCase().includes(q)) ?? false)
+      );
+    });
+  }, [categoryFilter, search]);
+
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-blue-50 relative overflow-hidden">
       <SEOHead
         title="Phoenix Brain Compass — Clinical 3D TBI Atlas"
-        description="Interactive 3D neuroanatomical atlas mapping how TBI affects 22 brain regions, linked to manuscript chapters, recovery protocols, and personalised AI insights."
+        description={`Interactive 3D neuroanatomical atlas mapping how TBI affects ${TOTAL_REGIONS}+ brain regions across MNI-152 / Harvard-Oxford / Julich-Brain atlases, with personal scan overlay and AI insights.`}
         path="/brain-compass"
       />
 
