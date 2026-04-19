@@ -204,7 +204,7 @@ const BrainCompass = () => {
           </div>
 
           {/* Info card + Personal scan + Affected regions */}
-          <div className="space-y-4" ref={infoCardRef}>
+          <div className="space-y-4">
             <RegionInfoCard region={selectedRegion} />
             <AffectedRegionsManager
               onFocusRegion={setSelectedId}
