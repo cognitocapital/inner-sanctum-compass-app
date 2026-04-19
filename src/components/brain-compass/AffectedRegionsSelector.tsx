@@ -179,7 +179,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
       .filter(Boolean)
       .join(", ");
     const q = `Based on my self-reported affected brain regions — ${summary} — what daily practices, soundscapes, and quests should I prioritise this week? Tie it to my recent check-ins.`;
-    return `/ai-companion?q=${encodeURIComponent(q)}`;
+    return `/ai-companion?context=${encodeURIComponent(q)}`;
   }, [rows]);
 
   if (!user) {
