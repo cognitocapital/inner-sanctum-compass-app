@@ -108,7 +108,7 @@ const BrainCompass = () => {
               }
               aria-pressed={deepView}
             >
-              <Layers className="h-4 w-4 mr-1.5" />
+              <Layers className={`h-4 w-4 mr-1.5 ${deepView ? "opacity-100" : "opacity-50"}`} />
               Deep View
             </Button>
             <Button
@@ -120,11 +120,11 @@ const BrainCompass = () => {
             >
               {useFallback ? (
                 <>
-                  <Box className="h-4 w-4 mr-1.5" /> 3D
+                  <Box className="h-4 w-4 mr-1.5 opacity-50" /> 3D
                 </>
               ) : (
                 <>
-                  <Cloud className="h-4 w-4 mr-1.5" /> Fog Day
+                  <Cloud className="h-4 w-4 mr-1.5 opacity-50" /> Fog Day
                 </>
               )}
             </Button>
