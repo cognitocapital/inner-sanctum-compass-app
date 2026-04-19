@@ -9,6 +9,7 @@ import { BrainCompass3D } from "@/components/brain-compass/BrainCompass3D";
 import { RegionInfoCard } from "@/components/brain-compass/RegionInfoCard";
 import { FogDayFallback } from "@/components/brain-compass/FogDayFallback";
 import { PersonalScanOverlay } from "@/components/brain-compass/PersonalScanOverlay";
+import { AffectedRegionsSelector } from "@/components/brain-compass/AffectedRegionsSelector";
 
 const FOG_DAY_KEY = "fog-day-mode";
 
@@ -210,11 +211,12 @@ const BrainCompass = () => {
             )}
           </div>
 
-          {/* Info card + Personal scan */}
+          {/* Info card + Self-reported affected regions + Personal scan */}
           <div className="space-y-4" ref={infoCardRef}>
             <RegionInfoCard region={selectedRegion} />
+            <AffectedRegionsSelector onRegionFocus={handleSelectRegion} />
             <PersonalScanOverlay
-              onRegionFocus={setSelectedId}
+              onRegionFocus={handleSelectRegion}
               disabled={fogDay}
             />
           </div>
