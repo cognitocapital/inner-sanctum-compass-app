@@ -262,22 +262,36 @@ const BrainCompass = () => {
 
         {/* Region selector chips */}
         <div className="mt-6">
-          <h2 className="text-sm uppercase tracking-wider text-blue-300/70 font-semibold mb-3">
-            Explore regions{" "}
-            {categoryFilter !== "all" && (
+          <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
+            <h2 className="text-sm uppercase tracking-wider text-blue-300/70 font-semibold">
+              Explore regions{" "}
               <span className="text-blue-400/60 normal-case">
-                — filtered to {REGION_CATEGORIES.find((c) => c.id === categoryFilter)?.label}
+                — {curatedVisible.length} curated · {extendedVisible.length} of {extendedAtlasRegions.length} extended
+                {categoryFilter !== "all" && (
+                  <> · filtered to {REGION_CATEGORIES.find((c) => c.id === categoryFilter)?.label}</>
+                )}
               </span>
-            )}
-          </h2>
+            </h2>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setShowFullAtlas((v) => !v)}
+              className="text-blue-200 hover:bg-blue-500/10 min-h-[44px]"
+            >
+              {showFullAtlas ? <ChevronUp className="h-4 w-4 mr-1" /> : <ChevronDown className="h-4 w-4 mr-1" />}
+              {showFullAtlas ? "Hide" : "Show"} full atlas ({TOTAL_REGIONS}+)
+            </Button>
+          </div>
+
+          {/* Curated chips — always visible */}
           <div className="flex flex-wrap gap-2">
-            {visibleRegions.map((region) => {
+            {curatedVisible.map((region) => {
               const isActive = selectedId === region.id;
               return (
                 <button
                   key={region.id}
                   onClick={() => setSelectedId(region.id)}
-                  className={`px-3 py-2 rounded-full border text-sm transition-all ${
+                  className={`px-3.5 py-2.5 rounded-full border text-sm transition-all min-h-[44px] ${
                     isActive
                       ? "text-slate-950 font-semibold"
                       : "text-blue-100 hover:bg-blue-500/10 border-blue-500/30 bg-slate-950/40"
@@ -304,6 +318,56 @@ const BrainCompass = () => {
               );
             })}
           </div>
+
+          {/* Extended atlas — collapsible to manage cognitive load */}
+          {showFullAtlas && (
+            <div className="mt-4 rounded-xl border border-blue-500/20 bg-slate-950/40 p-4 space-y-3">
+              <div className="flex items-center gap-2">
+                <Search className="h-4 w-4 text-blue-300/60" />
+                <Input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search Harvard-Oxford / Julich-Brain / AAL3 labels…"
+                  className="bg-slate-900/60 border-blue-500/20 text-blue-50 placeholder:text-blue-300/40 h-11"
+                />
+              </div>
+              <div className="flex flex-wrap gap-1.5 max-h-[280px] overflow-y-auto pr-1">
+                {extendedVisible.length === 0 && (
+                  <p className="text-xs text-blue-300/60 italic px-2 py-3">No matches.</p>
+                )}
+                {extendedVisible.slice(0, 200).map((r) => {
+                  const parent = brainRegions.find((c) => c.id === r.parentId);
+                  const isActive = selectedId === r.id;
+                  return (
+                    <button
+                      key={r.id}
+                      onClick={() => setSelectedId(r.id)}
+                      className={`px-2.5 py-1.5 rounded-md border text-[12px] transition min-h-[36px] ${
+                        isActive
+                          ? "bg-blue-500/30 border-blue-400 text-white"
+                          : "bg-slate-900/60 border-blue-500/15 text-blue-100/90 hover:bg-blue-500/10"
+                      }`}
+                      title={`${r.label} · ${r.source} → ${parent?.shortLabel || parent?.label || ""}`}
+                    >
+                      <span
+                        className="inline-block h-1.5 w-1.5 rounded-full mr-1.5 align-middle"
+                        style={{ backgroundColor: parent?.color ?? "#60a5fa" }}
+                      />
+                      {r.shortLabel || r.label}
+                    </button>
+                  );
+                })}
+                {extendedVisible.length > 200 && (
+                  <span className="text-[11px] text-blue-300/60 self-center pl-2">
+                    +{extendedVisible.length - 200} more — refine search
+                  </span>
+                )}
+              </div>
+              <p className="text-[10px] text-blue-300/50 italic">
+                Sources: Harvard-Oxford · Julich-Brain · AAL3 · Yeo-7 · JHU-DTI. Each label routes to the closest curated region for manuscript & protocol guidance. Educational visualisation only.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
