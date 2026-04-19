@@ -261,6 +261,16 @@ const BrainCompass = () => {
           </div>
         </div>
       </div>
+
+      {/* Persistent footer safety banner */}
+      <div className="relative z-20 border-t border-amber-500/20 bg-amber-500/5 backdrop-blur-sm mt-6">
+        <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center gap-2 text-xs text-amber-200/90">
+          <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0" />
+          <span>
+            Educational visualisation only — not diagnostic. Consult your neurologist for any clinical decision.
+          </span>
+        </div>
+      </div>
     </div>
   );
 };
