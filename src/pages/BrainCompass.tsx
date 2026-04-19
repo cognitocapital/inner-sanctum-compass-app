@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, AlertTriangle, Cloud, Box, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ const BrainCompass = () => {
   const [forceFallback, setForceFallback] = useState(false);
   const [deepView, setDeepView] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState<RegionCategory | "all">("all");
+  const infoCardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -202,7 +203,7 @@ const BrainCompass = () => {
           </div>
 
           {/* Info card + Personal scan */}
-          <div className="space-y-4">
+          <div className="space-y-4" ref={infoCardRef}>
             <RegionInfoCard region={selectedRegion} />
             <PersonalScanOverlay
               onRegionFocus={setSelectedId}
@@ -227,7 +228,12 @@ const BrainCompass = () => {
               return (
                 <button
                   key={region.id}
-                  onClick={() => setSelectedId(region.id)}
+                  onClick={() => {
+                    setSelectedId(region.id);
+                    requestAnimationFrame(() => {
+                      infoCardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    });
+                  }}
                   className={`px-3 py-2 rounded-full border text-sm transition-all ${
                     isActive
                       ? "text-slate-950 font-semibold"
