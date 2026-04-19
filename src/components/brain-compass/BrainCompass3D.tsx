@@ -288,8 +288,11 @@ const RegionMarker = ({ region, isSelected, isDimmed, deepView, affected, onSele
 
   if (!visible) return null;
 
+  const affectedColor = affected ? SEVERITY_COLOR[affected.severity] : null;
+
   return (
     <group position={region.position}>
+      {affectedColor && <AffectedRing radius={radius} color={affectedColor} />}
       <mesh
         ref={ref}
         onPointerOver={(e) => {
@@ -337,8 +340,17 @@ const RegionMarker = ({ region, isSelected, isDimmed, deepView, affected, onSele
           center
           style={{ pointerEvents: "none" }}
         >
-          <div className="px-2.5 py-1 rounded-md bg-slate-950/95 border border-blue-400/40 text-blue-100 text-xs whitespace-nowrap shadow-lg backdrop-blur-sm">
+          <div className="px-2.5 py-1 rounded-md bg-slate-950/95 border border-blue-400/40 text-blue-100 text-xs whitespace-nowrap shadow-lg backdrop-blur-sm flex items-center gap-1.5">
+            {affectedColor && (
+              <span
+                className="inline-block h-1.5 w-1.5 rounded-full"
+                style={{ backgroundColor: affectedColor, boxShadow: `0 0 6px ${affectedColor}` }}
+              />
+            )}
             {region.shortLabel || region.label}
+            {affected && (
+              <span className="opacity-70 capitalize">· {affected.severity}</span>
+            )}
           </div>
         </Html>
       )}
