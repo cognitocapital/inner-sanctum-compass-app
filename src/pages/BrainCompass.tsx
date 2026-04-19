@@ -99,16 +99,12 @@ const BrainCompass = () => {
             </Badge>
             <Button
               size="sm"
-              variant={deepView ? "default" : "outline"}
+              variant="default"
               onClick={() => setDeepView((v) => !v)}
-              className={
-                deepView
-                  ? "bg-pink-500 hover:bg-pink-600 text-white"
-                  : "border-pink-500/30 text-pink-200 hover:bg-pink-500/10 hover:text-white"
-              }
+              className="bg-pink-500 hover:bg-pink-600 text-white"
               aria-pressed={deepView}
             >
-              <Layers className={`h-4 w-4 mr-1.5 ${deepView ? "opacity-100" : "opacity-50"}`} />
+              <Layers className="h-4 w-4 mr-1.5" />
               Deep View
             </Button>
             <Button
