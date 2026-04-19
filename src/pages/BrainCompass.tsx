@@ -177,10 +177,15 @@ const BrainCompass = () => {
         </div>
 
         <div className="mb-6">
-          <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
-            Phoenix Brain Compass
-            <span className="text-blue-400"> — Clinical Edition</span>
-          </h1>
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
+              Phoenix Brain Compass
+              <span className="text-blue-400"> — Clinical Edition</span>
+            </h1>
+            <Badge variant="outline" className="border-blue-500/40 text-blue-200 bg-blue-500/5">
+              {TOTAL_REGIONS}+ regions · MNI-152
+            </Badge>
+          </div>
           <p className="text-base md:text-lg text-blue-200/80 mt-2 max-w-3xl">
             A precise, evidence-informed atlas of the brain regions most affected
             by TBI — and how those changes show up in your daily life. Tap any
