@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, AlertTriangle, Cloud, Box, Layers } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,15 @@ const BrainCompass = () => {
   const [forceFallback, setForceFallback] = useState(false);
   const [deepView, setDeepView] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<RegionCategory | "all">("all");
+  const infoCardRef = useRef<HTMLDivElement | null>(null);
+
+  const handleSelectRegion = (id: string) => {
+    setSelectedId(id);
+    // Smoothly bring the info card into view so users see the description after tapping a chip/region.
+    requestAnimationFrame(() => {
+      infoCardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -184,11 +193,11 @@ const BrainCompass = () => {
           {/* 3D / 2D viewer */}
           <div className="rounded-2xl border border-blue-500/20 bg-slate-950/40 backdrop-blur-sm overflow-hidden h-[60vh] min-h-[420px] lg:h-[70vh] relative">
             {useFallback ? (
-              <FogDayFallback selectedId={selectedId} onSelect={setSelectedId} />
+              <FogDayFallback selectedId={selectedId} onSelect={handleSelectRegion} />
             ) : (
               <BrainCompass3D
                 selectedId={selectedId}
-                onSelect={setSelectedId}
+                onSelect={handleSelectRegion}
                 fogDay={fogDay}
                 deepView={deepView}
                 categoryFilter={categoryFilter}
@@ -202,7 +211,7 @@ const BrainCompass = () => {
           </div>
 
           {/* Info card + Personal scan */}
-          <div className="space-y-4">
+          <div className="space-y-4" ref={infoCardRef}>
             <RegionInfoCard region={selectedRegion} />
             <PersonalScanOverlay
               onRegionFocus={setSelectedId}
@@ -227,7 +236,7 @@ const BrainCompass = () => {
               return (
                 <button
                   key={region.id}
-                  onClick={() => setSelectedId(region.id)}
+                  onClick={() => handleSelectRegion(region.id)}
                   className={`px-3 py-2 rounded-full border text-sm transition-all ${
                     isActive
                       ? "text-slate-950 font-semibold"
