@@ -203,9 +203,13 @@ const BrainCompass = () => {
             )}
           </div>
 
-          {/* Info card + Personal scan */}
+          {/* Info card + Personal scan + Affected regions */}
           <div className="space-y-4" ref={infoCardRef}>
             <RegionInfoCard region={selectedRegion} />
+            <AffectedRegionsManager
+              onFocusRegion={setSelectedId}
+              highlightedRegionId={selectedId}
+            />
             <PersonalScanOverlay
               onRegionFocus={setSelectedId}
               disabled={fogDay}
