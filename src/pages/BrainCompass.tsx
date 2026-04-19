@@ -16,7 +16,7 @@ const BrainCompass = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [fogDay, setFogDay] = useState(false);
   const [forceFallback, setForceFallback] = useState(false);
-  const [deepView, setDeepView] = useState(false);
+  const [deepView, setDeepView] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState<RegionCategory | "all">("all");
 
   useEffect(() => {
