@@ -316,7 +316,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
                       <button
                         key={s.value}
                         onClick={() => setSelectedSeverity(s.value)}
-                        className={`px-2.5 py-1 rounded-full border text-xs font-semibold transition-all ${
+                        className={`px-3 py-2 min-h-[40px] rounded-full border text-xs font-semibold transition-all ${
                           active
                             ? SEVERITY_STYLES[s.value]
                             : "border-blue-500/20 text-blue-200/70 hover:bg-blue-500/10"
