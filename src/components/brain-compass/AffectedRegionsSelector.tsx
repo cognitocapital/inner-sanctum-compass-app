@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Check, Loader2, Plus, Trash2, Brain, Sparkles, X, Search } from "lucide-react";
+import { Check, Loader2, Plus, Trash2, Brain, Sparkles, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { brainRegions, REGION_CATEGORIES } from "@/data/brainRegions";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -43,7 +43,6 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
   const [selectedRegionId, setSelectedRegionId] = useState<string>("");
   const [selectedSeverity, setSelectedSeverity] = useState<string>("moderate");
   const [search, setSearch] = useState("");
-  const listRef = useRef<HTMLDivElement | null>(null);
 
   // Load existing self-reported regions
   useEffect(() => {
@@ -94,6 +93,13 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
     }
     return map;
   }, [available]);
+
+  const openPicker = () => {
+    setSelectedRegionId("");
+    setSelectedSeverity("moderate");
+    setSearch("");
+    setPicking(true);
+  };
 
   const addRegion = async () => {
     if (!user) {
@@ -195,6 +201,9 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
               Sign in to log regions you know are affected — Phoenix uses them to personalise quests,
               soundscapes, and check-in insights.
             </p>
+            <Button asChild size="sm" className="mt-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold">
+              <Link to="/auth">Sign in</Link>
+            </Button>
           </div>
         </div>
       </div>
@@ -204,7 +213,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
   return (
     <div className="rounded-xl border border-blue-500/20 bg-slate-950/40 backdrop-blur-sm p-4 space-y-3">
       <div className="flex items-start justify-between gap-2">
-        <div>
+        <div className="flex-1 min-w-0">
           <h3 className="text-sm font-semibold text-white tracking-tight flex items-center gap-1.5">
             <Brain className="h-4 w-4 text-blue-300" />
             Regions affected by your TBI
@@ -214,6 +223,15 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
             Phoenix uses this to tailor quests &amp; soundscapes — no scan required.
           </p>
         </div>
+        {/* Always-visible Add button so it never gets lost on mobile */}
+        <Button
+          size="sm"
+          onClick={openPicker}
+          className="bg-blue-600 hover:bg-blue-500 text-white shrink-0 min-h-[40px]"
+        >
+          <Plus className="h-4 w-4 mr-1" />
+          Add
+        </Button>
       </div>
 
       {loading ? (
@@ -223,13 +241,12 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
         </div>
       ) : (
         <>
-          {rows.length === 0 && !picking && (
+          {rows.length === 0 ? (
             <p className="text-xs text-blue-200/70 italic">
-              Nothing logged yet. Add any regions a clinician has flagged, or that match your symptoms.
+              Nothing logged yet. Tap <strong className="text-blue-100">Add</strong> to log any regions a
+              clinician has flagged, or that match your symptoms.
             </p>
-          )}
-
-          {rows.length > 0 && (
+          ) : (
             <div className="space-y-1.5">
               {rows.map((row) => {
                 const region = brainRegions.find((r) => r.id === row.region_id);
@@ -279,148 +296,6 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
             </div>
           )}
 
-          {picking ? (
-            <div className="rounded-lg border border-blue-500/30 bg-slate-900/60 p-3 space-y-3">
-              <div className="flex items-center justify-between">
-                <label className="text-[11px] uppercase tracking-wider text-blue-300/70 font-semibold">
-                  Pick a brain region
-                </label>
-                <button
-                  onClick={() => {
-                    setPicking(false);
-                    setSelectedRegionId("");
-                    setSearch("");
-                  }}
-                  className="text-blue-300/70 hover:text-white p-1"
-                  aria-label="Close picker"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-
-              {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-blue-300/60" />
-                <input
-                  type="text"
-                  inputMode="search"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search regions…"
-                  className="w-full h-9 pl-8 pr-3 rounded-md bg-slate-950/70 border border-blue-500/30 text-sm text-blue-50 placeholder:text-blue-300/40 focus:outline-none focus:border-blue-400"
-                />
-              </div>
-
-              {/* Native scrollable region list — works on every mobile browser */}
-              <div
-                ref={listRef}
-                className="max-h-56 overflow-y-auto rounded-md border border-blue-500/20 bg-slate-950/40 divide-y divide-blue-500/10"
-              >
-                {available.length === 0 ? (
-                  <p className="text-xs text-blue-300/60 italic p-3 text-center">
-                    No matches.
-                  </p>
-                ) : (
-                  REGION_CATEGORIES.map((cat) => {
-                    const list = groupedAvailable.get(cat.id);
-                    if (!list || list.length === 0) return null;
-                    return (
-                      <div key={cat.id}>
-                        <div
-                          className="px-2.5 py-1 text-[10px] uppercase tracking-wider font-semibold sticky top-0 backdrop-blur-sm"
-                          style={{ color: cat.color, backgroundColor: "rgba(2,6,23,0.85)" }}
-                        >
-                          {cat.label}
-                        </div>
-                        {list.map((r) => {
-                          const active = selectedRegionId === r.id;
-                          return (
-                            <button
-                              key={r.id}
-                              type="button"
-                              onClick={() => setSelectedRegionId(r.id)}
-                              className={`w-full flex items-center gap-2 px-2.5 py-2.5 text-left text-sm min-h-[44px] transition-colors ${
-                                active
-                                  ? "bg-blue-500/20 text-white"
-                                  : "text-blue-100 hover:bg-blue-500/10"
-                              }`}
-                            >
-                              <span
-                                className="h-2 w-2 rounded-full flex-shrink-0"
-                                style={{ backgroundColor: r.color }}
-                              />
-                              <span className="flex-1 truncate">{r.label}</span>
-                              {active && <Check className="h-4 w-4 text-blue-300 flex-shrink-0" />}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-[11px] uppercase tracking-wider text-blue-300/70 font-semibold">
-                  Severity
-                </label>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {SEVERITIES.map((s) => {
-                    const active = selectedSeverity === s.value;
-                    return (
-                      <button
-                        key={s.value}
-                        type="button"
-                        onClick={() => setSelectedSeverity(s.value)}
-                        className={`px-3 py-2 min-h-[40px] rounded-md border text-xs font-semibold transition-all ${
-                          active
-                            ? SEVERITY_STYLES[s.value]
-                            : "border-blue-500/20 text-blue-200/70 hover:bg-blue-500/10"
-                        }`}
-                      >
-                        {s.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <Button
-                size="sm"
-                onClick={addRegion}
-                disabled={!selectedRegionId || adding}
-                className="w-full bg-blue-600 hover:bg-blue-500 text-white min-h-[44px]"
-              >
-                {adding ? (
-                  <Loader2 className="h-4 w-4 mr-1.5 animate-spin" />
-                ) : (
-                  <Check className="h-4 w-4 mr-1.5" />
-                )}
-                {selectedRegionId
-                  ? `Add ${brainRegions.find((r) => r.id === selectedRegionId)?.shortLabel || "region"}`
-                  : "Add region"}
-              </Button>
-            </div>
-          ) : (
-            available.length > 0 && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setPicking(true)}
-                className="w-full border-blue-500/40 text-blue-100 hover:bg-blue-500/10 min-h-[44px]"
-              >
-                <Plus className="h-4 w-4 mr-1.5" />
-                Add affected region
-              </Button>
-            )
-          )}
-
-          {available.length === 0 && rows.length > 0 && !picking && (
-            <p className="text-[11px] text-blue-300/60 italic text-center pt-1">
-              All available regions logged.
-            </p>
-          )}
-
           {/* Ask Phoenix CTA — appears once at least one region is logged */}
           {rows.length > 0 && (
             <Button
@@ -440,6 +315,136 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
         <strong className="text-amber-200">Self-reported.</strong> Educational only — not a clinical diagnosis.
         Always defer to your neurologist for confirmed anatomical findings.
       </div>
+
+      {/* MOBILE-FRIENDLY PICKER — full-screen Sheet, can never be missed */}
+      <Sheet open={picking} onOpenChange={setPicking}>
+        <SheetContent
+          side="bottom"
+          className="h-[92vh] sm:h-[80vh] bg-slate-950 border-t border-blue-500/30 text-blue-50 p-0 flex flex-col"
+        >
+          <SheetHeader className="px-4 pt-5 pb-3 border-b border-blue-500/20 text-left">
+            <SheetTitle className="text-white flex items-center gap-2 text-base">
+              <Brain className="h-4 w-4 text-blue-300" />
+              Add an affected region
+            </SheetTitle>
+            <SheetDescription className="text-blue-200/70 text-xs">
+              Pick a region and rate how strongly it's been affected. Phoenix will use it to personalise.
+            </SheetDescription>
+          </SheetHeader>
+
+          {/* Search */}
+          <div className="px-4 pt-3">
+            <div className="relative">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-blue-300/60" />
+              <input
+                type="text"
+                inputMode="search"
+                autoFocus={false}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search regions…"
+                className="w-full h-11 pl-9 pr-3 rounded-md bg-slate-900 border border-blue-500/30 text-sm text-blue-50 placeholder:text-blue-300/40 focus:outline-none focus:border-blue-400"
+              />
+            </div>
+          </div>
+
+          {/* Region list — scrollable area */}
+          <div className="flex-1 overflow-y-auto px-4 py-3">
+            {available.length === 0 ? (
+              <p className="text-sm text-blue-300/60 italic p-6 text-center">
+                {usedIds.size === brainRegions.length
+                  ? "You've logged every available region."
+                  : "No matches for that search."}
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {REGION_CATEGORIES.map((cat) => {
+                  const list = groupedAvailable.get(cat.id);
+                  if (!list || list.length === 0) return null;
+                  return (
+                    <div key={cat.id}>
+                      <div
+                        className="text-[10px] uppercase tracking-wider font-semibold mb-1.5"
+                        style={{ color: cat.color }}
+                      >
+                        {cat.label}
+                      </div>
+                      <div className="rounded-md border border-blue-500/15 overflow-hidden divide-y divide-blue-500/10">
+                        {list.map((r) => {
+                          const active = selectedRegionId === r.id;
+                          return (
+                            <button
+                              key={r.id}
+                              type="button"
+                              onClick={() => setSelectedRegionId(r.id)}
+                              className={`w-full flex items-center gap-2 px-3 py-3 text-left text-sm min-h-[48px] transition-colors ${
+                                active
+                                  ? "bg-blue-500/25 text-white"
+                                  : "text-blue-100 active:bg-blue-500/15"
+                              }`}
+                            >
+                              <span
+                                className="h-2.5 w-2.5 rounded-full flex-shrink-0"
+                                style={{ backgroundColor: r.color }}
+                              />
+                              <span className="flex-1 truncate">{r.label}</span>
+                              {active && <Check className="h-4 w-4 text-blue-300 flex-shrink-0" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Sticky footer: severity + add */}
+          <div className="border-t border-blue-500/20 bg-slate-950 px-4 py-3 space-y-3">
+            <div>
+              <label className="text-[11px] uppercase tracking-wider text-blue-300/70 font-semibold">
+                Severity
+              </label>
+              <div className="grid grid-cols-4 gap-1.5 mt-1.5">
+                {SEVERITIES.map((s) => {
+                  const active = selectedSeverity === s.value;
+                  return (
+                    <button
+                      key={s.value}
+                      type="button"
+                      onClick={() => setSelectedSeverity(s.value)}
+                      className={`px-2 py-2 min-h-[44px] rounded-md border text-[11px] font-semibold transition-all ${
+                        active
+                          ? SEVERITY_STYLES[s.value]
+                          : "border-blue-500/20 text-blue-200/70"
+                      }`}
+                    >
+                      {s.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <Button
+              size="lg"
+              onClick={addRegion}
+              disabled={!selectedRegionId || adding}
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white min-h-[52px] text-base font-semibold disabled:opacity-50"
+            >
+              {adding ? (
+                <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+              ) : (
+                <Check className="h-5 w-5 mr-2" />
+              )}
+              {selectedRegionId
+                ? `Add ${brainRegions.find((r) => r.id === selectedRegionId)?.shortLabel || brainRegions.find((r) => r.id === selectedRegionId)?.label || "region"}`
+                : "Pick a region above"}
+            </Button>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 };
