@@ -1,16 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
-import { Check, Loader2, Plus, Trash2, Brain, Sparkles } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { Check, Loader2, Plus, Trash2, Brain, Sparkles, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { brainRegions, REGION_CATEGORIES } from "@/data/brainRegions";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -50,6 +42,8 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
   const [picking, setPicking] = useState(false);
   const [selectedRegionId, setSelectedRegionId] = useState<string>("");
   const [selectedSeverity, setSelectedSeverity] = useState<string>("moderate");
+  const [search, setSearch] = useState("");
+  const listRef = useRef<HTMLDivElement | null>(null);
 
   // Load existing self-reported regions
   useEffect(() => {
@@ -79,10 +73,17 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
   }, [user]);
 
   const usedIds = useMemo(() => new Set(rows.map((r) => r.region_id)), [rows]);
-  const available = useMemo(
-    () => brainRegions.filter((r) => !usedIds.has(r.id)),
-    [usedIds]
-  );
+  const available = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return brainRegions.filter(
+      (r) =>
+        !usedIds.has(r.id) &&
+        (q === "" ||
+          r.label.toLowerCase().includes(q) ||
+          (r.shortLabel ?? "").toLowerCase().includes(q) ||
+          r.category.toLowerCase().includes(q))
+    );
+  }, [usedIds, search]);
 
   const groupedAvailable = useMemo(() => {
     const map = new Map<string, typeof brainRegions>();
@@ -102,7 +103,10 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
       });
       return;
     }
-    if (!selectedRegionId) return;
+    if (!selectedRegionId) {
+      toast({ title: "Pick a region first", variant: "destructive" });
+      return;
+    }
     setAdding(true);
     const { data, error } = await supabase
       .from("user_affected_regions")
@@ -117,12 +121,13 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
     setAdding(false);
     if (error || !data) {
       console.error("Insert failed", error);
-      toast({ title: "Couldn't save region", variant: "destructive" });
+      toast({ title: "Couldn't save region", description: error?.message, variant: "destructive" });
       return;
     }
     setRows((prev) => [...prev, data]);
     setSelectedRegionId("");
     setSelectedSeverity("moderate");
+    setSearch("");
     setPicking(false);
     const region = brainRegions.find((r) => r.id === data.region_id);
     toast({
@@ -162,6 +167,20 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
       setRows(prev);
     }
   };
+
+  // Build a deep-link to AI Companion with a prefilled prompt about affected regions.
+  const phoenixPromptHref = useMemo(() => {
+    if (rows.length === 0) return "/ai-companion";
+    const summary = rows
+      .map((r) => {
+        const reg = brainRegions.find((br) => br.id === r.region_id);
+        return reg ? `${reg.shortLabel || reg.label} (${r.severity || "unknown"})` : null;
+      })
+      .filter(Boolean)
+      .join(", ");
+    const q = `Based on my self-reported affected brain regions — ${summary} — what daily practices, soundscapes, and quests should I prioritise this week? Tie it to my recent check-ins.`;
+    return `/ai-companion?context=${encodeURIComponent(q)}`;
+  }, [rows]);
 
   if (!user) {
     return (
@@ -233,34 +252,26 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
                       <span className="text-sm text-blue-50 truncate">
                         {region.shortLabel || region.label}
                       </span>
-                      <Badge
-                        variant="outline"
-                        className="text-[9px] py-0 px-1.5 border-blue-500/30 text-blue-300/80 hidden sm:inline-flex"
-                      >
-                        {region.category}
-                      </Badge>
                     </button>
-                    <Select value={sev} onValueChange={(v) => updateSeverity(row.id, v)}>
-                      <SelectTrigger
-                        className={`h-7 text-[11px] w-[110px] border ${SEVERITY_STYLES[sev] ?? SEVERITY_STYLES.unknown}`}
-                        aria-label="Severity"
-                      >
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {SEVERITIES.map((s) => (
-                          <SelectItem key={s.value} value={s.value}>
-                            {s.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    {/* Native select — bulletproof on mobile */}
+                    <select
+                      value={sev}
+                      onChange={(e) => updateSeverity(row.id, e.target.value)}
+                      aria-label="Severity"
+                      className={`h-8 text-[11px] rounded-md border px-2 font-semibold appearance-none ${SEVERITY_STYLES[sev] ?? SEVERITY_STYLES.unknown}`}
+                    >
+                      {SEVERITIES.map((s) => (
+                        <option key={s.value} value={s.value} className="bg-slate-900 text-white">
+                          {s.label}
+                        </option>
+                      ))}
+                    </select>
                     <button
                       onClick={() => removeRow(row.id)}
-                      className="text-blue-400/60 hover:text-rose-300 p-1"
+                      className="text-blue-400/60 hover:text-rose-300 p-1.5 min-h-[36px] min-w-[36px] flex items-center justify-center"
                       aria-label={`Remove ${region.label}`}
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
                 );
@@ -269,54 +280,99 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
           )}
 
           {picking ? (
-            <div className="rounded-lg border border-blue-500/30 bg-slate-900/60 p-3 space-y-2.5">
-              <div className="space-y-1.5">
+            <div className="rounded-lg border border-blue-500/30 bg-slate-900/60 p-3 space-y-3">
+              <div className="flex items-center justify-between">
                 <label className="text-[11px] uppercase tracking-wider text-blue-300/70 font-semibold">
-                  Brain region
+                  Pick a brain region
                 </label>
-                <Select value={selectedRegionId} onValueChange={setSelectedRegionId}>
-                  <SelectTrigger className="h-9 text-sm">
-                    <SelectValue placeholder="Choose a region…" />
-                  </SelectTrigger>
-                  <SelectContent className="max-h-72 z-[60]">
-                    {REGION_CATEGORIES.map((cat) => {
-                      const list = groupedAvailable.get(cat.id);
-                      if (!list || list.length === 0) return null;
-                      return (
-                        <SelectGroup key={cat.id}>
-                          <SelectLabel className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                            {cat.label}
-                          </SelectLabel>
-                          {list.map((r) => (
-                            <SelectItem key={r.id} value={r.id}>
-                              <span className="flex items-center gap-2">
-                                <span
-                                  className="h-2 w-2 rounded-full"
-                                  style={{ backgroundColor: r.color }}
-                                />
-                                {r.label}
-                              </span>
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
+                <button
+                  onClick={() => {
+                    setPicking(false);
+                    setSelectedRegionId("");
+                    setSearch("");
+                  }}
+                  className="text-blue-300/70 hover:text-white p-1"
+                  aria-label="Close picker"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+
+              {/* Search */}
+              <div className="relative">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-blue-300/60" />
+                <input
+                  type="text"
+                  inputMode="search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search regions…"
+                  className="w-full h-9 pl-8 pr-3 rounded-md bg-slate-950/70 border border-blue-500/30 text-sm text-blue-50 placeholder:text-blue-300/40 focus:outline-none focus:border-blue-400"
+                />
+              </div>
+
+              {/* Native scrollable region list — works on every mobile browser */}
+              <div
+                ref={listRef}
+                className="max-h-56 overflow-y-auto rounded-md border border-blue-500/20 bg-slate-950/40 divide-y divide-blue-500/10"
+              >
+                {available.length === 0 ? (
+                  <p className="text-xs text-blue-300/60 italic p-3 text-center">
+                    No matches.
+                  </p>
+                ) : (
+                  REGION_CATEGORIES.map((cat) => {
+                    const list = groupedAvailable.get(cat.id);
+                    if (!list || list.length === 0) return null;
+                    return (
+                      <div key={cat.id}>
+                        <div
+                          className="px-2.5 py-1 text-[10px] uppercase tracking-wider font-semibold sticky top-0 backdrop-blur-sm"
+                          style={{ color: cat.color, backgroundColor: "rgba(2,6,23,0.85)" }}
+                        >
+                          {cat.label}
+                        </div>
+                        {list.map((r) => {
+                          const active = selectedRegionId === r.id;
+                          return (
+                            <button
+                              key={r.id}
+                              type="button"
+                              onClick={() => setSelectedRegionId(r.id)}
+                              className={`w-full flex items-center gap-2 px-2.5 py-2.5 text-left text-sm min-h-[44px] transition-colors ${
+                                active
+                                  ? "bg-blue-500/20 text-white"
+                                  : "text-blue-100 hover:bg-blue-500/10"
+                              }`}
+                            >
+                              <span
+                                className="h-2 w-2 rounded-full flex-shrink-0"
+                                style={{ backgroundColor: r.color }}
+                              />
+                              <span className="flex-1 truncate">{r.label}</span>
+                              {active && <Check className="h-4 w-4 text-blue-300 flex-shrink-0" />}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    );
+                  })
+                )}
               </div>
 
               <div className="space-y-1.5">
                 <label className="text-[11px] uppercase tracking-wider text-blue-300/70 font-semibold">
-                  Severity (your sense or clinician's)
+                  Severity
                 </label>
-                <div className="flex flex-wrap gap-1.5">
+                <div className="grid grid-cols-2 gap-1.5">
                   {SEVERITIES.map((s) => {
                     const active = selectedSeverity === s.value;
                     return (
                       <button
                         key={s.value}
+                        type="button"
                         onClick={() => setSelectedSeverity(s.value)}
-                        className={`px-3 py-2 min-h-[40px] rounded-full border text-xs font-semibold transition-all ${
+                        className={`px-3 py-2 min-h-[40px] rounded-md border text-xs font-semibold transition-all ${
                           active
                             ? SEVERITY_STYLES[s.value]
                             : "border-blue-500/20 text-blue-200/70 hover:bg-blue-500/10"
@@ -329,32 +385,21 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
                 </div>
               </div>
 
-              <div className="flex gap-2 pt-1">
-                <Button
-                  size="sm"
-                  onClick={addRegion}
-                  disabled={!selectedRegionId || adding}
-                  className="flex-1 bg-blue-600 hover:bg-blue-500 text-white"
-                >
-                  {adding ? (
-                    <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
-                  ) : (
-                    <Check className="h-3.5 w-3.5 mr-1.5" />
-                  )}
-                  Add region
-                </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => {
-                    setPicking(false);
-                    setSelectedRegionId("");
-                  }}
-                  className="text-blue-200 hover:bg-blue-500/10"
-                >
-                  Cancel
-                </Button>
-              </div>
+              <Button
+                size="sm"
+                onClick={addRegion}
+                disabled={!selectedRegionId || adding}
+                className="w-full bg-blue-600 hover:bg-blue-500 text-white min-h-[44px]"
+              >
+                {adding ? (
+                  <Loader2 className="h-4 w-4 mr-1.5 animate-spin" />
+                ) : (
+                  <Check className="h-4 w-4 mr-1.5" />
+                )}
+                {selectedRegionId
+                  ? `Add ${brainRegions.find((r) => r.id === selectedRegionId)?.shortLabel || "region"}`
+                  : "Add region"}
+              </Button>
             </div>
           ) : (
             available.length > 0 && (
@@ -370,10 +415,23 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
             )
           )}
 
-          {available.length === 0 && rows.length > 0 && (
+          {available.length === 0 && rows.length > 0 && !picking && (
             <p className="text-[11px] text-blue-300/60 italic text-center pt-1">
               All available regions logged.
             </p>
+          )}
+
+          {/* Ask Phoenix CTA — appears once at least one region is logged */}
+          {rows.length > 0 && (
+            <Button
+              asChild
+              className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold min-h-[48px] mt-1"
+            >
+              <Link to={phoenixPromptHref}>
+                <Sparkles className="h-4 w-4 mr-2" />
+                Ask Phoenix to personalise around these
+              </Link>
+            </Button>
           )}
         </>
       )}

@@ -70,7 +70,7 @@ serve(async (req) => {
     const latestUserMessage = userMessages?.[userMessages.length - 1]?.content || "";
 
     // Fetch context in parallel
-    const [profileRes, progressRes, checkinsRes, sessionsRes, questsRes, historyRes] =
+    const [profileRes, progressRes, checkinsRes, sessionsRes, questsRes, historyRes, affectedRes] =
       await Promise.all([
         supabase
           .from("profiles")
@@ -105,6 +105,10 @@ serve(async (req) => {
           .eq("user_id", userId)
           .order("created_at", { ascending: false })
           .limit(20),
+        supabase
+          .from("user_affected_regions")
+          .select("region_id, severity, note, source")
+          .eq("user_id", userId),
       ]);
 
     const profile = profileRes.data;
@@ -114,6 +118,7 @@ serve(async (req) => {
     const coldQuest = questsRes.data?.[0];
     const coldCleared = coldQuest?.status === "completed";
     const history = (historyRes.data || []).reverse();
+    const affectedRegions = affectedRes.data || [];
 
     const today = new Date().toISOString().split("T")[0];
     const todaysCheckin = checkins.find((c: any) => c.check_date === today);
@@ -134,6 +139,12 @@ ${checkins.map((c: any) => `${c.check_date}: mood=${c.mood} energy=${c.energy_le
 
 RECENT SESSIONS (last 20):
 ${sessions.slice(0, 10).map((s: any) => `${s.module_type} ${Math.round((s.duration_seconds || 0) / 60)}min +${s.xp_earned || 0}XP ${new Date(s.created_at).toLocaleDateString()}`).join("\n") || "None"}
+
+SELF-REPORTED AFFECTED BRAIN REGIONS (${affectedRegions.length}):
+${affectedRegions.length > 0
+  ? affectedRegions.map((a: any) => `- ${a.region_id} (severity: ${a.severity || "unknown"}${a.source ? `, source: ${a.source}` : ""})${a.note ? ` — ${a.note}` : ""}`).join("\n")
+  : "None logged. Encourage them to use the Brain Compass to map regions if relevant."}
+When suggesting practices, soundscapes, or quests, prefer ones that target these regions. Be specific (e.g. "since you've flagged your prefrontal cortex as moderate, the box-breathing + Theta soundscape is a strong fit").
 `.trim();
 
     // Optional Brain Compass region context
