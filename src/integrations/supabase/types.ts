@@ -71,6 +71,116 @@ export type Database = {
         }
         Relationships: []
       }
+      brain_region_views: {
+        Row: {
+          id: string
+          region_id: string
+          user_id: string
+          viewed_at: string
+        }
+        Insert: {
+          id?: string
+          region_id: string
+          user_id: string
+          viewed_at?: string
+        }
+        Update: {
+          id?: string
+          region_id?: string
+          user_id?: string
+          viewed_at?: string
+        }
+        Relationships: []
+      }
+      brain_scan_markers: {
+        Row: {
+          created_at: string
+          id: string
+          note: string | null
+          position_x: number
+          position_y: number
+          position_z: number
+          region_id: string | null
+          severity: string
+          updated_at: string
+          upload_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          position_x: number
+          position_y: number
+          position_z?: number
+          region_id?: string | null
+          severity?: string
+          updated_at?: string
+          upload_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          position_x?: number
+          position_y?: number
+          position_z?: number
+          region_id?: string | null
+          severity?: string
+          updated_at?: string
+          upload_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "brain_scan_markers_upload_id_fkey"
+            columns: ["upload_id"]
+            isOneToOne: false
+            referencedRelation: "brain_scan_uploads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      brain_scan_uploads: {
+        Row: {
+          created_at: string
+          id: string
+          label: string | null
+          mime_type: string | null
+          opacity: number
+          original_filename: string | null
+          scan_kind: string
+          storage_path: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          label?: string | null
+          mime_type?: string | null
+          opacity?: number
+          original_filename?: string | null
+          scan_kind?: string
+          storage_path: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          label?: string | null
+          mime_type?: string | null
+          opacity?: number
+          original_filename?: string | null
+          scan_kind?: string
+          storage_path?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       clinical_assessments: {
         Row: {
           administered_by: string | null
@@ -214,6 +324,7 @@ export type Database = {
           injury_date: string | null
           injury_type: string | null
           onboarding_completed: boolean | null
+          personal_scan_optin: boolean
           phoenix_phase: number
           primary_goals: string[] | null
           protocol_name: string | null
@@ -235,6 +346,7 @@ export type Database = {
           injury_date?: string | null
           injury_type?: string | null
           onboarding_completed?: boolean | null
+          personal_scan_optin?: boolean
           phoenix_phase?: number
           primary_goals?: string[] | null
           protocol_name?: string | null
@@ -256,6 +368,7 @@ export type Database = {
           injury_date?: string | null
           injury_type?: string | null
           onboarding_completed?: boolean | null
+          personal_scan_optin?: boolean
           phoenix_phase?: number
           primary_goals?: string[] | null
           protocol_name?: string | null
