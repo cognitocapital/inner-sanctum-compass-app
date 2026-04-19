@@ -1,16 +1,20 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, AlertTriangle, Cloud, Box, Layers } from "lucide-react";
+import { ArrowLeft, AlertTriangle, Cloud, Box, Layers, Search, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import SEOHead from "@/components/seo/SEOHead";
 import { brainRegions, REGION_CATEGORIES, type RegionCategory } from "@/data/brainRegions";
+import { extendedAtlasRegions, EXTENDED_ATLAS_VERSION } from "@/data/extendedAtlas";
 import { BrainCompass3D } from "@/components/brain-compass/BrainCompass3D";
 import { RegionInfoCard } from "@/components/brain-compass/RegionInfoCard";
 import { FogDayFallback } from "@/components/brain-compass/FogDayFallback";
 import { PersonalScanOverlay } from "@/components/brain-compass/PersonalScanOverlay";
 
 const FOG_DAY_KEY = "fog-day-mode";
+const ATLAS_CACHE_KEY = `phoenix-atlas-cache-${EXTENDED_ATLAS_VERSION}`;
+const TOTAL_REGIONS = brainRegions.length + extendedAtlasRegions.length;
 
 const BrainCompass = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
