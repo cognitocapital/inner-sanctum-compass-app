@@ -219,6 +219,7 @@ const BrainCompass = () => {
                 fogDay={fogDay}
                 deepView={deepView}
                 categoryFilter={categoryFilter}
+                affectedMap={affectedMap}
               />
             )}
             {!useFallback && deepView && (
