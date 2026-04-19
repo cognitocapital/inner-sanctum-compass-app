@@ -9,7 +9,6 @@ import { BrainCompass3D } from "@/components/brain-compass/BrainCompass3D";
 import { RegionInfoCard } from "@/components/brain-compass/RegionInfoCard";
 import { FogDayFallback } from "@/components/brain-compass/FogDayFallback";
 import { PersonalScanOverlay } from "@/components/brain-compass/PersonalScanOverlay";
-import { AffectedRegionsManager } from "@/components/brain-compass/AffectedRegionsManager";
 
 const FOG_DAY_KEY = "fog-day-mode";
 
@@ -17,9 +16,8 @@ const BrainCompass = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [fogDay, setFogDay] = useState(false);
   const [forceFallback, setForceFallback] = useState(false);
-  const [deepView, setDeepView] = useState(true);
+  const [deepView, setDeepView] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState<RegionCategory | "all">("all");
-  
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -203,13 +201,9 @@ const BrainCompass = () => {
             )}
           </div>
 
-          {/* Info card + Personal scan + Affected regions */}
+          {/* Info card + Personal scan */}
           <div className="space-y-4">
             <RegionInfoCard region={selectedRegion} />
-            <AffectedRegionsManager
-              onFocusRegion={setSelectedId}
-              highlightedRegionId={selectedId}
-            />
             <PersonalScanOverlay
               onRegionFocus={setSelectedId}
               disabled={fogDay}
@@ -231,24 +225,24 @@ const BrainCompass = () => {
             {visibleRegions.map((region) => {
               const isActive = selectedId === region.id;
               return (
-          <button
-            key={region.id}
-            onClick={() => setSelectedId(region.id)}
-            className={`px-3 py-2 rounded-full border text-sm transition-all ${
-              isActive
-                ? "text-slate-950 font-semibold"
-                : "text-blue-100 hover:bg-blue-500/10 border-blue-500/30 bg-slate-950/40"
-            }`}
-            style={
-              isActive
-                ? {
-                    backgroundColor: region.color,
-                    borderColor: region.color,
-                    boxShadow: `0 0 20px -4px ${region.color}`,
+                <button
+                  key={region.id}
+                  onClick={() => setSelectedId(region.id)}
+                  className={`px-3 py-2 rounded-full border text-sm transition-all ${
+                    isActive
+                      ? "text-slate-950 font-semibold"
+                      : "text-blue-100 hover:bg-blue-500/10 border-blue-500/30 bg-slate-950/40"
+                  }`}
+                  style={
+                    isActive
+                      ? {
+                          backgroundColor: region.color,
+                          borderColor: region.color,
+                          boxShadow: `0 0 20px -4px ${region.color}`,
+                        }
+                      : undefined
                   }
-                : undefined
-            }
-          >
+                >
                   <span
                     className="inline-block h-2 w-2 rounded-full mr-2 align-middle"
                     style={{ backgroundColor: region.color }}
