@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import SEOHead from "@/components/seo/SEOHead";
 import { brainRegions, REGION_CATEGORIES, type RegionCategory } from "@/data/brainRegions";
-import { BrainCompass3D } from "@/components/brain-compass/BrainCompass3D";
+import { BrainCompass3D, type AffectedHighlight, type AffectedSeverity } from "@/components/brain-compass/BrainCompass3D";
 import { RegionInfoCard } from "@/components/brain-compass/RegionInfoCard";
 import { FogDayFallback } from "@/components/brain-compass/FogDayFallback";
 import { PersonalScanOverlay } from "@/components/brain-compass/PersonalScanOverlay";
 import { AffectedRegionsSelector } from "@/components/brain-compass/AffectedRegionsSelector";
+import { useAffectedRegions } from "@/hooks/use-affected-regions";
 
 const FOG_DAY_KEY = "fog-day-mode";
 
