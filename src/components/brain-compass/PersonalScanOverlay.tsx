@@ -1,39 +1,54 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Upload, X, MapPin, Trash2, Eye, EyeOff, ShieldCheck, AlertTriangle } from "lucide-react";
+import { Upload, X, MapPin, Trash2, Eye, EyeOff, ShieldCheck, AlertTriangle, Sparkles, Loader2, FileText, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { brainRegions, type BrainRegion } from "@/data/brainRegions";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Marker {
   id: string;
-  /** Normalised 0–1 coords on the displayed image. */
   x: number;
   y: number;
   note: string;
   nearestRegionId: string | null;
 }
 
+interface AISuggestedRegion {
+  regionId: string;
+  severity: "mild" | "moderate" | "severe" | "unknown";
+  confidence: "low" | "medium" | "high";
+  rationale: string;
+  selected: boolean;
+}
+
+interface AIResult {
+  regions: AISuggestedRegion[];
+  summary: string;
+  clinicianQuestions: string[];
+  disclaimer: string;
+}
+
 interface PersonalScanOverlayProps {
   onRegionFocus?: (regionId: string) => void;
-  /** Disable in Fog Day mode for cognitive safety. */
   disabled?: boolean;
 }
 
 const ACCEPTED = ".png,.jpg,.jpeg,.webp,.dcm,.nii,.nii.gz,application/dicom";
-const MAX_BYTES = 25 * 1024 * 1024; // 25 MB
+const MAX_BYTES = 25 * 1024 * 1024;
 
-/**
- * Map a 2D normalised marker (top-down view assumed) to the nearest brain
- * region by projecting region positions onto the X/Z plane.
- * Region.position is [x (lateral), y (vertical), z (anterior)] in atlas units.
- */
+const CONFIDENCE_STYLES: Record<string, string> = {
+  high: "bg-emerald-500/15 text-emerald-200 border-emerald-500/30",
+  medium: "bg-amber-500/15 text-amber-200 border-amber-500/30",
+  low: "bg-slate-500/15 text-slate-300 border-slate-500/30",
+};
+
 function findNearestRegion(nx: number, ny: number): BrainRegion | null {
-  // Convert image coords (0–1, top-left origin) to atlas X/Z (-1.55..1.55, -1..1)
-  // ny = 0 is image top → anterior (z = +1). ny = 1 → posterior (z = -1).
-  // nx = 0 → anatomical right side of image = patient's left (x negative).
-  const x = (nx - 0.5) * -3.1; // flip for radiological convention
+  const x = (nx - 0.5) * -3.1;
   const z = (0.5 - ny) * 2.0;
   let best: BrainRegion | null = null;
   let bestD = Infinity;
@@ -49,18 +64,37 @@ function findNearestRegion(nx: number, ny: number): BrainRegion | null {
   return best;
 }
 
+async function fileToBase64(file: File): Promise<{ base64: string; mime: string }> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      const [, base64] = result.split(",");
+      resolve({ base64, mime: file.type || "image/jpeg" });
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
 export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOverlayProps) => {
+  const { user } = useAuth();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [opacity, setOpacity] = useState(70);
   const [visible, setVisible] = useState(true);
   const [markers, setMarkers] = useState<Marker[]>([]);
   const [placing, setPlacing] = useState(false);
   const [unsupportedFormat, setUnsupportedFormat] = useState(false);
+  const [reportText, setReportText] = useState("");
+  const [showReport, setShowReport] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [aiResult, setAiResult] = useState<AIResult | null>(null);
+  const [savingRegions, setSavingRegions] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageWrapRef = useRef<HTMLDivElement>(null);
 
-  // Revoke object URL on unmount / replacement to prevent memory leaks
   useEffect(() => {
     return () => {
       if (imageUrl) URL.revokeObjectURL(imageUrl);
@@ -69,11 +103,7 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
 
   const handleFile = useCallback((file: File) => {
     if (file.size > MAX_BYTES) {
-      toast({
-        title: "File too large",
-        description: "Please use a scan slice under 25 MB.",
-        variant: "destructive",
-      });
+      toast({ title: "File too large", description: "Please use a scan slice under 25 MB.", variant: "destructive" });
       return;
     }
     const isImage = file.type.startsWith("image/");
@@ -85,28 +115,21 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
       if (imageUrl) URL.revokeObjectURL(imageUrl);
       const url = URL.createObjectURL(file);
       setImageUrl(url);
+      setImageFile(file);
       setFileName(file.name);
       setMarkers([]);
       setUnsupportedFormat(false);
       setVisible(true);
-      toast({
-        title: "Scan loaded",
-        description: "Stays on your device only — never uploaded.",
-      });
+      toast({ title: "Scan loaded", description: "Stays on your device. Use AI-assist below to suggest regions." });
     } else if (isDicom || isNifti) {
       setUnsupportedFormat(true);
       setFileName(file.name);
       toast({
         title: `${isDicom ? "DICOM" : "NIfTI"} detected`,
-        description:
-          "Native viewing isn't enabled in this beta. Export a single slice as PNG/JPG from your DICOM viewer and re-upload.",
+        description: "Export a single slice as PNG/JPG and re-upload — or paste your radiology report below for AI analysis.",
       });
     } else {
-      toast({
-        title: "Unsupported format",
-        description: "Use PNG, JPG, or WebP of a single scan slice.",
-        variant: "destructive",
-      });
+      toast({ title: "Unsupported format", description: "Use PNG, JPG, or WebP.", variant: "destructive" });
     }
   }, [imageUrl]);
 
@@ -133,24 +156,123 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
     setMarkers((prev) => [...prev, m]);
     setPlacing(false);
     if (nearest) {
-      toast({
-        title: `Marker placed near ${nearest.shortLabel || nearest.label}`,
-        description: "Tap the marker to open the clinical card.",
-      });
+      toast({ title: `Marker placed near ${nearest.shortLabel || nearest.label}` });
     }
     if (navigator.vibrate) navigator.vibrate(8);
   };
 
-  const removeMarker = (id: string) => {
-    setMarkers((prev) => prev.filter((m) => m.id !== id));
-  };
+  const removeMarker = (id: string) => setMarkers((prev) => prev.filter((m) => m.id !== id));
 
   const clearAll = () => {
     if (imageUrl) URL.revokeObjectURL(imageUrl);
     setImageUrl(null);
+    setImageFile(null);
     setFileName(null);
     setMarkers([]);
     setUnsupportedFormat(false);
+    setReportText("");
+    setShowReport(false);
+    setAiResult(null);
+  };
+
+  const runAIAnalysis = async () => {
+    if (!imageFile && !reportText.trim()) {
+      toast({ title: "Nothing to analyse", description: "Upload a scan image or paste a report first.", variant: "destructive" });
+      return;
+    }
+    setAnalyzing(true);
+    try {
+      const payload: any = {};
+      if (imageFile) {
+        const { base64, mime } = await fileToBase64(imageFile);
+        payload.imageBase64 = base64;
+        payload.imageMimeType = mime;
+        payload.fileName = imageFile.name;
+      }
+      if (reportText.trim()) {
+        payload.reportText = reportText.trim();
+      }
+
+      const { data, error } = await supabase.functions.invoke("analyze-scan", { body: payload });
+      if (error) throw error;
+      if (data?.error) throw new Error(data.error);
+
+      const enriched: AIResult = {
+        regions: (data.regions || []).map((r: any) => ({ ...r, selected: true })),
+        summary: data.summary || "",
+        clinicianQuestions: data.clinicianQuestions || [],
+        disclaimer: data.disclaimer || "Educational only — not diagnostic.",
+      };
+      setAiResult(enriched);
+      if (enriched.regions.length === 0) {
+        toast({ title: "No clear regions identified", description: "Try a clearer image or paste the report text." });
+      }
+    } catch (err: any) {
+      console.error("AI scan analysis failed:", err);
+      toast({
+        title: "AI analysis failed",
+        description: err?.message || "Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
+  const toggleSuggestion = (regionId: string) => {
+    setAiResult((prev) =>
+      prev
+        ? { ...prev, regions: prev.regions.map((r) => (r.regionId === regionId ? { ...r, selected: !r.selected } : r)) }
+        : prev,
+    );
+  };
+
+  const saveSelectedToProfile = async () => {
+    if (!user) {
+      toast({ title: "Sign in required", description: "Sign in to save AI-suggested regions to your profile.", variant: "destructive" });
+      return;
+    }
+    if (!aiResult) return;
+    const toSave = aiResult.regions.filter((r) => r.selected);
+    if (toSave.length === 0) {
+      toast({ title: "Nothing selected", description: "Tick at least one region to save." });
+      return;
+    }
+    setSavingRegions(true);
+    try {
+      // Upsert each (avoid dupes via region_id+user_id)
+      const rows = toSave.map((r) => ({
+        user_id: user.id,
+        region_id: r.regionId,
+        severity: r.severity,
+        source: imageFile ? "ai_scan" : "ai_report",
+        note: `AI-suggested (${r.confidence} confidence): ${r.rationale}`,
+      }));
+
+      // Fetch existing to dedupe by region_id
+      const { data: existing } = await supabase
+        .from("user_affected_regions")
+        .select("region_id")
+        .eq("user_id", user.id);
+      const existingIds = new Set((existing || []).map((e) => e.region_id));
+      const fresh = rows.filter((r) => !existingIds.has(r.region_id));
+
+      if (fresh.length === 0) {
+        toast({ title: "Already saved", description: "These regions are already in your profile." });
+      } else {
+        const { error } = await supabase.from("user_affected_regions").insert(fresh);
+        if (error) throw error;
+        toast({
+          title: `Added ${fresh.length} region${fresh.length === 1 ? "" : "s"}`,
+          description: "Phoenix will personalise around these. Review with your neurologist.",
+        });
+      }
+      setAiResult(null);
+    } catch (err: any) {
+      toast({ title: "Save failed", description: err?.message || "Please try again.", variant: "destructive" });
+    } finally {
+      setSavingRegions(false);
+    }
   };
 
   if (disabled) {
@@ -161,26 +283,22 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
     );
   }
 
+  const canAnalyse = !!imageFile || reportText.trim().length > 20;
+
   return (
     <div className="rounded-xl border border-blue-500/20 bg-slate-950/40 backdrop-blur-sm p-4 space-y-3">
       <div className="flex items-center justify-between gap-2">
         <div>
           <h3 className="text-sm font-semibold text-white tracking-tight flex items-center gap-1.5">
             <ShieldCheck className="h-4 w-4 text-emerald-400" />
-            Your scan (private)
+            Your scan or report (private)
           </h3>
           <p className="text-[11px] text-emerald-300/80 mt-0.5">
-            Stays on this device. Never uploaded. Cleared when you close the page.
+            Image stays on this device. Analysis is processed once and not stored.
           </p>
         </div>
-        {imageUrl && (
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={clearAll}
-            className="text-blue-200 hover:text-white hover:bg-rose-500/10"
-            aria-label="Remove scan"
-          >
+        {(imageUrl || reportText) && (
+          <Button size="sm" variant="ghost" onClick={clearAll} className="text-blue-200 hover:text-white hover:bg-rose-500/10" aria-label="Clear">
             <X className="h-4 w-4" />
           </Button>
         )}
@@ -190,30 +308,21 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
         <div
           onDragOver={(e) => e.preventDefault()}
           onDrop={onDrop}
-          className="border-2 border-dashed border-blue-500/30 rounded-lg p-6 text-center hover:border-blue-400/60 hover:bg-blue-500/5 transition-colors cursor-pointer"
+          className="border-2 border-dashed border-blue-500/30 rounded-lg p-5 text-center hover:border-blue-400/60 hover:bg-blue-500/5 transition-colors cursor-pointer"
           onClick={() => fileInputRef.current?.click()}
           role="button"
           tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") fileInputRef.current?.click();
-          }}
+          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") fileInputRef.current?.click(); }}
         >
-          <Upload className="h-8 w-8 text-blue-300 mx-auto mb-2" />
+          <Upload className="h-7 w-7 text-blue-300 mx-auto mb-2" />
           <p className="text-sm text-blue-100 font-medium">Drop a scan slice or tap to browse</p>
           <p className="text-xs text-blue-300/70 mt-1">PNG, JPG, WebP · up to 25 MB</p>
-          <p className="text-[10px] text-blue-400/60 mt-2">
-            Have DICOM/NIfTI? Export one slice as PNG from your viewer.
-          </p>
           <input
             ref={fileInputRef}
             type="file"
             accept={ACCEPTED}
             className="hidden"
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              if (f) handleFile(f);
-              e.target.value = "";
-            }}
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = ""; }}
           />
         </div>
       )}
@@ -224,18 +333,9 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
           <div>
             <p className="font-semibold mb-1">{fileName} — needs conversion</p>
             <p className="text-amber-200/80">
-              Open the file in your hospital's DICOM viewer (or free tools like Horos / 3D Slicer),
-              export the slice that shows the area of interest as PNG or JPG, then upload here.
+              Export a single slice as PNG/JPG, or skip and paste your radiology report text below.
             </p>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => {
-                setUnsupportedFormat(false);
-                setFileName(null);
-              }}
-              className="mt-2 h-7 text-xs border-amber-500/40 text-amber-100 hover:bg-amber-500/10"
-            >
+            <Button size="sm" variant="outline" onClick={() => { setUnsupportedFormat(false); setFileName(null); }} className="mt-2 h-7 text-xs border-amber-500/40 text-amber-100 hover:bg-amber-500/10">
               Try another file
             </Button>
           </div>
@@ -247,155 +347,185 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
           <div
             ref={imageWrapRef}
             onClick={onImageClick}
-            className={`relative rounded-lg overflow-hidden border border-blue-500/30 bg-black ${
-              placing ? "cursor-crosshair ring-2 ring-amber-400" : "cursor-default"
-            }`}
+            className={`relative rounded-lg overflow-hidden border border-blue-500/30 bg-black ${placing ? "cursor-crosshair ring-2 ring-amber-400" : "cursor-default"}`}
             style={{ aspectRatio: "1 / 1" }}
           >
             {visible && (
-              <img
-                src={imageUrl}
-                alt="Personal scan slice"
-                className="absolute inset-0 w-full h-full object-contain select-none"
-                style={{ opacity: opacity / 100 }}
-                draggable={false}
-              />
+              <img src={imageUrl} alt="Personal scan slice" className="absolute inset-0 w-full h-full object-contain select-none" style={{ opacity: opacity / 100 }} draggable={false} />
             )}
             {!visible && (
-              <div className="absolute inset-0 flex items-center justify-center text-blue-300/60 text-xs">
-                Scan hidden
-              </div>
+              <div className="absolute inset-0 flex items-center justify-center text-blue-300/60 text-xs">Scan hidden</div>
             )}
-            {/* Markers */}
             {markers.map((m) => (
-              <button
-                key={m.id}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (m.nearestRegionId) onRegionFocus?.(m.nearestRegionId);
-                }}
-                className="absolute -translate-x-1/2 -translate-y-1/2 group"
-                style={{ left: `${m.x * 100}%`, top: `${m.y * 100}%` }}
-                aria-label={`Marker: ${m.note}`}
-              >
+              <button key={m.id} onClick={(e) => { e.stopPropagation(); if (m.nearestRegionId) onRegionFocus?.(m.nearestRegionId); }} className="absolute -translate-x-1/2 -translate-y-1/2 group" style={{ left: `${m.x * 100}%`, top: `${m.y * 100}%` }} aria-label={`Marker: ${m.note}`}>
                 <div className="relative">
                   <div className="absolute inset-0 rounded-full bg-amber-400/40 animate-ping" style={{ width: 18, height: 18, left: -9, top: -9 }} />
                   <MapPin className="h-5 w-5 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.8)] relative" />
                 </div>
-                <span className="absolute left-5 top-0 px-1.5 py-0.5 rounded bg-slate-950/90 border border-amber-400/40 text-amber-100 text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                  {m.note}
-                </span>
               </button>
             ))}
             {placing && (
               <div className="absolute top-2 left-2 right-2 px-2 py-1 rounded bg-amber-500/90 text-slate-950 text-xs font-semibold text-center">
-                Tap the lesion / fracture site on your scan
+                Tap the lesion / fracture site
               </div>
             )}
           </div>
 
-          {/* Controls */}
           <div className="space-y-2.5">
             <div className="flex items-center gap-2">
-              <Button
-                size="sm"
-                variant={placing ? "default" : "outline"}
-                onClick={() => setPlacing((v) => !v)}
-                className={
-                  placing
-                    ? "bg-amber-500 hover:bg-amber-600 text-slate-950 flex-1"
-                    : "border-amber-500/40 text-amber-200 hover:bg-amber-500/10 flex-1"
-                }
-              >
+              <Button size="sm" variant={placing ? "default" : "outline"} onClick={() => setPlacing((v) => !v)} className={placing ? "bg-amber-500 hover:bg-amber-600 text-slate-950 flex-1" : "border-amber-500/40 text-amber-200 hover:bg-amber-500/10 flex-1"}>
                 <MapPin className="h-3.5 w-3.5 mr-1.5" />
                 {placing ? "Tap the scan…" : "Place marker"}
               </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => setVisible((v) => !v)}
-                className="text-blue-200 hover:bg-blue-500/10"
-                aria-label={visible ? "Hide scan" : "Show scan"}
-              >
+              <Button size="sm" variant="ghost" onClick={() => setVisible((v) => !v)} className="text-blue-200 hover:bg-blue-500/10" aria-label={visible ? "Hide" : "Show"}>
                 {visible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
               </Button>
             </div>
-
             <div className="flex items-center gap-3 text-xs text-blue-200">
               <span className="w-12 flex-shrink-0">Opacity</span>
-              <Slider
-                value={[opacity]}
-                onValueChange={([v]) => setOpacity(v)}
-                min={10}
-                max={100}
-                step={5}
-                className="flex-1"
-              />
+              <Slider value={[opacity]} onValueChange={([v]) => setOpacity(v)} min={10} max={100} step={5} className="flex-1" />
               <span className="w-10 text-right font-mono text-blue-300">{opacity}%</span>
             </div>
-
-            {markers.length > 0 && (
-              <div className="space-y-1.5 pt-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] uppercase tracking-wider text-blue-300/70 font-semibold">
-                    Markers ({markers.length})
-                  </span>
-                  <button
-                    onClick={() => setMarkers([])}
-                    className="text-[11px] text-rose-300 hover:text-rose-200 flex items-center gap-1"
-                  >
-                    <Trash2 className="h-3 w-3" /> Clear all
-                  </button>
-                </div>
-                {markers.map((m) => {
-                  const region = m.nearestRegionId
-                    ? brainRegions.find((r) => r.id === m.nearestRegionId)
-                    : null;
-                  return (
-                    <div
-                      key={m.id}
-                      className="flex items-center gap-2 px-2 py-1.5 rounded bg-slate-900/60 border border-blue-500/20 text-xs"
-                    >
-                      <MapPin className="h-3 w-3 text-amber-400 flex-shrink-0" />
-                      {region ? (
-                        <button
-                          onClick={() => onRegionFocus?.(region.id)}
-                          className="text-blue-100 hover:text-white text-left flex-1 truncate"
-                        >
-                          Near <span className="font-semibold">{region.shortLabel || region.label}</span>
-                        </button>
-                      ) : (
-                        <span className="text-blue-200 flex-1">{m.note}</span>
-                      )}
-                      {region && (
-                        <Badge
-                          variant="outline"
-                          className="text-[9px] py-0 px-1.5 border-blue-500/30 text-blue-300"
-                        >
-                          {region.category}
-                        </Badge>
-                      )}
-                      <button
-                        onClick={() => removeMarker(m.id)}
-                        className="text-blue-400/60 hover:text-rose-300"
-                        aria-label="Remove marker"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
           </div>
         </>
       )}
 
-      <div className="text-[10px] text-amber-300/80 leading-relaxed border-t border-blue-500/10 pt-2">
-        <strong className="text-amber-200">Not diagnostic.</strong> This is a visualisation aid only.
-        Markers and any anatomical suggestions are educational — always consult your neurologist for
-        clinical interpretation of your imaging.
+      {/* Radiology report text input */}
+      <div className="border-t border-blue-500/15 pt-3 space-y-2">
+        <button
+          onClick={() => setShowReport((v) => !v)}
+          className="text-xs text-blue-200 hover:text-white flex items-center gap-1.5 font-medium"
+        >
+          <FileText className="h-3.5 w-3.5" />
+          {showReport ? "Hide report text" : "Or paste your radiology report"}
+        </button>
+        {showReport && (
+          <Textarea
+            value={reportText}
+            onChange={(e) => setReportText(e.target.value)}
+            placeholder="Paste the impressions / findings section of your radiology report here. Remove any personal identifiers first."
+            className="min-h-[100px] text-xs bg-slate-900/60 border-blue-500/20 text-blue-50 placeholder:text-blue-400/40"
+          />
+        )}
       </div>
+
+      {/* AI-assist button */}
+      <Button
+        onClick={runAIAnalysis}
+        disabled={!canAnalyse || analyzing}
+        className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-semibold disabled:opacity-50"
+      >
+        {analyzing ? (
+          <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Analysing…</>
+        ) : (
+          <><Sparkles className="h-4 w-4 mr-2" /> AI-assist: suggest affected regions</>
+        )}
+      </Button>
+
+      <div className="text-[10px] text-amber-300/80 leading-relaxed border-t border-blue-500/10 pt-2">
+        <strong className="text-amber-200">Not diagnostic.</strong> Visualisation and AI suggestions are educational. Always consult your neurologist.
+      </div>
+
+      {/* AI Suggestions Modal */}
+      <Dialog open={!!aiResult} onOpenChange={(open) => !open && setAiResult(null)}>
+        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-slate-950 border-amber-500/30">
+          <DialogHeader>
+            <DialogTitle className="text-amber-200 flex items-center gap-2">
+              <Sparkles className="h-4 w-4" />
+              AI-suggested regions
+            </DialogTitle>
+            <DialogDescription className="text-blue-200/80">
+              Educational suggestions only — not a diagnosis. Review with your neurologist.
+            </DialogDescription>
+          </DialogHeader>
+
+          {aiResult && (
+            <div className="space-y-3">
+              {aiResult.summary && (
+                <div className="rounded-lg bg-blue-500/5 border border-blue-500/20 p-3 text-xs text-blue-100 leading-relaxed">
+                  {aiResult.summary}
+                </div>
+              )}
+
+              {aiResult.regions.length === 0 ? (
+                <div className="text-sm text-blue-200/70 text-center py-4">
+                  No specific regions could be identified. Try a clearer image, or paste the impressions section of your report.
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-[11px] uppercase tracking-wider text-blue-300/70 font-semibold">
+                    Tap to include / exclude
+                  </p>
+                  {aiResult.regions.map((r) => {
+                    const region = brainRegions.find((b) => b.id === r.regionId);
+                    if (!region) return null;
+                    return (
+                      <button
+                        key={r.regionId}
+                        onClick={() => toggleSuggestion(r.regionId)}
+                        className={`w-full text-left rounded-lg border p-3 transition-all ${
+                          r.selected
+                            ? "border-amber-400/60 bg-amber-500/5"
+                            : "border-blue-500/20 bg-slate-900/40 opacity-50"
+                        }`}
+                      >
+                        <div className="flex items-start gap-2">
+                          <div className={`mt-0.5 h-5 w-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${r.selected ? "bg-amber-400 border-amber-400" : "border-blue-500/40"}`}>
+                            {r.selected && <Check className="h-3 w-3 text-slate-950" />}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="text-sm font-semibold text-white">
+                                {region.shortLabel || region.label}
+                              </span>
+                              <Badge variant="outline" className={`text-[9px] py-0 px-1.5 ${CONFIDENCE_STYLES[r.confidence]}`}>
+                                {r.confidence} confidence
+                              </Badge>
+                              <Badge variant="outline" className="text-[9px] py-0 px-1.5 border-blue-500/30 text-blue-200">
+                                {r.severity}
+                              </Badge>
+                            </div>
+                            <p className="text-[11px] text-blue-200/80 mt-1 leading-relaxed">{r.rationale}</p>
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {aiResult.clinicianQuestions.length > 0 && (
+                <div className="rounded-lg bg-emerald-500/5 border border-emerald-500/20 p-3">
+                  <p className="text-[11px] uppercase tracking-wider text-emerald-300 font-semibold mb-1.5">
+                    Ask your neurologist
+                  </p>
+                  <ul className="space-y-1 text-xs text-emerald-100/90">
+                    {aiResult.clinicianQuestions.map((q, i) => (
+                      <li key={i} className="flex gap-1.5"><span className="text-emerald-400">•</span><span>{q}</span></li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="flex gap-2 pt-2 sticky bottom-0 bg-slate-950 pb-1">
+                <Button variant="outline" onClick={() => setAiResult(null)} className="flex-1 border-blue-500/30 text-blue-200 hover:bg-blue-500/10">
+                  Cancel
+                </Button>
+                <Button
+                  onClick={saveSelectedToProfile}
+                  disabled={savingRegions || aiResult.regions.filter((r) => r.selected).length === 0}
+                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold"
+                >
+                  {savingRegions ? <Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> : <Check className="h-4 w-4 mr-1.5" />}
+                  Add to my regions
+                </Button>
+              </div>
+
+              <p className="text-[10px] text-amber-300/70 text-center pt-1">{aiResult.disclaimer}</p>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
