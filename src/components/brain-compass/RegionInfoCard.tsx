@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Brain, BookOpen, Activity, ExternalLink, Sparkles, Loader2, X } from "lucide-react";
+import { Brain, BookOpen, Activity, ExternalLink, Sparkles, Loader2, X, Music } from "lucide-react";
 import type { BrainRegion } from "@/data/brainRegions";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,12 +18,20 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
   const [aiLoading, setAiLoading] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
 
-  // Reset AI panel when region changes
+  // Reset AI panel when region changes + log a region view (signed-in only).
   useEffect(() => {
     setAiOpen(false);
     setAiText("");
     abortRef.current?.abort();
-  }, [region?.id]);
+    if (region && user) {
+      // Fire-and-forget — never blocks UI
+      supabase
+        .from("brain_region_views")
+        .insert({ user_id: user.id, region_id: region.id })
+        .then(() => {});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [region?.id, user?.id]);
 
   useEffect(() => () => abortRef.current?.abort(), []);
 
@@ -48,6 +56,23 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
       const token = sessionData.session?.access_token;
       if (!token) throw new Error("No session token");
 
+      // Pull last 3 check-ins + last session log to enrich the prompt.
+      const [checkinsRes, lastSessionRes] = await Promise.all([
+        supabase
+          .from("daily_checkins")
+          .select("check_date, mood, energy_level, sleep_quality, pain_level, symptoms_today")
+          .eq("user_id", user.id)
+          .order("check_date", { ascending: false })
+          .limit(3),
+        supabase
+          .from("session_logs")
+          .select("module_type, duration_seconds, mood_before, mood_after, created_at")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle(),
+      ]);
+
       const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/phoenix-companion`;
       const resp = await fetch(url, {
         method: "POST",
@@ -65,7 +90,11 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
             evidenceNote: region.evidenceNote,
             manuscriptLabel: region.manuscriptLabel,
             protocolLabel: region.protocolLabel,
+            soundscapeId: region.soundscapeId,
+            dailyProtocolStep: region.dailyProtocolStep,
           },
+          recentCheckins: checkinsRes.data ?? [],
+          lastSession: lastSessionRes.data ?? null,
         }),
         signal: controller.signal,
       });
@@ -194,7 +223,7 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
           </Button>
           <Button
             asChild
-            className="bg-amber-500 hover:bg-amber-600 text-slate-950 justify-start h-auto py-2.5 font-semibold"
+            className="bg-amber-500 hover:bg-amber-600 text-slate-950 justify-start h-auto py-2.5 font-semibold min-h-[56px]"
           >
             <Link to={region.protocolLink}>
               <ExternalLink className="h-4 w-4 mr-2 flex-shrink-0" />
@@ -203,11 +232,27 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
           </Button>
         </div>
 
+        {region.soundscapeId && (
+          <Button
+            asChild
+            variant="outline"
+            className="w-full border-cyan-500/40 bg-cyan-500/5 text-cyan-100 hover:bg-cyan-500/15 justify-start h-auto py-2.5 min-h-[56px]"
+          >
+            <Link to={`/soundscapes?track=${region.soundscapeId}`}>
+              <Music className="h-4 w-4 mr-2 flex-shrink-0" />
+              <span className="text-left text-sm">
+                Play matched soundscape
+                {region.dailyProtocolStep ? ` · ${region.dailyProtocolStep}` : ""}
+              </span>
+            </Link>
+          </Button>
+        )}
+
         {/* Ask Phoenix CTA */}
         <Button
           onClick={askPhoenix}
           disabled={aiLoading}
-          className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold h-auto py-3 mt-1"
+          className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold h-auto py-3 mt-1 min-h-[56px]"
         >
           {aiLoading ? (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -239,6 +284,10 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
             </div>
           </div>
         )}
+
+        <div className="text-[10px] text-amber-300/80 leading-relaxed border-t border-blue-500/10 pt-2 mt-1">
+          <strong className="text-amber-200">Not diagnostic.</strong> Educational visualisation only — consult your neurologist.
+        </div>
       </div>
     </div>
   );
