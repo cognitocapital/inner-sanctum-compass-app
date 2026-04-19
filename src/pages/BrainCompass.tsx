@@ -19,7 +19,7 @@ const BrainCompass = () => {
   const [forceFallback, setForceFallback] = useState(false);
   const [deepView, setDeepView] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState<RegionCategory | "all">("all");
-  const infoCardRef = useRef<HTMLDivElement>(null);
+  
 
   useEffect(() => {
     window.scrollTo(0, 0);
