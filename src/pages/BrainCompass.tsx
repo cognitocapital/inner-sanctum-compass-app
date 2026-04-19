@@ -227,6 +227,27 @@ const BrainCompass = () => {
                 Deep View — cortex transparent
               </div>
             )}
+            {!useFallback && Object.keys(affectedMap).length > 0 && (
+              <div className="absolute bottom-3 left-3 px-3 py-2 rounded-lg bg-slate-950/80 border border-blue-500/30 text-blue-100 text-[11px] backdrop-blur-sm space-y-1">
+                <div className="font-semibold text-blue-200/90 uppercase tracking-wider text-[10px]">
+                  Your affected regions
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="flex items-center gap-1.5">
+                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: "#34d399", boxShadow: "0 0 8px #34d399" }} />
+                    Mild
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: "#fbbf24", boxShadow: "0 0 8px #fbbf24" }} />
+                    Moderate
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: "#f43f5e", boxShadow: "0 0 8px #f43f5e" }} />
+                    Severe
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Info card + Self-reported affected regions + Personal scan */}
