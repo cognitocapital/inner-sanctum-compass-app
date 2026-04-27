@@ -197,47 +197,48 @@ const Resources = () => {
 
           <div className="grid gap-8">
             {/* Phoenix Brain Compass — Clinical Edition (premium hero) */}
-            <Card className="border-orange-500/30 bg-gradient-to-r from-orange-500/10 to-orange-600/10">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-orange-600">
-                  <Brain className="h-5 w-5" />
-                  Phoenix Brain Compass — Clinical Edition
-                </CardTitle>
-                <div className="flex flex-wrap items-center gap-2 pt-1">
-                  <span className="text-[10px] uppercase tracking-wider font-semibold text-orange-600/80">
-                    Clinical Tier
-                  </span>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider bg-orange-500/10 text-orange-700 border border-orange-500/20">
-                    Beta — Not medical advice
-                  </span>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="p-6 bg-white/60 rounded-lg border border-orange-500/20 shadow-sm">
-                  <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4">
-                    <div className="flex-1">
-                      <p className="text-gray-700 mb-3">
-                        A 3D, evidence-informed atlas of the brain regions most affected
-                        by TBI — and exactly how those changes show up in daily life.
-                      </p>
-                      <p className="text-sm text-orange-600 font-medium mb-3">
-                        Each region links back to a manuscript chapter and a recovery protocol you can practice today.
-                      </p>
-                      <div className="bg-orange-500/10 rounded-md p-3">
-                        <p className="text-sm italic text-gray-700">
-                          For educational and self-reflection use only — not a substitute for clinical assessment.
-                        </p>
-                      </div>
+            <Card className="border-amber-500/20 bg-gradient-to-br from-[#0b0a14] via-[#15101f] to-[#1a1208] text-amber-50 shadow-2xl overflow-hidden relative">
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-0 right-0 w-72 h-72 bg-amber-500/15 rounded-full blur-3xl" />
+                <div className="absolute bottom-0 left-0 w-56 h-56 bg-orange-600/10 rounded-full blur-3xl" />
+                <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle_at_50%_50%,white_1px,transparent_1px)] [background-size:24px_24px]" />
+              </div>
+              <CardContent className="relative p-6 md:p-8">
+                <div className="flex flex-col md:flex-row md:items-center gap-6">
+                  <div className="flex-shrink-0 relative">
+                    <div className="absolute inset-0 rounded-2xl bg-amber-500/30 blur-xl" />
+                    <div className="relative h-16 w-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-600/10 border border-amber-400/40 backdrop-blur-sm flex items-center justify-center shadow-[0_0_30px_-5px_rgba(251,191,36,0.4)]">
+                      <Brain className="h-8 w-8 text-amber-300" strokeWidth={1.5} />
                     </div>
-                    <div className="flex-shrink-0">
-                      <Link
-                        to="/brain-compass"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-medium"
-                      >
-                        <Brain className="h-4 w-4" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex flex-wrap items-center gap-2 mb-3">
+                      <span className="text-[10px] uppercase tracking-[0.2em] text-amber-300/90 font-semibold">
+                        Clinical Tier
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider bg-amber-500/10 text-amber-200/90 border border-amber-500/20">
+                        Beta — Not medical advice
+                      </span>
+                    </div>
+                    <h2 className="text-2xl md:text-3xl font-serif font-semibold text-amber-50 mb-3 tracking-tight">
+                      Phoenix Brain Compass
+                      <span className="block text-base md:text-lg font-sans font-normal text-amber-300/80 mt-1">Clinical Edition</span>
+                    </h2>
+                    <p className="text-base text-amber-50/70 mb-5 max-w-2xl leading-relaxed">
+                      A 3D, evidence-informed atlas of the brain regions most affected
+                      by TBI — and exactly how those changes show up in daily life.
+                      Each region links back to a manuscript chapter and a recovery
+                      protocol you can practice today.
+                    </p>
+                    <Button
+                      asChild
+                      className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-semibold shadow-[0_0_24px_-6px_rgba(251,191,36,0.6)] border-0"
+                    >
+                      <Link to="/brain-compass">
+                        <Brain className="h-4 w-4 mr-2" />
                         Launch Brain Compass
                       </Link>
-                    </div>
+                    </Button>
                   </div>
                 </div>
               </CardContent>
