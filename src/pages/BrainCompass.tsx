@@ -80,21 +80,22 @@ const BrainCompass = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-blue-50 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-[#0b0a14] via-[#15101f] to-[#1a1208] text-amber-50 relative overflow-hidden">
       <SEOHead
         title="Phoenix Brain Compass — Clinical 3D TBI Atlas"
         description="Interactive 3D neuroanatomical atlas mapping how TBI affects 22 brain regions, linked to manuscript chapters, recovery protocols, and personalised AI insights."
         path="/brain-compass"
       />
 
-      {/* Ambient gradient glow */}
+      {/* Ambient phoenix ember glow */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-blue-600/10 blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-amber-500/5 blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[700px] rounded-full bg-amber-500/10 blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full bg-orange-600/8 blur-3xl" />
+        <div className="absolute top-1/3 left-0 w-[400px] h-[400px] rounded-full bg-rose-700/5 blur-3xl" />
       </div>
 
       {/* Disclaimer banner */}
-      <div className="relative z-20 border-b border-amber-500/20 bg-amber-500/5 backdrop-blur-sm">
+      <div className="relative z-20 border-b border-amber-500/20 bg-amber-500/[0.04] backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center gap-2 text-sm text-amber-200">
           <AlertTriangle className="h-4 w-4 flex-shrink-0" />
           <span>
@@ -110,7 +111,7 @@ const BrainCompass = () => {
           <Button
             asChild
             variant="ghost"
-            className="pl-0 text-blue-200 hover:text-white hover:bg-blue-500/10"
+            className="pl-0 text-amber-200/80 hover:text-amber-100 hover:bg-amber-500/10"
           >
             <Link to="/resources">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -120,7 +121,7 @@ const BrainCompass = () => {
           <div className="flex items-center gap-2 flex-wrap">
             <Badge
               variant="outline"
-              className="border-amber-500/40 text-amber-300 bg-amber-500/5"
+              className="border-amber-400/40 text-amber-200 bg-amber-500/10 backdrop-blur-sm"
             >
               Beta — Not medical advice
             </Badge>
@@ -128,7 +129,7 @@ const BrainCompass = () => {
               size="sm"
               variant="default"
               onClick={() => setDeepView((v) => !v)}
-              className="bg-pink-500 hover:bg-pink-600 text-white"
+              className="bg-gradient-to-r from-amber-500/90 to-orange-500/90 hover:from-amber-400 hover:to-orange-400 text-[#1a1208] font-semibold border border-amber-300/30 shadow-[0_0_20px_-6px_rgba(251,191,36,0.5)]"
               aria-pressed={deepView}
             >
               <Layers className="h-4 w-4 mr-1.5" />
@@ -138,7 +139,7 @@ const BrainCompass = () => {
               size="sm"
               variant="default"
               onClick={() => setForceFallback((v) => !v)}
-              className="bg-pink-500 hover:bg-pink-600 text-white"
+              className="bg-gradient-to-r from-amber-500/90 to-orange-500/90 hover:from-amber-400 hover:to-orange-400 text-[#1a1208] font-semibold border border-amber-300/30 shadow-[0_0_20px_-6px_rgba(251,191,36,0.5)]"
               aria-label={forceFallback ? "Switch to 3D view" : "Switch to Fog Day 2D view"}
             >
               {forceFallback ? (
@@ -155,11 +156,11 @@ const BrainCompass = () => {
         </div>
 
         <div className="mb-6">
-          <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
+          <h1 className="font-serif text-3xl md:text-4xl font-semibold tracking-tight text-amber-50">
             Phoenix Brain Compass
-            <span className="text-blue-400"> — Clinical Edition</span>
+            <span className="text-amber-300/90"> — Clinical Edition</span>
           </h1>
-          <p className="text-base md:text-lg text-blue-200/80 mt-2 max-w-3xl">
+          <p className="text-base md:text-lg text-amber-100/70 mt-2 max-w-3xl">
             A precise, evidence-informed atlas of the brain regions most affected
             by TBI — and how those changes show up in your daily life. Tap any
             region to see the science, the manuscript chapter, and the protocol
@@ -178,8 +179,8 @@ const BrainCompass = () => {
             onClick={() => setCategoryFilter("all")}
             className={`px-3 py-1.5 rounded-full border text-xs font-semibold uppercase tracking-wider transition-all ${
               categoryFilter === "all"
-                ? "bg-blue-500 text-white border-blue-500"
-                : "border-blue-500/30 text-blue-200 bg-slate-950/40 hover:bg-blue-500/10"
+                ? "bg-amber-500 text-[#1a1208] border-amber-400 shadow-[0_0_16px_-4px_rgba(251,191,36,0.6)]"
+                : "border-amber-500/20 text-amber-200/80 bg-[#0b0a14]/60 backdrop-blur-sm hover:bg-amber-500/10"
             }`}
           >
             All ({brainRegions.length})
@@ -192,7 +193,7 @@ const BrainCompass = () => {
                 key={cat.id}
                 onClick={() => setCategoryFilter(cat.id)}
                 className={`px-3 py-1.5 rounded-full border text-xs font-semibold uppercase tracking-wider transition-all ${
-                  isActive ? "text-slate-950" : "text-blue-200 bg-slate-950/40 hover:bg-blue-500/10"
+                  isActive ? "text-[#1a1208]" : "text-amber-100/80 bg-[#0b0a14]/60 backdrop-blur-sm hover:bg-amber-500/10"
                 }`}
                 style={
                   isActive
@@ -209,7 +210,7 @@ const BrainCompass = () => {
         {/* Main grid */}
         <div className="grid lg:grid-cols-[1fr_400px] gap-6">
           {/* 3D / 2D viewer */}
-          <div className="rounded-2xl border border-blue-500/20 bg-slate-950/40 backdrop-blur-sm overflow-hidden h-[60vh] min-h-[420px] lg:h-[70vh] relative">
+          <div className="rounded-2xl border border-amber-500/20 bg-[#0b0a14]/70 backdrop-blur-md overflow-hidden h-[60vh] min-h-[420px] lg:h-[70vh] relative shadow-[0_0_40px_-12px_rgba(251,191,36,0.25)]">
             {useFallback ? (
               <FogDayFallback selectedId={selectedId} onSelect={handleSelectRegion} />
             ) : (
@@ -223,13 +224,13 @@ const BrainCompass = () => {
               />
             )}
             {!useFallback && deepView && (
-              <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-pink-500/20 border border-pink-400/40 text-pink-100 text-xs font-semibold backdrop-blur-sm">
+              <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-amber-500/15 border border-amber-400/40 text-amber-100 text-xs font-semibold backdrop-blur-sm">
                 Deep View — cortex transparent
               </div>
             )}
             {!useFallback && Object.keys(affectedMap).length > 0 && (
-              <div className="absolute bottom-3 left-3 px-3 py-2 rounded-lg bg-slate-950/80 border border-blue-500/30 text-blue-100 text-[11px] backdrop-blur-sm space-y-1">
-                <div className="font-semibold text-blue-200/90 uppercase tracking-wider text-[10px]">
+              <div className="absolute bottom-3 left-3 px-3 py-2 rounded-lg bg-[#0b0a14]/85 border border-amber-500/25 text-amber-50 text-[11px] backdrop-blur-md space-y-1">
+                <div className="font-semibold text-amber-200/90 uppercase tracking-wider text-[10px]">
                   Your affected regions
                 </div>
                 <div className="flex items-center gap-3">
@@ -263,10 +264,10 @@ const BrainCompass = () => {
 
         {/* Region selector chips */}
         <div className="mt-6">
-          <h2 className="text-sm uppercase tracking-wider text-blue-300/70 font-semibold mb-3">
+          <h2 className="text-sm uppercase tracking-wider text-amber-300/70 font-semibold mb-3">
             Explore regions{" "}
             {categoryFilter !== "all" && (
-              <span className="text-blue-400/60 normal-case">
+              <span className="text-amber-400/60 normal-case">
                 — filtered to {REGION_CATEGORIES.find((c) => c.id === categoryFilter)?.label}
               </span>
             )}
@@ -280,8 +281,8 @@ const BrainCompass = () => {
                   onClick={() => handleSelectRegion(region.id)}
                   className={`px-3 py-2 rounded-full border text-sm transition-all ${
                     isActive
-                      ? "text-slate-950 font-semibold"
-                      : "text-blue-100 hover:bg-blue-500/10 border-blue-500/30 bg-slate-950/40"
+                      ? "text-[#1a1208] font-semibold"
+                      : "text-amber-100/85 hover:bg-amber-500/10 border-amber-500/20 bg-[#0b0a14]/60 backdrop-blur-sm"
                   }`}
                   style={
                     isActive
@@ -309,7 +310,7 @@ const BrainCompass = () => {
       </div>
 
       {/* Persistent footer safety banner */}
-      <div className="relative z-20 border-t border-amber-500/20 bg-amber-500/5 backdrop-blur-sm mt-6">
+      <div className="relative z-20 border-t border-amber-500/20 bg-amber-500/[0.04] backdrop-blur-md mt-6">
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center gap-2 text-xs text-amber-200/90">
           <AlertTriangle className="h-3.5 w-3.5 flex-shrink-0" />
           <span>
