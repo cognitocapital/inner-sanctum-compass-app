@@ -190,18 +190,18 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
 
   if (!user) {
     return (
-      <div className="rounded-xl border border-blue-500/20 bg-slate-950/40 backdrop-blur-sm p-4">
+      <div className="rounded-2xl border border-amber-500/20 bg-[#0b0a14]/70 backdrop-blur-md p-4 shadow-[0_0_24px_-12px_rgba(251,191,36,0.25)]">
         <div className="flex items-start gap-2">
-          <Brain className="h-4 w-4 text-blue-300 mt-0.5 flex-shrink-0" />
+          <Brain className="h-4 w-4 text-amber-300 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
           <div>
-            <h3 className="text-sm font-semibold text-white tracking-tight">
+            <h3 className="font-serif text-sm font-semibold text-amber-50 tracking-tight">
               Mark regions affected by your TBI
             </h3>
-            <p className="text-xs text-blue-200/80 mt-1">
+            <p className="text-xs text-amber-100/70 mt-1">
               Sign in to log regions you know are affected — Phoenix uses them to personalise quests,
               soundscapes, and check-in insights.
             </p>
-            <Button asChild size="sm" className="mt-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold">
+            <Button asChild size="sm" className="mt-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-[#1a1208] font-semibold shadow-[0_0_20px_-6px_rgba(251,191,36,0.5)]">
               <Link to="/auth">Sign in</Link>
             </Button>
           </div>
@@ -211,14 +211,14 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
   }
 
   return (
-    <div className="rounded-xl border border-blue-500/20 bg-slate-950/40 backdrop-blur-sm p-4 space-y-3">
+    <div className="rounded-2xl border border-amber-500/20 bg-[#0b0a14]/70 backdrop-blur-md p-4 space-y-3 shadow-[0_0_24px_-12px_rgba(251,191,36,0.25)]">
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
-          <h3 className="text-sm font-semibold text-white tracking-tight flex items-center gap-1.5">
-            <Brain className="h-4 w-4 text-blue-300" />
+          <h3 className="font-serif text-sm font-semibold text-amber-50 tracking-tight flex items-center gap-1.5">
+            <Brain className="h-4 w-4 text-amber-300" strokeWidth={1.5} />
             Regions affected by your TBI
           </h3>
-          <p className="text-[11px] text-blue-300/80 mt-0.5 flex items-center gap-1">
+          <p className="text-[11px] text-amber-300/70 mt-0.5 flex items-center gap-1">
             <Sparkles className="h-3 w-3" />
             Phoenix uses this to tailor quests &amp; soundscapes — no scan required.
           </p>
@@ -227,7 +227,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
         <Button
           size="sm"
           onClick={openPicker}
-          className="bg-blue-600 hover:bg-blue-500 text-white shrink-0 min-h-[40px]"
+          className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-[#1a1208] font-semibold shrink-0 min-h-[40px] shadow-[0_0_18px_-6px_rgba(251,191,36,0.5)]"
         >
           <Plus className="h-4 w-4 mr-1" />
           Add
@@ -235,15 +235,15 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
       </div>
 
       {loading ? (
-        <div className="flex items-center gap-2 text-xs text-blue-200/70 py-2">
+        <div className="flex items-center gap-2 text-xs text-amber-200/70 py-2">
           <Loader2 className="h-3.5 w-3.5 animate-spin" />
           Loading your regions…
         </div>
       ) : (
         <>
           {rows.length === 0 ? (
-            <p className="text-xs text-blue-200/70 italic">
-              Nothing logged yet. Tap <strong className="text-blue-100">Add</strong> to log any regions a
+            <p className="text-xs text-amber-100/70 italic">
+              Nothing logged yet. Tap <strong className="text-amber-50">Add</strong> to log any regions a
               clinician has flagged, or that match your symptoms.
             </p>
           ) : (
@@ -255,18 +255,18 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
                 return (
                   <div
                     key={row.id}
-                    className="flex items-center gap-2 px-2 py-2 rounded bg-slate-900/60 border border-blue-500/20"
+                    className="flex items-center gap-2 px-2 py-2 rounded-lg bg-[#15101f]/70 border border-amber-500/15 backdrop-blur-sm"
                   >
                     <button
                       onClick={() => onRegionFocus?.(region.id)}
-                      className="flex items-center gap-2 flex-1 min-w-0 text-left hover:text-white"
+                      className="flex items-center gap-2 flex-1 min-w-0 text-left hover:text-amber-50"
                       aria-label={`Focus ${region.label}`}
                     >
                       <span
                         className="h-2.5 w-2.5 rounded-full flex-shrink-0"
                         style={{ backgroundColor: region.color, boxShadow: `0 0 8px ${region.color}` }}
                       />
-                      <span className="text-sm text-blue-50 truncate">
+                      <span className="text-sm text-amber-50 truncate">
                         {region.shortLabel || region.label}
                       </span>
                     </button>
@@ -278,14 +278,14 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
                       className={`h-8 text-[11px] rounded-md border px-2 font-semibold appearance-none ${SEVERITY_STYLES[sev] ?? SEVERITY_STYLES.unknown}`}
                     >
                       {SEVERITIES.map((s) => (
-                        <option key={s.value} value={s.value} className="bg-slate-900 text-white">
+                        <option key={s.value} value={s.value} className="bg-[#15101f] text-amber-50">
                           {s.label}
                         </option>
                       ))}
                     </select>
                     <button
                       onClick={() => removeRow(row.id)}
-                      className="text-blue-400/60 hover:text-rose-300 p-1.5 min-h-[36px] min-w-[36px] flex items-center justify-center"
+                      className="text-amber-300/50 hover:text-rose-300 p-1.5 min-h-[36px] min-w-[36px] flex items-center justify-center"
                       aria-label={`Remove ${region.label}`}
                     >
                       <Trash2 className="h-4 w-4" />
@@ -300,7 +300,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
           {rows.length > 0 && (
             <Button
               asChild
-              className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-semibold min-h-[48px] mt-1"
+              className="w-full bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 hover:from-orange-500 hover:via-amber-400 hover:to-orange-400 text-[#1a1208] font-semibold min-h-[48px] mt-1 shadow-[0_0_24px_-6px_rgba(251,146,60,0.6)]"
             >
               <Link to={phoenixPromptHref}>
                 <Sparkles className="h-4 w-4 mr-2" />
@@ -311,7 +311,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
         </>
       )}
 
-      <div className="text-[10px] text-amber-300/80 leading-relaxed border-t border-blue-500/10 pt-2">
+      <div className="text-[10px] text-amber-300/80 leading-relaxed border-t border-amber-500/15 pt-2">
         <strong className="text-amber-200">Self-reported.</strong> Educational only — not a clinical diagnosis.
         Always defer to your neurologist for confirmed anatomical findings.
       </div>
@@ -320,14 +320,14 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
       <Sheet open={picking} onOpenChange={setPicking}>
         <SheetContent
           side="bottom"
-          className="h-[92vh] sm:h-[80vh] bg-slate-950 border-t border-blue-500/30 text-blue-50 p-0 flex flex-col"
+          className="h-[92vh] sm:h-[80vh] bg-gradient-to-b from-[#0b0a14] via-[#15101f] to-[#1a1208] border-t border-amber-500/25 text-amber-50 p-0 flex flex-col"
         >
-          <SheetHeader className="px-4 pt-5 pb-3 border-b border-blue-500/20 text-left">
-            <SheetTitle className="text-white flex items-center gap-2 text-base">
-              <Brain className="h-4 w-4 text-blue-300" />
+          <SheetHeader className="px-4 pt-5 pb-3 border-b border-amber-500/20 text-left">
+            <SheetTitle className="font-serif text-amber-50 flex items-center gap-2 text-base">
+              <Brain className="h-4 w-4 text-amber-300" strokeWidth={1.5} />
               Add an affected region
             </SheetTitle>
-            <SheetDescription className="text-blue-200/70 text-xs">
+            <SheetDescription className="text-amber-100/70 text-xs">
               Pick a region and rate how strongly it's been affected. Phoenix will use it to personalise.
             </SheetDescription>
           </SheetHeader>
@@ -335,7 +335,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
           {/* Search */}
           <div className="px-4 pt-3">
             <div className="relative">
-              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-blue-300/60" />
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-amber-300/60" />
               <input
                 type="text"
                 inputMode="search"
@@ -343,7 +343,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search regions…"
-                className="w-full h-11 pl-9 pr-3 rounded-md bg-slate-900 border border-blue-500/30 text-sm text-blue-50 placeholder:text-blue-300/40 focus:outline-none focus:border-blue-400"
+                className="w-full h-11 pl-9 pr-3 rounded-md bg-[#15101f] border border-amber-500/25 text-sm text-amber-50 placeholder:text-amber-300/40 focus:outline-none focus:border-amber-400/60"
               />
             </div>
           </div>
@@ -351,7 +351,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
           {/* Region list — scrollable area */}
           <div className="flex-1 overflow-y-auto px-4 py-3">
             {available.length === 0 ? (
-              <p className="text-sm text-blue-300/60 italic p-6 text-center">
+              <p className="text-sm text-amber-300/60 italic p-6 text-center">
                 {usedIds.size === brainRegions.length
                   ? "You've logged every available region."
                   : "No matches for that search."}
@@ -369,7 +369,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
                       >
                         {cat.label}
                       </div>
-                      <div className="rounded-md border border-blue-500/15 overflow-hidden divide-y divide-blue-500/10">
+                      <div className="rounded-lg border border-amber-500/15 overflow-hidden divide-y divide-amber-500/10 bg-[#0b0a14]/40">
                         {list.map((r) => {
                           const active = selectedRegionId === r.id;
                           return (
@@ -379,8 +379,8 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
                               onClick={() => setSelectedRegionId(r.id)}
                               className={`w-full flex items-center gap-2 px-3 py-3 text-left text-sm min-h-[48px] transition-colors ${
                                 active
-                                  ? "bg-blue-500/25 text-white"
-                                  : "text-blue-100 active:bg-blue-500/15"
+                                  ? "bg-amber-500/20 text-amber-50"
+                                  : "text-amber-100/85 active:bg-amber-500/10"
                               }`}
                             >
                               <span
@@ -388,7 +388,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
                                 style={{ backgroundColor: r.color }}
                               />
                               <span className="flex-1 truncate">{r.label}</span>
-                              {active && <Check className="h-4 w-4 text-blue-300 flex-shrink-0" />}
+                              {active && <Check className="h-4 w-4 text-amber-300 flex-shrink-0" />}
                             </button>
                           );
                         })}
@@ -401,9 +401,9 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
           </div>
 
           {/* Sticky footer: severity + add */}
-          <div className="border-t border-blue-500/20 bg-slate-950 px-4 py-3 space-y-3">
+          <div className="border-t border-amber-500/20 bg-[#0b0a14]/95 backdrop-blur-md px-4 py-3 space-y-3">
             <div>
-              <label className="text-[11px] uppercase tracking-wider text-blue-300/70 font-semibold">
+              <label className="text-[11px] uppercase tracking-wider text-amber-300/70 font-semibold">
                 Severity
               </label>
               <div className="grid grid-cols-4 gap-1.5 mt-1.5">
@@ -417,7 +417,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
                       className={`px-2 py-2 min-h-[44px] rounded-md border text-[11px] font-semibold transition-all ${
                         active
                           ? SEVERITY_STYLES[s.value]
-                          : "border-blue-500/20 text-blue-200/70"
+                          : "border-amber-500/20 text-amber-200/70 bg-[#15101f]/50"
                       }`}
                     >
                       {s.label}
@@ -431,7 +431,7 @@ export const AffectedRegionsSelector = ({ onRegionFocus }: AffectedRegionsSelect
               size="lg"
               onClick={addRegion}
               disabled={!selectedRegionId || adding}
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white min-h-[52px] text-base font-semibold disabled:opacity-50"
+              className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-[#1a1208] min-h-[52px] text-base font-semibold disabled:opacity-50 shadow-[0_0_24px_-6px_rgba(251,191,36,0.5)]"
             >
               {adding ? (
                 <Loader2 className="h-5 w-5 mr-2 animate-spin" />
