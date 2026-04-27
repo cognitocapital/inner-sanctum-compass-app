@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
+import prologueIllustration from "@/assets/prologue-phoenix-illustration.jpg";
 
 const Prologue = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
@@ -95,6 +96,16 @@ const Prologue = () => {
 
         <div className="backdrop-blur-sm bg-white/90 border-orange-500/20 shadow-2xl rounded-lg p-8 md:p-12">
           <article className="prose prose-lg mx-auto text-gray-900 max-w-none">
+            <figure className="not-prose -mx-8 md:-mx-12 -mt-8 md:-mt-12 mb-10 overflow-hidden rounded-t-lg relative">
+              <img
+                src={prologueIllustration}
+                alt="A man kneels among burnt papers and ashes as a fiery phoenix with wings made of flame, photographs and medical notes rises behind him — visual metaphor for traumatic brain injury recovery and rebirth."
+                className="w-full h-auto object-cover max-h-[70vh]"
+                loading="eager"
+              />
+              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white/90 to-transparent pointer-events-none" />
+            </figure>
+
             <h1 className="text-5xl md:text-6xl font-serif font-bold text-center text-orange-600 mb-12 drop-shadow-sm">
               Prologue
             </h1>
