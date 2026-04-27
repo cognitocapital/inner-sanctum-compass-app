@@ -151,17 +151,17 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
 
   if (!region) {
     return (
-      <div className="rounded-2xl border border-blue-500/20 bg-slate-950/60 backdrop-blur-xl p-6 text-blue-100/80">
-        <Brain className="h-8 w-8 text-blue-400 mb-3" />
-        <h3 className="text-lg font-semibold text-blue-100 mb-2">
+      <div className="rounded-2xl border border-amber-500/20 bg-[#0b0a14]/70 backdrop-blur-xl p-6 text-amber-100/80 shadow-[0_0_30px_-12px_rgba(251,191,36,0.25)]">
+        <Brain className="h-8 w-8 text-amber-300" strokeWidth={1.5} />
+        <h3 className="font-serif text-lg font-semibold text-amber-50 mb-2 mt-3">
           Select a brain region
         </h3>
-        <p className="text-base leading-relaxed text-blue-200/70">
+        <p className="text-base leading-relaxed text-amber-100/70">
           Tap any glowing region on the 3D model — or use the chips below — to see
           the function, common TBI sequelae, and the manuscript chapter and
           protocol that target it.
         </p>
-        <p className="text-xs text-blue-300/50 mt-4 italic">
+        <p className="text-xs text-amber-300/50 mt-4 italic">
           Tip: enable "Deep View" to reveal subcortical structures (amygdala,
           hippocampus, thalamus, brainstem).
         </p>
@@ -171,7 +171,7 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
 
   return (
     <div
-      className="rounded-2xl border border-blue-500/30 bg-slate-950/70 backdrop-blur-xl p-6 shadow-2xl"
+      className="rounded-2xl border border-amber-500/25 bg-[#0b0a14]/75 backdrop-blur-xl p-6 shadow-2xl"
       style={{ boxShadow: `0 0 40px -12px ${region.color}55` }}
     >
       <div className="flex items-start gap-3 mb-4">
@@ -181,27 +181,27 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
         />
         <div>
           <h2
-            className="text-xl font-semibold leading-tight"
+            className="font-serif text-xl font-semibold leading-tight"
             style={{ color: region.color }}
           >
             {region.label}
           </h2>
-          <p className="text-base text-blue-100/90 mt-1">{region.function}</p>
+          <p className="text-base text-amber-50/90 mt-1">{region.function}</p>
         </div>
       </div>
 
       <div className="space-y-4">
         <section>
-          <h3 className="text-sm uppercase tracking-wider text-amber-400/80 font-semibold mb-1">
+          <h3 className="text-sm uppercase tracking-wider text-amber-300/80 font-semibold mb-1">
             Common TBI Sequelae
           </h3>
-          <p className="text-base leading-relaxed text-blue-50">
+          <p className="text-base leading-relaxed text-amber-50/95">
             {region.tbiSequelae}
           </p>
         </section>
 
-        <section className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3">
-          <h3 className="text-sm uppercase tracking-wider text-amber-400 font-semibold mb-1 flex items-center gap-2">
+        <section className="rounded-lg border border-amber-500/25 bg-amber-500/[0.06] backdrop-blur-sm p-3">
+          <h3 className="text-sm uppercase tracking-wider text-amber-300 font-semibold mb-1 flex items-center gap-2">
             <Activity className="h-3.5 w-3.5" />
             2025–2026 Evidence
           </h3>
@@ -214,7 +214,7 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
           <Button
             asChild
             variant="outline"
-            className="border-blue-500/40 bg-blue-500/10 text-blue-100 hover:bg-blue-500/20 hover:text-white justify-start h-auto py-2.5"
+            className="border-amber-500/30 bg-amber-500/[0.06] text-amber-100 hover:bg-amber-500/15 hover:text-amber-50 justify-start h-auto py-2.5 backdrop-blur-sm"
           >
             <Link to={region.manuscriptLink}>
               <BookOpen className="h-4 w-4 mr-2 flex-shrink-0" />
@@ -223,7 +223,7 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
           </Button>
           <Button
             asChild
-            className="bg-amber-500 hover:bg-amber-600 text-slate-950 justify-start h-auto py-2.5 font-semibold min-h-[56px]"
+            className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-[#1a1208] justify-start h-auto py-2.5 font-semibold min-h-[56px] shadow-[0_0_20px_-6px_rgba(251,191,36,0.5)]"
           >
             <Link to={region.protocolLink}>
               <ExternalLink className="h-4 w-4 mr-2 flex-shrink-0" />
@@ -236,7 +236,7 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
           <Button
             asChild
             variant="outline"
-            className="w-full border-cyan-500/40 bg-cyan-500/5 text-cyan-100 hover:bg-cyan-500/15 justify-start h-auto py-2.5 min-h-[56px]"
+            className="w-full border-amber-400/30 bg-amber-500/[0.04] text-amber-100/90 hover:bg-amber-500/10 justify-start h-auto py-2.5 min-h-[56px] backdrop-blur-sm"
           >
             <Link to={`/soundscapes?track=${region.soundscapeId}`}>
               <Music className="h-4 w-4 mr-2 flex-shrink-0" />
@@ -252,7 +252,7 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
         <Button
           onClick={askPhoenix}
           disabled={aiLoading}
-          className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold h-auto py-3 mt-1 min-h-[56px]"
+          className="w-full bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 hover:from-orange-500 hover:via-amber-400 hover:to-orange-400 text-[#1a1208] font-semibold h-auto py-3 mt-1 min-h-[56px] shadow-[0_0_24px_-6px_rgba(251,146,60,0.6)]"
         >
           {aiLoading ? (
             <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -264,28 +264,28 @@ export const RegionInfoCard = ({ region }: RegionInfoCardProps) => {
 
         {/* Streaming AI panel */}
         {aiOpen && (
-          <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4 mt-2 relative">
+          <div className="rounded-xl border border-amber-500/25 bg-amber-500/[0.05] backdrop-blur-sm p-4 mt-2 relative">
             <button
               onClick={() => { setAiOpen(false); abortRef.current?.abort(); }}
-              className="absolute top-2 right-2 p-1 rounded-md text-blue-300/70 hover:text-white hover:bg-blue-500/20"
+              className="absolute top-2 right-2 p-1 rounded-md text-amber-300/70 hover:text-amber-100 hover:bg-amber-500/15"
               aria-label="Close"
             >
               <X className="h-4 w-4" />
             </button>
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="h-3.5 w-3.5 text-blue-400" />
-              <span className="text-xs uppercase tracking-wider text-blue-300/80 font-semibold">
+              <Sparkles className="h-3.5 w-3.5 text-amber-300" />
+              <span className="text-xs uppercase tracking-wider text-amber-300/80 font-semibold">
                 Phoenix
               </span>
             </div>
-            <div className="text-[15px] leading-relaxed text-blue-50 whitespace-pre-wrap min-h-[3em]">
+            <div className="text-[15px] leading-relaxed text-amber-50 whitespace-pre-wrap min-h-[3em]">
               {aiText || (aiLoading ? "Reading your recent week…" : "")}
-              {aiLoading && aiText && <span className="inline-block w-2 h-4 bg-blue-400/70 ml-1 animate-pulse" />}
+              {aiLoading && aiText && <span className="inline-block w-2 h-4 bg-amber-400/70 ml-1 animate-pulse" />}
             </div>
           </div>
         )}
 
-        <div className="text-[10px] text-amber-300/80 leading-relaxed border-t border-blue-500/10 pt-2 mt-1">
+        <div className="text-[10px] text-amber-300/80 leading-relaxed border-t border-amber-500/15 pt-2 mt-1">
           <strong className="text-amber-200">Not diagnostic.</strong> Educational visualisation only — consult your neurologist.
         </div>
       </div>

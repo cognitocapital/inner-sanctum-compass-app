@@ -316,7 +316,7 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
 
   if (disabled) {
     return (
-      <div className="rounded-xl border border-blue-500/20 bg-slate-950/40 p-4 text-sm text-blue-200/70">
+      <div className="rounded-2xl border border-amber-500/20 bg-[#0b0a14]/70 backdrop-blur-md p-4 text-sm text-amber-100/70 shadow-[0_0_24px_-12px_rgba(251,191,36,0.25)]">
         Personal scan upload is disabled in Fog Day mode for cognitive safety.
       </div>
     );
@@ -326,10 +326,10 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
   const canAnalyse = totalInputs > 0;
 
   return (
-    <div className="rounded-xl border border-blue-500/20 bg-slate-950/40 backdrop-blur-sm p-4 space-y-3">
+    <div className="rounded-2xl border border-amber-500/20 bg-[#0b0a14]/70 backdrop-blur-md p-4 space-y-3 shadow-[0_0_24px_-12px_rgba(251,191,36,0.25)]">
       <div className="flex items-center justify-between gap-2">
         <div>
-          <h3 className="text-sm font-semibold text-white tracking-tight flex items-center gap-1.5">
+          <h3 className="text-sm font-semibold text-amber-50 tracking-tight flex items-center gap-1.5 font-serif">
             <ShieldCheck className="h-4 w-4 text-emerald-400" />
             Your scans &amp; reports (private)
           </h3>
@@ -338,7 +338,7 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
           </p>
         </div>
         {totalInputs > 0 && (
-          <Button size="sm" variant="ghost" onClick={clearAll} className="text-blue-200 hover:text-white hover:bg-rose-500/10" aria-label="Clear all">
+          <Button size="sm" variant="ghost" onClick={clearAll} className="text-amber-200 hover:text-amber-50 hover:bg-rose-500/10" aria-label="Clear all">
             <X className="h-4 w-4" />
           </Button>
         )}
@@ -352,7 +352,7 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
               key={s.id}
               onClick={() => setActiveScanId(s.id)}
               className={`relative flex-shrink-0 h-16 w-16 rounded-lg border-2 overflow-hidden transition-all ${
-                activeScanId === s.id ? "border-amber-400 ring-2 ring-amber-400/40" : "border-blue-500/30 hover:border-blue-400/60"
+                activeScanId === s.id ? "border-amber-400 ring-2 ring-amber-400/40" : "border-amber-500/25 hover:border-amber-400/60"
               }`}
               aria-label={`Select scan ${s.fileName}`}
             >
@@ -377,7 +377,7 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
           {scans.length < MAX_SCANS && (
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="flex-shrink-0 h-16 w-16 rounded-lg border-2 border-dashed border-blue-500/40 hover:border-blue-400 text-blue-300 flex items-center justify-center"
+              className="flex-shrink-0 h-16 w-16 rounded-lg border-2 border-dashed border-amber-500/30 hover:border-amber-400/60 text-amber-300 flex items-center justify-center"
               aria-label="Add another scan"
             >
               <Plus className="h-5 w-5" />
@@ -391,15 +391,15 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
         <div
           onDragOver={(e) => e.preventDefault()}
           onDrop={onDrop}
-          className="border-2 border-dashed border-blue-500/30 rounded-lg p-5 text-center hover:border-blue-400/60 hover:bg-blue-500/5 transition-colors cursor-pointer"
+          className="border-2 border-dashed border-amber-500/25 rounded-lg p-5 text-center hover:border-amber-400/50 hover:bg-amber-500/[0.04] transition-colors cursor-pointer"
           onClick={() => fileInputRef.current?.click()}
           role="button"
           tabIndex={0}
           onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") fileInputRef.current?.click(); }}
         >
-          <Upload className="h-7 w-7 text-blue-300 mx-auto mb-2" />
-          <p className="text-sm text-blue-100 font-medium">Drop scan slices or tap to browse</p>
-          <p className="text-xs text-blue-300/70 mt-1">PNG, JPG, WebP · up to {MAX_SCANS} files · 25 MB each</p>
+          <Upload className="h-7 w-7 text-amber-300 mx-auto mb-2" />
+          <p className="text-sm text-amber-50 font-medium">Drop scan slices or tap to browse</p>
+          <p className="text-xs text-amber-200/60 mt-1">PNG, JPG, WebP · up to {MAX_SCANS} files · 25 MB each</p>
         </div>
       )}
 
@@ -431,20 +431,20 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
       {/* Active scan viewer */}
       {activeScan && (
         <>
-          <div className="text-[11px] text-blue-300/70 truncate">
+          <div className="text-[11px] text-amber-200/60 truncate">
             <ImageIcon className="h-3 w-3 inline mr-1" /> {activeScan.fileName}
           </div>
           <div
             ref={imageWrapRef}
             onClick={onImageClick}
-            className={`relative rounded-lg overflow-hidden border border-blue-500/30 bg-black ${placing ? "cursor-crosshair ring-2 ring-amber-400" : "cursor-default"}`}
+            className={`relative rounded-lg overflow-hidden border border-amber-500/25 bg-black ${placing ? "cursor-crosshair ring-2 ring-amber-400" : "cursor-default"}`}
             style={{ aspectRatio: "1 / 1" }}
           >
             {visible && (
               <img src={activeScan.url} alt={activeScan.fileName} className="absolute inset-0 w-full h-full object-contain select-none" style={{ opacity: opacity / 100 }} draggable={false} />
             )}
             {!visible && (
-              <div className="absolute inset-0 flex items-center justify-center text-blue-300/60 text-xs">Scan hidden</div>
+              <div className="absolute inset-0 flex items-center justify-center text-amber-300/60 text-xs">Scan hidden</div>
             )}
             {activeScan.markers.map((m) => (
               <button key={m.id} onClick={(e) => { e.stopPropagation(); if (m.nearestRegionId) onRegionFocus?.(m.nearestRegionId); }} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${m.x * 100}%`, top: `${m.y * 100}%` }} aria-label={`Marker: ${m.note}`}>
@@ -463,22 +463,22 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
 
           <div className="space-y-2.5">
             <div className="flex items-center gap-2">
-              <Button size="sm" variant={placing ? "default" : "outline"} onClick={() => setPlacing((v) => !v)} className={placing ? "bg-amber-500 hover:bg-amber-600 text-slate-950 flex-1" : "border-amber-500/40 text-amber-200 hover:bg-amber-500/10 flex-1"}>
+              <Button size="sm" variant={placing ? "default" : "outline"} onClick={() => setPlacing((v) => !v)} className={placing ? "bg-amber-500 hover:bg-amber-600 text-slate-950 flex-1" : "border-amber-500/30 text-amber-200 hover:bg-amber-500/10 flex-1 backdrop-blur-sm"}>
                 <MapPin className="h-3.5 w-3.5 mr-1.5" />
                 {placing ? "Tap the scan…" : "Place marker"}
               </Button>
-              <Button size="sm" variant="ghost" onClick={() => setVisible((v) => !v)} className="text-blue-200 hover:bg-blue-500/10" aria-label={visible ? "Hide" : "Show"}>
+              <Button size="sm" variant="ghost" onClick={() => setVisible((v) => !v)} className="text-amber-200 hover:bg-amber-500/10" aria-label={visible ? "Hide" : "Show"}>
                 {visible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
               </Button>
             </div>
-            <div className="flex items-center gap-3 text-xs text-blue-200">
+            <div className="flex items-center gap-3 text-xs text-amber-100/80">
               <span className="w-12 flex-shrink-0">Opacity</span>
               <Slider value={[opacity]} onValueChange={([v]) => setOpacity(v)} min={10} max={100} step={5} className="flex-1" />
-              <span className="w-10 text-right font-mono text-blue-300">{opacity}%</span>
+              <span className="w-10 text-right font-mono text-amber-300">{opacity}%</span>
             </div>
             {activeScan.markers.length > 0 && (
               <div className="flex items-center justify-between pt-1">
-                <span className="text-[11px] text-blue-300/70">{activeScan.markers.length} marker(s) on this scan</span>
+                <span className="text-[11px] text-amber-200/60">{activeScan.markers.length} marker(s) on this scan</span>
                 <button onClick={() => activeScan.markers.forEach((m) => removeMarker(m.id))} className="text-[11px] text-rose-300 hover:text-rose-200 flex items-center gap-1">
                   <Trash2 className="h-3 w-3" /> Clear
                 </button>
@@ -489,52 +489,52 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
       )}
 
       {/* Reports section */}
-      <div className="border-t border-blue-500/15 pt-3 space-y-2">
+      <div className="border-t border-amber-500/15 pt-3 space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-xs text-blue-200 font-medium flex items-center gap-1.5">
+          <span className="text-xs text-amber-100/85 font-medium flex items-center gap-1.5">
             <FileText className="h-3.5 w-3.5" />
-            Radiology reports {reports.length > 0 && <span className="text-blue-400/70">({reports.length}/{MAX_REPORTS})</span>}
+            Radiology reports {reports.length > 0 && <span className="text-amber-300/70">({reports.length}/{MAX_REPORTS})</span>}
           </span>
           {!showReportForm && reports.length < MAX_REPORTS && (
-            <Button size="sm" variant="ghost" onClick={() => setShowReportForm(true)} className="h-7 text-xs text-blue-200 hover:bg-blue-500/10">
+            <Button size="sm" variant="ghost" onClick={() => setShowReportForm(true)} className="h-7 text-xs text-amber-200 hover:bg-amber-500/10">
               <Plus className="h-3 w-3 mr-1" /> Add report
             </Button>
           )}
         </div>
 
         {reports.map((r) => (
-          <div key={r.id} className="rounded-lg bg-slate-900/60 border border-blue-500/20 p-2 text-xs">
+          <div key={r.id} className="rounded-lg bg-[#15101f]/70 border border-amber-500/15 p-2 text-xs backdrop-blur-sm">
             <div className="flex items-center justify-between gap-2 mb-1">
-              <span className="font-semibold text-blue-100 truncate">{r.label}</span>
-              <button onClick={() => removeReport(r.id)} className="text-blue-400/60 hover:text-rose-300" aria-label="Remove report">
+              <span className="font-semibold text-amber-50 truncate">{r.label}</span>
+              <button onClick={() => removeReport(r.id)} className="text-amber-300/50 hover:text-rose-300" aria-label="Remove report">
                 <X className="h-3 w-3" />
               </button>
             </div>
-            <p className="text-blue-200/80 line-clamp-2">{r.text}</p>
+            <p className="text-amber-100/70 line-clamp-2">{r.text}</p>
           </div>
         ))}
 
         {showReportForm && (
-          <div className="space-y-2 rounded-lg border border-blue-500/20 bg-slate-900/40 p-2">
+          <div className="space-y-2 rounded-lg border border-amber-500/15 bg-[#15101f]/50 p-2 backdrop-blur-sm">
             <Input
               value={draftReportLabel}
               onChange={(e) => setDraftReportLabel(e.target.value)}
               placeholder="Label (e.g. MRI 2024-03)"
-              className="h-8 text-xs bg-slate-950/60 border-blue-500/20 text-blue-50 placeholder:text-blue-400/40"
+              className="h-8 text-xs bg-[#0b0a14]/70 border-amber-500/20 text-amber-50 placeholder:text-amber-300/40"
               maxLength={60}
             />
             <Textarea
               value={draftReport}
               onChange={(e) => setDraftReport(e.target.value)}
               placeholder="Paste the impressions / findings section. Remove personal identifiers first."
-              className="min-h-[90px] text-xs bg-slate-950/60 border-blue-500/20 text-blue-50 placeholder:text-blue-400/40"
+              className="min-h-[90px] text-xs bg-[#0b0a14]/70 border-amber-500/20 text-amber-50 placeholder:text-amber-300/40"
               maxLength={8000}
             />
             <div className="flex gap-2">
-              <Button size="sm" variant="ghost" onClick={() => { setShowReportForm(false); setDraftReport(""); setDraftReportLabel(""); }} className="flex-1 h-8 text-xs text-blue-200 hover:bg-blue-500/10">
+              <Button size="sm" variant="ghost" onClick={() => { setShowReportForm(false); setDraftReport(""); setDraftReportLabel(""); }} className="flex-1 h-8 text-xs text-amber-200 hover:bg-amber-500/10">
                 Cancel
               </Button>
-              <Button size="sm" onClick={addReport} className="flex-1 h-8 text-xs bg-blue-600 hover:bg-blue-700 text-white">
+              <Button size="sm" onClick={addReport} className="flex-1 h-8 text-xs bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-[#1a1208] font-semibold">
                 <Check className="h-3 w-3 mr-1" /> Save report
               </Button>
             </div>
@@ -546,7 +546,7 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
       <Button
         onClick={runAIAnalysis}
         disabled={!canAnalyse || analyzing}
-        className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-semibold disabled:opacity-50"
+        className="w-full bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 hover:from-orange-500 hover:via-amber-400 hover:to-orange-400 text-[#1a1208] font-semibold disabled:opacity-50 shadow-[0_0_24px_-6px_rgba(251,146,60,0.6)] min-h-[48px]"
       >
         {analyzing ? (
           <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Synthesising {totalInputs} input{totalInputs === 1 ? "" : "s"}…</>
@@ -555,18 +555,18 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
         )}
       </Button>
 
-      <div className="text-[10px] text-amber-300/80 leading-relaxed border-t border-blue-500/10 pt-2">
+      <div className="text-[10px] text-amber-300/80 leading-relaxed border-t border-amber-500/15 pt-2">
         <strong className="text-amber-200">Not diagnostic.</strong> Visualisation and AI suggestions are educational. Always consult your neurologist.
       </div>
 
       {/* AI Suggestions Modal */}
       <Dialog open={!!aiResult} onOpenChange={(open) => !open && setAiResult(null)}>
-        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-slate-950 border-amber-500/30">
+        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto bg-gradient-to-b from-[#0b0a14] via-[#15101f] to-[#1a1208] border-amber-500/25">
           <DialogHeader>
-            <DialogTitle className="text-amber-200 flex items-center gap-2">
+            <DialogTitle className="text-amber-50 flex items-center gap-2 font-serif">
               <Sparkles className="h-4 w-4" /> Holistic AI synthesis
             </DialogTitle>
-            <DialogDescription className="text-blue-200/80">
+            <DialogDescription className="text-amber-100/70">
               {aiResult?.inputCounts && (
                 <span className="block mb-1 text-[11px]">
                   Synthesised from {aiResult.inputCounts.images} scan{aiResult.inputCounts.images === 1 ? "" : "s"} + {aiResult.inputCounts.reports} report{aiResult.inputCounts.reports === 1 ? "" : "s"}
@@ -579,18 +579,18 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
           {aiResult && (
             <div className="space-y-3">
               {aiResult.summary && (
-                <div className="rounded-lg bg-blue-500/5 border border-blue-500/20 p-3 text-xs text-blue-100 leading-relaxed">
+                <div className="rounded-lg bg-amber-500/[0.05] border border-amber-500/20 p-3 text-xs text-amber-50 leading-relaxed backdrop-blur-sm">
                   {aiResult.summary}
                 </div>
               )}
 
               {aiResult.regions.length === 0 ? (
-                <div className="text-sm text-blue-200/70 text-center py-4">
+                <div className="text-sm text-amber-100/70 text-center py-4">
                   No specific regions could be identified across these inputs. Try clearer images or paste impressions text.
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <p className="text-[11px] uppercase tracking-wider text-blue-300/70 font-semibold">Tap to include / exclude</p>
+                  <p className="text-[11px] uppercase tracking-wider text-amber-300/70 font-semibold">Tap to include / exclude</p>
                   {aiResult.regions.map((r) => {
                     const region = brainRegions.find((b) => b.id === r.regionId);
                     if (!region) return null;
@@ -599,24 +599,24 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
                         key={r.regionId}
                         onClick={() => toggleSuggestion(r.regionId)}
                         className={`w-full text-left rounded-lg border p-3 transition-all ${
-                          r.selected ? "border-amber-400/60 bg-amber-500/5" : "border-blue-500/20 bg-slate-900/40 opacity-50"
+                          r.selected ? "border-amber-400/60 bg-amber-500/[0.08]" : "border-amber-500/15 bg-[#15101f]/40 opacity-50"
                         }`}
                       >
                         <div className="flex items-start gap-2">
-                          <div className={`mt-0.5 h-5 w-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${r.selected ? "bg-amber-400 border-amber-400" : "border-blue-500/40"}`}>
-                            {r.selected && <Check className="h-3 w-3 text-slate-950" />}
+                          <div className={`mt-0.5 h-5 w-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${r.selected ? "bg-amber-400 border-amber-400" : "border-amber-500/30"}`}>
+                            {r.selected && <Check className="h-3 w-3 text-[#1a1208]" />}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1.5 flex-wrap">
-                              <span className="text-sm font-semibold text-white">{region.shortLabel || region.label}</span>
+                              <span className="text-sm font-semibold text-amber-50">{region.shortLabel || region.label}</span>
                               <Badge variant="outline" className={`text-[9px] py-0 px-1.5 ${CONFIDENCE_STYLES[r.confidence]}`}>
                                 {r.confidence} confidence
                               </Badge>
-                              <Badge variant="outline" className="text-[9px] py-0 px-1.5 border-blue-500/30 text-blue-200">
+                              <Badge variant="outline" className="text-[9px] py-0 px-1.5 border-amber-500/30 text-amber-200">
                                 {r.severity}
                               </Badge>
                             </div>
-                            <p className="text-[11px] text-blue-200/80 mt-1 leading-relaxed">{r.rationale}</p>
+                            <p className="text-[11px] text-amber-100/70 mt-1 leading-relaxed">{r.rationale}</p>
                           </div>
                         </div>
                       </button>
@@ -636,14 +636,14 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
                 </div>
               )}
 
-              <div className="flex gap-2 pt-2 sticky bottom-0 bg-slate-950 pb-1">
-                <Button variant="outline" onClick={() => setAiResult(null)} className="flex-1 border-blue-500/30 text-blue-200 hover:bg-blue-500/10">
+              <div className="flex gap-2 pt-2 sticky bottom-0 bg-[#0b0a14]/95 backdrop-blur-md pb-1">
+                <Button variant="outline" onClick={() => setAiResult(null)} className="flex-1 border-amber-500/30 text-amber-200 hover:bg-amber-500/10">
                   Cancel
                 </Button>
                 <Button
                   onClick={saveSelectedToProfile}
                   disabled={savingRegions || aiResult.regions.filter((r) => r.selected).length === 0}
-                  className="flex-1 bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold"
+                  className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-[#1a1208] font-semibold shadow-[0_0_20px_-6px_rgba(251,191,36,0.5)]"
                 >
                   {savingRegions ? <Loader2 className="h-4 w-4 mr-1.5 animate-spin" /> : <Check className="h-4 w-4 mr-1.5" />}
                   Add to my regions
