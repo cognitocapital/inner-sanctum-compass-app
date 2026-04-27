@@ -13,7 +13,7 @@ const Prologue = () => {
   // Video Intro - auto-plays seamlessly, then transitions to prologue
   if (showIntro) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center relative">
         <video
           src="/video/start-reading-intro.mp4"
           className="w-full h-screen object-contain"
@@ -22,6 +22,14 @@ const Prologue = () => {
           autoPlay
           playsInline
         />
+        <button
+          onClick={() => setShowIntro(false)}
+          className="absolute top-4 right-4 md:top-6 md:right-6 z-10 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm font-medium backdrop-blur-md border border-white/20 transition-colors flex items-center gap-2"
+          aria-label="Skip intro video"
+        >
+          Skip Intro
+          <ArrowRight className="h-4 w-4" />
+        </button>
       </div>
     );
   }
