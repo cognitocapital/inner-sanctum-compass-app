@@ -179,7 +179,7 @@ const Resources = () => {
           <Button asChild variant="ghost" className="pl-0 text-gray-300 hover:text-white transition-colors">
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Table of Contents
+              Home
             </Link>
           </Button>
         </div>
