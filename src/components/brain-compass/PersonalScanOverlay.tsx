@@ -316,7 +316,7 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
 
   if (disabled) {
     return (
-      <div className="rounded-xl border border-blue-500/20 bg-slate-950/40 p-4 text-sm text-blue-200/70">
+      <div className="rounded-2xl border border-amber-500/20 bg-[#0b0a14]/70 backdrop-blur-md p-4 text-sm text-amber-100/70 shadow-[0_0_24px_-12px_rgba(251,191,36,0.25)]">
         Personal scan upload is disabled in Fog Day mode for cognitive safety.
       </div>
     );
@@ -326,7 +326,7 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
   const canAnalyse = totalInputs > 0;
 
   return (
-    <div className="rounded-xl border border-blue-500/20 bg-slate-950/40 backdrop-blur-sm p-4 space-y-3">
+    <div className="rounded-2xl border border-amber-500/20 bg-[#0b0a14]/70 backdrop-blur-md p-4 space-y-3 shadow-[0_0_24px_-12px_rgba(251,191,36,0.25)]">
       <div className="flex items-center justify-between gap-2">
         <div>
           <h3 className="text-sm font-semibold text-white tracking-tight flex items-center gap-1.5">
