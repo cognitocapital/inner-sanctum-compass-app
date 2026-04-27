@@ -637,7 +637,7 @@ export const PersonalScanOverlay = ({ onRegionFocus, disabled }: PersonalScanOve
               )}
 
               <div className="flex gap-2 pt-2 sticky bottom-0 bg-[#0b0a14]/95 backdrop-blur-md pb-1">
-                <Button variant="outline" onClick={() => setAiResult(null)} className="flex-1 border-blue-500/30 text-amber-200 hover:bg-amber-500/10">
+                <Button variant="outline" onClick={() => setAiResult(null)} className="flex-1 border-amber-500/30 text-amber-200 hover:bg-amber-500/10">
                   Cancel
                 </Button>
                 <Button
