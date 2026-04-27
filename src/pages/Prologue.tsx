@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronDown } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
@@ -40,6 +40,63 @@ const Prologue = () => {
       <PageAudioPlayer audioSrc={["/audio/prologue.mp3"]} />
       <ChapterNavArrows currentPath="/prologue" />
       <SEOHead title="Prologue - What a Journey" description="The prologue to What a Journey, Michael Heron's memoir of traumatic brain injury recovery and resilience." path="/prologue" />
+
+      {/* ============ CINEMATIC HERO ============ */}
+      <section className="relative h-[100svh] w-full overflow-hidden">
+        {/* Illustration backdrop */}
+        <img
+          src={prologueIllustration}
+          alt="A man kneels among burnt papers and ashes as a fiery phoenix with wings of flame, photographs and medical notes rises behind him — visual metaphor for traumatic brain injury recovery and rebirth."
+          className="absolute inset-0 w-full h-full object-cover object-center animate-[fade-in_1.6s_ease-out]"
+          loading="eager"
+        />
+
+        {/* Atmospheric overlays — vignette + bottom fade into page */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.55)_70%,_rgba(0,0,0,0.85)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent via-gray-900/60 to-gray-900" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent" />
+
+        {/* Drifting embers tied to the artwork */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[20%] left-[15%] w-1.5 h-1.5 bg-orange-400 rounded-full opacity-80 shadow-[0_0_12px_4px_rgba(251,146,60,0.6)] animate-[float_4s_ease-in-out_infinite]" />
+          <div className="absolute top-[35%] right-[20%] w-1 h-1 bg-amber-300 rounded-full opacity-70 shadow-[0_0_10px_3px_rgba(252,211,77,0.5)] animate-[float_5s_ease-in-out_infinite_1s]" />
+          <div className="absolute top-[55%] left-[25%] w-2 h-2 bg-orange-500 rounded-full opacity-60 shadow-[0_0_14px_5px_rgba(249,115,22,0.5)] animate-[float_6s_ease-in-out_infinite_2s]" />
+          <div className="absolute top-[45%] right-[30%] w-1 h-1 bg-orange-300 rounded-full opacity-50 animate-[float_7s_ease-in-out_infinite_3s]" />
+          <div className="absolute top-[65%] right-[15%] w-1.5 h-1.5 bg-amber-400 rounded-full opacity-65 shadow-[0_0_10px_3px_rgba(245,158,11,0.5)] animate-[float_5s_ease-in-out_infinite_0.5s]" />
+        </div>
+
+        {/* Back link, top-left */}
+        <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20">
+          <Button asChild variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 backdrop-blur-sm rounded-full">
+            <Link to="/">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Home
+            </Link>
+          </Button>
+        </div>
+
+        {/* Title block — bottom-left, editorial */}
+        <div className="absolute inset-x-0 bottom-0 z-10 px-6 md:px-16 pb-20 md:pb-28 animate-[fade-in_2s_ease-out_0.4s_both]">
+          <div className="max-w-4xl mx-auto">
+            <p className="text-orange-300/80 tracking-[0.4em] text-xs md:text-sm font-light uppercase mb-4">
+              What a Journey · Michael Heron
+            </p>
+            <h1 className="font-serif font-bold text-white text-6xl md:text-8xl leading-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
+              Prologue
+            </h1>
+            <p className="mt-6 text-white/70 text-base md:text-lg max-w-xl font-light italic leading-relaxed">
+              From the ashes of who I was, a roadmap for who I'm becoming.
+            </p>
+          </div>
+        </div>
+
+        {/* Scroll cue */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 animate-[float_2.5s_ease-in-out_infinite]">
+          <ChevronDown className="h-6 w-6 text-white/60" />
+        </div>
+      </section>
+      {/* ============ END HERO ============ */}
+
       {/* Animated background elements inspired by phoenix flames */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Primary flame particles */}
@@ -64,53 +121,8 @@ const Prologue = () => {
       </div>
       
       <div className="relative z-10 max-w-4xl mx-auto animate-fade-in px-4 py-8">
-        <div className="mb-8">
-          <Button asChild variant="ghost" className="pl-0 text-gray-300 hover:text-white transition-colors">
-            <Link to="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back Home
-            </Link>
-          </Button>
-        </div>
-
-        {/* Phoenix image for chapter header */}
-        <div className="text-center mb-8">
-          <div className="relative mx-auto w-24 h-24 group">
-            <div 
-              className="w-full h-full rounded-full border-4 border-orange-500/40 shadow-2xl hover:scale-110 transition-all duration-700 cursor-pointer phoenix-image"
-              style={{
-                backgroundImage: `url('/lovable-uploads/87893c50-952e-48f8-9649-a7083c6cffd3.png')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat'
-              }}
-            />
-            {/* Flame particles around phoenix */}
-            <div className="absolute -top-4 -left-4 w-4 h-4 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-90"></div>
-            <div className="absolute -top-6 right-12 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.8s] opacity-75"></div>
-            <div className="absolute top-6 -right-5 w-3.5 h-3.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.2s] opacity-85"></div>
-            <div className="absolute bottom-12 -left-6 w-2.5 h-2.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.3s] opacity-65"></div>
-            <div className="absolute -bottom-5 right-8 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.5s] opacity-80"></div>
-          </div>
-        </div>
-
         <div className="backdrop-blur-sm bg-white/90 border-orange-500/20 shadow-2xl rounded-lg p-8 md:p-12">
           <article className="prose prose-lg mx-auto text-gray-900 max-w-none">
-            <figure className="not-prose -mx-8 md:-mx-12 -mt-8 md:-mt-12 mb-10 overflow-hidden rounded-t-lg relative">
-              <img
-                src={prologueIllustration}
-                alt="A man kneels among burnt papers and ashes as a fiery phoenix with wings made of flame, photographs and medical notes rises behind him — visual metaphor for traumatic brain injury recovery and rebirth."
-                className="w-full h-auto object-cover max-h-[70vh]"
-                loading="eager"
-              />
-              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white/90 to-transparent pointer-events-none" />
-            </figure>
-
-            <h1 className="text-5xl md:text-6xl font-serif font-bold text-center text-orange-600 mb-12 drop-shadow-sm">
-              Prologue
-            </h1>
-
-
             <p className="text-lg leading-relaxed mb-6">
               The main purpose for writing this book is to help others navigate the foreign landscape of traumatic brain injury (TBI). When I was first injured, it felt like the resources available outside of specialized units, like the Brain Injury Rehabilitation Unit, had huge voids in patient care and guidance on what to expect. Simply being told "don't do this" and "don't do that" wasn't very helpful. I needed to know how to live with this injury, how to adapt, how to rebuild, and how to find my way back to myself. This book is my attempt to fill that void, to share what I've learned, and to offer a roadmap for those who may be struggling to find their own way.
             </p>
@@ -122,6 +134,23 @@ const Prologue = () => {
             <p className="text-lg leading-relaxed mb-6">
               Throughout these pages, I'll share the tools and strategies that have helped me on my journey: the importance of self-care, the power of mindfulness, the practice of "being the observer," and the resilience that comes from "sitting with the uncomfortable." These are not just abstract concepts; they are practical tools that I've used every single day to manage my symptoms, regulate my emotions, and rebuild my life. And while I discovered them through the crucible of TBI, they are tools that can benefit anyone seeking to improve their mental, emotional, and physical well-being.
             </p>
+
+            {/* Mid-chapter visual echo — pull-quote framed by the illustration */}
+            <figure className="not-prose my-12 -mx-8 md:-mx-12 relative overflow-hidden rounded-lg">
+              <img
+                src={prologueIllustration}
+                alt=""
+                aria-hidden="true"
+                className="w-full h-72 md:h-96 object-cover object-top"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/60 to-gray-900/90" />
+              <blockquote className="absolute inset-0 flex items-center justify-center px-8 md:px-16">
+                <p className="text-xl md:text-3xl font-serif italic text-white text-center leading-snug max-w-2xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+                  &ldquo;It's been messy, it's been painful, and it's been profoundly humbling.
+                  <span className="block mt-2 text-orange-300">But it's also been transformative.&rdquo;</span>
+                </p>
+              </blockquote>
+            </figure>
 
             <p className="text-lg leading-relaxed mb-6">
               I won't sugarcoat things. This journey has been the hardest thing I've ever had to navigate. It's been messy, it's been painful, and it's been profoundly humbling. But it's also been transformative. It's forced me to confront my own limitations, to question my assumptions about life, and to ultimately discover a deeper sense of self and purpose. My personal growth was born out of necessity.
