@@ -96,8 +96,20 @@ const Dedication = () => {
                                         It's for those who refuse to be defined by their limitations, who choose to embrace the unknown with courage, and who are committed to unlocking their own potential for healing and growth.
                                     </p>
 
-                                    {/* Mid-chapter visual echo */}
-                                    <figure className="not-prose my-12 -mx-12 relative overflow-hidden rounded-lg">
+                                    <p className="text-lg md:text-xl mb-6">
+                                        May you find within these pages a source of strength, resilience, and wisdom.
+                                    </p>
+                                    
+                                    <p className="text-lg md:text-xl mb-6">
+                                        May you discover the extraordinary power that resides within you.
+                                    </p>
+                                    
+                                    <p className="text-lg md:text-xl font-semibold text-orange-600">
+                                        And may you never give up on the journey back to yourself.
+                                    </p>
+
+                                    {/* Mid-chapter visual echo — placed after the prose to avoid line repetition */}
+                                    <figure className="not-prose mt-12 -mx-12 relative overflow-hidden rounded-lg">
                                       <img
                                         src={dedicationIllustration}
                                         alt=""
@@ -112,18 +124,6 @@ const Dedication = () => {
                                         </p>
                                       </blockquote>
                                     </figure>
-
-                                    <p className="text-lg md:text-xl mb-6">
-                                        May you find within these pages a source of strength, resilience, and wisdom.
-                                    </p>
-                                    
-                                    <p className="text-lg md:text-xl mb-6">
-                                        May you discover the extraordinary power that resides within you.
-                                    </p>
-                                    
-                                    <p className="text-lg md:text-xl font-semibold text-orange-600">
-                                        And may you never give up on the journey back to yourself.
-                                    </p>
                                 </div>
                             </div>
                             
