@@ -96,15 +96,7 @@ const Dedication = () => {
                                         It's for those who refuse to be defined by their limitations, who choose to embrace the unknown with courage, and who are committed to unlocking their own potential for healing and growth.
                                     </p>
 
-                                    <p className="text-lg md:text-xl mb-6">
-                                        May you find within these pages a source of strength, resilience, and wisdom.
-                                    </p>
-                                    
-                                    <p className="text-lg md:text-xl mb-6">
-                                        May you discover the extraordinary power that resides within you.
-                                    </p>
-
-                                    {/* Mid-chapter visual echo — placed after the quote so it doesn't repeat the line above */}
+                                    {/* Mid-chapter visual echo */}
                                     <figure className="not-prose my-12 -mx-12 relative overflow-hidden rounded-lg">
                                       <img
                                         src={dedicationIllustration}
@@ -113,8 +105,22 @@ const Dedication = () => {
                                         className="w-full h-72 md:h-96 object-cover object-center"
                                       />
                                       <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/55 to-gray-900/90" />
+                                      <blockquote className="absolute inset-0 flex items-center justify-center px-8 md:px-16">
+                                        <p className="text-xl md:text-3xl font-serif italic text-white text-center leading-snug max-w-2xl drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+                                          &ldquo;May you discover the extraordinary power
+                                          <span className="block mt-2 text-amber-300">that resides within you.&rdquo;</span>
+                                        </p>
+                                      </blockquote>
                                     </figure>
 
+                                    <p className="text-lg md:text-xl mb-6">
+                                        May you find within these pages a source of strength, resilience, and wisdom.
+                                    </p>
+                                    
+                                    <p className="text-lg md:text-xl mb-6">
+                                        May you discover the extraordinary power that resides within you.
+                                    </p>
+                                    
                                     <p className="text-lg md:text-xl font-semibold text-orange-600">
                                         And may you never give up on the journey back to yourself.
                                     </p>
