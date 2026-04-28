@@ -15,6 +15,7 @@ import {
   AlertTriangle,
   Music,
   Quote,
+  ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SEOHead from "@/components/seo/SEOHead";
@@ -24,6 +25,7 @@ import {
   TIMER_OPTIONS,
 } from "@/data/soundscapesData";
 import { useSoundscape } from "@/contexts/SoundscapeContext";
+import soundscapesIllustration from "@/assets/soundscapes-illustration.jpg";
 
 const Soundscapes = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
@@ -62,43 +64,79 @@ const Soundscapes = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background dark">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white dark relative overflow-hidden">
       <SEOHead
         title="Healing Soundscapes | What a Journey"
         description="Human-recorded 432 Hz, 528 Hz, Solfeggio, and Tibetan singing bowl tracks for TBI recovery and deep healing."
         path="/soundscapes"
       />
 
-      {/* Safety Banner */}
-      <div className="bg-primary/10 border-b border-primary/20 px-4 py-2.5">
-        <div className="container mx-auto flex items-center gap-2 text-sm text-primary">
-          <AlertTriangle className="h-4 w-4 shrink-0" />
-          <span>
-            Not medical advice — start at low volume. Consult your care team before using with hearing sensitivities.{" "}
-            <Link to="/disclaimer" className="underline hover:text-primary/80">
-              Full disclaimer
-            </Link>
-          </span>
-        </div>
-      </div>
+      {/* ============ CINEMATIC HERO ============ */}
+      <section className="relative min-h-[100svh] w-full overflow-hidden flex flex-col">
+        <img
+          src={soundscapesIllustration}
+          alt="A meditating figure surrounded by glowing Tibetan singing bowls and concentric golden sound waves — visual metaphor for the Healing Soundscapes module of What a Journey, frequencies for nervous system reset and deep TBI recovery."
+          className="absolute inset-0 w-full h-full object-cover object-center animate-[fade-in_1.6s_ease-out]"
+          loading="eager"
+        />
 
-      <div className="container mx-auto px-4 py-6 max-w-5xl">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <Link to="/resources">
-            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-          <div>
-            <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <Music className="h-6 w-6 text-primary" />
+        {/* Atmospheric overlays */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.55)_70%,_rgba(0,0,0,0.9)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-b from-transparent via-gray-900/70 to-gray-900" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent" />
+
+        {/* Drifting embers */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[20%] left-[15%] w-1.5 h-1.5 bg-orange-400 rounded-full opacity-80 shadow-[0_0_12px_4px_rgba(251,146,60,0.6)] animate-[float_4s_ease-in-out_infinite]" />
+          <div className="absolute top-[35%] right-[20%] w-1 h-1 bg-amber-300 rounded-full opacity-70 shadow-[0_0_10px_3px_rgba(252,211,77,0.5)] animate-[float_5s_ease-in-out_infinite_1s]" />
+          <div className="absolute top-[55%] left-[25%] w-2 h-2 bg-orange-500 rounded-full opacity-60 shadow-[0_0_14px_5px_rgba(249,115,22,0.5)] animate-[float_6s_ease-in-out_infinite_2s]" />
+          <div className="absolute top-[45%] right-[30%] w-1 h-1 bg-orange-300 rounded-full opacity-50 animate-[float_7s_ease-in-out_infinite_3s]" />
+          <div className="absolute top-[65%] right-[15%] w-1.5 h-1.5 bg-amber-400 rounded-full opacity-65 shadow-[0_0_10px_3px_rgba(245,158,11,0.5)] animate-[float_5s_ease-in-out_infinite_0.5s]" />
+          <div className="absolute top-[75%] left-[40%] w-1 h-1 bg-amber-300 rounded-full opacity-55 shadow-[0_0_8px_3px_rgba(252,211,77,0.4)] animate-[float_6s_ease-in-out_infinite_2.5s]" />
+        </div>
+
+        {/* Back arrow — top left */}
+        <Link to="/resources" className="absolute top-5 left-5 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white transition-all duration-300 hover:scale-110" title="Back to Resources">
+          <ArrowLeft className="h-5 w-5" />
+        </Link>
+
+        {/* Editorial title block */}
+        <div className="relative z-10 mt-auto px-6 md:px-16 pb-16 md:pb-24 animate-[fade-in_2s_ease-out_0.4s_both]">
+          <div className="max-w-4xl mx-auto text-center md:text-left">
+            <p className="text-orange-300/80 tracking-[0.4em] text-xs md:text-sm font-light uppercase mb-4">
+              A Healing Module · What a Journey
+            </p>
+            <h1 className="font-serif font-bold text-white text-5xl md:text-7xl leading-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
               Healing Soundscapes
             </h1>
-            <p className="text-sm text-muted-foreground">
-              Human-recorded frequencies for deep healing & nervous system reset
+            <p className="mt-6 text-white/75 text-base md:text-lg max-w-xl font-light italic leading-relaxed mx-auto md:mx-0">
+              Human-recorded 432 Hz, 528 Hz, Solfeggio scales and Tibetan singing bowls — frequencies to quiet the storm and reset the nervous system.
+            </p>
+
+            <p className="mt-8 flex items-start gap-2 text-xs text-white/60 max-w-md mx-auto md:mx-0">
+              <AlertTriangle className="h-3.5 w-3.5 text-orange-300/70 flex-shrink-0 mt-0.5" />
+              <span>
+                Not medical advice — start at low volume.{" "}
+                <Link to="/disclaimer" className="underline text-orange-300/80 hover:text-orange-200 transition-colors">
+                  Full disclaimer
+                </Link>.
+              </span>
             </p>
           </div>
+        </div>
+
+        {/* Scroll cue */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 animate-[float_2.5s_ease-in-out_infinite]">
+          <ChevronDown className="h-6 w-6 text-white/60" />
+        </div>
+      </section>
+      {/* ============ END HERO ============ */}
+
+      <div className="relative z-10 container mx-auto px-4 py-12 max-w-5xl">
+        {/* Section heading above tracks */}
+        <div className="flex items-center gap-2 mb-6 text-orange-300/90">
+          <Music className="h-5 w-5" />
+          <h2 className="text-sm tracking-[0.3em] uppercase font-light">Choose Your Frequency</h2>
         </div>
 
         {/* Category Filters */}
