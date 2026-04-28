@@ -271,20 +271,21 @@ const Soundscapes = () => {
             animate={{ opacity: 1, y: 0 }}
             className="sticky bottom-4 z-40"
           >
-            <Card className="border-primary/30 bg-card/95 backdrop-blur-xl shadow-2xl shadow-primary/10">
-              <CardContent className="p-4">
+            <div className="relative rounded-2xl border border-orange-400/30 bg-gray-900/85 backdrop-blur-2xl shadow-2xl shadow-orange-500/20 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
+              <div className="relative p-4">
                 <div className="flex items-center gap-4">
                   {/* Track info */}
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="text-xl w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <div className="text-xl w-10 h-10 rounded-lg bg-orange-500/15 border border-orange-400/30 flex items-center justify-center shrink-0">
                       {selectedTrack.icon}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-foreground truncate">
+                      <p className="text-sm font-serif font-semibold text-white truncate">
                         {selectedTrack.title}
                       </p>
                       {timeRemaining !== null && (
-                        <p className="text-xs text-primary font-mono">
+                        <p className="text-xs text-orange-300 font-mono">
                           ⏱ {formatTimer(timeRemaining)}
                         </p>
                       )}
@@ -300,10 +301,10 @@ const Soundscapes = () => {
                           key={opt.minutes}
                           onClick={() => startTimer(opt.minutes)}
                           className={cn(
-                            "text-xs px-2 py-1 rounded-md transition-colors",
+                            "text-xs px-2 py-1 rounded-md transition-colors font-mono",
                             timerMinutes === opt.minutes
-                              ? "bg-primary text-primary-foreground"
-                              : "text-muted-foreground hover:bg-secondary"
+                              ? "bg-orange-500 text-white"
+                              : "text-white/50 hover:bg-white/10 hover:text-white"
                           )}
                         >
                           {opt.label}
@@ -317,8 +318,8 @@ const Soundscapes = () => {
                       size="icon"
                       onClick={() => setIsLooping(!isLooping)}
                       className={cn(
-                        "h-9 w-9",
-                        isLooping ? "text-primary" : "text-muted-foreground"
+                        "h-9 w-9 hover:bg-white/10",
+                        isLooping ? "text-orange-300" : "text-white/50 hover:text-white"
                       )}
                     >
                       <Repeat className="h-4 w-4" />
@@ -329,7 +330,7 @@ const Soundscapes = () => {
                       size="icon"
                       onClick={togglePlay}
                       disabled={!selectedTrack.audioUrl}
-                      className="h-12 w-12 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-30"
+                      className="h-12 w-12 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white shadow-lg shadow-orange-500/40 disabled:opacity-30 transition-all hover:scale-105"
                     >
                       {isPlaying ? (
                         <Pause className="h-5 w-5" />
@@ -344,7 +345,7 @@ const Soundscapes = () => {
                         variant="ghost"
                         size="icon"
                         onClick={() => setIsMuted(!isMuted)}
-                        className="h-9 w-9 text-muted-foreground hover:text-foreground"
+                        className="h-9 w-9 text-white/50 hover:text-white hover:bg-white/10"
                       >
                         {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
                       </Button>
@@ -361,51 +362,56 @@ const Soundscapes = () => {
 
                 {/* Mobile timer row */}
                 <div className="sm:hidden flex items-center gap-1 mt-3 justify-center">
-                  <Timer className="h-3 w-3 text-muted-foreground" />
+                  <Timer className="h-3 w-3 text-white/40" />
                   {TIMER_OPTIONS.map((opt) => (
                     <button
                       key={opt.minutes}
                       onClick={() => startTimer(opt.minutes)}
                       className={cn(
-                        "text-xs px-2.5 py-1 rounded-md transition-colors",
+                        "text-xs px-2.5 py-1 rounded-md transition-colors font-mono",
                         timerMinutes === opt.minutes
-                          ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground hover:bg-secondary"
+                          ? "bg-orange-500 text-white"
+                          : "text-white/50 hover:bg-white/10 hover:text-white"
                       )}
                     >
                       {opt.label}
                     </button>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
         )}
 
         {/* Info Section */}
-        <div className="mt-8 pb-20">
-          <Card className="border-border">
-            <CardContent className="p-5">
-              <h2 className="text-lg font-semibold text-foreground mb-3">About Healing Frequencies</h2>
-              <div className="space-y-3 text-sm text-muted-foreground">
-                <p>
-                  <strong className="text-foreground">528 Hz</strong> — Known as the "Miracle Tone" or "Love Frequency." Research suggests potential benefits for stress reduction and cellular repair.
-                </p>
-                <p>
-                  <strong className="text-foreground">432 Hz</strong> — Often called "Nature's Frequency." Many listeners report deeper relaxation compared to standard 440 Hz tuning.
-                </p>
-                <p>
-                  <strong className="text-foreground">Solfeggio Frequencies</strong> — An ancient scale (396, 417, 528, 639, 741, 852 Hz) used in sacred music and modern sound therapy.
-                </p>
-                <p>
-                  <strong className="text-foreground">Singing Bowls</strong> — Tibetan and crystal bowls produce rich harmonics that can promote meditative states and nervous system regulation.
-                </p>
-                <p className="text-xs border-t border-border pt-3 mt-3">
-                  All tracks are human-recorded — no AI-generated audio. Sources include royalty-free libraries with real instruments: Tibetan bowls, crystal bowls, gongs, and soft synth layers.
-                </p>
+        <div className="mt-16 pb-20">
+          <div className="text-center mb-8">
+            <p className="text-orange-300/80 tracking-[0.4em] text-xs font-light uppercase mb-3">The Science</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-white font-bold">About Healing Frequencies</h2>
+            <div className="mt-4 mx-auto w-16 h-px bg-gradient-to-r from-transparent via-orange-400/60 to-transparent" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              { hz: "528 Hz", label: "The Miracle Tone", body: 'Known as the "Love Frequency." Research suggests potential benefits for stress reduction and cellular repair.' },
+              { hz: "432 Hz", label: "Nature's Frequency", body: "Many listeners report deeper relaxation compared to standard 440 Hz tuning." },
+              { hz: "Solfeggio", label: "Ancient Scale", body: "396, 417, 528, 639, 741, 852 Hz — used in sacred music and modern sound therapy." },
+              { hz: "Singing Bowls", label: "Harmonic Resonance", body: "Tibetan and crystal bowls produce rich harmonics that promote meditative states and nervous system regulation." },
+            ].map((item) => (
+              <div
+                key={item.hz}
+                className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-6 hover:border-orange-400/30 hover:bg-white/[0.06] transition-all duration-500"
+              >
+                <p className="font-mono text-orange-300 text-sm tracking-wider">{item.hz}</p>
+                <h3 className="font-serif text-xl text-white font-semibold mt-1">{item.label}</h3>
+                <p className="text-sm text-white/65 mt-3 leading-relaxed">{item.body}</p>
               </div>
-            </CardContent>
-          </Card>
+            ))}
+          </div>
+
+          <p className="text-xs text-white/45 text-center mt-8 max-w-2xl mx-auto leading-relaxed italic">
+            All tracks are human-recorded — no AI-generated audio. Sources include royalty-free libraries with real instruments: Tibetan bowls, crystal bowls, gongs, and soft synth layers.
+          </p>
         </div>
       </div>
     </div>
