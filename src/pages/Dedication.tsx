@@ -15,7 +15,7 @@ const Dedication = () => {
     
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-foreground relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/dedication.mp4"]} isVideo />
+      <PageAudioPlayer audioSrc={["/audio/dedication.mp3"]} />
       <ChapterNavArrows currentPath="/dedication" />
             <SEOHead title="Dedication - What a Journey" description="The dedication page of What a Journey by Michael Heron, a TBI recovery memoir." path="/dedication" />
 
