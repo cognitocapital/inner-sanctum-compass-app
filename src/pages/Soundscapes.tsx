@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -30,6 +30,7 @@ import soundscapesIllustration from "@/assets/soundscapes-illustration.jpg";
 const Soundscapes = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [showManuscript, setShowManuscript] = useState(false);
+  const navigate = useNavigate();
 
   const {
     selectedTrack,
@@ -96,9 +97,13 @@ const Soundscapes = () => {
         </div>
 
         {/* Back arrow — top left */}
-        <Link to="/" className="absolute top-5 left-5 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white transition-all duration-300 hover:scale-110" title="Back to Home">
+        <button
+          onClick={() => navigate(-1)}
+          className="absolute top-5 left-5 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
+          title="Back"
+        >
           <ArrowLeft className="h-5 w-5" />
-        </Link>
+        </button>
 
         {/* Editorial title block */}
         <div className="relative z-10 mt-auto px-6 md:px-16 pb-16 md:pb-24 animate-[fade-in_2s_ease-out_0.4s_both]">
