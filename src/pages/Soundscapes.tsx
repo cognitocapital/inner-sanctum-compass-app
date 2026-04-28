@@ -96,7 +96,7 @@ const Soundscapes = () => {
         </div>
 
         {/* Back arrow — top left */}
-        <Link to="/resources" className="absolute top-5 left-5 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white transition-all duration-300 hover:scale-110" title="Back to Resources">
+        <Link to="/" className="absolute top-5 left-5 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white transition-all duration-300 hover:scale-110" title="Back to Home">
           <ArrowLeft className="h-5 w-5" />
         </Link>
 
