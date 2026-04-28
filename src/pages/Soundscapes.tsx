@@ -134,22 +134,26 @@ const Soundscapes = () => {
 
       <div className="relative z-10 container mx-auto px-4 py-12 max-w-5xl">
         {/* Section heading above tracks */}
-        <div className="flex items-center gap-2 mb-6 text-orange-300/90">
-          <Music className="h-5 w-5" />
-          <h2 className="text-sm tracking-[0.3em] uppercase font-light">Choose Your Frequency</h2>
+        <div className="text-center mb-10 animate-[fade-in_1s_ease-out]">
+          <p className="text-orange-300/80 tracking-[0.4em] text-xs font-light uppercase mb-3 flex items-center justify-center gap-2">
+            <Music className="h-3.5 w-3.5" />
+            Choose Your Frequency
+          </p>
+          <h2 className="font-serif text-3xl md:text-4xl text-white font-bold">The Library</h2>
+          <div className="mt-4 mx-auto w-16 h-px bg-gradient-to-r from-transparent via-orange-400/60 to-transparent" />
         </div>
 
         {/* Category Filters */}
-        <div className="flex gap-2 overflow-x-auto pb-3 mb-6 scrollbar-hide">
+        <div className="flex gap-2 overflow-x-auto pb-3 mb-8 scrollbar-hide justify-center">
           {CATEGORIES.map((cat) => (
             <button
               key={cat.key}
               onClick={() => setActiveCategory(cat.key)}
               className={cn(
-                "flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all",
+                "flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all backdrop-blur-sm border",
                 activeCategory === cat.key
-                  ? "bg-primary text-primary-foreground shadow-lg"
-                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                  ? "bg-orange-500 border-orange-400 text-white shadow-lg shadow-orange-500/30"
+                  : "bg-white/5 border-white/15 text-white/70 hover:bg-white/10 hover:text-white"
               )}
             >
               <span>{cat.icon}</span>
@@ -159,7 +163,7 @@ const Soundscapes = () => {
         </div>
 
         {/* Track Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
           {filteredTracks.map((track) => {
             const isActive = selectedTrack?.id === track.id;
             const isAvailable = !!track.audioUrl;
@@ -167,55 +171,59 @@ const Soundscapes = () => {
             return (
               <motion.div
                 key={track.id}
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.03, y: -4 }}
                 whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
-                <Card
+                <div
                   onClick={() => handleSelectTrack(track)}
                   className={cn(
-                    "cursor-pointer transition-all border-2 hover:shadow-lg",
+                    "relative cursor-pointer transition-all duration-500 rounded-2xl border backdrop-blur-xl overflow-hidden group h-full",
                     isActive
-                      ? "border-primary bg-primary/5 shadow-lg shadow-primary/10"
-                      : "border-border hover:border-primary/30",
-                    !isAvailable && "opacity-70"
+                      ? "border-orange-400/60 bg-gradient-to-br from-orange-500/15 via-amber-500/5 to-transparent shadow-2xl shadow-orange-500/20"
+                      : "border-white/10 bg-white/[0.03] hover:border-orange-400/40 hover:bg-white/[0.06]",
+                    !isAvailable && "opacity-60"
                   )}
                 >
-                  <CardContent className="p-4">
-                    <div className="flex items-start gap-3">
+                  <div className="absolute -inset-px rounded-2xl bg-gradient-to-br from-orange-400/0 via-amber-300/0 to-orange-500/0 group-hover:from-orange-400/20 group-hover:via-amber-300/10 group-hover:to-orange-500/20 transition-all duration-500 pointer-events-none" />
+                  <div className="relative p-5">
+                    <div className="flex items-start gap-4">
                       <div
                         className={cn(
-                          "text-2xl w-12 h-12 rounded-xl flex items-center justify-center shrink-0",
+                          "text-3xl w-14 h-14 rounded-xl flex items-center justify-center shrink-0 border transition-all",
                           isActive && isPlaying
-                            ? "bg-primary/20 animate-pulse"
-                            : "bg-secondary"
+                            ? "bg-orange-500/20 border-orange-400/50 shadow-[0_0_20px_rgba(251,146,60,0.4)] animate-pulse"
+                            : "bg-white/5 border-white/10 group-hover:border-orange-400/30"
                         )}
                       >
                         {track.icon}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <h3 className="font-semibold text-foreground text-sm truncate">
+                        <h3 className="font-serif font-semibold text-white text-base leading-tight">
                           {track.title}
                         </h3>
-                        <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
+                        <p className="text-xs text-white/60 mt-1.5 line-clamp-2 leading-relaxed">
                           {track.description}
                         </p>
-                        {track.frequency && (
-                          <span className="inline-block mt-1.5 text-xs font-mono px-2 py-0.5 rounded-full bg-primary/10 text-primary">
-                            {track.frequency}
-                          </span>
-                        )}
-                        {!isAvailable && (
-                          <span className="inline-block mt-1.5 text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
-                            Coming soon
-                          </span>
-                        )}
+                        <div className="flex items-center gap-2 mt-3">
+                          {track.frequency && (
+                            <span className="inline-block text-[10px] font-mono tracking-wider px-2 py-0.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-400/30">
+                              {track.frequency}
+                            </span>
+                          )}
+                          {!isAvailable && (
+                            <span className="inline-block text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full bg-white/5 text-white/40 border border-white/10">
+                              Coming soon
+                            </span>
+                          )}
+                        </div>
                       </div>
                       {isActive && isPlaying && (
                         <div className="flex gap-0.5 items-end h-6 shrink-0">
                           {[1, 2, 3].map((i) => (
                             <motion.div
                               key={i}
-                              className="w-1 bg-primary rounded-full"
+                              className="w-1 bg-gradient-to-t from-orange-500 to-amber-300 rounded-full"
                               animate={{ height: [4, 16, 8, 20, 4] }}
                               transition={{
                                 duration: 1.2,
@@ -227,8 +235,8 @@ const Soundscapes = () => {
                         </div>
                       )}
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </motion.div>
             );
           })}
@@ -241,23 +249,17 @@ const Soundscapes = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
-              className="mb-8"
+              className="mb-10"
             >
-              <Card className="border-primary/20 bg-primary/5">
-                <CardContent className="p-5">
-                  <div className="flex items-start gap-3">
-                    <Quote className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                    <div>
-                      <p className="text-sm text-foreground italic leading-relaxed">
-                        "{selectedTrack.manuscriptTieIn}"
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        — From <em>What a Journey</em> by Michael Heron
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <figure className="relative max-w-3xl mx-auto rounded-2xl border border-orange-400/20 bg-gradient-to-br from-orange-500/10 via-amber-500/5 to-transparent backdrop-blur-xl p-8 md:p-10">
+                <Quote className="absolute -top-4 left-8 h-8 w-8 text-orange-400/80 bg-gray-900 rounded-full p-1.5 border border-orange-400/30" />
+                <blockquote className="font-serif text-lg md:text-xl text-white/90 italic leading-relaxed text-center">
+                  "{selectedTrack.manuscriptTieIn}"
+                </blockquote>
+                <figcaption className="mt-5 text-xs tracking-[0.3em] uppercase text-orange-300/70 text-center">
+                  From <em className="not-italic font-medium text-orange-200">What a Journey</em> · Michael Heron
+                </figcaption>
+              </figure>
             </motion.div>
           )}
         </AnimatePresence>
@@ -269,20 +271,21 @@ const Soundscapes = () => {
             animate={{ opacity: 1, y: 0 }}
             className="sticky bottom-4 z-40"
           >
-            <Card className="border-primary/30 bg-card/95 backdrop-blur-xl shadow-2xl shadow-primary/10">
-              <CardContent className="p-4">
+            <div className="relative rounded-2xl border border-orange-400/30 bg-gray-900/85 backdrop-blur-2xl shadow-2xl shadow-orange-500/20 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 via-transparent to-amber-500/5 pointer-events-none" />
+              <div className="relative p-4">
                 <div className="flex items-center gap-4">
                   {/* Track info */}
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="text-xl w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <div className="text-xl w-10 h-10 rounded-lg bg-orange-500/15 border border-orange-400/30 flex items-center justify-center shrink-0">
                       {selectedTrack.icon}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-foreground truncate">
+                      <p className="text-sm font-serif font-semibold text-white truncate">
                         {selectedTrack.title}
                       </p>
                       {timeRemaining !== null && (
-                        <p className="text-xs text-primary font-mono">
+                        <p className="text-xs text-orange-300 font-mono">
                           ⏱ {formatTimer(timeRemaining)}
                         </p>
                       )}
@@ -298,10 +301,10 @@ const Soundscapes = () => {
                           key={opt.minutes}
                           onClick={() => startTimer(opt.minutes)}
                           className={cn(
-                            "text-xs px-2 py-1 rounded-md transition-colors",
+                            "text-xs px-2 py-1 rounded-md transition-colors font-mono",
                             timerMinutes === opt.minutes
-                              ? "bg-primary text-primary-foreground"
-                              : "text-muted-foreground hover:bg-secondary"
+                              ? "bg-orange-500 text-white"
+                              : "text-white/50 hover:bg-white/10 hover:text-white"
                           )}
                         >
                           {opt.label}
@@ -315,8 +318,8 @@ const Soundscapes = () => {
                       size="icon"
                       onClick={() => setIsLooping(!isLooping)}
                       className={cn(
-                        "h-9 w-9",
-                        isLooping ? "text-primary" : "text-muted-foreground"
+                        "h-9 w-9 hover:bg-white/10",
+                        isLooping ? "text-orange-300" : "text-white/50 hover:text-white"
                       )}
                     >
                       <Repeat className="h-4 w-4" />
@@ -327,7 +330,7 @@ const Soundscapes = () => {
                       size="icon"
                       onClick={togglePlay}
                       disabled={!selectedTrack.audioUrl}
-                      className="h-12 w-12 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-30"
+                      className="h-12 w-12 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white shadow-lg shadow-orange-500/40 disabled:opacity-30 transition-all hover:scale-105"
                     >
                       {isPlaying ? (
                         <Pause className="h-5 w-5" />
@@ -342,7 +345,7 @@ const Soundscapes = () => {
                         variant="ghost"
                         size="icon"
                         onClick={() => setIsMuted(!isMuted)}
-                        className="h-9 w-9 text-muted-foreground hover:text-foreground"
+                        className="h-9 w-9 text-white/50 hover:text-white hover:bg-white/10"
                       >
                         {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
                       </Button>
@@ -359,51 +362,56 @@ const Soundscapes = () => {
 
                 {/* Mobile timer row */}
                 <div className="sm:hidden flex items-center gap-1 mt-3 justify-center">
-                  <Timer className="h-3 w-3 text-muted-foreground" />
+                  <Timer className="h-3 w-3 text-white/40" />
                   {TIMER_OPTIONS.map((opt) => (
                     <button
                       key={opt.minutes}
                       onClick={() => startTimer(opt.minutes)}
                       className={cn(
-                        "text-xs px-2.5 py-1 rounded-md transition-colors",
+                        "text-xs px-2.5 py-1 rounded-md transition-colors font-mono",
                         timerMinutes === opt.minutes
-                          ? "bg-primary text-primary-foreground"
-                          : "text-muted-foreground hover:bg-secondary"
+                          ? "bg-orange-500 text-white"
+                          : "text-white/50 hover:bg-white/10 hover:text-white"
                       )}
                     >
                       {opt.label}
                     </button>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </motion.div>
         )}
 
         {/* Info Section */}
-        <div className="mt-8 pb-20">
-          <Card className="border-border">
-            <CardContent className="p-5">
-              <h2 className="text-lg font-semibold text-foreground mb-3">About Healing Frequencies</h2>
-              <div className="space-y-3 text-sm text-muted-foreground">
-                <p>
-                  <strong className="text-foreground">528 Hz</strong> — Known as the "Miracle Tone" or "Love Frequency." Research suggests potential benefits for stress reduction and cellular repair.
-                </p>
-                <p>
-                  <strong className="text-foreground">432 Hz</strong> — Often called "Nature's Frequency." Many listeners report deeper relaxation compared to standard 440 Hz tuning.
-                </p>
-                <p>
-                  <strong className="text-foreground">Solfeggio Frequencies</strong> — An ancient scale (396, 417, 528, 639, 741, 852 Hz) used in sacred music and modern sound therapy.
-                </p>
-                <p>
-                  <strong className="text-foreground">Singing Bowls</strong> — Tibetan and crystal bowls produce rich harmonics that can promote meditative states and nervous system regulation.
-                </p>
-                <p className="text-xs border-t border-border pt-3 mt-3">
-                  All tracks are human-recorded — no AI-generated audio. Sources include royalty-free libraries with real instruments: Tibetan bowls, crystal bowls, gongs, and soft synth layers.
-                </p>
+        <div className="mt-16 pb-20">
+          <div className="text-center mb-8">
+            <p className="text-orange-300/80 tracking-[0.4em] text-xs font-light uppercase mb-3">The Science</p>
+            <h2 className="font-serif text-3xl md:text-4xl text-white font-bold">About Healing Frequencies</h2>
+            <div className="mt-4 mx-auto w-16 h-px bg-gradient-to-r from-transparent via-orange-400/60 to-transparent" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              { hz: "528 Hz", label: "The Miracle Tone", body: 'Known as the "Love Frequency." Research suggests potential benefits for stress reduction and cellular repair.' },
+              { hz: "432 Hz", label: "Nature's Frequency", body: "Many listeners report deeper relaxation compared to standard 440 Hz tuning." },
+              { hz: "Solfeggio", label: "Ancient Scale", body: "396, 417, 528, 639, 741, 852 Hz — used in sacred music and modern sound therapy." },
+              { hz: "Singing Bowls", label: "Harmonic Resonance", body: "Tibetan and crystal bowls produce rich harmonics that promote meditative states and nervous system regulation." },
+            ].map((item) => (
+              <div
+                key={item.hz}
+                className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-6 hover:border-orange-400/30 hover:bg-white/[0.06] transition-all duration-500"
+              >
+                <p className="font-mono text-orange-300 text-sm tracking-wider">{item.hz}</p>
+                <h3 className="font-serif text-xl text-white font-semibold mt-1">{item.label}</h3>
+                <p className="text-sm text-white/65 mt-3 leading-relaxed">{item.body}</p>
               </div>
-            </CardContent>
-          </Card>
+            ))}
+          </div>
+
+          <p className="text-xs text-white/45 text-center mt-8 max-w-2xl mx-auto leading-relaxed italic">
+            All tracks are human-recorded — no AI-generated audio. Sources include royalty-free libraries with real instruments: Tibetan bowls, crystal bowls, gongs, and soft synth layers.
+          </p>
         </div>
       </div>
     </div>
