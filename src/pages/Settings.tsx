@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Download, FileText, Loader2, LogOut, ShieldAlert, Stethoscope, Trash2 } from "lucide-react";
+import { ArrowLeft, Download, FileText, Loader2, LogOut, ShieldAlert, Stethoscope, Trash2, Users } from "lucide-react";
+import { ClinicianLinkManager } from "@/components/clinical/ClinicianLinkManager";
+import { useUserRoles } from "@/hooks/use-clinician";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -22,6 +24,7 @@ import { toast } from "sonner";
 const Settings = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { isClinician } = useUserRoles();
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -153,6 +156,21 @@ const Settings = () => {
             >
               <Download className="h-4 w-4 mr-2" />
               Raw Data (JSON)
+            </Button>
+          </div>
+        </section>
+
+        {/* Share with clinician */}
+        <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+          <ClinicianLinkManager />
+          <div className="mt-4 flex flex-col sm:flex-row gap-2 items-start sm:items-center justify-between">
+            <p className="text-xs text-white/50">
+              {isClinician
+                ? "You have clinician access — open the portal to view linked patients."
+                : "Are you a clinician evaluating this platform? Open the portal to enroll."}
+            </p>
+            <Button asChild variant="outline" size="sm" className="bg-white/[0.04] border-white/15 text-white hover:bg-white/10">
+              <Link to="/clinician"><Users className="h-4 w-4 mr-2" />Open Clinician Portal</Link>
             </Button>
           </div>
         </section>
