@@ -184,10 +184,16 @@ export type Database = {
       clinical_assessments: {
         Row: {
           administered_by: string | null
+          administered_in: string | null
           assessment_type: string
           created_at: string
           id: string
+          instrument_version: string | null
+          interpretation: string | null
+          mcid_change: number | null
           notes: string | null
+          red_flags: Json | null
+          responses: Json | null
           score: number | null
           severity: string | null
           subscores: Json | null
@@ -195,10 +201,16 @@ export type Database = {
         }
         Insert: {
           administered_by?: string | null
+          administered_in?: string | null
           assessment_type: string
           created_at?: string
           id?: string
+          instrument_version?: string | null
+          interpretation?: string | null
+          mcid_change?: number | null
           notes?: string | null
+          red_flags?: Json | null
+          responses?: Json | null
           score?: number | null
           severity?: string | null
           subscores?: Json | null
@@ -206,13 +218,94 @@ export type Database = {
         }
         Update: {
           administered_by?: string | null
+          administered_in?: string | null
           assessment_type?: string
           created_at?: string
           id?: string
+          instrument_version?: string | null
+          interpretation?: string | null
+          mcid_change?: number | null
           notes?: string | null
+          red_flags?: Json | null
+          responses?: Json | null
           score?: number | null
           severity?: string | null
           subscores?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      clinical_audit_log: {
+        Row: {
+          action: string
+          actor_id: string
+          created_at: string
+          id: string
+          ip_address: string | null
+          metadata: Json
+          target_id: string | null
+          target_type: string | null
+        }
+        Insert: {
+          action: string
+          actor_id: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Update: {
+          action?: string
+          actor_id?: string
+          created_at?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json
+          target_id?: string | null
+          target_type?: string | null
+        }
+        Relationships: []
+      }
+      clinical_red_flag_events: {
+        Row: {
+          acknowledged_at: string | null
+          created_at: string
+          flag_type: string
+          id: string
+          instrument: string | null
+          message: string | null
+          metadata: Json
+          resolved_at: string | null
+          severity: string
+          source_assessment_id: string | null
+          user_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          created_at?: string
+          flag_type: string
+          id?: string
+          instrument?: string | null
+          message?: string | null
+          metadata?: Json
+          resolved_at?: string | null
+          severity?: string
+          source_assessment_id?: string | null
+          user_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          created_at?: string
+          flag_type?: string
+          id?: string
+          instrument?: string | null
+          message?: string | null
+          metadata?: Json
+          resolved_at?: string | null
+          severity?: string
+          source_assessment_id?: string | null
           user_id?: string
         }
         Relationships: []
@@ -610,6 +703,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       week_progress: {
         Row: {
           chapter_completed: boolean | null
@@ -654,10 +768,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "patient" | "clinician" | "admin" | "researcher"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -784,6 +904,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["patient", "clinician", "admin", "researcher"],
+    },
   },
 } as const
