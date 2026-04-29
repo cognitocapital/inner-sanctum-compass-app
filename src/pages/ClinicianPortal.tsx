@@ -62,7 +62,9 @@ export default function ClinicianPortal() {
           </div>
         </div>
 
-        <ClinicalDisclaimer />
+        <ClinicalDisclaimer type="info" title="Beta clinical prototype">
+          Visualisation and decision-support only. Not a substitute for clinical judgement. All access is audit-logged. Patients control their own consent and may revoke access at any time.
+        </ClinicalDisclaimer>
 
         {rolesLoading ? (
           <div className="text-sm text-muted-foreground py-12 text-center">Loading…</div>
