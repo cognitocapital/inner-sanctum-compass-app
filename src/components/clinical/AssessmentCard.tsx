@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, Sparkline, TrendingDown, TrendingUp, Minus } from "lucide-react";
+import { ChevronRight, TrendingDown, TrendingUp, Minus } from "lucide-react";
 import type { Instrument, AssessmentRecord } from "@/lib/clinical/types";
 import { buildTrend } from "@/lib/clinical/trend";
 
