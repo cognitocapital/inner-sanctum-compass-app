@@ -39,6 +39,13 @@ interface ReportData {
     sleep: number | null;
     symptoms: string[];
   }>;
+  phoenixObservations: Array<{
+    date: string;
+    title: string;
+    phase: number;
+    moodTag: string | null;
+    content: string;
+  }>;
   trends: {
     moodTrend: 'improving' | 'stable' | 'declining' | 'insufficient_data';
     activityTrend: 'increasing' | 'stable' | 'decreasing' | 'insufficient_data';
@@ -77,12 +84,13 @@ serve(async (req) => {
     }
 
     // Fetch all relevant data
-    const [profileRes, progressRes, assessmentsRes, sessionsRes, checkinsRes] = await Promise.all([
+    const [profileRes, progressRes, assessmentsRes, sessionsRes, checkinsRes, journalRes] = await Promise.all([
       supabase.from("profiles").select("*").eq("id", user.id).single(),
       supabase.from("user_progress").select("*").eq("user_id", user.id).single(),
       supabase.from("clinical_assessments").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
       supabase.from("session_logs").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
       supabase.from("daily_checkins").select("*").eq("user_id", user.id).order("check_date", { ascending: false }).limit(30),
+      supabase.from("user_journal_entries").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20),
     ]);
 
     const profile = profileRes.data;
@@ -90,6 +98,7 @@ serve(async (req) => {
     const assessments = assessmentsRes.data || [];
     const sessions = sessionsRes.data || [];
     const checkins = checkinsRes.data || [];
+    const journal = journalRes.data || [];
 
     // Calculate session summary
     const moduleBreakdown: Record<string, { sessions: number; minutes: number }> = {};
@@ -149,6 +158,13 @@ serve(async (req) => {
         energy: c.energy_level,
         sleep: c.sleep_quality,
         symptoms: (c.symptoms_today as string[]) || [],
+      })),
+      phoenixObservations: journal.map((j: any) => ({
+        date: j.created_at,
+        title: j.title,
+        phase: j.phase,
+        moodTag: j.mood_tag,
+        content: j.content,
       })),
       trends: {
         moodTrend,
