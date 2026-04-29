@@ -18,6 +18,7 @@ import { useSessionLogger, calculateXP } from "@/hooks/use-session-logger";
 import { useModuleProgress } from "@/hooks/use-module-progress";
 import { useUserProgress } from "@/hooks/use-user-progress";
 import { supabase } from "@/integrations/supabase/client";
+import mindAcademyHero from "@/assets/mind-academy-hero.jpg";
 
 interface AssessmentResult {
   phq9: number;
@@ -288,49 +289,100 @@ const MindTraining = () => {
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white relative overflow-hidden">
-      {/* Cosmic background with subtle amber glow */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-radial from-amber-500/8 via-transparent to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-gradient-radial from-orange-500/5 via-transparent to-transparent rounded-full blur-3xl" />
-        
-        {/* Ember particles */}
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={`ember-${i}`}
-            className="absolute w-1 h-1 rounded-full bg-amber-400"
-            style={{
-              left: `${15 + i * 10}%`,
-              bottom: `${10 + (i % 3) * 15}%`,
-            }}
-            animate={{
-              y: [0, -80, -120],
-              opacity: [0, 0.8, 0],
-              scale: [1, 1.2, 0.5],
-            }}
-            transition={{
-              duration: 4 + i * 0.5,
-              repeat: Infinity,
-              delay: i * 0.8,
-              ease: "easeOut",
-            }}
-          />
-        ))}
+      {/* ============ CINEMATIC HERO ============ */}
+      <section className="relative min-h-[70svh] w-full overflow-hidden flex flex-col">
+        <img
+          src={mindAcademyHero}
+          alt="A constellation-brain glowing in deep cosmic space — Phoenix Mind Academy, clinical cognitive training grounded in INCOG 2.0 and 2025 NINDS protocols."
+          className="absolute inset-0 w-full h-full object-cover object-center animate-[fade-in_1.6s_ease-out]"
+          loading="eager"
+        />
+
+        {/* Atmospheric overlays */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.55)_70%,_rgba(0,0,0,0.92)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-b from-transparent via-[#0A0A0A]/85 to-[#0A0A0A]" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/70 to-transparent" />
+
+        {/* Drifting embers */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[20%] left-[15%] w-1.5 h-1.5 bg-amber-400 rounded-full opacity-80 shadow-[0_0_12px_4px_rgba(245,158,11,0.6)] animate-[float_4s_ease-in-out_infinite]" />
+          <div className="absolute top-[35%] right-[20%] w-1 h-1 bg-amber-300 rounded-full opacity-70 shadow-[0_0_10px_3px_rgba(252,211,77,0.5)] animate-[float_5s_ease-in-out_infinite_1s]" />
+          <div className="absolute top-[55%] left-[25%] w-2 h-2 bg-orange-500 rounded-full opacity-60 shadow-[0_0_14px_5px_rgba(249,115,22,0.5)] animate-[float_6s_ease-in-out_infinite_2s]" />
+          <div className="absolute top-[45%] right-[30%] w-1 h-1 bg-orange-300 rounded-full opacity-50 animate-[float_7s_ease-in-out_infinite_3s]" />
+          <div className="absolute top-[65%] right-[15%] w-1.5 h-1.5 bg-amber-400 rounded-full opacity-65 shadow-[0_0_10px_3px_rgba(245,158,11,0.5)] animate-[float_5s_ease-in-out_infinite_0.5s]" />
+        </div>
+
+        {/* Back to Phoenix Journey */}
+        <Link
+          to="/dashboard"
+          replace
+          className="absolute top-5 left-5 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
+          title="Back to Phoenix Journey"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Link>
+
+        {/* Evidence badges — top right */}
+        <div className="absolute top-5 right-5 z-20 flex items-center gap-2">
+          <EvidenceBadge level="A" domain="INCOG 2.0" pubmedId="37673101" />
+          <Badge className="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-xs backdrop-blur-sm">2025 NINDS</Badge>
+        </div>
+
+        {/* Editorial title block */}
+        <div className="relative z-10 mt-auto px-6 md:px-16 pb-12 md:pb-16 animate-[fade-in_2s_ease-out_0.4s_both]">
+          <div className="max-w-4xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-400/30 backdrop-blur-sm mb-6">
+              <Brain className="w-3.5 h-3.5 text-amber-300" />
+              <span className="text-xs text-amber-200 tracking-[0.3em] uppercase font-light">Cognitive Arena</span>
+            </div>
+            <p className="text-amber-300/80 tracking-[0.4em] text-xs md:text-sm font-light uppercase mb-4">
+              Clinical self-tracking · INCOG 2.0 · 2025 NINDS
+            </p>
+            <h1 className="font-serif font-bold text-white text-4xl md:text-6xl leading-[1.05] drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
+              Phoenix Mind Academy
+            </h1>
+            <p className="mt-6 text-white/75 text-base md:text-lg max-w-xl font-light italic leading-relaxed mx-auto">
+              Validated assessments, adaptive training, and trend-tracking — built to be shared with your clinician.
+            </p>
+
+            {/* Streak + AI Companion quick bar */}
+            <div className="flex items-center justify-center flex-wrap gap-3 mt-8">
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 backdrop-blur-sm">
+                <Flame className="h-4 w-4 text-amber-400" />
+                <span className="text-amber-200 text-sm font-medium">{streak} day streak</span>
+              </div>
+              <Button
+                asChild
+                size="sm"
+                className="rounded-full bg-gradient-to-r from-amber-500/30 to-amber-600/30 border border-amber-400/40 text-amber-200 hover:from-amber-500/40 hover:to-amber-600/40 backdrop-blur-sm min-h-[40px]"
+              >
+                <Link to="/ai-companion">
+                  <MessageCircle className="h-4 w-4 mr-2" />
+                  Ask Phoenix
+                </Link>
+              </Button>
+              <Button
+                onClick={() => setFogDay(true)}
+                size="sm"
+                variant="ghost"
+                className="rounded-full text-white/60 hover:text-amber-300 hover:bg-white/10 backdrop-blur-sm border border-white/10 min-h-[40px]"
+              >
+                <CloudFog className="h-4 w-4 mr-2" />
+                Fog Day
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* ============ END HERO ============ */}
+
+      {/* Ambient glow for content section */}
+      <div className="absolute inset-x-0 top-[70svh] bottom-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-amber-500/[0.04] rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-orange-500/[0.03] rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 py-6 relative z-10 max-w-6xl">
-        {/* Header */}
-        <header className="flex items-center justify-between mb-8">
-          <Button asChild variant="ghost" className="text-amber-300/70 hover:text-amber-200 min-h-[48px]">
-            <Link to="/dashboard">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Dashboard
-            </Link>
-          </Button>
-          <div className="flex items-center gap-3">
-            <EvidenceBadge level="A" domain="INCOG 2.0" pubmedId="37673101" />
-            <Badge className="bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 text-xs">2025 NINDS</Badge>
-          </div>
-        </header>
+      <div className="container mx-auto px-4 py-12 relative z-10 max-w-6xl">
 
         {/* Guest Warning */}
         {isGuest && (
@@ -346,58 +398,22 @@ const MindTraining = () => {
           </motion.div>
         )}
 
-        {/* Hero Section */}
-        <motion.header
+        {/* Anatomical neural brain — clinical detail layer */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-10"
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex justify-center mb-10"
         >
-          <div className="flex justify-center mb-6">
-            <div className="relative">
-              <div className="absolute inset-0 animate-soft-pulse-glow rounded-full" />
-              <AnimatedNeuralBrain 
-                activeRegions={activeRegions} 
-                size="md" 
-                showLabels 
-              />
-            </div>
+          <div className="relative">
+            <div className="absolute inset-0 animate-soft-pulse-glow rounded-full" />
+            <AnimatedNeuralBrain
+              activeRegions={activeRegions}
+              size="md"
+              showLabels
+            />
           </div>
-          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-3">
-            <span className="bg-gradient-to-r from-amber-300 via-amber-400 to-yellow-500 bg-clip-text text-transparent">
-              Phoenix Mind Academy
-            </span>
-          </h1>
-          <p className="text-white/50 max-w-xl mx-auto text-lg">
-            Clinical self-tracking with 2025 NINDS classification & INCOG 2.0 protocols
-          </p>
-
-          {/* Streak + AI Companion quick bar */}
-          <div className="flex items-center justify-center gap-4 mt-6">
-            <div className="flex items-center gap-2 px-4 py-2 rounded-full academy-glass">
-              <Flame className="h-4 w-4 text-amber-400" />
-              <span className="text-amber-300 text-sm font-medium">{streak} day streak</span>
-            </div>
-            <Button
-              asChild
-              size="sm"
-              className="rounded-full bg-gradient-to-r from-amber-500/20 to-amber-600/20 border border-amber-500/30 text-amber-300 hover:from-amber-500/30 hover:to-amber-600/30 min-h-[40px]"
-            >
-              <Link to="/ai-companion">
-                <MessageCircle className="h-4 w-4 mr-2" />
-                Ask Phoenix
-              </Link>
-            </Button>
-            <Button
-              onClick={() => setFogDay(true)}
-              size="sm"
-              variant="ghost"
-              className="rounded-full text-white/40 hover:text-amber-300 hover:bg-white/5 min-h-[40px]"
-            >
-              <CloudFog className="h-4 w-4 mr-2" />
-              Fog Day
-            </Button>
-          </div>
-        </motion.header>
+        </motion.div>
 
         {/* Main Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
