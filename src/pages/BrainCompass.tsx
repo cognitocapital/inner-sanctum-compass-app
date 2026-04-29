@@ -115,7 +115,7 @@ const BrainCompass = () => {
           >
             <Link to="/resources">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Resources
+              Growth Resources
             </Link>
           </Button>
           <div className="flex items-center gap-2 flex-wrap">
