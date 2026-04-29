@@ -53,12 +53,11 @@
 - Render trend tables, severity bands, MCID-crossed highlights, red-flag log.
 - Add structured FHIR-shaped JSON export option (`Observation` resources per assessment).
 
-## Slice 2 — Clinician portal (next phase, not this turn)
-- Clinician signup → `clinician` role assigned via invite/admin approval.
-- Patient invite-by-code linking table (`patient_clinician_links`).
-- Caseload dashboard, alert inbox, audit log viewer.
-- RBAC RLS: clinicians read linked patients' assessments via `has_role` + link check.
-- Org accounts schema (`organizations`, `org_members`) ready but unused.
+## Slice 2 — Clinician portal ✅ SHIPPED
+- `patient_clinician_links` (invite code, consent scope, expiry) + `clinician_alerts` + `organizations` + `org_members`.
+- Security-definer helpers `is_linked_clinician` and `is_org_admin` gate cross-user RLS reads on assessments, red flags, audit log, check-ins, shared journal entries, and profiles.
+- Patient UI: `ClinicianLinkManager` in Settings — generate invite code, choose consent scope (assessments / red flags / check-ins / journal), copy/revoke.
+- Clinician UI: `/clinician` portal with caseload list, alert inbox (ack), accept-invite tab, beta self-enroll, and `PatientDetailView` with per-instrument trend charts + FHIR Bundle export.
 
 ## Slice 3 — Compliance & deployment polish (later)
 - MFA, session timeout, consent capture screen, BAA-readiness doc, signed PDF exports, scheduled clinician email digest.

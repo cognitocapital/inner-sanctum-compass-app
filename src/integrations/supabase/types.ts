@@ -310,6 +310,54 @@ export type Database = {
         }
         Relationships: []
       }
+      clinician_alerts: {
+        Row: {
+          acknowledged_at: string | null
+          alert_type: string
+          clinician_id: string
+          created_at: string
+          id: string
+          message: string | null
+          metadata: Json
+          patient_id: string
+          resolved_at: string | null
+          severity: string
+          source_id: string | null
+          source_table: string | null
+          title: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          alert_type: string
+          clinician_id: string
+          created_at?: string
+          id?: string
+          message?: string | null
+          metadata?: Json
+          patient_id: string
+          resolved_at?: string | null
+          severity?: string
+          source_id?: string | null
+          source_table?: string | null
+          title: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          alert_type?: string
+          clinician_id?: string
+          created_at?: string
+          id?: string
+          message?: string | null
+          metadata?: Json
+          patient_id?: string
+          resolved_at?: string | null
+          severity?: string
+          source_id?: string | null
+          source_table?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       daily_checkins: {
         Row: {
           check_date: string
@@ -354,6 +402,115 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      org_members: {
+        Row: {
+          created_at: string
+          id: string
+          member_role: string
+          org_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          member_role?: string
+          org_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          member_role?: string
+          org_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "org_members_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          contact_email: string | null
+          created_at: string
+          id: string
+          name: string
+          org_type: string
+          updated_at: string
+        }
+        Insert: {
+          contact_email?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          org_type?: string
+          updated_at?: string
+        }
+        Update: {
+          contact_email?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          org_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      patient_clinician_links: {
+        Row: {
+          accepted_at: string | null
+          clinician_id: string | null
+          consent_scope: Json
+          expires_at: string
+          id: string
+          invite_code: string
+          invited_at: string
+          org_id: string | null
+          patient_id: string
+          revoked_at: string | null
+          status: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          clinician_id?: string | null
+          consent_scope?: Json
+          expires_at?: string
+          id?: string
+          invite_code: string
+          invited_at?: string
+          org_id?: string | null
+          patient_id: string
+          revoked_at?: string | null
+          status?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          clinician_id?: string | null
+          consent_scope?: Json
+          expires_at?: string
+          id?: string
+          invite_code?: string
+          invited_at?: string
+          org_id?: string | null
+          patient_id?: string
+          revoked_at?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "patient_clinician_links_org_id_fkey"
+            columns: ["org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       phoenix_quests: {
         Row: {
@@ -773,6 +930,14 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_linked_clinician: {
+        Args: { _clinician_id: string; _patient_id: string }
+        Returns: boolean
+      }
+      is_org_admin: {
+        Args: { _org_id: string; _user_id: string }
         Returns: boolean
       }
     }
