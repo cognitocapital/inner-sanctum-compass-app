@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   ArrowLeft,
   ExternalLink,
@@ -15,7 +15,6 @@ import SEOHead from "@/components/seo/SEOHead";
 import resourcesIllustration from "@/assets/resources-illustration.jpg";
 
 const Resources = () => {
-  const navigate = useNavigate();
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
   const featuredInfluencers = [
@@ -146,6 +145,7 @@ const Resources = () => {
         {/* Back to home */}
         <Link
           to="/"
+          replace
           className="absolute top-5 left-5 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
           title="Back to Home"
         >
