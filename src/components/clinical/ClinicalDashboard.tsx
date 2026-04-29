@@ -11,6 +11,7 @@ import {
   Brain, Activity, Heart, AlertCircle
 } from "lucide-react";
 import { format } from "date-fns";
+import { AssessmentBattery } from "./AssessmentBattery";
 
 interface Assessment {
   id: string;
@@ -102,6 +103,8 @@ export const ClinicalDashboard = () => {
           </p>
         </div>
       </div>
+
+      <AssessmentBattery />
 
       {/* GOSE Card - Primary */}
       <Card className="bg-gradient-to-br from-purple-500/10 to-indigo-500/10 border-purple-500/20">
