@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { LogOut, User, ArrowLeft, Flame, ChevronDown } from "lucide-react";
+import { LogOut, User, ArrowLeft, Flame, ChevronDown, ClipboardCheck, FileDown, Activity } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/use-profile";
 import { useDailyCheckin } from "@/hooks/use-daily-checkin";
@@ -207,6 +207,62 @@ const Dashboard = () => {
               existingReflection={weekProgress?.reflection_text}
               onComplete={completeReflection}
             />
+
+            {/* Care Provider Dashboard CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mt-12 rounded-3xl overflow-hidden border border-amber-400/20 bg-gradient-to-br from-gray-900/90 via-orange-950/40 to-gray-900/90 backdrop-blur-xl shadow-[0_20px_60px_-20px_rgba(249,115,22,0.4)]"
+            >
+              <div className="p-8 md:p-10">
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="p-3 rounded-2xl bg-amber-500/15 border border-amber-400/30 backdrop-blur-sm">
+                    <ClipboardCheck className="w-6 h-6 text-amber-300" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-amber-300/80 tracking-[0.3em] text-[10px] uppercase font-light mb-2">
+                      Clinical Companion
+                    </p>
+                    <h3 className="font-serif text-white text-2xl md:text-3xl leading-tight">
+                      Care Provider Dashboard
+                    </h3>
+                    <p className="text-white/65 text-sm md:text-base mt-3 font-light leading-relaxed max-w-xl">
+                      Track validated clinical assessments (GOSE, RPQ, PHQ-9), brain training sessions, mood &amp; symptom trends — and export a printable report for your neurologist, therapist, or carer.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+                  <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-4">
+                    <Activity className="w-4 h-4 text-emerald-400 mb-2" />
+                    <p className="text-white/85 text-sm font-medium">Recovery Trends</p>
+                    <p className="text-white/45 text-xs mt-1">14-day mood, energy, sleep</p>
+                  </div>
+                  <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-4">
+                    <ClipboardCheck className="w-4 h-4 text-purple-400 mb-2" />
+                    <p className="text-white/85 text-sm font-medium">Clinical Assessments</p>
+                    <p className="text-white/45 text-xs mt-1">GOSE • RPQ • PHQ-9 history</p>
+                  </div>
+                  <div className="rounded-xl bg-white/[0.04] border border-white/[0.06] p-4">
+                    <FileDown className="w-4 h-4 text-amber-400 mb-2" />
+                    <p className="text-white/85 text-sm font-medium">Exportable Report</p>
+                    <p className="text-white/45 text-xs mt-1">Print-ready for clinicians</p>
+                  </div>
+                </div>
+
+                <Button
+                  asChild
+                  className="w-full md:w-auto rounded-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-gray-950 font-semibold px-8 py-6 text-base shadow-[0_8px_24px_-8px_rgba(245,158,11,0.6)] transition-all duration-300 hover:scale-[1.02]"
+                >
+                  <Link to="/insights">
+                    Open Care Provider Dashboard
+                    <ChevronDown className="w-4 h-4 ml-2 -rotate-90" />
+                  </Link>
+                </Button>
+              </div>
+            </motion.div>
           </div>
         ) : (
           <div className="text-center py-20 text-white/60">
