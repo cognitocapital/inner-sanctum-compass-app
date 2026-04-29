@@ -12,7 +12,6 @@ import { QuestNode } from "@/components/path/QuestNode";
 import { QuestCard } from "@/components/path/QuestCard";
 import { XCommunityLink } from "@/components/ui/community-footer";
 import phoenixPathHero from "@/assets/phoenix-path-hero.jpg";
-import { useProfile as _useProfile } from "@/hooks/use-profile";
 
 const PhoenixPath = () => {
   const navigate = useNavigate();
