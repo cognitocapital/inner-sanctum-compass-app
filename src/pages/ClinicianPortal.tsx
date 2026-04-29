@@ -9,7 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ArrowLeft, Stethoscope, Users, Bell, Shield, ChevronRight, Loader2, ShieldOff } from "lucide-react";
 import { useUserRoles, useClinicianCaseload, useClinicianAlerts } from "@/hooks/use-clinician";
 import { PatientDetailView } from "@/components/clinical/PatientDetailView";
-import { ClinicalDisclaimer } from "@/components/clinical/ClinicalDisclaimer";
+import ClinicalDisclaimer from "@/components/clinical/ClinicalDisclaimer";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
