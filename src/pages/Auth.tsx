@@ -119,7 +119,7 @@ const Auth = () => {
             into the <span className="text-orange-400">flame</span>.
           </h1>
           <p className="mt-6 max-w-md text-white/65 font-serif italic text-lg leading-relaxed">
-            A clinical, Agentic companion for traumatic brain injury recovery —
+            A clinical, agentic companion for traumatic brain injury recovery —
             built on INCOG 2.0 evidence, paced for fragile minds.
           </p>
           <div className="mt-8 flex items-center gap-4 text-[10px] tracking-[0.3em] uppercase text-white/40">
