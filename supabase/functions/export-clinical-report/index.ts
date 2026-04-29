@@ -25,6 +25,17 @@ interface ReportData {
     date: string;
     severity: string | null;
     subscores: Record<string, number> | null;
+    interpretation?: string | null;
+    instrumentVersion?: string | null;
+    redFlagCount?: number;
+  }>;
+  redFlags?: Array<{
+    flagType: string;
+    severity: string;
+    instrument: string | null;
+    message: string | null;
+    createdAt: string;
+    resolvedAt: string | null;
   }>;
   sessionSummary: {
     totalSessions: number;
@@ -84,13 +95,14 @@ serve(async (req) => {
     }
 
     // Fetch all relevant data
-    const [profileRes, progressRes, assessmentsRes, sessionsRes, checkinsRes, journalRes] = await Promise.all([
+    const [profileRes, progressRes, assessmentsRes, sessionsRes, checkinsRes, journalRes, redFlagsRes] = await Promise.all([
       supabase.from("profiles").select("*").eq("id", user.id).single(),
       supabase.from("user_progress").select("*").eq("user_id", user.id).single(),
       supabase.from("clinical_assessments").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
       supabase.from("session_logs").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
       supabase.from("daily_checkins").select("*").eq("user_id", user.id).order("check_date", { ascending: false }).limit(30),
       supabase.from("user_journal_entries").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20),
+      supabase.from("clinical_red_flag_events").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(50),
     ]);
 
     const profile = profileRes.data;
@@ -99,6 +111,7 @@ serve(async (req) => {
     const sessions = sessionsRes.data || [];
     const checkins = checkinsRes.data || [];
     const journal = journalRes.data || [];
+    const redFlags = redFlagsRes.data || [];
 
     // Calculate session summary
     const moduleBreakdown: Record<string, { sessions: number; minutes: number }> = {};
@@ -145,6 +158,17 @@ serve(async (req) => {
         date: a.created_at,
         severity: a.severity,
         subscores: a.subscores as Record<string, number> | null,
+        interpretation: a.interpretation ?? null,
+        instrumentVersion: a.instrument_version ?? null,
+        redFlagCount: Array.isArray(a.red_flags) ? a.red_flags.length : 0,
+      })),
+      redFlags: redFlags.map((f: any) => ({
+        flagType: f.flag_type,
+        severity: f.severity,
+        instrument: f.instrument,
+        message: f.message,
+        createdAt: f.created_at,
+        resolvedAt: f.resolved_at,
       })),
       sessionSummary: {
         totalSessions: sessions.length,
