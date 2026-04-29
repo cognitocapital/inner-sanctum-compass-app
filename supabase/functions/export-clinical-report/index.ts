@@ -355,12 +355,28 @@ function generateHTMLReport(report: ReportData): string {
     <h2>Clinical Assessments</h2>
     ${report.clinicalAssessments.length > 0 ? report.clinicalAssessments.slice(0, 10).map(a => `
       <div class="assessment-row">
-        <span><strong>${a.type}</strong></span>
-        <span>Score: ${a.score}${a.severity ? ` (${a.severity})` : ''}</span>
+        <span><strong>${a.type}</strong>${a.instrumentVersion ? ` <span style="color:#64748b; font-size:11px;">v${a.instrumentVersion}</span>` : ''}</span>
+        <span>Score: ${a.score}${a.severity ? ` (${a.severity})` : ''}${a.redFlagCount ? ` · <span style="color:#f87171;">${a.redFlagCount} flag${a.redFlagCount === 1 ? '' : 's'}</span>` : ''}</span>
         <span>${new Date(a.date).toLocaleDateString()}</span>
       </div>
+      ${a.interpretation ? `<p style="font-size:12px; color:#94a3b8; margin:2px 0 8px 0; padding-left:8px; border-left:2px solid #334155;">${escapeHtml(a.interpretation)}</p>` : ''}
     `).join('') : '<p>No clinical assessments recorded</p>'}
   </div>
+
+  ${(report.redFlags && report.redFlags.length > 0) ? `
+  <div class="section" style="border:1px solid #f43f5e80;">
+    <h2 style="color:#fb7185;">⚠ Safety Flags</h2>
+    <p style="color:#94a3b8; font-size:12px; margin-top:-6px;">Automatically generated from validated screening responses. Each flag should be reviewed clinically.</p>
+    ${report.redFlags.map(f => `
+      <div style="background:#1e0a0e; padding:12px; border-radius:8px; margin-bottom:8px; border-left:3px solid #f43f5e;">
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:#94a3b8;">
+          <span><strong style="color:#fb7185;">${escapeHtml(f.flagType)}</strong> · ${escapeHtml(f.severity)}${f.instrument ? ` · ${escapeHtml(f.instrument)}` : ''}</span>
+          <span>${new Date(f.createdAt).toLocaleDateString()}${f.resolvedAt ? ' · resolved' : ''}</span>
+        </div>
+        ${f.message ? `<div style="font-size:13px; margin-top:4px;">${escapeHtml(f.message)}</div>` : ''}
+      </div>
+    `).join('')}
+  </div>` : ''}
 
   <div class="section">
     <h2>Recent Daily Check-ins (last 14)</h2>
