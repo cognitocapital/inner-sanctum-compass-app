@@ -143,14 +143,14 @@ const Resources = () => {
           <div className="absolute top-[75%] left-[40%] w-1 h-1 bg-amber-300 rounded-full opacity-55 shadow-[0_0_8px_3px_rgba(252,211,77,0.4)] animate-[float_6s_ease-in-out_infinite_2.5s]" />
         </div>
 
-        {/* Back arrow */}
-        <button
-          onClick={() => navigate(-1)}
+        {/* Back to home */}
+        <Link
+          to="/"
           className="absolute top-5 left-5 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/15 flex items-center justify-center text-white transition-all duration-300 hover:scale-110"
-          title="Back"
+          title="Back to Home"
         >
           <ArrowLeft className="h-5 w-5" />
-        </button>
+        </Link>
 
         {/* Editorial title block */}
         <div className="relative z-10 mt-auto px-6 md:px-16 pb-16 md:pb-24 animate-[fade-in_2s_ease-out_0.4s_both]">
