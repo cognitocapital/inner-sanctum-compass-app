@@ -7,6 +7,8 @@ import { ScoreTrendChart } from "./ScoreTrendChart";
 import { AlertTriangle, ArrowLeft, FileDown } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
+import { INSTRUMENTS } from "@/lib/clinical/instruments";
+import { buildTrend } from "@/lib/clinical/trend";
 
 interface Props {
   patientId: string;
@@ -23,17 +25,16 @@ export function PatientDetailView({ patientId, displayName, consentScope, onBack
 
   useEffect(() => {
     (async () => {
-      const tasks: Promise<any>[] = [];
-      tasks.push(consentScope.assessments
-        ? supabase.from("clinical_assessments").select("*").eq("user_id", patientId).order("created_at", { ascending: true })
-        : Promise.resolve({ data: [] }));
-      tasks.push(consentScope.red_flags
-        ? supabase.from("clinical_red_flag_events").select("*").eq("user_id", patientId).order("created_at", { ascending: false })
-        : Promise.resolve({ data: [] }));
-      tasks.push(consentScope.checkins
-        ? supabase.from("daily_checkins").select("*").eq("user_id", patientId).order("check_date", { ascending: false }).limit(30)
-        : Promise.resolve({ data: [] }));
-      const [a, r, c] = await Promise.all(tasks);
+      const aPromise: Promise<{ data: any[] | null }> = consentScope.assessments
+        ? (supabase.from("clinical_assessments").select("*").eq("user_id", patientId).order("created_at", { ascending: true }) as any)
+        : Promise.resolve({ data: [] });
+      const rPromise: Promise<{ data: any[] | null }> = consentScope.red_flags
+        ? (supabase.from("clinical_red_flag_events").select("*").eq("user_id", patientId).order("created_at", { ascending: false }) as any)
+        : Promise.resolve({ data: [] });
+      const cPromise: Promise<{ data: any[] | null }> = consentScope.checkins
+        ? (supabase.from("daily_checkins").select("*").eq("user_id", patientId).order("check_date", { ascending: false }).limit(30) as any)
+        : Promise.resolve({ data: [] });
+      const [a, r, c] = await Promise.all([aPromise, rPromise, cPromise]);
       setAssessments(a.data ?? []);
       setRedFlags(r.data ?? []);
       setCheckins(c.data ?? []);
@@ -123,22 +124,29 @@ export function PatientDetailView({ patientId, displayName, consentScope, onBack
       ) : Object.keys(byInstrument).length === 0 ? (
         <Card className="bg-card/40 border-border/40"><CardContent className="py-6 text-center text-sm text-muted-foreground">No assessments yet.</CardContent></Card>
       ) : (
-        Object.entries(byInstrument).map(([instrument, rows]) => (
-          <Card key={instrument} className="bg-card/40 backdrop-blur border-border/40">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm flex items-center justify-between">
-                <span>{instrument}</span>
-                <Badge variant="outline">{rows.length} entries</Badge>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ScoreTrendChart
-                data={rows.map((r) => ({ date: r.created_at, score: r.score ?? 0, severity: r.severity ?? "" }))}
-                instrument={instrument}
-              />
-            </CardContent>
-          </Card>
-        ))
+        Object.entries(byInstrument).map(([instrumentKey, rowsAny]) => {
+          const rows = rowsAny as any[];
+          const inst = INSTRUMENTS[instrumentKey];
+          return (
+            <Card key={instrumentKey} className="bg-card/40 backdrop-blur border-border/40">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm flex items-center justify-between">
+                  <span>{instrumentKey}</span>
+                  <Badge variant="outline">{rows.length} entries</Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {inst ? (
+                  <ScoreTrendChart instrument={inst} trend={buildTrend(rows as any, inst)} />
+                ) : (
+                  <div className="text-xs text-muted-foreground">
+                    Latest score: {rows[rows.length - 1]?.score ?? "—"} ({rows[rows.length - 1]?.severity ?? "n/a"})
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          );
+        })
       )}
 
       {consentScope.checkins && checkins.length > 0 && (
