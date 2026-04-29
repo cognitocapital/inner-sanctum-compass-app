@@ -94,22 +94,21 @@ export const AssessmentRunner = ({ instrument, onComplete, onCancel }: Props) =>
     }
     setSubmitting(true);
     try {
-      const insertRow = {
-        user_id: user.id,
-        assessment_type: instrument.code,
-        instrument_version: instrument.version,
-        score: result.score,
-        severity: result.severity.label,
-        subscores: result.subscores as unknown as Record<string, unknown>,
-        responses: responses as unknown as Record<string, unknown>,
-        interpretation: result.interpretation,
-        red_flags: result.redFlags as unknown as Record<string, unknown>,
-        administered_in: "self",
-        administered_by: "self",
-      };
       const { data, error } = await supabase
         .from("clinical_assessments")
-        .insert(insertRow)
+        .insert({
+          user_id: user.id,
+          assessment_type: instrument.code,
+          instrument_version: instrument.version,
+          score: result.score,
+          severity: result.severity.label,
+          subscores: result.subscores as any,
+          responses: responses as any,
+          interpretation: result.interpretation,
+          red_flags: result.redFlags as any,
+          administered_in: "self",
+          administered_by: "self",
+        })
         .select("id")
         .single();
       if (error) throw error;
