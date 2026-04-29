@@ -11,6 +11,8 @@ import { FlameStrength } from "@/components/path/FlameStrength";
 import { QuestNode } from "@/components/path/QuestNode";
 import { QuestCard } from "@/components/path/QuestCard";
 import { XCommunityLink } from "@/components/ui/community-footer";
+import phoenixPathHero from "@/assets/phoenix-path-hero.jpg";
+import { useProfile as _useProfile } from "@/hooks/use-profile";
 
 const PhoenixPath = () => {
   const navigate = useNavigate();
@@ -19,6 +21,20 @@ const PhoenixPath = () => {
   const { currentPhase, flameStrength, isLoading, totalXp, completedCount, getQuestStatus } = usePhoenixPath();
   const [selectedQuest, setSelectedQuest] = useState<QuestDefinition | null>(null);
   const [expandedPhase, setExpandedPhase] = useState<number | null>(null);
+
+  const displayName =
+    profile?.display_name?.split(" ")[0] ||
+    user?.email?.split("@")[0] ||
+    "Traveler";
+
+  const greeting = (() => {
+    const h = new Date().getHours();
+    if (h < 5) return "Still here";
+    if (h < 12) return "Good morning";
+    if (h < 17) return "Good afternoon";
+    if (h < 21) return "Good evening";
+    return "Good night";
+  })();
 
   const handleSignOut = async () => {
     await signOut();
@@ -56,71 +72,155 @@ const PhoenixPath = () => {
   ).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-white">
-      {/* Subtle ambient glow */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-orange-500/[0.04] rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 left-1/4 w-[300px] h-[200px] bg-amber-500/[0.03] rounded-full blur-[80px]" />
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-white relative overflow-x-hidden">
+      {/* ─── CINEMATIC HERO ───────────────────────────────────────────── */}
+      <section className="relative min-h-[88svh] w-full overflow-hidden flex flex-col">
+        {/* Hero image */}
+        <img
+          src={phoenixPathHero}
+          alt="Phoenix rising from embers under a starlit sky"
+          width={1920}
+          height={1080}
+          className="absolute inset-0 w-full h-full object-cover animate-[fade-in_1.6s_ease-out]"
+          style={{ transform: "scale(1.05)" }}
+        />
+        {/* Atmospheric overlays */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-950/40 via-gray-950/55 to-gray-950" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.55)_70%,_rgba(0,0,0,0.95)_100%)]" />
 
-      {/* Minimal header */}
-      <header className="sticky top-0 z-30 bg-gray-950/90 backdrop-blur-md border-b border-white/[0.04]">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <Button asChild variant="ghost" size="sm" className="text-white/50 hover:text-white">
-            <Link to="/"><Home className="w-4 h-4" /></Link>
-          </Button>
-          <div className="flex items-center gap-1.5 text-sm text-white/40">
-            <Flame className="w-3.5 h-3.5 text-orange-400" />
-            <span className="font-medium text-orange-300">{totalXp} XP</span>
-          </div>
-          <div className="flex items-center gap-2">
-            {user && !isGuest ? (
-              <Button variant="ghost" size="sm" onClick={handleSignOut} className="text-white/50 hover:text-white">
-                <LogOut className="w-4 h-4" />
-              </Button>
-            ) : isGuest ? (
-              <Button asChild variant="ghost" size="sm" className="text-orange-400">
-                <Link to="/auth">Sign In</Link>
-              </Button>
-            ) : null}
-          </div>
+        {/* Drifting embers */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {[...Array(14)].map((_, i) => (
+            <motion.span
+              key={i}
+              className="absolute w-1 h-1 rounded-full bg-orange-300/70"
+              style={{
+                left: `${(i * 73) % 100}%`,
+                bottom: `-${10 + (i % 4) * 5}%`,
+                filter: "drop-shadow(0 0 6px rgba(251,146,60,0.8))",
+              }}
+              animate={{
+                y: ["0vh", "-110vh"],
+                opacity: [0, 1, 0],
+                x: [0, (i % 2 ? 30 : -30)],
+              }}
+              transition={{
+                duration: 14 + (i % 5) * 3,
+                delay: i * 0.7,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+            />
+          ))}
         </div>
-      </header>
 
-      <div className="container mx-auto px-4 pb-32 relative z-10 max-w-lg">
-        {/* Hero — Current Phase */}
+        {/* Floating glass header */}
+        <div className="relative z-20 flex items-center justify-between px-5 pt-5">
+          <Link
+            to="/"
+            className="w-10 h-10 rounded-full bg-white/[0.08] backdrop-blur-md border border-white/15 flex items-center justify-center text-white/80 hover:bg-white/[0.14] transition"
+            aria-label="Home"
+          >
+            <Home className="w-4 h-4" />
+          </Link>
+
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.06] backdrop-blur-md border border-white/10">
+            <Flame className="w-3.5 h-3.5 text-orange-300" style={{ filter: "drop-shadow(0 0 6px rgba(251,146,60,0.8))" }} />
+            <span className="text-xs font-medium text-orange-200 tracking-wider">{totalXp} XP</span>
+          </div>
+
+          {user && !isGuest ? (
+            <button
+              onClick={handleSignOut}
+              aria-label="Sign out"
+              className="w-10 h-10 rounded-full bg-white/[0.08] backdrop-blur-md border border-white/15 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/[0.14] transition"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          ) : isGuest ? (
+            <Link
+              to="/auth"
+              className="px-3 py-1.5 rounded-full bg-orange-500/20 backdrop-blur-md border border-orange-400/30 text-xs font-medium text-orange-200 hover:bg-orange-500/30 transition"
+            >
+              Sign In
+            </Link>
+          ) : (
+            <span className="w-10 h-10" />
+          )}
+        </div>
+
+        {/* Editorial title block */}
+        <div className="relative z-10 mt-auto px-6 pb-14 text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 1 }}
+            className="text-[10px] tracking-[0.45em] uppercase text-orange-300/80 mb-4"
+          >
+            {greeting}, {displayName}
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 1.2 }}
+            className="font-serif font-bold text-white text-4xl md:text-6xl leading-[1.05] tracking-tight"
+            style={{ textShadow: "0 4px 30px rgba(0,0,0,0.6)" }}
+          >
+            Phoenix Journey
+          </motion.h1>
+
+          <motion.div
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ delay: 0.9, duration: 0.8 }}
+            className="mx-auto mt-5 mb-4 h-px w-24 bg-gradient-to-r from-transparent via-orange-400/70 to-transparent"
+          />
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.1, duration: 1.2 }}
+            className="font-serif italic text-white/70 text-base md:text-lg max-w-md mx-auto leading-relaxed"
+          >
+            {currentPhaseData?.subtitle ?? "Your path to rising"}
+          </motion.p>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.4, duration: 1.2 }}
+            className="mt-3 text-[11px] uppercase tracking-[0.35em] text-cyan-300/70"
+          >
+            Chapter {currentPhase} · {currentPhaseData?.name}
+          </motion.p>
+        </div>
+      </section>
+
+      <div className="container mx-auto px-4 pb-32 relative z-10 max-w-lg -mt-10">
+        {/* Flame strength — glassmorphic medallion */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="pt-8 pb-6 text-center"
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="relative rounded-3xl border border-white/10 bg-gradient-to-br from-gray-900/80 via-gray-900/60 to-gray-950/80 backdrop-blur-xl shadow-[0_30px_80px_-30px_rgba(249,115,22,0.35)] p-6 sm:p-8 mb-10"
         >
-          <motion.div
-            animate={{ scale: [1, 1.08, 1] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            className="inline-block mb-4"
-          >
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-500/20 to-amber-500/10 border border-orange-500/20 flex items-center justify-center">
-              <Flame className="w-8 h-8 text-orange-400" style={{ filter: 'drop-shadow(0 0 8px hsl(25, 90%, 55%))' }} />
+          <div className="absolute -top-16 -right-16 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative text-center">
+            <p className="text-[10px] tracking-[0.4em] uppercase text-orange-300/70 mb-3">Your flame</p>
+            <div className="max-w-xs mx-auto">
+              <FlameStrength
+                value={flameStrength}
+                phase={currentPhase}
+                phaseName={currentPhaseData?.name || ""}
+              />
             </div>
-          </motion.div>
-
-          <h1 className="text-2xl font-serif text-white mb-1">
-            {currentPhaseData?.name}
-          </h1>
-          <p className="text-sm text-white/40 mb-5">{currentPhaseData?.subtitle}</p>
-
-          {/* Flame Strength — clean and prominent */}
-          <div className="max-w-xs mx-auto">
-            <FlameStrength
-              value={flameStrength}
-              phase={currentPhase}
-              phaseName={currentPhaseData?.name || ""}
-            />
+            <p className="font-serif italic text-xs text-white/40 mt-4">
+              {completedInCurrentPhase} of {currentPhaseQuests.length} quests illuminated
+            </p>
           </div>
-
-          <p className="text-xs text-white/30 mt-3">
-            {completedInCurrentPhase} of {currentPhaseQuests.length} quests completed
-          </p>
         </motion.div>
 
         {/* Daily Protocol FAB is rendered as a fixed button outside the scroll container */}
@@ -133,30 +233,32 @@ const PhoenixPath = () => {
             transition={{ delay: 0.25 }}
             className="mb-8"
           >
-            <p className="text-xs text-white/30 uppercase tracking-widest mb-3 px-1">Continue your journey</p>
+            <p className="text-[10px] tracking-[0.4em] uppercase text-cyan-300/70 mb-3 px-1">Continue your journey</p>
             <button
               onClick={() => setSelectedQuest(nextQuest)}
-              className="w-full text-left rounded-2xl p-5 bg-gradient-to-br from-orange-500/10 to-amber-500/5 border border-orange-500/20 hover:border-orange-500/40 transition-all duration-300 group"
+              className="relative w-full text-left rounded-2xl p-6 bg-gradient-to-br from-orange-500/15 via-orange-500/8 to-amber-500/5 border border-orange-500/25 hover:border-orange-400/50 transition-all duration-500 group backdrop-blur-xl shadow-[0_20px_60px_-25px_rgba(249,115,22,0.5)] overflow-hidden"
             >
+              <div className="absolute -top-12 -right-12 w-40 h-40 bg-orange-500/15 rounded-full blur-3xl pointer-events-none group-hover:bg-orange-500/25 transition-colors duration-700" />
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
-                  <span className="text-[10px] uppercase tracking-wider text-orange-400/70 font-medium">
-                    {nextQuest.type} quest
+                  <span className="text-[10px] uppercase tracking-[0.35em] text-orange-300/80 font-medium">
+                    {nextQuest.type} · quest
                   </span>
-                  <h3 className="text-lg font-serif text-white mt-1 group-hover:text-orange-200 transition-colors">
+                  <h3 className="text-xl font-serif text-white mt-2 group-hover:text-orange-100 transition-colors leading-snug">
                     {nextQuest.title}
                   </h3>
-                  <p className="text-sm text-white/40 mt-1 line-clamp-2">{nextQuest.description}</p>
-                  <div className="flex items-center gap-3 mt-3 text-xs text-white/30">
-                    <span className="flex items-center gap-1 text-orange-400/70">
+                  <p className="text-sm font-serif italic text-white/55 mt-2 line-clamp-2 leading-relaxed">{nextQuest.description}</p>
+                  <div className="flex items-center gap-4 mt-4 text-xs text-white/40">
+                    <span className="flex items-center gap-1.5 text-orange-300/80">
                       <Zap className="w-3 h-3" />{nextQuest.xpReward} XP
                     </span>
-                    <span>~{nextQuest.estimatedMinutes} min</span>
+                    <span className="w-1 h-1 rounded-full bg-white/20" />
+                    <span className="tracking-wider">{nextQuest.estimatedMinutes} MIN</span>
                   </div>
                 </div>
                 <div className="flex-shrink-0 mt-2">
-                  <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center group-hover:bg-orange-500/30 transition-colors">
-                    <ChevronDown className="w-5 h-5 text-orange-400 rotate-[-90deg]" />
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500/30 to-amber-500/20 border border-orange-400/30 flex items-center justify-center group-hover:scale-110 group-hover:border-orange-300/60 transition-all duration-500 shadow-[0_0_20px_rgba(251,146,60,0.3)]">
+                    <ChevronDown className="w-5 h-5 text-orange-200 rotate-[-90deg]" />
                   </div>
                 </div>
               </div>
@@ -171,7 +273,7 @@ const PhoenixPath = () => {
           transition={{ delay: 0.3 }}
           className="mb-8"
         >
-          <p className="text-xs text-white/30 uppercase tracking-widest mb-3 px-1">
+          <p className="text-[10px] tracking-[0.4em] uppercase text-cyan-300/70 mb-3 px-1">
             {currentPhaseData?.name} quests
           </p>
           <div className="grid grid-cols-2 gap-2">
@@ -218,7 +320,7 @@ const PhoenixPath = () => {
 
         {/* Other Phases — Collapsed */}
         <div className="space-y-2 mb-8">
-          <p className="text-xs text-white/30 uppercase tracking-widest mb-3 px-1">All phases</p>
+          <p className="text-[10px] tracking-[0.4em] uppercase text-cyan-300/70 mb-3 px-1">All phases</p>
           {PHASES.map((phase) => {
             if (phase.phase === currentPhase) return null;
             const phaseQuests = getQuestsForPhase(phase.phase);
