@@ -58,6 +58,7 @@ import DailyProtocol from "./pages/DailyProtocol";
 import AICompanion from "./pages/AICompanion";
 import BrainCompass from "./pages/BrainCompass";
 import Settings from "./pages/Settings";
+import ClinicianPortal from "./pages/ClinicianPortal";
 
 const queryClient = new QueryClient();
 
@@ -216,6 +217,11 @@ const AppContent = () => {
           <Route path="/settings" element={
             <ProtectedRoute>
               <Settings />
+            </ProtectedRoute>
+          } />
+          <Route path="/clinician" element={
+            <ProtectedRoute>
+              <ClinicianPortal />
             </ProtectedRoute>
           } />
           
