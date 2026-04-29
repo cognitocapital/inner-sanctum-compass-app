@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Home, LogOut, User, Flame, Zap, BookHeart, ExternalLink, ChevronDown, ChevronUp, MessageCircle } from "lucide-react";
+import { Home, Settings as SettingsIcon, Flame, Zap, BookHeart, ExternalLink, ChevronDown, ChevronUp, MessageCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/use-profile";
 import { usePhoenixPath } from "@/hooks/use-phoenix-path";
@@ -15,7 +15,7 @@ import phoenixPathHero from "@/assets/phoenix-path-hero.jpg";
 
 const PhoenixPath = () => {
   const navigate = useNavigate();
-  const { user, isGuest, signOut } = useAuth();
+  const { user, isGuest } = useAuth();
   const { profile } = useProfile();
   const { currentPhase, flameStrength, isLoading, totalXp, completedCount, getQuestStatus } = usePhoenixPath();
   const [selectedQuest, setSelectedQuest] = useState<QuestDefinition | null>(null);
@@ -34,11 +34,6 @@ const PhoenixPath = () => {
     if (h < 21) return "Good evening";
     return "Good night";
   })();
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate("/");
-  };
 
   const handleBeginQuest = (quest: QuestDefinition) => {
     setSelectedQuest(null);
@@ -129,13 +124,13 @@ const PhoenixPath = () => {
           </div>
 
           {user && !isGuest ? (
-            <button
-              onClick={handleSignOut}
-              aria-label="Sign out"
+            <Link
+              to="/settings"
+              aria-label="Settings"
               className="w-10 h-10 rounded-full bg-white/[0.08] backdrop-blur-md border border-white/15 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/[0.14] transition"
             >
-              <LogOut className="w-4 h-4" />
-            </button>
+              <SettingsIcon className="w-4 h-4" />
+            </Link>
           ) : isGuest ? (
             <Link
               to="/auth"

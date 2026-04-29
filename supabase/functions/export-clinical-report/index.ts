@@ -39,6 +39,13 @@ interface ReportData {
     sleep: number | null;
     symptoms: string[];
   }>;
+  phoenixObservations: Array<{
+    date: string;
+    title: string;
+    phase: number;
+    moodTag: string | null;
+    content: string;
+  }>;
   trends: {
     moodTrend: 'improving' | 'stable' | 'declining' | 'insufficient_data';
     activityTrend: 'increasing' | 'stable' | 'decreasing' | 'insufficient_data';
@@ -77,12 +84,13 @@ serve(async (req) => {
     }
 
     // Fetch all relevant data
-    const [profileRes, progressRes, assessmentsRes, sessionsRes, checkinsRes] = await Promise.all([
+    const [profileRes, progressRes, assessmentsRes, sessionsRes, checkinsRes, journalRes] = await Promise.all([
       supabase.from("profiles").select("*").eq("id", user.id).single(),
       supabase.from("user_progress").select("*").eq("user_id", user.id).single(),
       supabase.from("clinical_assessments").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
       supabase.from("session_logs").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
       supabase.from("daily_checkins").select("*").eq("user_id", user.id).order("check_date", { ascending: false }).limit(30),
+      supabase.from("user_journal_entries").select("*").eq("user_id", user.id).order("created_at", { ascending: false }).limit(20),
     ]);
 
     const profile = profileRes.data;
@@ -90,6 +98,7 @@ serve(async (req) => {
     const assessments = assessmentsRes.data || [];
     const sessions = sessionsRes.data || [];
     const checkins = checkinsRes.data || [];
+    const journal = journalRes.data || [];
 
     // Calculate session summary
     const moduleBreakdown: Record<string, { sessions: number; minutes: number }> = {};
@@ -149,6 +158,13 @@ serve(async (req) => {
         energy: c.energy_level,
         sleep: c.sleep_quality,
         symptoms: (c.symptoms_today as string[]) || [],
+      })),
+      phoenixObservations: journal.map((j: any) => ({
+        date: j.created_at,
+        title: j.title,
+        phase: j.phase,
+        moodTag: j.mood_tag,
+        content: j.content,
       })),
       trends: {
         moodTrend,
@@ -323,6 +339,48 @@ function generateHTMLReport(report: ReportData): string {
   </div>
 
   <div class="section">
+    <h2>Recent Daily Check-ins (last 14)</h2>
+    ${report.recentCheckins.length > 0 ? `
+      <table style="width:100%; border-collapse: collapse; font-size: 13px;">
+        <thead>
+          <tr style="border-bottom: 1px solid #334155; color:#94a3b8;">
+            <th style="text-align:left; padding:6px;">Date</th>
+            <th style="text-align:left; padding:6px;">Mood</th>
+            <th style="text-align:left; padding:6px;">Energy</th>
+            <th style="text-align:left; padding:6px;">Sleep</th>
+            <th style="text-align:left; padding:6px;">Symptoms</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${report.recentCheckins.map(c => `
+            <tr style="border-bottom: 1px solid #1e293b;">
+              <td style="padding:6px;">${new Date(c.date).toLocaleDateString()}</td>
+              <td style="padding:6px;">${c.mood ?? '—'}</td>
+              <td style="padding:6px;">${c.energy ?? '—'}</td>
+              <td style="padding:6px;">${c.sleep ?? '—'}</td>
+              <td style="padding:6px;">${(c.symptoms || []).join(', ') || '—'}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    ` : '<p>No recent check-ins recorded</p>'}
+  </div>
+
+  <div class="section">
+    <h2>Phoenix Observations (Patient Journal)</h2>
+    <p style="color:#94a3b8; font-size:12px; margin-top:-6px;">First-person reflections recorded by the patient. Provided for clinical context only.</p>
+    ${report.phoenixObservations.length > 0 ? report.phoenixObservations.map(o => `
+      <div style="background:#0f172a; padding:14px; border-radius:8px; margin-bottom:10px; border-left:3px solid #f97316;">
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:#94a3b8; margin-bottom:6px;">
+          <span><strong style="color:#e2e8f0;">${escapeHtml(o.title)}</strong> · Phase ${o.phase}${o.moodTag ? ` · ${escapeHtml(o.moodTag)}` : ''}</span>
+          <span>${new Date(o.date).toLocaleDateString()}</span>
+        </div>
+        <div style="white-space:pre-wrap; font-size:13px; line-height:1.5;">${escapeHtml(o.content)}</div>
+      </div>
+    `).join('') : '<p>No journal observations recorded</p>'}
+  </div>
+
+  <div class="section">
     <h2>Trends Analysis</h2>
     <p>
       <strong>Mood:</strong> 
@@ -346,4 +404,14 @@ function generateHTMLReport(report: ReportData): string {
 </body>
 </html>
   `;
+}
+
+function escapeHtml(str: string): string {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
