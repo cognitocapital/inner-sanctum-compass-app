@@ -12,6 +12,7 @@ import { SuccessMetrics } from "@/components/protocol/SuccessMetrics";
 import { supabase } from "@/integrations/supabase/client";
 import { AskAgentButton } from "@/components/ui/ask-agent-button";
 import dailyProtocolHero from "@/assets/daily-protocol-hero.jpg";
+import groundingHero from "@/assets/grounding-hero.jpg";
 
 type ProtocolStep = "breathe" | "cognitive" | "mindset" | "soundscape" | "rating" | "complete";
 
@@ -290,31 +291,78 @@ const DailyProtocol = () => {
 
               {!mindsetActive && mindsetTimer === 30 ? (
                 <>
-                  <div className="w-20 h-20 rounded-full bg-rose-500/10 border border-rose-500/20 flex items-center justify-center mx-auto">
-                    <Heart className="w-10 h-10 text-rose-400" />
+                  {/* Cinematic lotus medallion */}
+                  <div className="relative w-56 h-56 mx-auto">
+                    <div className="absolute inset-0 rounded-full overflow-hidden border border-rose-400/30 shadow-[0_0_60px_-10px_rgba(244,114,182,0.4)]">
+                      <img
+                        src={groundingHero}
+                        alt="Glowing rose-gold lotus on still water under a starlit sky"
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-gray-950/40" />
+                    </div>
+                    {/* Soft pulse halo */}
+                    <motion.div
+                      animate={{ scale: [1, 1.08, 1], opacity: [0.4, 0.7, 0.4] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute -inset-2 rounded-full border border-rose-300/30 pointer-events-none"
+                    />
+                    <div className="absolute inset-0 rounded-full ring-1 ring-inset ring-white/10 pointer-events-none" />
                   </div>
-                  <p className="text-xs text-white/30 italic max-w-xs mx-auto">
+
+                  <p className="text-base font-serif italic text-white/70 max-w-sm mx-auto leading-relaxed">
                     "Close your eyes. Feel the chair beneath you. You are not your thoughts. You are the one watching them."
                   </p>
-                  <Button onClick={() => setMindsetActive(true)} className="rounded-full bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/20 min-h-[56px] px-8">
+                  <Button
+                    onClick={() => setMindsetActive(true)}
+                    className="rounded-full bg-gradient-to-r from-rose-500/30 to-rose-400/30 hover:from-rose-500/40 hover:to-rose-400/40 text-rose-100 border border-rose-300/40 backdrop-blur-sm min-h-[56px] px-10 shadow-[0_8px_24px_-8px_rgba(244,114,182,0.5)]"
+                  >
+                    <Heart className="w-4 h-4 mr-2" />
                     Begin Stillness
                   </Button>
                 </>
               ) : mindsetTimer > 0 ? (
-                <motion.div animate={{ scale: [1, 1.05, 1] }} transition={{ duration: 4, repeat: Infinity }}>
-                  <div className="w-32 h-32 rounded-full bg-rose-500/10 border border-rose-500/20 flex items-center justify-center mx-auto">
-                    <span className="text-4xl font-bold text-rose-300">{mindsetTimer}</span>
+                <div className="space-y-6">
+                  <div className="relative w-56 h-56 mx-auto">
+                    {/* Cinematic backdrop */}
+                    <div className="absolute inset-0 rounded-full overflow-hidden border border-rose-400/30 shadow-[0_0_80px_-10px_rgba(244,114,182,0.5)]">
+                      <img
+                        src={groundingHero}
+                        alt=""
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gray-950/55 backdrop-blur-[2px]" />
+                    </div>
+                    {/* Breathing rings */}
+                    <motion.div
+                      animate={{ scale: [1, 1.15, 1], opacity: [0.6, 0.2, 0.6] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                      className="absolute -inset-3 rounded-full border border-rose-300/40 pointer-events-none"
+                    />
+                    <motion.div
+                      animate={{ scale: [1, 1.25, 1], opacity: [0.4, 0.05, 0.4] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                      className="absolute -inset-6 rounded-full border border-rose-200/20 pointer-events-none"
+                    />
+                    {/* Countdown */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="text-6xl font-serif font-light text-rose-100 drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]">{mindsetTimer}</span>
+                      <span className="text-[10px] tracking-[0.4em] uppercase text-rose-200/60 mt-2">seconds</span>
+                    </div>
                   </div>
-                  <p className="text-xs text-white/30 mt-4">Just breathe. Just be.</p>
-                </motion.div>
+                  <p className="text-sm font-serif italic text-white/60">Just breathe. Just be.</p>
+                </div>
               ) : (
                 <>
-                  <p className="text-lg font-serif text-white">One thing you're grateful for:</p>
+                  <p className="text-[10px] tracking-[0.4em] uppercase text-rose-300/70">A small offering</p>
+                  <p className="text-xl md:text-2xl font-serif text-white">One thing you're grateful for</p>
                   <textarea
                     value={gratitudeText}
                     onChange={(e) => setGratitudeText(e.target.value)}
                     placeholder="Today I'm grateful for..."
-                    className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 text-white placeholder:text-white/20 text-sm resize-none h-24 focus:outline-none focus:border-orange-500/30"
+                    className="w-full bg-white/[0.04] border border-white/10 rounded-2xl p-5 text-white placeholder:text-white/25 text-base font-serif italic resize-none h-28 focus:outline-none focus:border-rose-400/40 focus:bg-white/[0.06] transition-all"
                   />
                   <Button onClick={() => goToStep("soundscape")} className="rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white min-h-[56px] px-8">
                     Next: Healing Sound →
