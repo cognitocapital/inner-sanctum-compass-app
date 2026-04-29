@@ -174,10 +174,9 @@ const DailyProtocol = () => {
           {STEPS.map((s, i) => (
             <div key={s.key} className="flex items-center gap-2">
               <button
-                onClick={() => {
-                  if (i <= stepIndex || (s.key === "soundscape")) goToStep(s.key);
-                }}
-                className={`w-11 h-11 rounded-full flex items-center justify-center border transition-all ${
+                onClick={() => goToStep(s.key)}
+                title={`Go to ${s.label}`}
+                className={`w-11 h-11 rounded-full flex items-center justify-center border transition-all hover:scale-110 hover:border-orange-400/50 ${
                   s.key === currentStep
                     ? `border-orange-400/60 bg-orange-500/20 ${s.color} shadow-[0_0_20px_-2px_rgba(251,146,60,0.5)]`
                     : i < stepIndex
