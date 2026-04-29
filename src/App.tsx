@@ -57,6 +57,7 @@ import Soundscapes from "./pages/Soundscapes";
 import DailyProtocol from "./pages/DailyProtocol";
 import AICompanion from "./pages/AICompanion";
 import BrainCompass from "./pages/BrainCompass";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -210,6 +211,11 @@ const AppContent = () => {
           <Route path="/ai-companion" element={
             <ProtectedRoute>
               <AICompanion />
+            </ProtectedRoute>
+          } />
+          <Route path="/settings" element={
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           } />
           
