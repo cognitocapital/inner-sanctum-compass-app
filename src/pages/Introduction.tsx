@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
+import introHero from "@/assets/introduction-hero.jpg";
 
 const Introduction = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
@@ -13,6 +14,30 @@ const Introduction = () => {
       <PageAudioPlayer audioSrc={["/audio/introduction.mp3"]} />
       <ChapterNavArrows currentPath="/introduction" />
       <SEOHead title="Introduction - What a Journey" description="Introduction to What a Journey, setting the stage for Michael Heron's TBI recovery story." path="/introduction" />
+      {/* Cinematic hero — father/son journey, Manly horizon, drifting embers */}
+      <div className="relative w-full h-[60vh] min-h-[420px] max-h-[640px] overflow-hidden">
+        <img
+          src={introHero}
+          alt="A man gazes out a car window at a winding coastal road toward Manly at golden hour, his reflection ghosted in the glass — the contemplative drive that opens What a Journey."
+          width={1920}
+          height={1080}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-900/40 via-gray-900/20 to-gray-900" />
+        <div className="absolute inset-0 bg-gradient-to-r from-gray-900/60 via-transparent to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 px-6 pb-10 md:pb-16">
+          <div className="max-w-4xl mx-auto">
+            <p className="text-amber-300/80 text-xs md:text-sm tracking-[0.3em] uppercase mb-3 animate-fade-in">A Memoir · Michael Heron</p>
+            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-white drop-shadow-2xl animate-fade-in">
+              Introduction
+            </h1>
+            <p className="mt-4 text-lg md:text-xl text-white/80 italic max-w-2xl animate-fade-in">
+              "What a journey." — the words I'd say to my Dad, looking out the window, contemplating life.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Animated background elements inspired by phoenix flames */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Primary flame particles */}
