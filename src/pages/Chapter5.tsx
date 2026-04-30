@@ -5,78 +5,72 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
+import chapter5Hero from "@/assets/chapter5-hero.jpg";
 
 const Chapter5 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
+    <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
       <PageAudioPlayer audioSrc={["/audio/chapter5.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-5" />
       <SEOHead title="Chapter 5: Choose Your Own Adventure - What a Journey" description="Taking control of the recovery path and choosing how to move forward." path="/chapter-5" />
-      {/* Animated background elements inspired by phoenix flames */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Primary flame particles */}
-        <div className="absolute top-20 left-10 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-80 shadow-lg shadow-orange-500/50"></div>
-        <div className="absolute top-40 right-20 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1s] opacity-60 shadow-lg shadow-orange-500/40"></div>
-        <div className="absolute bottom-60 left-1/4 w-2.5 h-2.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_2s] opacity-70 shadow-lg shadow-orange-500/45"></div>
-        <div className="absolute bottom-40 right-1/3 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_3s] opacity-50 shadow-lg shadow-orange-500/35"></div>
-        <div className="absolute top-1/3 left-1/6 w-1.5 h-1.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.5s] opacity-45 shadow-lg shadow-orange-500/30"></div>
-        <div className="absolute bottom-1/3 right-1/6 w-1 h-1 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_2.5s] opacity-35 shadow-lg shadow-orange-500/25"></div>
-        <div className="absolute top-2/3 right-1/5 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.5s] opacity-55 shadow-lg shadow-orange-500/40"></div>
-        
-        {/* Additional ember particles */}
-        <div className="absolute top-32 left-1/5 w-1 h-1 bg-yellow-400 rounded-full animate-[float_4s_ease-in-out_infinite_4s] opacity-40"></div>
-        <div className="absolute top-56 right-1/4 w-1.5 h-1.5 bg-red-400 rounded-full animate-[float_4s_ease-in-out_infinite_5s] opacity-35"></div>
-        <div className="absolute bottom-72 left-1/3 w-1 h-1 bg-yellow-400 rounded-full animate-[float_4s_ease-in-out_infinite_6s] opacity-30"></div>
-        <div className="absolute bottom-24 right-1/6 w-1.5 h-1.5 bg-orange-500 rounded-full animate-[float_4s_ease-in-out_infinite_7s] opacity-45"></div>
-        <div className="absolute top-1/4 right-1/8 w-1 h-1 bg-red-500 rounded-full animate-[float_4s_ease-in-out_infinite_8s] opacity-40"></div>
-        
-        {/* Subtle flame trails */}
-        <div className="absolute top-16 left-1/2 w-0.5 h-8 bg-gradient-to-t from-orange-500/60 to-transparent animate-[float_3s_ease-in-out_infinite_3.5s] opacity-30"></div>
-        <div className="absolute bottom-32 right-1/2 w-0.5 h-6 bg-gradient-to-t from-orange-500/50 to-transparent animate-[float_3s_ease-in-out_infinite_4.5s] opacity-25"></div>
-      </div>
-      
-      <div className="relative z-10 max-w-4xl mx-auto animate-fade-in px-4 py-8">
-        <div className="mb-8">
-          <Button asChild variant="ghost" className="pl-0 text-gray-300 hover:text-white transition-colors">
-            <Link to="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back Home
-            </Link>
-          </Button>
+
+      {/* Cinematic hero */}
+      <section className="relative w-full h-[88vh] min-h-[560px] overflow-hidden">
+        <img
+          src={chapter5Hero}
+          alt="A forking road at sunrise — neuroplasticity and the choice to rebuild"
+          width={1920}
+          height={1080}
+          className="absolute inset-0 w-full h-full object-cover scale-105 animate-[fade-in_1.6s_ease-out]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0f] via-[#0a0a0f]/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0f]/70 via-transparent to-[#0a0a0f]/70" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_30%,_rgba(10,10,15,0.7)_100%)]" />
+
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-[20%] left-[15%] w-1.5 h-1.5 bg-amber-400 rounded-full animate-[float_6s_ease-in-out_infinite] opacity-60 shadow-[0_0_12px_rgba(245,158,11,0.7)]" />
+          <div className="absolute top-[36%] right-[22%] w-1 h-1 bg-amber-300 rounded-full animate-[float_7s_ease-in-out_infinite_1s] opacity-50 shadow-[0_0_10px_rgba(252,211,77,0.6)]" />
+          <div className="absolute bottom-[32%] left-[24%] w-2 h-2 bg-amber-500 rounded-full animate-[float_8s_ease-in-out_infinite_2s] opacity-55 shadow-[0_0_14px_rgba(245,158,11,0.6)]" />
+          <div className="absolute bottom-[44%] right-[36%] w-1 h-1 bg-amber-300 rounded-full animate-[float_5s_ease-in-out_infinite_3s] opacity-45 shadow-[0_0_8px_rgba(252,211,77,0.5)]" />
+          <div className="absolute top-[60%] left-[50%] w-1.5 h-1.5 bg-amber-400 rounded-full animate-[float_9s_ease-in-out_infinite_4s] opacity-40 shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
         </div>
 
-        {/* Phoenix image for chapter header */}
-        <div className="text-center mb-8">
-          <div className="relative mx-auto w-24 h-24 group">
-            <div 
-              className="w-full h-full rounded-full border-4 border-orange-500/40 shadow-2xl hover:scale-110 transition-all duration-700 cursor-pointer phoenix-image"
-              style={{
-                backgroundImage: `url('/lovable-uploads/87893c50-952e-48f8-9649-a7083c6cffd3.png')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat'
-              }}
-            />
-            {/* Flame particles around phoenix */}
-            <div className="absolute -top-4 -left-4 w-4 h-4 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-90"></div>
-            <div className="absolute -top-6 right-12 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.8s] opacity-75"></div>
-            <div className="absolute top-6 -right-5 w-3.5 h-3.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.2s] opacity-85"></div>
-            <div className="absolute bottom-12 -left-6 w-2.5 h-2.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.3s] opacity-65"></div>
-            <div className="absolute -bottom-5 right-8 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.5s] opacity-80"></div>
+        <div className="absolute inset-0 flex flex-col justify-end pb-16 md:pb-24">
+          <div className="max-w-5xl mx-auto px-6 md:px-10 w-full">
+            <div className="mb-6">
+              <Button asChild variant="ghost" className="pl-0 text-white/70 hover:text-amber-300 hover:bg-transparent transition-colors">
+                <Link to="/">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back to the Library
+                </Link>
+              </Button>
+            </div>
+            <p className="text-amber-400/80 tracking-[0.3em] text-xs md:text-sm uppercase mb-4 animate-[fade-in_1.2s_ease-out_0.3s_both]">
+              Chapter Five
+            </p>
+            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.05] mb-4 animate-[fade-in_1.4s_ease-out_0.5s_both] drop-shadow-[0_4px_30px_rgba(0,0,0,0.8)]">
+              Choose Your Own Adventure
+            </h1>
+            <p className="text-white/60 text-base md:text-lg max-w-2xl font-light italic animate-[fade-in_1.6s_ease-out_0.7s_both]">
+              On neuroplasticity, agency, and the power to install a new operating system.
+            </p>
           </div>
         </div>
 
-        <div className="backdrop-blur-sm bg-white/90 border-orange-500/20 shadow-2xl rounded-lg p-8 md:p-12">
-          <article className="prose prose-lg mx-auto text-gray-900 max-w-none">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold text-center text-orange-600 mb-2 drop-shadow-sm">
-              Chapter 5
-            </h1>
-            <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              Choose Your Own Adventure
-            </h2>
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/40 text-xs tracking-[0.3em] uppercase animate-pulse">
+          Read
+        </div>
+      </section>
 
-            <p className="text-lg leading-relaxed mb-6">
+      {/* Editorial article */}
+      <div className="relative z-10 max-w-3xl mx-auto px-6 md:px-10 py-16 md:py-24">
+        <article className="relative rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-8 md:p-14 shadow-[0_30px_120px_-30px_rgba(0,0,0,0.8)] animate-[fade-in_0.8s_ease-out]">
+          <div className="absolute -top-px left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent" />
+
+          <div className="prose prose-invert prose-lg max-w-none prose-p:text-white/80 prose-p:leading-relaxed prose-p:font-light">
+
+            <p className="text-lg leading-relaxed mb-6 first-letter:text-6xl first-letter:font-serif first-letter:text-amber-400 first-letter:float-left first-letter:mr-3 first-letter:leading-none first-letter:mt-1">
               I didn't know it at first, but I was about to begin a long recovery—at first, it was one day at a time, but then I had to learn how much it was up to me to get through it. I had to accept my brain was damaged, and there were many steps in learning how to fix it. This part is way easier said than done. A near-death experience can change you for better or worse, and I had to choose the outcome.
             </p>
 
@@ -84,9 +78,9 @@ const Chapter5 = () => {
               My doctors did their best to help me, but I also researched online to find out more, including information from Dr. Joe Dispenza, who is a New York Times best-selling author, researcher, and lecturer. He talks about your brain reprogramming after a near-death experience, like TBI. From what I learned from his publications, he gave me inspiration in my recovery. I believe in the opportunity to install a new operating system in my mind, one which leaves the old obsolete. Here is how I rewrote my programming.
             </p>
 
-            <p className="text-lg leading-relaxed mb-6">
+            <blockquote className="my-10 pl-6 border-l-2 border-amber-400/60 italic text-white/90 font-serif text-xl leading-relaxed">
               But what does that even mean? I chose my own adventure after my traumatic brain injury. It started with believing that my brain has an incredible capacity to heal and rewire itself—a phenomenon called neuroplasticity. Based on my research, I thought of my brain as a vast network of roads. After my TBI, it's like a major accident has blocked some of those roads. But my brain, like a skilled engineer, can create new pathways and detours to get around those blockages.
-            </p>
+            </blockquote>
 
             <p className="text-lg leading-relaxed mb-6">
               This "reprogramming" is about consciously choosing which roads to build and strengthen. It's about focusing on the positive, cultivating new habits, and embracing the opportunity for growth that this experience presents. It's not about denying the challenges or pretending everything is okay. It's about acknowledging the difficulties, accepting them, and then choosing to move forward with intention and purpose.
@@ -96,22 +90,23 @@ const Chapter5 = () => {
               Cultivating a positive mindset, nurturing my emotional well-being, and connecting with my inner strength is important. It's about finding gratitude in adversity and choosing to see the light even in the darkest of times. This journey was not easy. There were setbacks, frustrations, and moments of doubt. But by embracing the power of choice, I navigated this new landscape and created a life that is even richer and more meaningful than before.
             </p>
 
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">
-              <Button asChild variant="outline" className="border-orange-500/50 hover:bg-orange-500/10 hover:border-orange-500 transition-all duration-300">
+          </div>
+
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-white/10">
+            <Button asChild variant="outline" className="border-white/20 bg-white/5 text-white hover:bg-white/10 hover:border-amber-400/50 hover:text-amber-300 transition-all duration-300">
                 <Link to="/chapter-4">
                   <ArrowLeft className="mr-2 h-4 w-4" />
                   Previous Chapter
                 </Link>
               </Button>
-              <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <Button asChild className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black font-semibold shadow-[0_0_30px_rgba(245,158,11,0.4)] hover:shadow-[0_0_40px_rgba(245,158,11,0.6)] transition-all duration-300 hover:scale-105">
                 <Link to="/chapter-6">
                   Next Chapter
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-            </div>
-          </article>
-        </div>
+          </div>
+        </article>
       </div>
     </div>
   );
