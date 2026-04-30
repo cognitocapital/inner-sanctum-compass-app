@@ -10,12 +10,21 @@ import {
   Star,
   Music,
   ChevronDown,
+  Flame,
+  Sparkles,
 } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import resourcesIllustration from "@/assets/resources-illustration.jpg";
 
 const Resources = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  const X_URL = "https://x.com/WhatajourneyTBI";
+  const XIcon = ({ className }: { className?: string }) => (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
 
   const featuredInfluencers = [
     {
@@ -331,6 +340,118 @@ const Resources = () => {
               </div>
             </div>
           </Link>
+        </section>
+
+        {/* ============ COMMUNITY — STAND UNDER THE TORCH ============ */}
+        <section aria-labelledby="community-heading" className="relative">
+          <div className="relative rounded-3xl overflow-hidden border border-orange-400/30 bg-gradient-to-br from-orange-600/15 via-amber-500/10 to-rose-600/10 backdrop-blur-xl">
+            {/* Ambient glow */}
+            <div className="absolute -top-24 -right-24 w-80 h-80 bg-orange-500/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-amber-500/15 rounded-full blur-3xl pointer-events-none" />
+
+            {/* Drifting embers */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              <div className="absolute top-[20%] left-[12%] w-1.5 h-1.5 bg-orange-400 rounded-full opacity-70 shadow-[0_0_12px_4px_rgba(251,146,60,0.6)] animate-[float_5s_ease-in-out_infinite]" />
+              <div className="absolute top-[60%] right-[18%] w-1 h-1 bg-amber-300 rounded-full opacity-60 shadow-[0_0_10px_3px_rgba(252,211,77,0.5)] animate-[float_6s_ease-in-out_infinite_1s]" />
+              <div className="absolute top-[40%] left-[60%] w-1.5 h-1.5 bg-rose-400 rounded-full opacity-50 shadow-[0_0_10px_3px_rgba(251,113,133,0.5)] animate-[float_7s_ease-in-out_infinite_2s]" />
+            </div>
+
+            <div className="relative px-6 md:px-12 py-12 md:py-16">
+              <div className="text-center max-w-3xl mx-auto">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-orange-400/30 mb-5">
+                  <Flame className="w-3.5 h-3.5 text-orange-300" style={{ filter: "drop-shadow(0 0 6px rgba(251,146,60,0.8))" }} />
+                  <span className="text-[10px] tracking-[0.35em] uppercase text-orange-200 font-medium">The Torch Circle</span>
+                </div>
+
+                <h2 id="community-heading" className="font-serif text-4xl md:text-5xl text-white font-bold leading-tight tracking-tight">
+                  No one rises alone.
+                </h2>
+                <div className="mx-auto mt-5 mb-6 h-px w-24 bg-gradient-to-r from-transparent via-orange-400/70 to-transparent" />
+                <p className="font-serif italic text-white/80 text-lg md:text-xl leading-relaxed">
+                  We're building a global community of TBI survivors, carers, clinicians and quiet allies — sharing wins, fog days, and the small protocols that actually work.
+                </p>
+                <p className="text-white/60 text-sm md:text-base mt-4 leading-relaxed">
+                  Stand under the torch with us. Read someone's chapter today. Share yours when you're ready. Every voice keeps the flame burning brighter for the next survivor finding this page in the dark.
+                </p>
+              </div>
+
+              {/* Action grid */}
+              <div className="grid md:grid-cols-3 gap-4 mt-10 max-w-4xl mx-auto">
+                {/* X Community */}
+                <a
+                  href={X_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative rounded-2xl border border-orange-400/30 bg-gradient-to-br from-orange-500/15 to-rose-600/10 backdrop-blur-xl p-6 hover:border-orange-300/60 hover:-translate-y-1 transition-all duration-500 overflow-hidden"
+                >
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-orange-500/20 rounded-full blur-2xl pointer-events-none group-hover:bg-orange-500/40 transition-colors duration-700" />
+                  <div className="relative">
+                    <div className="w-11 h-11 rounded-xl bg-white/10 border border-orange-400/30 flex items-center justify-center mb-4">
+                      <XIcon className="w-5 h-5 text-orange-300" />
+                    </div>
+                    <p className="text-[10px] tracking-[0.3em] uppercase text-orange-300/80 font-semibold mb-1.5">Live community</p>
+                    <h3 className="font-serif text-xl text-white font-semibold mb-2">@WhatajourneyTBI on X</h3>
+                    <p className="text-sm text-white/65 leading-relaxed">
+                      Daily survivor stories, recovery wins, and the unfiltered reality of TBI — together.
+                    </p>
+                    <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-orange-200 group-hover:text-orange-100 tracking-wider uppercase">
+                      Follow & join <ExternalLink className="w-3 h-3" />
+                    </div>
+                  </div>
+                </a>
+
+                {/* My Phoenix Chapters */}
+                <Link
+                  to="/my-chapters"
+                  className="group relative rounded-2xl border border-amber-400/25 bg-gradient-to-br from-amber-500/12 to-orange-500/8 backdrop-blur-xl p-6 hover:border-amber-300/50 hover:-translate-y-1 transition-all duration-500 overflow-hidden"
+                >
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-amber-500/20 rounded-full blur-2xl pointer-events-none group-hover:bg-amber-500/40 transition-colors duration-700" />
+                  <div className="relative">
+                    <div className="w-11 h-11 rounded-xl bg-white/10 border border-amber-400/30 flex items-center justify-center mb-4">
+                      <BookOpen className="w-5 h-5 text-amber-300" />
+                    </div>
+                    <p className="text-[10px] tracking-[0.3em] uppercase text-amber-300/80 font-semibold mb-1.5">Your story</p>
+                    <h3 className="font-serif text-xl text-white font-semibold mb-2">My Phoenix Chapters</h3>
+                    <p className="text-sm text-white/65 leading-relaxed">
+                      Write your own chapters of recovery. Read echoes from other survivors walking the same road.
+                    </p>
+                    <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-amber-200 group-hover:text-amber-100 tracking-wider uppercase">
+                      Open journal <Sparkles className="w-3 h-3" />
+                    </div>
+                  </div>
+                </Link>
+
+                {/* Carer / Family Circle */}
+                <Link
+                  to="/circle"
+                  className="group relative rounded-2xl border border-rose-400/25 bg-gradient-to-br from-rose-500/12 to-orange-500/8 backdrop-blur-xl p-6 hover:border-rose-300/50 hover:-translate-y-1 transition-all duration-500 overflow-hidden"
+                >
+                  <div className="absolute -top-12 -right-12 w-32 h-32 bg-rose-500/20 rounded-full blur-2xl pointer-events-none group-hover:bg-rose-500/40 transition-colors duration-700" />
+                  <div className="relative">
+                    <div className="w-11 h-11 rounded-xl bg-white/10 border border-rose-400/30 flex items-center justify-center mb-4">
+                      <Heart className="w-5 h-5 text-rose-300" />
+                    </div>
+                    <p className="text-[10px] tracking-[0.3em] uppercase text-rose-300/80 font-semibold mb-1.5">For the people who carry us</p>
+                    <h3 className="font-serif text-xl text-white font-semibold mb-2">The Carer Circle</h3>
+                    <p className="text-sm text-white/65 leading-relaxed">
+                      Family, partners and friends — find guidance, peer support, and ways to show up well.
+                    </p>
+                    <div className="mt-4 inline-flex items-center gap-1.5 text-xs font-medium text-rose-200 group-hover:text-rose-100 tracking-wider uppercase">
+                      Enter the circle <Users className="w-3 h-3" />
+                    </div>
+                  </div>
+                </Link>
+              </div>
+
+              {/* Manifesto strip */}
+              <div className="mt-10 max-w-2xl mx-auto text-center">
+                <p className="font-serif italic text-white/55 text-sm leading-relaxed">
+                  "The torch was passed to me by survivors who came before. I'm passing it to you. Pass it on."
+                </p>
+                <p className="mt-2 text-[10px] tracking-[0.4em] uppercase text-orange-300/60">— Michael Heron</p>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Closing Note */}
