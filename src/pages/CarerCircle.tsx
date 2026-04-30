@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -14,6 +14,22 @@ import {
   AlertTriangle,
   MessageCircle,
   Compass,
+  Clock,
+  Eye,
+  Phone,
+  CloudFog,
+  Volume2,
+  Moon,
+  Coffee,
+  MessageSquare,
+  Ban,
+  CheckCircle2,
+  Battery,
+  Hand,
+  Lightbulb,
+  Activity,
+  Utensils,
+  Bed,
 } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import carerCircleHero from "@/assets/carer-circle-hero.jpg";
@@ -27,32 +43,233 @@ const XIcon = ({ className }: { className?: string }) => (
 
 const CarerCircle = () => {
   const navigate = useNavigate();
+  const [openGuide, setOpenGuide] = useState<string | null>("first-30-days");
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
-  const guides = [
+  type Guide = {
+    id: string;
+    icon: typeof Compass;
+    title: string;
+    tag: string;
+    subtitle: string;
+    intro: string;
+    sections: {
+      heading: string;
+      icon: typeof Compass;
+      body: string;
+      bullets?: { label: string; detail: string }[];
+    }[];
+    redFlags?: string[];
+    closing: string;
+  };
+
+  const guides: Guide[] = [
     {
+      id: "first-30-days",
       icon: Compass,
-      title: "First 30 Days After TBI",
-      description: "What to watch for, what to expect, and the small things that matter most when everything feels uncertain.",
-      tag: "Field Guide",
+      title: "The First 30 Days After TBI",
+      tag: "Field Guide · Acute Phase",
+      subtitle: "A map for the month no one prepared you for.",
+      intro:
+        "The first thirty days after a brain injury are a blur of corridors, consent forms and quiet shock. Your loved one is still here — but the person you knew is somewhere underneath, finding their way back through fog. This guide is what we wish someone had handed us on day one.",
+      sections: [
+        {
+          heading: "Week 1 — Survival & stabilisation",
+          icon: ShieldCheck,
+          body: "The medical team's job right now is to keep the brain safe from secondary injury (swelling, bleeding, oxygen drops). Your job is smaller than it feels — and more important than you'll know.",
+          bullets: [
+            { label: "Be a calm presence", detail: "Speak softly, identify yourself every time you enter the room. They may not respond — assume they hear you anyway." },
+            { label: "Keep a single notebook", detail: "Names of doctors, medication times, questions you think of at 3am. Memory is the first thing to go for carers too." },
+            { label: "Ask for the GCS score daily", detail: "Glasgow Coma Scale (3–15). It's the team's shorthand for how the brain is doing. Trends matter more than single numbers." },
+            { label: "Protect the room", detail: "Dim lights, low voices, no TV. The injured brain treats every input as a threat." },
+          ],
+        },
+        {
+          heading: "Week 2 — Waking up is not what you think",
+          icon: Eye,
+          body: "Hollywood lied. People don't open their eyes and ask what year it is. Emergence from reduced consciousness is messy, agitated, and often distressing for families to witness.",
+          bullets: [
+            { label: "Post-Traumatic Amnesia (PTA) is normal", detail: "They may ask the same question every 90 seconds. They are not 'being difficult' — the hippocampus is offline. Answer kindly. Every time." },
+            { label: "Agitation is a stage, not a personality change", detail: "Rancho Los Amigos Level IV is a recognised, temporary phase. It passes. Document it; don't take it personally." },
+            { label: "Limit visitors to two at a time", detail: "Their brain is using 90% of its glucose just to be conscious. A crowded room is a neurological assault." },
+          ],
+        },
+        {
+          heading: "Weeks 3–4 — The first plateau",
+          icon: Activity,
+          body: "By now there's usually a transfer conversation: home, rehab unit, or step-down ward. This is when the system starts to thin out and you start to feel alone. Plan for it before it happens.",
+          bullets: [
+            { label: "Demand a written rehab plan", detail: "Ask for goals in plain language. 'Walk to the bathroom unaided by week 6' is a goal. 'Improve mobility' is not." },
+            { label: "Get the discharge summary in your hand", detail: "GPs often don't receive it for weeks. You are the courier of your loved one's medical history now." },
+            { label: "Start the benefits paperwork early", detail: "In the UK: PIP, ESA, Blue Badge. In the US: SSDI, FMLA for yourself. These take months. Start on day 21." },
+          ],
+        },
+      ],
+      redFlags: [
+        "Sudden severe headache, vomiting, or one pupil larger than the other — call the team immediately.",
+        "New seizure activity, even brief twitching of one limb.",
+        "Dramatic personality shift in the days after discharge — fatigue or rebound bleed, not 'them being moody'.",
+        "You haven't slept more than 4 hours in 48 — you are now also a patient. Tell someone.",
+      ],
+      closing:
+        "Thirty days in, you will not recognise your own life. That is the correct response to what has happened. The person you love is still in there. So are you.",
     },
     {
-      icon: AlertTriangle,
+      id: "fog-day",
+      icon: CloudFog,
       title: "Spotting a Fog Day",
-      description: "Recognising when your loved one is overwhelmed — and the kindest thing you can do in that moment.",
-      tag: "Daily Practice",
+      tag: "Daily Practice · Recognition",
+      subtitle: "The kindest thing you can do is notice early.",
+      intro:
+        "A 'Fog Day' is what survivors call the days when the brain's energy budget is already overdrawn by 9am. Reading them early — before the meltdown, before the silent shutdown — is the single highest-leverage skill a carer can develop.",
+      sections: [
+        {
+          heading: "The early tells (before they know themselves)",
+          icon: Eye,
+          body: "Fog rarely announces itself. It leaks out sideways, in micro-behaviours that often look like rudeness or laziness if you don't know what you're seeing.",
+          bullets: [
+            { label: "Word-finding pauses", detail: "They reach for a familiar word and grab the one next to it. 'Pass me the… the… cold thing.' That's not vocabulary — that's bandwidth." },
+            { label: "Flat affect", detail: "The face goes still. Not sad — empty. The brain has rerouted resources away from facial muscles." },
+            { label: "Sensory irritability", detail: "The fridge hum is suddenly unbearable. Your jumper is 'too loud'. The world has gained volume they can't turn down." },
+            { label: "Repetition loops", detail: "They re-tell you something you discussed an hour ago, with the same energy. Working memory has dropped a frame." },
+          ],
+        },
+        {
+          heading: "What to do in the next 10 minutes",
+          icon: Hand,
+          body: "Fog is reversible if you intervene early. Once it tips into a full crash, recovery takes 24–72 hours. Acting fast is not over-protective; it's good neuro-care.",
+          bullets: [
+            { label: "Lower the inputs", detail: "Lights down 50%. TV off. Phone face-down. One person speaking, not three." },
+            { label: "Offer a horizontal 20", detail: "Twenty minutes flat on a bed (eyes closed, no scrolling) outperforms two hours of 'pushing through'. This is documented in TBI fatigue research." },
+            { label: "Hand them water and one piece of fruit", detail: "Dehydration and low blood sugar amplify cognitive fatigue 3–4x. Don't ask. Place it in their hand." },
+            { label: "Take over the next decision", detail: "'I've sorted dinner — pasta in 30, I'll bring it to you.' Removing one decision can buy back an hour of function." },
+          ],
+        },
+        {
+          heading: "What NOT to do",
+          icon: Ban,
+          body: "Most family responses to a Fog Day are well-meaning and neurologically harmful. These are the ones to unlearn.",
+          bullets: [
+            { label: "Don't ask 'are you okay?'", detail: "Answering that question itself takes energy they don't have. Instead: 'I'm dimming the lights, I'll be in the next room.'" },
+            { label: "Don't suggest fresh air", detail: "Sunlight, traffic, and uneven pavements are an obstacle course for a fogged brain. Movement comes after rest, not instead of it." },
+            { label: "Don't take silence personally", detail: "Withdrawal during fog is conservation, not rejection. Sit nearby. Don't require conversation." },
+            { label: "Don't reschedule on their behalf without telling them", detail: "Loss of agency is its own neurological wound. Offer the option, then act." },
+          ],
+        },
+      ],
+      redFlags: [
+        "Slurred speech that wasn't there an hour ago.",
+        "Sudden severe headache different from their usual fatigue headache.",
+        "Confusion about where they are or what year it is.",
+        "Any new seizure, twitching, or loss of awareness — call the medical team.",
+      ],
+      closing:
+        "You are not their nurse, their therapist, or their fixer. You are the person who notices the lights are too bright before they have to ask. That is enough. That is everything.",
     },
     {
+      id: "show-up-well",
       icon: HandHeart,
       title: "How to Show Up Well",
-      description: "Practical scripts, energy boundaries, and the difference between rescuing and supporting.",
-      tag: "Communication",
+      tag: "Communication · Scripts & Boundaries",
+      subtitle: "Practical language for the conversations no one teaches you.",
+      intro:
+        "Showing up well isn't about saying the perfect thing. It's about saying fewer, smaller, truer things — and learning the difference between rescuing and supporting. Below are the scripts we wish we'd had.",
+      sections: [
+        {
+          heading: "What to say (and what to retire forever)",
+          icon: MessageSquare,
+          body: "TBI survivors hear the same handful of phrases on loop. Some are quietly devastating. Try the alternates.",
+          bullets: [
+            { label: "Instead of: 'You look great!'", detail: "Try: 'It's good to see you.' (Looking 'fine' is the curse of invisible injury — it invalidates everything they're managing internally.)" },
+            { label: "Instead of: 'Have you tried…?'", detail: "Try: 'What's been helping lately?' (They've tried it. Whatever it is. Twice.)" },
+            { label: "Instead of: 'At least you survived.'", detail: "Try: 'I can't imagine. I'm here.' (Survival is not a consolation prize for the life they had.)" },
+            { label: "Instead of: 'When will you be back to normal?'", detail: "Try: 'What does a good day look like for you now?' (Normal is gone. New is being built.)" },
+          ],
+        },
+        {
+          heading: "Rescuing vs supporting — the line",
+          icon: Lightbulb,
+          body: "Rescuing feels like love and slowly erodes their recovery. Supporting feels like restraint and rebuilds their agency. The difference is who holds the wheel.",
+          bullets: [
+            { label: "Rescuing", detail: "'I'll just do it, it's faster.' / Finishing their sentences. / Speaking for them at appointments. / Hiding bills, news, decisions 'to protect them'." },
+            { label: "Supporting", detail: "'Take your time.' / 'Want me to come to the appointment as your second pair of ears, or wait outside?' / 'Here's the letter — read it when you have spoons. I'm not going anywhere.'" },
+            { label: "The test", detail: "After your help, do they feel more capable or more dependent? The honest answer is the diagnostic." },
+          ],
+        },
+        {
+          heading: "Energy boundaries — yours and theirs",
+          icon: Battery,
+          body: "TBI runs on a finite daily energy envelope (the 'spoon theory' is genuinely useful here). Your job is not to refill it for them — it's to help them spend it on what matters.",
+          bullets: [
+            { label: "The morning question", detail: "'What's the one thing today, if it happens, will be a good day?' Then protect that one thing." },
+            { label: "The 'no' on their behalf", detail: "Pre-agree a phrase: 'They'd love to but they're resting today.' You become their bouncer, not their warden." },
+            { label: "The repair conversation", detail: "When you snap (you will): 'That came out sharp. I'm tired. It wasn't about you.' Repair beats restraint." },
+          ],
+        },
+      ],
+      closing:
+        "You will get this wrong. Often. The people who show up well are not the ones who say perfect things — they're the ones who keep showing up after they get it wrong.",
     },
     {
+      id: "looking-after-yourself",
       icon: ShieldCheck,
       title: "Looking After Yourself",
-      description: "Carer fatigue is real. Your wellbeing is part of their recovery — not separate from it.",
-      tag: "Self-care",
+      tag: "Self-care · Carer Survival",
+      subtitle: "Your wellbeing is not separate from their recovery. It IS their recovery.",
+      intro:
+        "Carer fatigue is not a soft concept — it's a measurable physiological state with documented immune, cardiovascular and cognitive consequences. If you collapse, two people need rescuing. This is the maintenance manual for the person holding the lantern.",
+      sections: [
+        {
+          heading: "The non-negotiable four",
+          icon: CheckCircle2,
+          body: "Everything else is optional. These four are the floor — drop below any of them for more than a week and your nervous system starts making decisions for you.",
+          bullets: [
+            { label: "Sleep — 6 hours minimum, ideally 7", detail: "Not 'in the same bed in case they need me'. Actual sleep. Recruit a night-relief person, even if it's twice a week. Sleep deprivation makes you a worse carer than you'd be at 70% rested." },
+            { label: "One hot meal a day, sitting down", detail: "Carers chronically under-eat or graze on what's left on the patient's plate. Set a 6pm timer. Sit. Chew." },
+            { label: "20 minutes outside, daylight on your face", detail: "Cortisol regulation, vitamin D, mood — three for the price of one walk to the corner shop without your phone." },
+            { label: "One human a week who isn't talking about the injury", detail: "A friend, a colleague, a sibling. Twenty minutes of conversation about anything else. This is not selfish. This is identity maintenance." },
+          ],
+        },
+        {
+          heading: "The warning signs you've gone too far",
+          icon: AlertTriangle,
+          body: "Carer burnout has a recognisable progression. Catching it at stage two is the difference between a tough month and a six-month collapse.",
+          bullets: [
+            { label: "Stage 1 — Hyper-vigilance", detail: "Checking on them constantly. Sleeping in clothes. Phone always in hand. Feels like devotion. Is actually adrenal." },
+            { label: "Stage 2 — Resentment leaks", detail: "Snapping at the kids, the dog, the kettle. Crying in the car park. This is the warning shot. Listen to it." },
+            { label: "Stage 3 — Numbness", detail: "You stop feeling much of anything. You go through motions. This is the body protecting itself. It is not virtue — it is a medical sign." },
+            { label: "Stage 4 — Physical collapse", detail: "Shingles, persistent infections, chest pain, panic attacks. The body sends the bill. Get to a GP. Today." },
+          ],
+        },
+        {
+          heading: "Building your own circle",
+          icon: Users,
+          body: "You need three categories of human in your life right now. Most carers have one. Audit honestly.",
+          bullets: [
+            { label: "A practical lieutenant", detail: "Someone who picks up prescriptions, sits with your loved one for 2 hours, drives to appointments. Doesn't need to be emotionally close — needs to be reliable." },
+            { label: "A safe witness", detail: "One person you can say the unsayable thing to. ('I love them and I am exhausted and sometimes I imagine running away.') A friend, a counsellor, a peer carer. Not your kids. Not them." },
+            { label: "A professional", detail: "GP, therapist, or carer-support worker (Headway, Family Caregiver Alliance, BIAA all offer this free). Booked in your diary, not 'when I have time'." },
+          ],
+        },
+        {
+          heading: "The grief no one warned you about",
+          icon: Heart,
+          body: "You are grieving someone who is still alive. This is called 'ambiguous loss' and it is one of the hardest forms of grief there is. It is real. Name it.",
+          bullets: [
+            { label: "It's not disloyal to mourn", detail: "Missing the person they were before doesn't betray the person they are now. Both can be true. Both usually are." },
+            { label: "It comes in waves, not stages", detail: "A song, a smell, a photo will knock you sideways months in. This is not regression — this is grief doing its work." },
+            { label: "It changes shape", detail: "What you grieve at 3 months is different from 3 years. Recovery includes learning to love a new version of the same person." },
+          ],
+        },
+      ],
+      redFlags: [
+        "Thoughts of harming yourself — call your local crisis line immediately. UK: 116 123 (Samaritans). US: 988.",
+        "Drinking more than usual to 'cope' for more than two weeks running.",
+        "Chest pain, persistent palpitations, or breathlessness — A&E, not 'I'll see if it passes'.",
+        "You haven't been touched, hugged, or held in over a month — this is a clinical issue, not a weakness.",
+      ],
+      closing:
+        "There is a reason flight attendants tell you to fit your own oxygen mask first. It isn't selfish. It is the only way the person beside you survives.",
     },
   ];
 
