@@ -59,6 +59,7 @@ import AICompanion from "./pages/AICompanion";
 import BrainCompass from "./pages/BrainCompass";
 import Settings from "./pages/Settings";
 import ClinicianPortal from "./pages/ClinicianPortal";
+import CarerCircle from "./pages/CarerCircle";
 
 const queryClient = new QueryClient();
 
@@ -128,6 +129,7 @@ const AppContent = () => {
           <Route path="/chapter-20" element={<Chapter20 />} />
           <Route path="/chapter-21" element={<Chapter21 />} />
           <Route path="/resources" element={<Resources />} />
+          <Route path="/circle" element={<CarerCircle />} />
           <Route path="/install" element={<Install />} />
           <Route path="/soundscapes" element={<Soundscapes />} />
           <Route path="/brain-compass" element={<BrainCompass />} />
