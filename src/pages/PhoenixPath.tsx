@@ -449,11 +449,25 @@ const PhoenixPath = () => {
       >
         <Link
           to="/ai-companion"
-          className="group relative flex items-center justify-center w-12 h-12 rounded-full bg-white/[0.06] border border-white/[0.1] shadow-lg hover:bg-white/[0.1] hover:scale-110 active:scale-95 transition-all duration-200"
+          aria-label="Ask Phoenix — AI companion"
+          className="group relative flex items-center gap-2 pl-3 pr-4 h-14 rounded-full bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 shadow-lg shadow-amber-500/30 hover:shadow-amber-500/60 hover:scale-105 active:scale-95 transition-all duration-200"
         >
-          <MessageCircle className="w-5 h-5 text-orange-300" />
-          <span className="absolute left-full ml-3 whitespace-nowrap bg-gray-900/95 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-white/10">
-            Phoenix Companion
+          {/* Pulse ring */}
+          <span
+            className="absolute inset-0 rounded-full bg-amber-300/30 animate-ping pointer-events-none"
+            style={{ animationDuration: '3s' }}
+          />
+          {/* Soft glow halo */}
+          <span className="absolute -inset-1 rounded-full bg-amber-400/20 blur-md pointer-events-none group-hover:bg-amber-400/40 transition-colors duration-500" />
+
+          <span className="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/15 backdrop-blur-sm">
+            <MessageCircle
+              className="w-4 h-4 text-white"
+              style={{ filter: 'drop-shadow(0 0 4px rgba(255,255,255,0.5))' }}
+            />
+          </span>
+          <span className="relative text-sm font-medium text-white tracking-wide pr-1">
+            Ask Phoenix
           </span>
         </Link>
       </motion.div>
