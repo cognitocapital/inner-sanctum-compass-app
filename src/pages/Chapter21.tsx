@@ -4,111 +4,99 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
+import heroImage from "@/assets/chapter21-hero.jpg";
 
 const Chapter21 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
+    <div className="min-h-screen text-white relative overflow-hidden" style={{ backgroundColor: "#0a0a0f" }}>
       <ChapterNavArrows currentPath="/chapter-21" />
       <SEOHead title="Acknowledgments - What a Journey" description="With gratitude — acknowledgments for What a Journey by Michael Heron." path="/chapter-21" />
-      {/* Animated background elements inspired by phoenix flames */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Primary flame particles */}
-        <div className="absolute top-20 left-10 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-80 shadow-lg shadow-orange-500/50"></div>
-        <div className="absolute top-40 right-20 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1s] opacity-60 shadow-lg shadow-orange-500/40"></div>
-        <div className="absolute bottom-60 left-1/4 w-2.5 h-2.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_2s] opacity-70 shadow-lg shadow-orange-500/45"></div>
-        <div className="absolute bottom-40 right-1/3 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_3s] opacity-50 shadow-lg shadow-orange-500/35"></div>
-        <div className="absolute top-1/3 left-1/6 w-1.5 h-1.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.5s] opacity-45 shadow-lg shadow-orange-500/30"></div>
-        <div className="absolute bottom-1/3 right-1/6 w-1 h-1 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_2.5s] opacity-35 shadow-lg shadow-orange-500/25"></div>
-        <div className="absolute top-2/3 right-1/5 w-2 h-2 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.5s] opacity-55 shadow-lg shadow-orange-500/40"></div>
-        
-        {/* Additional ember particles */}
-        <div className="absolute top-32 left-1/5 w-1 h-1 bg-yellow-400 rounded-full animate-[float_4s_ease-in-out_infinite_4s] opacity-40"></div>
-        <div className="absolute top-56 right-1/4 w-1.5 h-1.5 bg-red-400 rounded-full animate-[float_4s_ease-in-out_infinite_5s] opacity-35"></div>
-        <div className="absolute bottom-72 left-1/3 w-1 h-1 bg-yellow-400 rounded-full animate-[float_4s_ease-in-out_infinite_6s] opacity-30"></div>
-        <div className="absolute bottom-24 right-1/6 w-1.5 h-1.5 bg-orange-500 rounded-full animate-[float_4s_ease-in-out_infinite_7s] opacity-45"></div>
-        <div className="absolute top-1/4 right-1/8 w-1 h-1 bg-red-500 rounded-full animate-[float_4s_ease-in-out_infinite_8s] opacity-40"></div>
-        
-        {/* Subtle flame trails */}
-        <div className="absolute top-16 left-1/2 w-0.5 h-8 bg-gradient-to-t from-orange-500/60 to-transparent animate-[float_3s_ease-in-out_infinite_3.5s] opacity-30"></div>
-        <div className="absolute bottom-32 right-1/2 w-0.5 h-6 bg-gradient-to-t from-orange-500/50 to-transparent animate-[float_3s_ease-in-out_infinite_4.5s] opacity-25"></div>
-      </div>
-      
-      <div className="relative z-10 max-w-4xl mx-auto animate-fade-in px-4 py-8">
-        <div className="mb-8">
-          <Button asChild variant="ghost" className="pl-0 text-gray-300 hover:text-white transition-colors">
+
+      {/* HERO */}
+      <section className="relative w-full h-[88vh] overflow-hidden">
+        <img
+          src={heroImage}
+          alt="A single lit candle surrounded by warm golden bokeh"
+          width={1920}
+          height={1080}
+          className="absolute inset-0 w-full h-full object-cover scale-105 animate-fade-in"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/55 to-[#0a0a0f]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(10,10,15,0.7)_80%)]" />
+
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/4 left-1/5 w-1.5 h-1.5 bg-amber-300 rounded-full animate-[float_6s_ease-in-out_infinite] opacity-70 shadow-[0_0_12px_rgba(252,211,77,0.8)]" />
+          <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-amber-200 rounded-full animate-[float_8s_ease-in-out_infinite_2s] opacity-60 shadow-[0_0_10px_rgba(252,211,77,0.7)]" />
+          <div className="absolute bottom-1/3 left-1/3 w-2 h-2 bg-amber-400 rounded-full animate-[float_7s_ease-in-out_infinite_1s] opacity-50 shadow-[0_0_14px_rgba(251,191,36,0.7)]" />
+          <div className="absolute bottom-1/4 right-1/5 w-1 h-1 bg-amber-300 rounded-full animate-[float_9s_ease-in-out_infinite_3s] opacity-65 shadow-[0_0_10px_rgba(252,211,77,0.7)]" />
+        </div>
+
+        <div className="absolute inset-x-0 bottom-0 px-6 pb-16 md:pb-24">
+          <div className="max-w-4xl mx-auto animate-fade-in">
+            <p className="text-amber-300/80 tracking-[0.4em] uppercase text-xs md:text-sm mb-5 font-light">With Gratitude</p>
+            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light text-white leading-[1.05] tracking-tight">
+              Acknowled<span className="italic text-amber-200">gments</span>
+            </h1>
+            <div className="mt-8 h-px w-24 bg-gradient-to-r from-amber-400/80 to-transparent" />
+          </div>
+        </div>
+
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-amber-200/60 text-xs tracking-[0.3em] uppercase animate-pulse">
+          Read
+        </div>
+      </section>
+
+      {/* ARTICLE */}
+      <div className="relative max-w-4xl mx-auto px-4 md:px-6 py-16 md:py-24">
+        <div className="mb-10">
+          <Button asChild variant="ghost" className="pl-0 text-white/60 hover:text-amber-200 transition-colors">
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back Home
+              Back to the Library
             </Link>
           </Button>
         </div>
 
-        {/* Phoenix image for chapter header */}
-        <div className="text-center mb-8">
-          <div className="relative mx-auto w-24 h-24 group">
-            <div 
-              className="w-full h-full rounded-full border-4 border-orange-500/40 shadow-2xl hover:scale-110 transition-all duration-700 cursor-pointer phoenix-image"
-              style={{
-                backgroundImage: `url('/lovable-uploads/87893c50-952e-48f8-9649-a7083c6cffd3.png')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat'
-              }}
-            />
-            {/* Flame particles around phoenix */}
-            <div className="absolute -top-4 -left-4 w-4 h-4 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite] opacity-90"></div>
-            <div className="absolute -top-6 right-12 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.8s] opacity-75"></div>
-            <div className="absolute top-6 -right-5 w-3.5 h-3.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.2s] opacity-85"></div>
-            <div className="absolute bottom-12 -left-6 w-2.5 h-2.5 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_0.3s] opacity-65"></div>
-            <div className="absolute -bottom-5 right-8 w-3 h-3 bg-orange-500 rounded-full animate-[float_3s_ease-in-out_infinite_1.5s] opacity-80"></div>
-          </div>
-        </div>
+        <article className="relative rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-8 md:p-14 shadow-[0_30px_120px_-30px_rgba(0,0,0,0.8)]">
+          <p className="text-amber-300/70 tracking-[0.3em] uppercase text-xs mb-8 font-light">A Note of Thanks</p>
 
-        <div className="backdrop-blur-sm bg-white/90 border-orange-500/20 shadow-2xl rounded-lg p-8 md:p-12">
-          <article className="prose prose-lg mx-auto text-gray-900 max-w-none">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold text-center text-orange-600 mb-2 drop-shadow-sm">
-              Acknowledgments
-            </h1>
-            <h2 className="text-2xl md:text-3xl font-serif font-bold text-center text-gray-600 mt-0 mb-12">
-              With Gratitude
-            </h2>
-
-            <p className="text-lg leading-relaxed mb-6">
+          <div className="prose prose-invert prose-lg max-w-none prose-p:text-white/85 prose-p:leading-[1.85] prose-p:font-light">
+            <p className="first-letter:text-6xl first-letter:font-serif first-letter:text-amber-400 first-letter:float-left first-letter:mr-3 first-letter:leading-none">
               This book would not have been possible without the unwavering love, support, and encouragement of many people. I am eternally grateful to:
             </p>
 
-            <ul className="text-lg leading-relaxed mb-6 list-none space-y-4 pl-0">
-              <li>My wife, Sarah, for her strength, her patience, her advocacy, and for simply being there through it all. You are my rock.</li>
-              <li>My children, for their unconditional love and for inspiring me to keep fighting every single day.</li>
-              <li>My parents, for their constant support and understanding.</li>
-              <li>My twin brother, Mathew, for the "use of his frontal lobe," his unwavering support, and our invaluable daily check-ins.</li>
-              <li>My extended family and friends, for surrounding me with love and encouragement.</li>
-              <li>The medical professionals who guided me on this journey, especially the doctor who insisted on those crucial scans and my ENT specialist for his expertise.</li>
-              <li>The team at BIRU, for confirming that I was on the right track. Grace, I'm truly grateful for the sanctuary that your office is, for giving that "sprouting seed" everything it needed to grow.</li>
-              <li>Wendy, for your insightful guidance and for helping me find a deeper meaning in this experience.</li>
-              <li>Eckhart Tolle and Dan Brulé, for their teachings on presence, the observer, and the power of the breath.</li>
+            <ul className="list-none space-y-5 pl-0 not-prose text-white/85 text-lg leading-[1.85] font-light">
+              <li className="pl-6 border-l border-amber-400/40"><span className="text-amber-200 font-serif">My wife, Sarah,</span> for her strength, her patience, her advocacy, and for simply being there through it all. You are my rock.</li>
+              <li className="pl-6 border-l border-amber-400/40"><span className="text-amber-200 font-serif">My children,</span> for their unconditional love and for inspiring me to keep fighting every single day.</li>
+              <li className="pl-6 border-l border-amber-400/40"><span className="text-amber-200 font-serif">My parents,</span> for their constant support and understanding.</li>
+              <li className="pl-6 border-l border-amber-400/40"><span className="text-amber-200 font-serif">My twin brother, Mathew,</span> for the "use of his frontal lobe," his unwavering support, and our invaluable daily check-ins.</li>
+              <li className="pl-6 border-l border-amber-400/40"><span className="text-amber-200 font-serif">My extended family and friends,</span> for surrounding me with love and encouragement.</li>
+              <li className="pl-6 border-l border-amber-400/40"><span className="text-amber-200 font-serif">The medical professionals</span> who guided me on this journey, especially the doctor who insisted on those crucial scans and my ENT specialist for his expertise.</li>
+              <li className="pl-6 border-l border-amber-400/40"><span className="text-amber-200 font-serif">The team at BIRU,</span> for confirming that I was on the right track. Grace, I'm truly grateful for the sanctuary that your office is, for giving that "sprouting seed" everything it needed to grow.</li>
+              <li className="pl-6 border-l border-amber-400/40"><span className="text-amber-200 font-serif">Wendy,</span> for your insightful guidance and for helping me find a deeper meaning in this experience.</li>
+              <li className="pl-6 border-l border-amber-400/40"><span className="text-amber-200 font-serif">Eckhart Tolle and Dan Brulé,</span> for their teachings on presence, the observer, and the power of the breath.</li>
             </ul>
 
-            <p className="text-lg leading-relaxed mb-8">
+            <blockquote className="my-12 pl-6 border-l-2 border-amber-400/60 italic text-white/95 font-serif text-xl md:text-2xl leading-relaxed not-prose">
               And to all those who have shared their stories of TBI recovery, thank you for your courage and for reminding me that I am not alone.
-            </p>
+            </blockquote>
+          </div>
 
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-12 pt-8 border-t border-orange-200">
-              <Button asChild variant="outline" className="border-orange-500/50 hover:bg-orange-500/10 hover:border-orange-500 transition-all duration-300">
-                <Link to="/chapter-20">
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Previous Chapter
-                </Link>
-              </Button>
-              <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                <Link to="/">
-                  Table of Contents
-                </Link>
-              </Button>
-            </div>
-          </article>
-        </div>
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-14 pt-10 border-t border-white/10">
+            <Button asChild variant="outline" className="border-white/20 bg-transparent hover:bg-white/5 hover:border-amber-300/60 text-white/80 hover:text-amber-200 transition-all duration-300">
+              <Link to="/chapter-20">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Previous Chapter
+              </Link>
+            </Button>
+            <Button asChild className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black font-semibold shadow-[0_10px_40px_-10px_rgba(251,191,36,0.6)] hover:shadow-[0_15px_50px_-10px_rgba(251,191,36,0.8)] transition-all duration-300 hover:scale-105">
+              <Link to="/">
+                Table of Contents
+              </Link>
+            </Button>
+          </div>
+        </article>
       </div>
     </div>
   );
