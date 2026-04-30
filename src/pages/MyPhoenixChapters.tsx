@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,6 +23,7 @@ const MOOD_TAGS = ["hopeful", "struggling", "grateful", "reflective", "determine
 
 const MyPhoenixChapters = () => {
   const { user, isGuest } = useAuth();
+  const navigate = useNavigate();
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showNew, setShowNew] = useState(false);
@@ -78,8 +79,13 @@ const MyPhoenixChapters = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-orange-950/20 text-white">
       <header className="sticky top-0 z-20 bg-gray-950/80 backdrop-blur-md border-b border-white/5">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <Button asChild variant="ghost" size="sm" className="text-white/60 hover:text-white">
-            <Link to="/phoenix-path"><ArrowLeft className="w-4 h-4 mr-2" />Path</Link>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-white/60 hover:text-white"
+            onClick={() => (window.history.length > 1 ? navigate(-1) : navigate("/phoenix-path"))}
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />Back
           </Button>
           <h1 className="text-lg font-serif text-white flex items-center gap-2">
             <BookHeart className="w-5 h-5 text-orange-400" />
