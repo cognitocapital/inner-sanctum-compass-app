@@ -343,11 +343,6 @@ const Resources = () => {
           </Link>
         </section>
 
-        {/* Closing Note */}
-        <section className="pb-12">
-          {/* moved above */}
-        </section>
-
         {/* ============ COMMUNITY — STAND UNDER THE TORCH ============ */}
         <section aria-labelledby="community-heading" className="relative">
           <div className="relative rounded-3xl overflow-hidden border border-orange-400/30 bg-gradient-to-br from-orange-600/15 via-amber-500/10 to-rose-600/10 backdrop-blur-xl">
