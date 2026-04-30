@@ -402,26 +402,138 @@ const CarerCircle = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-5">
-            {guides.map((g) => (
-              <div
-                key={g.title}
-                className="group relative rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-6 md:p-7 hover:border-orange-400/40 hover:bg-white/[0.06] transition-all duration-500 hover:-translate-y-1 overflow-hidden"
-              >
-                <div className="absolute -top-12 -right-12 w-32 h-32 bg-orange-500/0 group-hover:bg-orange-500/15 rounded-full blur-2xl transition-colors duration-700 pointer-events-none" />
-                <div className="relative">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-11 h-11 rounded-xl bg-orange-500/15 border border-orange-400/30 flex items-center justify-center">
-                      <g.icon className="w-5 h-5 text-orange-300" />
+          {/* Guide selector tabs */}
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
+            {guides.map((g) => {
+              const active = openGuide === g.id;
+              return (
+                <button
+                  key={g.id}
+                  onClick={() => {
+                    setOpenGuide(g.id);
+                    setTimeout(() => {
+                      document.getElementById(`guide-${g.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }, 50);
+                  }}
+                  className={`group inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs md:text-sm tracking-wide transition-all duration-300 border ${
+                    active
+                      ? "bg-orange-500/20 border-orange-400/60 text-white shadow-lg shadow-orange-500/10"
+                      : "bg-white/[0.03] border-white/10 text-white/70 hover:border-orange-400/30 hover:text-white"
+                  }`}
+                >
+                  <g.icon className="w-3.5 h-3.5" />
+                  {g.title.replace("The ", "")}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Full guides */}
+          <div className="space-y-6">
+            {guides.map((g) => {
+              const open = openGuide === g.id;
+              return (
+                <article
+                  key={g.id}
+                  id={`guide-${g.id}`}
+                  className="group relative rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl overflow-hidden hover:border-orange-400/30 transition-all duration-500"
+                >
+                  {/* Atmospheric glow */}
+                  <div className="absolute -top-24 -right-24 w-72 h-72 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
+
+                  {/* Header (always visible — collapsible trigger) */}
+                  <button
+                    onClick={() => setOpenGuide(open ? null : g.id)}
+                    className="relative w-full text-left p-6 md:p-8 flex items-start gap-5"
+                    aria-expanded={open}
+                  >
+                    <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-orange-500/15 border border-orange-400/30 flex items-center justify-center">
+                      <g.icon className="w-6 h-6 text-orange-300" />
                     </div>
-                    <span className="text-[10px] tracking-[0.3em] uppercase text-orange-300/70 font-medium">{g.tag}</span>
-                  </div>
-                  <h3 className="font-serif text-xl text-white font-semibold leading-tight">{g.title}</h3>
-                  <p className="text-sm text-white/65 mt-2 leading-relaxed">{g.description}</p>
-                  <p className="mt-4 text-[10px] tracking-[0.3em] uppercase text-amber-300/60 italic">Coming soon · Beta</p>
-                </div>
-              </div>
-            ))}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[10px] md:text-xs tracking-[0.3em] uppercase text-orange-300/70 font-medium mb-1.5">{g.tag}</p>
+                      <h3 className="font-serif text-2xl md:text-3xl text-white font-bold leading-tight">{g.title}</h3>
+                      <p className="text-sm md:text-base text-white/65 mt-2 italic font-light">{g.subtitle}</p>
+                    </div>
+                    <ChevronDown
+                      className={`flex-shrink-0 w-5 h-5 text-white/50 mt-2 transition-transform duration-500 ${open ? "rotate-180 text-orange-300" : ""}`}
+                    />
+                  </button>
+
+                  {/* Expanded body */}
+                  {open && (
+                    <div className="relative px-6 md:px-8 pb-8 md:pb-10 animate-[fade-in_0.5s_ease-out]">
+                      <div className="md:ml-[76px] max-w-3xl">
+                        {/* Intro */}
+                        <div className="border-l-2 border-orange-400/40 pl-5 mb-8">
+                          <p className="text-white/80 leading-relaxed text-base md:text-lg font-light">{g.intro}</p>
+                        </div>
+
+                        {/* Sections */}
+                        <div className="space-y-8">
+                          {g.sections.map((sec, i) => (
+                            <div key={sec.heading}>
+                              <div className="flex items-center gap-3 mb-3">
+                                <div className="w-9 h-9 rounded-lg bg-white/5 border border-orange-400/20 flex items-center justify-center">
+                                  <sec.icon className="w-4 h-4 text-orange-300" />
+                                </div>
+                                <span className="text-[10px] tracking-[0.3em] uppercase text-orange-300/60 font-medium">
+                                  Chapter {String(i + 1).padStart(2, "0")}
+                                </span>
+                              </div>
+                              <h4 className="font-serif text-xl md:text-2xl text-white font-semibold mb-3 leading-snug">
+                                {sec.heading}
+                              </h4>
+                              <p className="text-white/70 leading-relaxed mb-5">{sec.body}</p>
+                              {sec.bullets && (
+                                <ul className="space-y-3">
+                                  {sec.bullets.map((b) => (
+                                    <li
+                                      key={b.label}
+                                      className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 hover:border-orange-400/20 transition-colors"
+                                    >
+                                      <p className="text-sm font-semibold text-orange-200 mb-1">{b.label}</p>
+                                      <p className="text-sm text-white/65 leading-relaxed">{b.detail}</p>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Red flags */}
+                        {g.redFlags && (
+                          <div className="mt-10 rounded-2xl border border-red-500/30 bg-red-950/20 p-6">
+                            <div className="flex items-center gap-2 mb-3">
+                              <AlertTriangle className="w-4 h-4 text-red-400" />
+                              <p className="text-[10px] tracking-[0.3em] uppercase text-red-300 font-semibold">
+                                Call for help if you see this
+                              </p>
+                            </div>
+                            <ul className="space-y-2">
+                              {g.redFlags.map((rf) => (
+                                <li key={rf} className="flex gap-2 text-sm text-white/75 leading-relaxed">
+                                  <span className="text-red-400 mt-1.5 flex-shrink-0">•</span>
+                                  <span>{rf}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
+                        {/* Closing */}
+                        <figure className="mt-10 border-t border-white/10 pt-6">
+                          <blockquote className="font-serif text-lg md:text-xl text-white/85 italic leading-relaxed">
+                            "{g.closing}"
+                          </blockquote>
+                        </figure>
+                      </div>
+                    </div>
+                  )}
+                </article>
+              );
+            })}
           </div>
         </section>
 
