@@ -11,7 +11,6 @@ import {
   Music,
   ChevronDown,
   Flame,
-  MessageCircle,
   Sparkles,
 } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
