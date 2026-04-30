@@ -430,11 +430,24 @@ const PhoenixPath = () => {
       >
         <Link
           to="/daily-protocol"
-          className="group relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-orange-500 to-rose-600 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:scale-110 active:scale-95 transition-all duration-200"
+          aria-label="Daily Protocol — guided recovery sequence"
+          className="group relative flex items-center gap-2 pl-3 pr-4 h-14 rounded-full bg-gradient-to-br from-orange-500 via-rose-500 to-rose-600 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/60 hover:scale-105 active:scale-95 transition-all duration-200"
         >
-          <Flame className="w-6 h-6 text-white" style={{ filter: 'drop-shadow(0 0 4px rgba(255,255,255,0.4))' }} />
-          <span className="absolute inset-0 rounded-full bg-orange-400/20 animate-ping" style={{ animationDuration: '3s' }} />
-          <span className="absolute right-full mr-3 whitespace-nowrap bg-gray-900/95 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-white/10">
+          {/* Pulse ring */}
+          <span
+            className="absolute inset-0 rounded-full bg-orange-400/30 animate-ping pointer-events-none"
+            style={{ animationDuration: '3s' }}
+          />
+          {/* Soft glow halo */}
+          <span className="absolute -inset-1 rounded-full bg-orange-400/20 blur-md pointer-events-none group-hover:bg-orange-400/40 transition-colors duration-500" />
+
+          <span className="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/15 backdrop-blur-sm">
+            <Flame
+              className="w-4 h-4 text-white"
+              style={{ filter: 'drop-shadow(0 0 4px rgba(255,255,255,0.5))' }}
+            />
+          </span>
+          <span className="relative text-sm font-medium text-white tracking-wide pr-1">
             Daily Protocol
           </span>
         </Link>
