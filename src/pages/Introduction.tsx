@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
@@ -65,11 +65,6 @@ const Introduction = () => {
           </div>
         </div>
 
-        {/* Scroll cue */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-amber-200/60 animate-[float_3s_ease-in-out_infinite]">
-          <span className="text-[10px] tracking-[0.3em] uppercase">Begin</span>
-          <ChevronDown className="w-4 h-4" />
-        </div>
       </section>
 
       {/* Animated background elements inspired by phoenix flames */}

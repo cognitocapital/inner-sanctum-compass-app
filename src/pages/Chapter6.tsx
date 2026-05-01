@@ -60,9 +60,6 @@ const Chapter6 = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/40 text-xs tracking-[0.3em] uppercase animate-pulse">
-          Read
-        </div>
       </section>
 
       {/* Editorial article */}
