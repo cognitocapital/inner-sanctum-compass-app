@@ -38,14 +38,6 @@ const Chapter10 = () => {
 
         <div className="absolute inset-0 flex flex-col justify-end pb-16 md:pb-24">
           <div className="max-w-5xl mx-auto px-6 md:px-10 w-full">
-            <div className="mb-6">
-              <Button asChild variant="ghost" className="pl-0 text-white/70 hover:text-amber-300 hover:bg-transparent transition-colors">
-                <Link to="/">
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back to the Library
-                </Link>
-              </Button>
-            </div>
             <p className="text-amber-400/80 tracking-[0.3em] text-xs md:text-sm uppercase mb-4 animate-[fade-in_1.2s_ease-out_0.3s_both]">
               Chapter Ten
             </p>

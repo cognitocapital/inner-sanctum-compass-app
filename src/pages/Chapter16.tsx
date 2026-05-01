@@ -35,15 +35,6 @@ const Chapter16 = () => {
           <div className="absolute bottom-1/4 right-1/4 w-1.5 h-1.5 rounded-full bg-amber-200/70 shadow-[0_0_14px_3px_rgba(252,211,77,0.5)] animate-[float_9s_ease-in-out_infinite_3s]" />
         </div>
 
-        <div className="absolute top-6 left-6 z-10">
-          <Button asChild variant="ghost" className="text-white/80 hover:text-white hover:bg-white/5 backdrop-blur-md">
-            <Link to="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to the Library
-            </Link>
-          </Button>
-        </div>
-
         <div className="absolute bottom-0 left-0 right-0 px-6 pb-20 md:pb-28 text-center">
           <p className="text-amber-300/80 tracking-[0.4em] uppercase text-xs md:text-sm mb-4 font-light">Chapter Sixteen</p>
           <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-tight text-white leading-[1.05] mb-6">

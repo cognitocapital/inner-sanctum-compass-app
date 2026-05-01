@@ -86,15 +86,6 @@ const Introduction = () => {
       </div>
       
       <div className="relative z-10 max-w-4xl mx-auto animate-fade-in px-4 py-12 md:py-20">
-        <div className="mb-10">
-          <Button asChild variant="ghost" className="pl-0 text-amber-200/70 hover:text-amber-200 hover:bg-transparent transition-colors">
-            <Link to="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to the Library
-            </Link>
-          </Button>
-        </div>
-
         {/* Glassmorphic editorial card — matches CarerCircle / MyPhoenixChapters scope */}
         <article className="relative rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl shadow-[0_0_60px_rgba(245,158,11,0.08)] p-8 md:p-14 overflow-hidden">
           {/* Soft amber glow */}

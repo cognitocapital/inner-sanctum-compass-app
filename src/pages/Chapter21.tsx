@@ -49,15 +49,6 @@ const Chapter21 = () => {
 
       {/* ARTICLE */}
       <div className="relative max-w-4xl mx-auto px-4 md:px-6 py-16 md:py-24">
-        <div className="mb-10">
-          <Button asChild variant="ghost" className="pl-0 text-white/60 hover:text-amber-200 transition-colors">
-            <Link to="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to the Library
-            </Link>
-          </Button>
-        </div>
-
         <article className="relative rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-8 md:p-14 shadow-[0_30px_120px_-30px_rgba(0,0,0,0.8)]">
           <p className="text-amber-300/70 tracking-[0.3em] uppercase text-xs mb-8 font-light">A Note of Thanks</p>
 
