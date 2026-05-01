@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 
 const SITE_URL = "https://whatajourney.app";
-const DEFAULT_IMAGE = `${SITE_URL}/lovable-uploads/5d3e9ae0-c18d-4e9a-9d2b-95582494f6bd.png`;
+const DEFAULT_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 interface SEOHeadProps {
   title: string;
