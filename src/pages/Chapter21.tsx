@@ -52,9 +52,6 @@ const Chapter21 = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-amber-200/60 text-xs tracking-[0.3em] uppercase animate-pulse">
-          Read
-        </div>
       </section>
 
       {/* ARTICLE */}

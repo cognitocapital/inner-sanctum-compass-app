@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowRight, ArrowLeft, Headphones, ChevronDown } from "lucide-react";
+import { ArrowRight, ArrowLeft, Headphones } from "lucide-react";
 import { useOpenAudiobook } from "@/hooks/use-audiobook";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
@@ -57,10 +57,6 @@ const Dedication = () => {
                 </div>
               </div>
 
-              {/* Scroll cue */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 animate-[float_2.5s_ease-in-out_infinite]">
-                <ChevronDown className="h-6 w-6 text-white/60" />
-              </div>
             </section>
             {/* ============ END HERO ============ */}
 
