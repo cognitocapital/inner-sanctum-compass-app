@@ -16,6 +16,16 @@ const Introduction = () => {
       <SEOHead title="Introduction - What a Journey" description="Introduction to What a Journey, setting the stage for Michael Heron's TBI recovery story." path="/introduction" />
       {/* Cinematic hero — father/son journey, Manly horizon, drifting embers */}
       <section className="relative w-full h-[88vh] min-h-[560px] overflow-hidden">
+
+        {/* Home link, top-left */}
+        <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20">
+          <Button asChild variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 backdrop-blur-sm rounded-full">
+            <Link to="/">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Home
+            </Link>
+          </Button>
+        </div>
         <img
           src={introHero}
           alt="A man gazes out a car window at a winding coastal road toward Manly at golden hour, his reflection ghosted in the glass — the contemplative drive that opens What a Journey."

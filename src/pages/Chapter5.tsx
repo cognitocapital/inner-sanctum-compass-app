@@ -17,6 +17,16 @@ const Chapter5 = () => {
 
       {/* Cinematic hero */}
       <section className="relative w-full h-[88vh] min-h-[560px] overflow-hidden">
+
+        {/* Home link, top-left */}
+        <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20">
+          <Button asChild variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 backdrop-blur-sm rounded-full">
+            <Link to="/">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Home
+            </Link>
+          </Button>
+        </div>
         <img
           src={chapter5Hero}
           alt="A forking road at sunrise — neuroplasticity and the choice to rebuild"
