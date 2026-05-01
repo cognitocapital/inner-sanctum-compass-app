@@ -42,16 +42,6 @@ const Dedication = () => {
                 <div className="absolute top-[62%] right-[18%] w-1.5 h-1.5 bg-amber-300 rounded-full opacity-65 shadow-[0_0_10px_3px_rgba(252,211,77,0.5)] animate-[float_5s_ease-in-out_infinite_0.5s]" />
               </div>
 
-              {/* Back link */}
-              <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20">
-                <Button asChild variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 backdrop-blur-sm rounded-full">
-                  <Link to="/">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    Home
-                  </Link>
-                </Button>
-              </div>
-
               {/* Title block — editorial, bottom-left */}
               <div className="absolute inset-x-0 bottom-0 z-10 px-6 md:px-16 pb-20 md:pb-28 animate-[fade-in_2s_ease-out_0.4s_both]">
                 <div className="max-w-4xl mx-auto">
