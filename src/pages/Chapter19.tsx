@@ -29,7 +29,7 @@ const Chapter19 = () => {
         </div>
         <img
           src={heroImage}
-          alt="An open book with brain illustration under a brass lamp"
+          alt="A solitary lighthouse beacon piercing twilight mist over a dark ocean — a guiding new resource"
           width={1920}
           height={1080}
           className="absolute inset-0 w-full h-full object-cover scale-105 animate-fade-in"
