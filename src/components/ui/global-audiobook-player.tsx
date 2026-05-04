@@ -226,6 +226,19 @@ export const GlobalAudiobookPlayer = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [soundscape.isPlaying]);
 
+  // Listen for explicit pause requests (dispatched by SoundscapeContext)
+  useEffect(() => {
+    const handler = () => {
+      if (audioRef.current && !audioRef.current.paused) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+        playIntentRef.current = false;
+      }
+    };
+    window.addEventListener("audiobook:pause", handler);
+    return () => window.removeEventListener("audiobook:pause", handler);
+  }, []);
+
   if (!isVisible) return null;
 
   return (
