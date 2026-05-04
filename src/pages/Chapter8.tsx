@@ -11,7 +11,7 @@ const Chapter8 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter8.mp3", "/audio/chapter8-part2.mp3"]} />
+      <PageAudioPlayer chapterId="chapter8" />
       <ChapterNavArrows currentPath="/chapter-8" />
       <SEOHead title="Chapter 8: Nourishing the Body - What a Journey" description="The role of nutrition and physical care in TBI recovery." path="/chapter-8" />
 

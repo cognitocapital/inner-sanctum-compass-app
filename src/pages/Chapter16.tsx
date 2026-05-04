@@ -11,7 +11,7 @@ const Chapter16 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter16.mp3"]} />
+      <PageAudioPlayer chapterId="chapter16" />
       <ChapterNavArrows currentPath="/chapter-16" />
       <SEOHead title="Chapter 16: Looking Forward - What a Journey" description="Setting sights on the future after traumatic brain injury." path="/chapter-16" />
 

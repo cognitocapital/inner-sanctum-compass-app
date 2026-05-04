@@ -11,7 +11,7 @@ const Chapter14 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter14.mp3", "/audio/chapter14-part2.mp3"]} />
+      <PageAudioPlayer chapterId="chapter14" />
       <ChapterNavArrows currentPath="/chapter-14" />
       <SEOHead title="Chapter 14: The Universe's Message - What a Journey" description="Finding meaning and messages from the universe during recovery." path="/chapter-14" />
 
