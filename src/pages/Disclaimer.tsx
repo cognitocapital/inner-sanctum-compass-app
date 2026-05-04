@@ -27,11 +27,6 @@ const Disclaimer = () => {
     audio.addEventListener('loadedmetadata', handleLoadedMetadata);
     audio.addEventListener('ended', handleEnded);
 
-    // Pause any playing soundscape/audiobook so the disclaimer is heard clearly
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("soundscape:pause"));
-      window.dispatchEvent(new CustomEvent("audiobook:pause"));
-    }
     audio.play().then(() => setIsPlaying(true)).catch(() => {});
 
     return () => {
@@ -43,15 +38,7 @@ const Disclaimer = () => {
 
   const togglePlay = () => {
     if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("soundscape:pause"));
-        window.dispatchEvent(new CustomEvent("audiobook:pause"));
-      }
-      audioRef.current.play();
-    }
+    if (isPlaying) { audioRef.current.pause(); } else { audioRef.current.play(); }
     setIsPlaying(!isPlaying);
   };
 

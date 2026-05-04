@@ -119,20 +119,6 @@ export const SoundscapeProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [isPlaying, selectedTrack]);
 
-  // External requests to pause the soundscape (e.g. disclaimer audio takes priority)
-  useEffect(() => {
-    const handler = () => {
-      if (audioRef.current && !audioRef.current.paused) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      }
-    };
-    if (typeof window !== "undefined") {
-      window.addEventListener("soundscape:pause", handler);
-      return () => window.removeEventListener("soundscape:pause", handler);
-    }
-  }, []);
-
   const stopPlayback = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause();

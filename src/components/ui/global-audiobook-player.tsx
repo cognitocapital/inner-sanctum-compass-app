@@ -56,8 +56,6 @@ interface GlobalAudiobookPlayerProps {
   onClose: () => void;
   startChapterId?: string;
   autoPlay?: boolean;
-  /** Increment to force-replay the current chapter (e.g. user re-tapped Listen). */
-  playToken?: number;
 }
 
 const INTER_CHAPTER_GAP_MS = 5000;
@@ -67,7 +65,6 @@ export const GlobalAudiobookPlayer = ({
   onClose,
   startChapterId = "dedication",
   autoPlay = false,
-  playToken = 0,
 }: GlobalAudiobookPlayerProps) => {
   const [currentChapterIndex, setCurrentChapterIndex] = useState(() => {
     const idx = chapters.findIndex((c) => c.id === startChapterId);
@@ -137,37 +134,20 @@ export const GlobalAudiobookPlayer = ({
     audio.load();
     setCurrentTime(0);
 
-    const tryPlay = () => {
+    const onCanPlay = () => {
       audio.playbackRate = 0.92;
-      if (!playIntentRef.current) return;
-      // Pause soundscape — only one narrative source at a time
-      if (soundscape.isPlaying) soundscape.togglePlay();
-      audio.play().then(() => setIsPlaying(true)).catch(() => {});
+      if (playIntentRef.current) {
+        // Pause soundscape if it's playing — only one narrative source at a time
+        if (soundscape.isPlaying) {
+          soundscape.togglePlay();
+        }
+        audio.play().then(() => setIsPlaying(true)).catch(() => {});
+      }
     };
-    // Try as soon as possible; canplay fires earlier and more reliably than canplaythrough
-    const onCanPlay = () => tryPlay();
-    audio.addEventListener("canplay", onCanPlay, { once: true });
-    audio.addEventListener("loadeddata", onCanPlay, { once: true });
-    // Also attempt immediately — many browsers will resolve play() once buffered
-    tryPlay();
-    return () => {
-      audio.removeEventListener("canplay", onCanPlay);
-      audio.removeEventListener("loadeddata", onCanPlay);
-    };
+    audio.addEventListener("canplaythrough", onCanPlay, { once: true });
+    return () => audio.removeEventListener("canplaythrough", onCanPlay);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentChapterIndex]);
-
-  // Force replay when playToken changes (user re-tapped Listen on same chapter)
-  useEffect(() => {
-    if (playToken === 0) return;
-    const audio = audioRef.current;
-    if (!audio || !currentChapter.audioUrl) return;
-    playIntentRef.current = true;
-    if (soundscape.isPlaying) soundscape.togglePlay();
-    try { audio.currentTime = 0; } catch {}
-    audio.play().then(() => setIsPlaying(true)).catch(() => {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playToken]);
 
   const handlePlayPause = useCallback(() => {
     const audio = audioRef.current;

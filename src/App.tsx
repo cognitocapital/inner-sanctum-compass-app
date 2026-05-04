@@ -82,7 +82,6 @@ const AppContent = () => {
   const [audiobookVisible, setAudiobookVisible] = useState(false);
   const [startChapterId, setStartChapterId] = useState("dedication");
   const [autoPlayOnOpen, setAutoPlayOnOpen] = useState(false);
-  const [playToken, setPlayToken] = useState(0);
 
   // Expose global function for opening audiobook
   if (typeof window !== "undefined") {
@@ -90,7 +89,6 @@ const AppContent = () => {
       if (chapterId) setStartChapterId(chapterId);
       setAutoPlayOnOpen(true);
       setAudiobookVisible(true);
-      setPlayToken((t) => t + 1);
     };
   }
 
@@ -240,7 +238,6 @@ const AppContent = () => {
         onClose={() => { setAudiobookVisible(false); setAutoPlayOnOpen(false); }}
         startChapterId={startChapterId}
         autoPlay={autoPlayOnOpen}
-        playToken={playToken}
       />
     </>
   );

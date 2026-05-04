@@ -1,15 +1,13 @@
-import { Play, Pause, X, Volume2, VolumeX, ChevronUp, ChevronDown, Music } from "lucide-react";
+import { Play, Pause, X, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useSoundscape } from "@/contexts/SoundscapeContext";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
 
 export const GlobalSoundscapePlayer = () => {
   const { selectedTrack, isPlaying, togglePlay, stopPlayback, volume, setVolume, isMuted, setIsMuted, timeRemaining } = useSoundscape();
   const location = useLocation();
-  const [isMinimised, setIsMinimised] = useState(false);
 
   // Don't show mini player on the soundscapes page itself (it has its own full UI)
   if (!selectedTrack || !isPlaying && !selectedTrack.audioUrl || location.pathname === "/soundscapes") return null;
@@ -22,25 +20,6 @@ export const GlobalSoundscapePlayer = () => {
 
   return (
     <AnimatePresence>
-      {isMinimised ? (
-        <motion.div
-          initial={{ y: 80, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 80, opacity: 0 }}
-          className="fixed bottom-4 right-4 z-50"
-        >
-          <button
-            onClick={() => setIsMinimised(false)}
-            className="flex items-center gap-2 px-3 py-2 rounded-full bg-card/95 backdrop-blur-xl border border-primary/30 shadow-2xl shadow-primary/10"
-            aria-label="Expand soundscape player"
-          >
-            <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center">
-              <Music className="h-3.5 w-3.5 text-primary" />
-            </div>
-            <ChevronUp className="h-4 w-4 text-primary" />
-          </button>
-        </motion.div>
-      ) : (
       <motion.div
         initial={{ y: 80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -74,18 +53,12 @@ export const GlobalSoundscapePlayer = () => {
             {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 ml-0.5" />}
           </Button>
 
-          {/* Minimise */}
-          <Button variant="ghost" size="icon" onClick={() => setIsMinimised(true)} className="h-8 w-8 text-muted-foreground hover:text-foreground shrink-0" aria-label="Minimise">
-            <ChevronDown className="h-4 w-4" />
-          </Button>
-
           {/* Close */}
           <Button variant="ghost" size="icon" onClick={stopPlayback} className="h-8 w-8 text-muted-foreground hover:text-foreground shrink-0">
             <X className="h-4 w-4" />
           </Button>
         </div>
       </motion.div>
-      )}
     </AnimatePresence>
   );
 };
