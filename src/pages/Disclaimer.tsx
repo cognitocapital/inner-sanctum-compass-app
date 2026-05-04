@@ -4,6 +4,7 @@ import { ArrowRight, ArrowLeft, Play, Pause, Volume2, VolumeX, AlertTriangle, Sh
 import { useState, useRef, useEffect } from "react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
+import { useSoundscape } from "@/contexts/SoundscapeContext";
 
 const Disclaimer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -12,12 +13,16 @@ const Disclaimer = () => {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const { stopPlayback } = useSoundscape();
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
+
+    // Stop any background soundscape so the disclaimer narration is clear
+    stopPlayback();
 
     const handleTimeUpdate = () => setProgress(audio.currentTime);
     const handleLoadedMetadata = () => setDuration(audio.duration);
