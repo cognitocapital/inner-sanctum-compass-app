@@ -9,7 +9,6 @@ import {
   Users,
   Star,
   Music,
-  ChevronDown,
   Flame,
   Sparkles,
 } from "lucide-react";

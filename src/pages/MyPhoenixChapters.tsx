@@ -9,7 +9,6 @@ import {
   BookHeart,
   Share2,
   Flame,
-  ChevronDown,
   Sparkles,
   Lock,
 } from "lucide-react";

@@ -15,7 +15,6 @@ import {
   AlertTriangle,
   Music,
   Quote,
-  ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SEOHead from "@/components/seo/SEOHead";
