@@ -11,7 +11,7 @@ const Chapter18 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter18.mp3"]} />
+      <PageAudioPlayer chapterId="chapter18" />
       <ChapterNavArrows currentPath="/chapter-18" />
       <SEOHead title="Chapter 18: Unwritten Chapters - What a Journey" description="Embracing the unknown and the chapters yet to be written." path="/chapter-18" />
 

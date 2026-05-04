@@ -11,7 +11,7 @@ const Introduction = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/introduction.mp3"]} />
+      <PageAudioPlayer chapterId="introduction" />
       <ChapterNavArrows currentPath="/introduction" />
       <SEOHead title="Introduction - What a Journey" description="Introduction to What a Journey, setting the stage for Michael Heron's TBI recovery story." path="/introduction" />
       {/* Cinematic hero — father/son journey, Manly horizon, drifting embers */}
