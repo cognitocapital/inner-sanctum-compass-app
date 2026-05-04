@@ -11,7 +11,7 @@ const Chapter13 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer chapterId="chapter13" />
+      <PageAudioPlayer audioSrc={["/audio/chapter13.mp3", "/audio/chapter13-part2.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-13" />
       <SEOHead title="Chapter 13: The Power of Gratitude - What a Journey" description="Discovering the transformative power of gratitude in recovery." path="/chapter-13" />
 

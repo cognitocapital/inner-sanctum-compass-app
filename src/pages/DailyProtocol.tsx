@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Wind, Brain, Heart, Music, Flame } from "lucide-react";
+import { ArrowLeft, Wind, Brain, Heart, Music, Flame, ChevronDown } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDailyCheckin } from "@/hooks/use-daily-checkin";
 import { ProtocolOnboarding } from "@/components/protocol/ProtocolOnboarding";
@@ -163,6 +163,9 @@ const DailyProtocol = () => {
         </div>
 
         {/* Scroll cue */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 animate-[float_2.5s_ease-in-out_infinite]">
+          <ChevronDown className="h-6 w-6 text-white/60" />
+        </div>
       </section>
       {/* ============ END HERO ============ */}
 

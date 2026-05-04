@@ -11,7 +11,7 @@ const Chapter1 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer chapterId="chapter1" />
+      <PageAudioPlayer audioSrc={["/audio/chapter1.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-1" />
       <SEOHead title="Chapter 1: Australia Day - What a Journey" description="The story begins on Australia Day in Michael Heron's TBI recovery memoir." path="/chapter-1" />
 

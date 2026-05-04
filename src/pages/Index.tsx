@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Music } from "lucide-react";
+import { ArrowRight, Music, ChevronDown } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import BookSchema from "@/components/seo/BookSchema";
 import BetaDisclaimerBanner from "@/components/ui/beta-disclaimer-banner";
@@ -89,6 +89,9 @@ const Index = () => {
                 </div>
 
                 {/* Scroll cue */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 animate-[float_2.5s_ease-in-out_infinite]">
+                    <ChevronDown className="h-6 w-6 text-white/60" />
+                </div>
             </section>
             {/* ============ END HERO ============ */}
 

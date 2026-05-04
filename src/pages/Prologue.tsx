@@ -12,7 +12,7 @@ const Prologue = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-orange-900 text-white relative overflow-hidden">
-      <PageAudioPlayer chapterId="prologue" />
+      <PageAudioPlayer audioSrc={["/audio/prologue.mp3"]} />
       <ChapterNavArrows currentPath="/prologue" />
       <SEOHead title="Prologue - What a Journey" description="The prologue to What a Journey, Michael Heron's memoir of traumatic brain injury recovery and resilience." path="/prologue" />
 

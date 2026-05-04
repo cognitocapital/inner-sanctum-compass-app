@@ -93,10 +93,6 @@ export const SoundscapeProvider = ({ children }: { children: ReactNode }) => {
       if (isSameTrack && isPlaying) return;
 
       if (audioRef.current) {
-        // Pause the audiobook if it's playing — only one narrative source at a time
-        if (typeof window !== "undefined") {
-          window.dispatchEvent(new CustomEvent("audiobook:pause"));
-        }
         audioRef.current.src = track.audioUrl;
         audioRef.current.load();
         audioRef.current.play().then(() => setIsPlaying(true)).catch(console.error);
@@ -111,10 +107,6 @@ export const SoundscapeProvider = ({ children }: { children: ReactNode }) => {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      // Pause audiobook before resuming soundscape
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("audiobook:pause"));
-      }
       audioRef.current.play().then(() => setIsPlaying(true)).catch(console.error);
     }
   }, [isPlaying, selectedTrack]);

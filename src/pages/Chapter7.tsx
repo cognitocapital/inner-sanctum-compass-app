@@ -11,7 +11,7 @@ const Chapter7 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer chapterId="chapter7" />
+      <PageAudioPlayer audioSrc={["/audio/chapter7.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-7" />
       <SEOHead title="Chapter 7: Mind Games - What a Journey" description="Confronting the cognitive challenges of brain injury recovery." path="/chapter-7" />
 

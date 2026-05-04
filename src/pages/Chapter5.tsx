@@ -11,7 +11,7 @@ const Chapter5 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer chapterId="chapter5" />
+      <PageAudioPlayer audioSrc={["/audio/chapter5.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-5" />
       <SEOHead title="Chapter 5: Choose Your Own Adventure - What a Journey" description="Taking control of the recovery path and choosing how to move forward." path="/chapter-5" />
 

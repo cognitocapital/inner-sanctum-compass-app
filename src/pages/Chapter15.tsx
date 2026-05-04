@@ -11,7 +11,7 @@ const Chapter15 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer chapterId="chapter15" />
+      <PageAudioPlayer audioSrc={["/audio/chapter15.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-15" />
       <SEOHead title="Chapter 15: Still Standing - What a Journey" description="Perseverance and resilience through the toughest moments of TBI recovery." path="/chapter-15" />
 
