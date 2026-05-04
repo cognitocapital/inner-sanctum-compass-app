@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Wind, Brain, Heart, Music, Flame, ChevronDown } from "lucide-react";
+import { ArrowLeft, Wind, Brain, Heart, Music, Flame } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDailyCheckin } from "@/hooks/use-daily-checkin";
 import { ProtocolOnboarding } from "@/components/protocol/ProtocolOnboarding";
