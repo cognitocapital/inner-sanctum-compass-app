@@ -45,7 +45,7 @@ const chapters: Chapter[] = [
   { id: "chapter17", title: "Chapter 17: The Torch Rekindled", audioUrl: "/audio/chapter17.mp3" },
   { id: "chapter18", title: "Chapter 18: Unwritten Chapters", audioUrl: "/audio/chapter18.mp3" },
   { id: "chapter19", title: "Chapter 19: A New Resource", audioUrl: "/audio/chapter19.mp3" },
-  { id: "chapter20", title: "Chapter 20: The Next Page", audioUrl: null },
+  { id: "chapter20", title: "Chapter 20: The Next Page", audioUrl: "/audio/chapter20.mp3" },
   { id: "acknowledgments", title: "Acknowledgments", audioUrl: "/audio/acknowledgments.mp3" },
 ];
 
