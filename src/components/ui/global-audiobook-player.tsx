@@ -74,6 +74,7 @@ export const GlobalAudiobookPlayer = ({
   const [isMuted, setIsMuted] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showChapterList, setShowChapterList] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const isTransitioningRef = useRef(false);
   const playIntentRef = useRef(false); // Track whether we intend to play after loading
@@ -345,17 +346,41 @@ export const GlobalAudiobookPlayer = ({
         </div>
       )}
 
+      {/* Minimized Floating Button */}
+      {isMinimized && (
+        <button
+          onClick={() => setIsMinimized(false)}
+          className={cn(
+            "fixed bottom-4 left-4 z-50 h-12 w-12 rounded-full bg-gray-900/95 backdrop-blur-xl border border-orange-500/40 shadow-2xl shadow-orange-500/20 flex items-center justify-center transition-transform hover:scale-110"
+          )}
+          aria-label="Expand audiobook player"
+        >
+          <Book className={cn("h-5 w-5 text-orange-300", isPlaying && "animate-pulse")} />
+        </button>
+      )}
+
       {/* Mini Player (Fixed at bottom) */}
       <div className={cn(
         "fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-gray-950 via-gray-900 to-gray-900/95 border-t border-orange-500/30 backdrop-blur-xl transition-all duration-300",
-        isExpanded ? "pb-4" : "pb-2"
+        isExpanded ? "pb-4" : "pb-2",
+        isMinimized && "hidden"
       )}>
         {/* Expand Handle */}
         <button
           onClick={() => setIsExpanded(!isExpanded)}
           className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded-full p-1 transition-colors"
+          aria-label="Toggle expand"
         >
           <ChevronUp className={cn("h-4 w-4 text-orange-300 transition-transform", isExpanded && "rotate-180")} />
+        </button>
+
+        {/* Minimize Button */}
+        <button
+          onClick={() => setIsMinimized(true)}
+          className="absolute -top-3 right-4 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/30 rounded-full px-2 py-1 transition-colors text-[10px] text-orange-200 font-medium"
+          aria-label="Minimize player"
+        >
+          Minimize
         </button>
 
         <div className="max-w-4xl mx-auto px-4 pt-4">
