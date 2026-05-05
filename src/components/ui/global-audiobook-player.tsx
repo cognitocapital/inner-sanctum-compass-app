@@ -84,6 +84,19 @@ export const GlobalAudiobookPlayer = ({
   
   const currentChapter = chapters[currentChapterIndex];
 
+  // Sync currentChapterIndex when startChapterId prop changes (e.g. user
+  // clicks "Start Listening" on a different page while player already mounted).
+  // Only switch if the requested chapter differs to avoid restarting playback.
+  useEffect(() => {
+    const idx = chapters.findIndex(c => c.id === startChapterId);
+    if (idx >= 0 && idx !== currentChapterIndex) {
+      setCurrentAudioIndex(0);
+      setCurrentChapterIndex(idx);
+      if (autoPlay) playIntentRef.current = true;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startChapterId]);
+
   // Get the current audio URL (handles both single and array formats)
   const getCurrentAudioUrl = useCallback(() => {
     const urls = currentChapter.audioUrl;
