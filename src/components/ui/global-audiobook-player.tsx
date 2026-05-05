@@ -179,7 +179,10 @@ export const GlobalAudiobookPlayer = ({
     return () => {
       controller.abort();
     };
-  }, [currentChapterIndex, currentAudioIndex, autoPlay]);
+    // Note: autoPlay intentionally excluded from deps so toggling it later
+    // (e.g. on close/reopen) doesn't reload + restart the current audio mid-play.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentChapterIndex, currentAudioIndex]);
 
   const handlePlayPause = useCallback(() => {
     if (!audioRef.current || !hasAudio()) return;
