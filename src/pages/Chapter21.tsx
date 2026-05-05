@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
+import PageAudioPlayer from "@/components/ui/page-audio-player";
 import heroImage from "@/assets/chapter21-hero.jpg";
 
 const Chapter21 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen text-white relative overflow-hidden" style={{ backgroundColor: "#0a0a0f" }}>
+      <PageAudioPlayer audioSrc={["/audio/acknowledgments.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-21" />
       <SEOHead title="Acknowledgments - What a Journey" description="With gratitude — acknowledgments for What a Journey by Michael Heron." path="/chapter-21" />
 
