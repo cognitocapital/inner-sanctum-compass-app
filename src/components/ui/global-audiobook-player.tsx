@@ -78,6 +78,8 @@ export const GlobalAudiobookPlayer = ({
   const isTransitioningRef = useRef(false);
   const playIntentRef = useRef(false); // Track whether we intend to play after loading
   const abortControllerRef = useRef<AbortController | null>(null);
+  const preloadRef = useRef<HTMLAudioElement | null>(null);
+  const preloadedUrlRef = useRef<string | null>(null);
   
   const currentChapter = chapters[currentChapterIndex];
 
@@ -99,11 +101,43 @@ export const GlobalAudiobookPlayer = ({
     return true;
   }, [currentChapter.audioUrl]);
 
+  // Get the URL of the next audio segment (next part of current chapter,
+  // or first part of next chapter that has audio) so we can prefetch it.
+  const getNextAudioUrl = useCallback((): string | null => {
+    const urls = currentChapter.audioUrl;
+    if (Array.isArray(urls) && currentAudioIndex < urls.length - 1) {
+      return urls[currentAudioIndex + 1] || null;
+    }
+    for (let i = currentChapterIndex + 1; i < chapters.length; i++) {
+      const next = chapters[i].audioUrl;
+      if (!next) continue;
+      return Array.isArray(next) ? (next[0] ?? null) : next;
+    }
+    return null;
+  }, [currentChapter.audioUrl, currentAudioIndex, currentChapterIndex]);
+
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume;
     }
   }, [volume, isMuted]);
+
+  // Prefetch the next audio segment in a hidden Audio element so when the
+  // current part ends, the browser already has the next file buffered and
+  // the transition is effectively seamless.
+  useEffect(() => {
+    if (!preloadRef.current) {
+      const a = new Audio();
+      a.preload = "auto";
+      preloadRef.current = a;
+    }
+    const nextUrl = getNextAudioUrl();
+    if (nextUrl && nextUrl !== preloadedUrlRef.current) {
+      preloadRef.current.src = nextUrl;
+      preloadRef.current.load();
+      preloadedUrlRef.current = nextUrl;
+    }
+  }, [getNextAudioUrl]);
 
   // Handle chapter or audio segment changes - wait for canplaythrough before playing
   useEffect(() => {
@@ -130,7 +164,10 @@ export const GlobalAudiobookPlayer = ({
     audio.load();
     setCurrentTime(0);
 
-    audio.addEventListener('canplaythrough', () => {
+    // Use 'canplay' (faster) instead of 'canplaythrough' to minimise the gap
+    // between parts. Combined with prefetching the next part above, this
+    // gives near-seamless playback across multi-file chapters.
+    audio.addEventListener('canplay', () => {
       audio.playbackRate = 0.92;
       if (playIntentRef.current) {
         audio.play().catch(console.error);
@@ -207,7 +244,7 @@ export const GlobalAudiobookPlayer = ({
     
     // If chapter has multiple audio files and we're not at the last one
     if (Array.isArray(urls) && currentAudioIndex < urls.length - 1) {
-      // Seamlessly play next segment of same chapter
+      // Seamlessly play next segment of same chapter (no pause).
       playIntentRef.current = true;
       setCurrentAudioIndex(prev => prev + 1);
     } else {
