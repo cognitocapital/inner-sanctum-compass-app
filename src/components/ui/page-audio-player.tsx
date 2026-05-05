@@ -12,6 +12,7 @@ const PageAudioPlayer = ({ audioSrc, isVideo = false }: PageAudioPlayerProps) =>
   const [showVideo, setShowVideo] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const preloadRef = useRef<HTMLAudioElement | null>(null);
   const sources = Array.isArray(audioSrc) ? audioSrc : [audioSrc];
 
   useEffect(() => {
@@ -35,10 +36,25 @@ const PageAudioPlayer = ({ audioSrc, isVideo = false }: PageAudioPlayerProps) =>
     const audio = audioRef.current;
     if (!audio || isVideo) return;
     audio.src = sources[currentPart];
+    audio.playbackRate = 0.92;
     if (isPlaying) {
       audio.play().catch(() => setIsPlaying(false));
     }
   }, [currentPart, isVideo]);
+
+  // Prefetch next segment for seamless multi-part playback
+  useEffect(() => {
+    if (isVideo) return;
+    const nextUrl = sources[currentPart + 1];
+    if (!nextUrl) return;
+    if (!preloadRef.current) {
+      const a = new Audio();
+      a.preload = "auto";
+      preloadRef.current = a;
+    }
+    preloadRef.current.src = nextUrl;
+    preloadRef.current.load();
+  }, [currentPart, sources, isVideo]);
 
   const toggle = () => {
     if (isVideo) {
