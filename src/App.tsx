@@ -86,11 +86,6 @@ const AppContent = () => {
   // Expose global function for opening audiobook
   if (typeof window !== "undefined") {
     (window as any).openAudiobook = (chapterId?: string) => {
-      // If already open and the same chapter is requested, just keep playing
-      // (don't restart from the beginning).
-      if (audiobookVisible && (!chapterId || chapterId === startChapterId)) {
-        return;
-      }
       if (chapterId) setStartChapterId(chapterId);
       setAutoPlayOnOpen(true);
       setAudiobookVisible(true);
