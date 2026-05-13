@@ -1,0 +1,50 @@
+# What a Journey
+
+> A memoir and recovery companion by Michael Heron — an intimate account of recovering from a traumatic brain injury (TBI), paired with the Phoenix Journey, a clinical evidence-informed rehabilitation app.
+
+What a Journey hosts the full memoir alongside Phoenix Journey, a TBI recovery platform with quests, daily protocols, breathing and cold-exposure practice, healing soundscapes, brain compass mapping, and an AI companion. This is a beta prototype for demonstration purposes; content is not medical advice.
+
+## Book
+
+- [Dedication](/dedication): Author's dedication.
+- [Disclaimer](/disclaimer): Liability and beta prototype notice.
+- [Prologue](/prologue): Opening of the memoir.
+- [Introduction](/introduction): Setting the stage for the recovery story.
+- [Chapter 1](/chapter-1): The accident and immediate aftermath.
+- [Chapter 2](/chapter-2)
+- [Chapter 3](/chapter-3)
+- [Chapter 4](/chapter-4)
+- [Chapter 5](/chapter-5)
+- [Chapter 6](/chapter-6)
+- [Chapter 7](/chapter-7)
+- [Chapter 8](/chapter-8)
+- [Chapter 9](/chapter-9)
+- [Chapter 10](/chapter-10)
+- [Chapter 11](/chapter-11)
+- [Chapter 12](/chapter-12)
+- [Chapter 13](/chapter-13)
+- [Chapter 14](/chapter-14)
+- [Chapter 15](/chapter-15)
+- [Chapter 16](/chapter-16)
+- [Chapter 17](/chapter-17): The Torch Rekindled.
+- [Chapter 18](/chapter-18)
+- [Chapter 19](/chapter-19)
+- [Chapter 20](/chapter-20)
+- [Chapter 21](/chapter-21): Acknowledgments.
+
+## App
+
+- [Phoenix Journey Dashboard](/dashboard): Personal recovery path and quests.
+- [Daily Protocol](/daily-protocol): Guided four-step daily recovery sequence.
+- [Brain Compass](/brain-compass): Interactive brain map of affected regions.
+- [Healing Soundscapes](/soundscapes): Frequency-based audio library.
+- [Resources](/resources): TBI recovery resources and reading.
+- [Directory](/directory): TBI organizations and support.
+- [Carer Circle](/circle): Support hub for family and caregivers.
+- [Install](/install): How to install the Phoenix Journey PWA.
+- [Sign in](/auth): Account access.
+
+## Optional
+
+- [AI Companion](/ai-companion): Conversational support agent (requires sign-in).
+- [Mind Training](/mind), [Breathing](/breathing), [Cold Exposure](/cold-exposure), [Insights](/insights), [Settings](/settings).

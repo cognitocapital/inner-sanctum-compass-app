@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
+import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import chapter10Hero from "@/assets/chapter10-hero.jpg";
@@ -14,6 +15,7 @@ const Chapter10 = () => {
       <PageAudioPlayer audioSrc={["/audio/chapter10.mp3", "/audio/chapter10-part2.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-10" />
       <SEOHead title="Chapter 10: A New Chapter - What a Journey" description="Embracing new beginnings on the road to TBI recovery." path="/chapter-10" />
+      <ChapterSchema title="Chapter 10: A New Chapter" path="/chapter-10" />
 
       {/* Cinematic hero */}
       <section className="relative w-full h-[88vh] min-h-[560px] overflow-hidden">

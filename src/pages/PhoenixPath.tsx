@@ -11,6 +11,7 @@ import { FlameStrength } from "@/components/path/FlameStrength";
 import { QuestNode } from "@/components/path/QuestNode";
 import { QuestCard } from "@/components/path/QuestCard";
 import phoenixPathHero from "@/assets/phoenix-path-hero.jpg";
+import SEOHead from "@/components/seo/SEOHead";
 
 const PhoenixPath = () => {
   const navigate = useNavigate();
@@ -66,6 +67,11 @@ const PhoenixPath = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-white relative overflow-x-hidden">
+      <SEOHead
+        title="Phoenix Journey Dashboard — TBI Recovery Path"
+        description="Your personal Phoenix Journey: track quests, daily check-ins, and recovery milestones across the four-phase TBI rehabilitation path."
+        path="/dashboard"
+      />
       {/* ─── CINEMATIC HERO ───────────────────────────────────────────── */}
       <section className="relative min-h-[88svh] w-full overflow-hidden flex flex-col">
         {/* Hero image */}

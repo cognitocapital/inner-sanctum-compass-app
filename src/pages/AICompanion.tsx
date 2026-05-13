@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import ReactMarkdown from "react-markdown";
+import SEOHead from "@/components/seo/SEOHead";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -255,6 +256,11 @@ const AICompanion = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-gray-950 text-white flex flex-col">
+      <SEOHead
+        title="Phoenix AI Companion — TBI Recovery Chat"
+        description="Talk with the Phoenix AI Companion: a supportive conversational guide for traumatic brain injury recovery, reflections, and daily encouragement."
+        path="/ai-companion"
+      />
       {/* Ambient glow */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-orange-500/[0.03] rounded-full blur-[120px]" />

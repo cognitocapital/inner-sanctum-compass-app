@@ -29,4 +29,9 @@
   <url><loc>https://whatajourney.app/resources</loc><priority>0.6</priority></url>
   <url><loc>https://whatajourney.app/directory</loc><priority>0.6</priority></url>
   <url><loc>https://whatajourney.app/install</loc><priority>0.5</priority></url>
+  <url><loc>https://whatajourney.app/soundscapes</loc><priority>0.6</priority></url>
+  <url><loc>https://whatajourney.app/circle</loc><priority>0.6</priority></url>
+  <url><loc>https://whatajourney.app/brain-compass</loc><priority>0.6</priority></url>
+  <url><loc>https://whatajourney.app/daily-protocol</loc><priority>0.6</priority></url>
+  <url><loc>https://whatajourney.app/auth</loc><priority>0.4</priority></url>
 </urlset>
