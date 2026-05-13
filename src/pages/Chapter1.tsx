@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
+import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import chapter1Hero from "@/assets/chapter1-hero.jpg";
@@ -14,6 +15,7 @@ const Chapter1 = () => {
       <PageAudioPlayer audioSrc={["/audio/chapter1.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-1" />
       <SEOHead title="Chapter 1: Australia Day - What a Journey" description="The story begins on Australia Day in Michael Heron's TBI recovery memoir." path="/chapter-1" />
+      <ChapterSchema title="Chapter 1: Australia Day" path="/chapter-1" />
 
       {/* Cinematic hero — the Australia Day farm property, the suspended moment */}
       <section className="relative w-full h-[88vh] min-h-[560px] overflow-hidden">

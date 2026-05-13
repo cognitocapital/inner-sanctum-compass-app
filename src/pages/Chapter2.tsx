@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
+import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import chapter2Hero from "@/assets/chapter2-hero.jpg";
@@ -14,6 +15,7 @@ const Chapter2 = () => {
       <PageAudioPlayer audioSrc={["/audio/chapter2.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-2" />
       <SEOHead title="Chapter 2: Hospital Daze - What a Journey" description="Navigating the early days of hospital recovery after a traumatic brain injury." path="/chapter-2" />
+      <ChapterSchema title="Chapter 2: Hospital Daze" path="/chapter-2" />
 
       {/* Cinematic hero — hospital room, Sarah at the bedside, the disorienting fog */}
       <section className="relative w-full h-[88vh] min-h-[560px] overflow-hidden">
