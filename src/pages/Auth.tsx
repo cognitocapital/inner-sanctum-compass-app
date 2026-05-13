@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import authHero from "@/assets/auth-hero.jpg";
+import SEOHead from "@/components/seo/SEOHead";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -69,6 +70,11 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen w-full bg-gray-950 text-white relative overflow-hidden">
+      <SEOHead
+        title="Sign In or Sign Up — What a Journey"
+        description="Sign in or create an account to access your Phoenix Journey TBI recovery dashboard, quests, and personal progress."
+        path="/auth"
+      />
       {/* Cinematic backdrop */}
       <div className="fixed inset-0 z-0">
         <img
