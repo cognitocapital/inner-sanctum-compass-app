@@ -34,7 +34,15 @@ const Disclaimer = () => {
     audio.addEventListener('loadedmetadata', handleLoadedMetadata);
     audio.addEventListener('ended', handleEnded);
 
-    audio.play().then(() => setIsPlaying(true)).catch(() => {});
+    const FIRST_VISIT_KEY = 'disclaimer-autoplayed';
+    if (!localStorage.getItem(FIRST_VISIT_KEY)) {
+      audio.play()
+        .then(() => {
+          setIsPlaying(true);
+          localStorage.setItem(FIRST_VISIT_KEY, 'true');
+        })
+        .catch(() => {});
+    }
 
     return () => {
       audio.removeEventListener('timeupdate', handleTimeUpdate);
