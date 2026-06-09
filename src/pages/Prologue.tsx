@@ -5,7 +5,6 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
-import CinematicHero from "@/components/cinematic/CinematicHero";
 import prologueIllustration from "@/assets/prologue-phoenix-illustration.jpg";
 
 const Prologue = () => {
@@ -17,14 +16,32 @@ const Prologue = () => {
       <ChapterNavArrows currentPath="/prologue" />
       <SEOHead title="Prologue - What a Journey" description="The prologue to What a Journey, Michael Heron's memoir of traumatic brain injury recovery and resilience." path="/prologue" />
 
-      <CinematicHero
-        image={prologueIllustration}
-        alt="A man kneels among burnt papers and ashes as a fiery phoenix with wings of flame, photographs and medical notes rises behind him — visual metaphor for traumatic brain injury recovery and rebirth."
-        kicker="What a Journey · Michael Heron"
-        title="Prologue"
-        quote={<>From the ashes of who I was, a roadmap for who I&rsquo;m becoming.</>}
-      >
-        <div className="absolute top-4 left-4 md:top-6 md:left-6 z-30">
+      {/* ============ CINEMATIC HERO ============ */}
+      <section className="relative h-[100svh] w-full overflow-hidden">
+        {/* Illustration backdrop */}
+        <img
+          src={prologueIllustration}
+          alt="A man kneels among burnt papers and ashes as a fiery phoenix with wings of flame, photographs and medical notes rises behind him — visual metaphor for traumatic brain injury recovery and rebirth."
+          className="absolute inset-0 w-full h-full object-cover object-center animate-[fade-in_1.6s_ease-out]"
+          loading="eager"
+        />
+
+        {/* Atmospheric overlays — vignette + bottom fade into page */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(0,0,0,0.55)_70%,_rgba(0,0,0,0.85)_100%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-b from-transparent via-gray-900/60 to-gray-900" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent" />
+
+        {/* Drifting embers tied to the artwork */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[20%] left-[15%] w-1.5 h-1.5 bg-orange-400 rounded-full opacity-80 shadow-[0_0_12px_4px_rgba(251,146,60,0.6)] animate-[float_4s_ease-in-out_infinite]" />
+          <div className="absolute top-[35%] right-[20%] w-1 h-1 bg-amber-300 rounded-full opacity-70 shadow-[0_0_10px_3px_rgba(252,211,77,0.5)] animate-[float_5s_ease-in-out_infinite_1s]" />
+          <div className="absolute top-[55%] left-[25%] w-2 h-2 bg-orange-500 rounded-full opacity-60 shadow-[0_0_14px_5px_rgba(249,115,22,0.5)] animate-[float_6s_ease-in-out_infinite_2s]" />
+          <div className="absolute top-[45%] right-[30%] w-1 h-1 bg-orange-300 rounded-full opacity-50 animate-[float_7s_ease-in-out_infinite_3s]" />
+          <div className="absolute top-[65%] right-[15%] w-1.5 h-1.5 bg-amber-400 rounded-full opacity-65 shadow-[0_0_10px_3px_rgba(245,158,11,0.5)] animate-[float_5s_ease-in-out_infinite_0.5s]" />
+        </div>
+
+        {/* Back link, top-left */}
+        <div className="absolute top-4 left-4 md:top-6 md:left-6 z-20">
           <Button asChild variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 backdrop-blur-sm rounded-full">
             <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -32,7 +49,24 @@ const Prologue = () => {
             </Link>
           </Button>
         </div>
-      </CinematicHero>
+
+        {/* Title block — bottom-left, editorial */}
+        <div className="absolute inset-x-0 bottom-0 z-10 px-6 md:px-16 pb-20 md:pb-28 animate-[fade-in_2s_ease-out_0.4s_both]">
+          <div className="max-w-4xl mx-auto">
+            <p className="text-orange-300/80 tracking-[0.4em] text-xs md:text-sm font-light uppercase mb-4">
+              What a Journey · Michael Heron
+            </p>
+            <h1 className="font-serif font-bold text-white text-6xl md:text-8xl leading-none drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
+              Prologue
+            </h1>
+            <p className="mt-6 text-white/70 text-base md:text-lg max-w-xl font-light italic leading-relaxed">
+              From the ashes of who I was, a roadmap for who I'm becoming.
+            </p>
+          </div>
+        </div>
+
+      </section>
+      {/* ============ END HERO ============ */}
 
       {/* Animated background elements inspired by phoenix flames */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
