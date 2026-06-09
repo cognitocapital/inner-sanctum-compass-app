@@ -7,12 +7,13 @@ import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import chapter10Hero from "@/assets/chapter10-hero.jpg";
+import chapter10Audio from "@/assets/chapter10.mp3.asset.json";
 
 const Chapter10 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter10.mp3", "/audio/chapter10-part2.mp3"]} />
+      <PageAudioPlayer audioSrc={chapter10Audio.url} />
       <ChapterNavArrows currentPath="/chapter-10" />
       <SEOHead title="Chapter 10: A New Chapter - What a Journey" description="Embracing new beginnings on the road to TBI recovery." path="/chapter-10" />
       <ChapterSchema title="Chapter 10: A New Chapter" path="/chapter-10" />
