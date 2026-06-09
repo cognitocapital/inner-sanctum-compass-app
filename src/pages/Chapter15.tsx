@@ -7,12 +7,13 @@ import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import heroImage from "@/assets/chapter15-hero.jpg";
+import chapter15Audio from "@/assets/chapter15.mp3.asset.json";
 
 const Chapter15 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter15.mp3"]} />
+      <PageAudioPlayer audioSrc={chapter15Audio.url} />
       <ChapterNavArrows currentPath="/chapter-15" />
       <SEOHead title="Chapter 15: Still Standing - What a Journey" description="Perseverance and resilience through the toughest moments of TBI recovery." path="/chapter-15" />
       <ChapterSchema title="Chapter 15: Still Standing" path="/chapter-15" />
