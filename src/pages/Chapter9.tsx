@@ -7,12 +7,13 @@ import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import chapter9Hero from "@/assets/chapter9-hero.jpg";
+import chapter9Audio from "@/assets/chapter9.mp3.asset.json";
 
 const Chapter9 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter9.mp3", "/audio/chapter9-part2.mp3", "/audio/chapter9-part3.mp3"]} />
+      <PageAudioPlayer audioSrc={chapter9Audio.url} />
       <ChapterNavArrows currentPath="/chapter-9" />
       <SEOHead title="Chapter 9: The Business Dilemma - What a Journey" description="Balancing career and recovery after a traumatic brain injury." path="/chapter-9" />
       <ChapterSchema title="Chapter 9: The Business Dilemma" path="/chapter-9" />
