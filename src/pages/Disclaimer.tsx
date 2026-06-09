@@ -5,8 +5,6 @@ import { useState, useRef, useEffect } from "react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import { useSoundscape } from "@/contexts/SoundscapeContext";
-import CinematicHero from "@/components/cinematic/CinematicHero";
-import disclaimerHero from "@/assets/disclaimer-hero.jpg";
 
 const Disclaimer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -87,24 +85,25 @@ const Disclaimer = () => {
       <SEOHead title="Disclaimer - What a Journey" description="Important disclaimer for What a Journey, a TBI recovery memoir by Michael Heron." path="/disclaimer" />
       <audio ref={audioRef} src="/audio/disclaimer.mp3" preload="auto" />
 
-      {/* Cinematic 3D hero */}
-      <CinematicHero
-        image={disclaimerHero}
-        alt="A luminous phoenix rises from glowing embers under volumetric golden light — a cinematic emblem of rebirth introducing the disclaimer."
-        kicker="Before We Begin"
-        title="Disclaimer"
-        quote={<>Please read and listen to this important message before proceeding.</>}
-        variant="official"
-      >
-        <div className="absolute top-4 left-4 md:top-6 md:left-6 z-30">
-          <Button asChild variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 backdrop-blur-sm rounded-full">
-            <Link to="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Home
-            </Link>
-          </Button>
+      {/* Official header — no hero image */}
+      <header className="relative w-full pt-8 pb-12 px-6 border-b border-white/10 bg-[#0a0a0f]">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-2 mb-6">
+            <Button asChild variant="ghost" className="text-white/60 hover:text-white hover:bg-white/5 -ml-3">
+              <Link to="/">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Home
+              </Link>
+            </Button>
+          </div>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="h-px w-8 bg-white/30" />
+            <p className="text-xs uppercase text-white/50 tracking-[0.2em] font-normal">Before We Begin</p>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-white font-sans tracking-tight">Disclaimer</h1>
+          <p className="mt-3 text-base md:text-lg text-white/60 font-sans max-w-2xl">Please read and listen to this important message before proceeding.</p>
         </div>
-      </CinematicHero>
+      </header>
 
       {/* Animated background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
