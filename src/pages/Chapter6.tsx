@@ -7,12 +7,13 @@ import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import chapter6Hero from "@/assets/chapter6-hero.jpg";
+import chapter6Audio from "@/assets/chapter6.mp3.asset.json";
 
 const Chapter6 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter6.mp3"]} />
+      <PageAudioPlayer audioSrc={chapter6Audio.url} />
       <ChapterNavArrows currentPath="/chapter-6" />
       <SEOHead title="Chapter 6: The Roller Coaster - What a Journey" description="The emotional ups and downs of traumatic brain injury recovery." path="/chapter-6" />
       <ChapterSchema title="Chapter 6: The Roller Coaster" path="/chapter-6" />
