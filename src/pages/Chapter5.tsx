@@ -7,12 +7,13 @@ import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import chapter5Hero from "@/assets/chapter5-hero.jpg";
+import chapter5Audio from "@/assets/chapter5.mp3.asset.json";
 
 const Chapter5 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter5.mp3"]} />
+      <PageAudioPlayer audioSrc={chapter5Audio.url} />
       <ChapterNavArrows currentPath="/chapter-5" />
       <SEOHead title="Chapter 5: Choose Your Own Adventure - What a Journey" description="Taking control of the recovery path and choosing how to move forward." path="/chapter-5" />
       <ChapterSchema title="Chapter 5: Choose Your Own Adventure" path="/chapter-5" />
