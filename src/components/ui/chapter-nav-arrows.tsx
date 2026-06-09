@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-const READING_ORDER = [
+export const READING_ORDER = [
   { path: "/disclaimer", label: "Disclaimer" },
   { path: "/dedication", label: "Dedication" },
   { path: "/prologue", label: "Prologue" },
