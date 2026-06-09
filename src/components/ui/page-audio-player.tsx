@@ -73,6 +73,13 @@ const PageAudioPlayer = ({ audioSrc, isVideo = false, autoAdvance = true }: Page
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || isVideo) return;
+    // Skip the initial mount: the <audio> element already has sources[0]
+    // assigned via JSX. Reassigning the same src triggers a reload that
+    // can interrupt playback that just started (e.g. from auto-play).
+    if (currentPart === 0 && audio.src && audio.src.endsWith(sources[0])) {
+      audio.playbackRate = 0.92;
+      return;
+    }
     audio.src = sources[currentPart];
     audio.playbackRate = 0.92;
     if (isPlaying) {
