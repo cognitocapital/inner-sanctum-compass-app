@@ -8,6 +8,7 @@ interface CinematicHeroProps {
   title: string;
   quote: ReactNode;
   children?: ReactNode;
+  variant?: "cinematic" | "official";
 }
 
 /**
