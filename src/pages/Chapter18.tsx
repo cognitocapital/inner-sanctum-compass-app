@@ -7,12 +7,13 @@ import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import heroImage from "@/assets/chapter18-hero.jpg";
+import chapter18Audio from "@/assets/chapter18.mp3.asset.json";
 
 const Chapter18 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter18.mp3"]} />
+      <PageAudioPlayer audioSrc={chapter18Audio.url} />
       <ChapterNavArrows currentPath="/chapter-18" />
       <SEOHead title="Chapter 18: Unwritten Chapters - What a Journey" description="Embracing the unknown and the chapters yet to be written." path="/chapter-18" />
       <ChapterSchema title="Chapter 18: Unwritten Chapters" path="/chapter-18" />
