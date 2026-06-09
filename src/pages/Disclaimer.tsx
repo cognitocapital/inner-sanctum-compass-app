@@ -93,7 +93,8 @@ const Disclaimer = () => {
         alt="A luminous phoenix rises from glowing embers under volumetric golden light — a cinematic emblem of rebirth introducing the disclaimer."
         kicker="Before We Begin"
         title="Disclaimer"
-        quote={<>A moment of clarity before the journey — please read and listen.</>}
+        quote={<>Please read and listen to this important message before proceeding.</>}
+        variant="official"
       >
         <div className="absolute top-4 left-4 md:top-6 md:left-6 z-30">
           <Button asChild variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 backdrop-blur-sm rounded-full">
