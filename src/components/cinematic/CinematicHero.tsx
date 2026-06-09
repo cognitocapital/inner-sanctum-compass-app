@@ -165,18 +165,37 @@ export const CinematicHero = ({ image, alt, kicker, title, quote, children, vari
 
       <div className="absolute inset-x-0 bottom-0 px-6 pb-16 md:pb-24 z-20">
         <div className={`max-w-4xl mx-auto transition-all duration-1000 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-          <div className="flex items-center gap-3 mb-5">
-            <div className="h-px w-12 bg-amber-400/60" />
-            <p className="text-amber-300/90 text-xs md:text-sm tracking-[0.4em] uppercase font-light">
-              {kicker}
-            </p>
-          </div>
-          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white drop-shadow-2xl leading-[1.05]">
-            {title}
-          </h1>
-          <p className="mt-6 text-lg md:text-2xl text-white/85 italic max-w-2xl font-serif leading-relaxed">
-            {quote}
-          </p>
+          {variant === "cinematic" ? (
+            <>
+              <div className="flex items-center gap-3 mb-5">
+                <div className="h-px w-12 bg-amber-400/60" />
+                <p className="text-amber-300/90 text-xs md:text-sm tracking-[0.4em] uppercase font-light">
+                  {kicker}
+                </p>
+              </div>
+              <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white drop-shadow-2xl leading-[1.05]">
+                {title}
+              </h1>
+              <p className="mt-6 text-lg md:text-2xl text-white/85 italic max-w-2xl font-serif leading-relaxed">
+                {quote}
+              </p>
+            </>
+          : (
+            <>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="h-px w-8 bg-white/40" />
+                <p className="text-white/70 text-xs md:text-sm tracking-[0.2em] uppercase font-normal">
+                  {kicker}
+                </p>
+              </div>
+              <h1 className="font-sans text-4xl md:text-6xl font-semibold text-white drop-shadow-sm leading-tight">
+                {title}
+              </h1>
+              <p className="mt-4 text-base md:text-lg text-white/70 max-w-2xl font-sans leading-relaxed">
+                {quote}
+              </p>
+            </>
+          )}
         </div>
       </div>
     </section>
