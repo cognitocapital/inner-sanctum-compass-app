@@ -5,8 +5,6 @@ import { useState, useRef, useEffect } from "react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import { useSoundscape } from "@/contexts/SoundscapeContext";
-import CinematicHero from "@/components/cinematic/CinematicHero";
-import disclaimerHero from "@/assets/disclaimer-hero.jpg";
 
 const Disclaimer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
