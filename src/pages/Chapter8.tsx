@@ -7,12 +7,13 @@ import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import chapter8Hero from "@/assets/chapter8-hero.jpg";
+import chapter8Audio from "@/assets/chapter8.mp3.asset.json";
 
 const Chapter8 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter8.mp3", "/audio/chapter8-part2.mp3"]} />
+      <PageAudioPlayer audioSrc={chapter8Audio.url} />
       <ChapterNavArrows currentPath="/chapter-8" />
       <SEOHead title="Chapter 8: Nourishing the Body - What a Journey" description="The role of nutrition and physical care in TBI recovery." path="/chapter-8" />
       <ChapterSchema title="Chapter 8: Nourishing the Body" path="/chapter-8" />
