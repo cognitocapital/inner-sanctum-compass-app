@@ -7,12 +7,13 @@ import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import chapter3Hero from "@/assets/chapter3-hero.jpg";
+import chapter3Audio from "@/assets/chapter3.mp3.asset.json";
 
 const Chapter3 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter3.mp3"]} />
+      <PageAudioPlayer audioSrc={chapter3Audio.url} />
       <ChapterNavArrows currentPath="/chapter-3" />
       <SEOHead title="Chapter 3: The Gun to My Head - What a Journey" description="Facing life-or-death moments during TBI recovery." path="/chapter-3" />
       <ChapterSchema title="Chapter 3: The Gun to My Head" path="/chapter-3" />
