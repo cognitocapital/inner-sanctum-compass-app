@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Download, FileText, Loader2, LogOut, ShieldAlert, Stethoscope, Trash2, Users } from "lucide-react";
+import { ArrowLeft, Download, FileText, Film, Loader2, LogOut, ShieldAlert, Stethoscope, Trash2, Users } from "lucide-react";
 import { ClinicianLinkManager } from "@/components/clinical/ClinicianLinkManager";
 import { useUserRoles } from "@/hooks/use-clinician";
 import { useAuth } from "@/contexts/AuthContext";
@@ -8,6 +8,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { useCinematic3D, setCinematic3DEnabled } from "@/hooks/use-cinematic-3d";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,6 +30,7 @@ const Settings = () => {
   const [confirm, setConfirm] = useState("");
   const [busy, setBusy] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const cinematic3D = useCinematic3D();
 
   const handleExport = async (mode: "html" | "json") => {
     setExporting(true);
@@ -116,6 +119,28 @@ const Settings = () => {
           <h1 className="font-serif text-4xl">Your Account</h1>
           <p className="text-white/50 mt-2 text-sm">{user?.email}</p>
         </header>
+
+        {/* Display */}
+        <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-6">
+          <div className="flex items-start gap-3">
+            <Film className="h-5 w-5 text-orange-300 mt-0.5" />
+            <div className="flex-1">
+              <div className="flex items-center justify-between gap-4">
+                <h2 className="font-serif text-xl text-white">Cinematic 3D hero</h2>
+                <Switch
+                  checked={cinematic3D}
+                  onCheckedChange={(v) => setCinematic3DEnabled(v)}
+                  aria-label="Toggle cinematic 3D hero"
+                />
+              </div>
+              <p className="text-sm text-white/60 mt-1">
+                Animated depth and parallax on chapter cover images. Turn off
+                to reduce motion and save battery. Automatically disabled when
+                your device requests reduced motion.
+              </p>
+            </div>
+          </div>
+        </section>
 
         {/* Clinical export */}
         <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 space-y-5">
