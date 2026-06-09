@@ -7,12 +7,13 @@ import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import heroImage from "@/assets/chapter14-hero.jpg";
+import chapter14Audio from "@/assets/chapter14.mp3.asset.json";
 
 const Chapter14 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter14.mp3", "/audio/chapter14-part2.mp3"]} />
+      <PageAudioPlayer audioSrc={chapter14Audio.url} />
       <ChapterNavArrows currentPath="/chapter-14" />
       <SEOHead title="Chapter 14: The Universe's Message - What a Journey" description="Finding meaning and messages from the universe during recovery." path="/chapter-14" />
       <ChapterSchema title="Chapter 14: The Universe's Message" path="/chapter-14" />
