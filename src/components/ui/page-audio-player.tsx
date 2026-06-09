@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Volume2, Pause, Play, X } from "lucide-react";
+import { Volume2, Pause, Play, X, Loader2 } from "lucide-react";
 
 interface PageAudioPlayerProps {
   audioSrc: string | string[];
@@ -8,6 +8,7 @@ interface PageAudioPlayerProps {
 
 const PageAudioPlayer = ({ audioSrc, isVideo = false }: PageAudioPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentPart, setCurrentPart] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -63,11 +64,24 @@ const PageAudioPlayer = ({ audioSrc, isVideo = false }: PageAudioPlayerProps) =>
     }
     const audio = audioRef.current;
     if (!audio) return;
+    // Ignore clicks while the first play() is resolving to prevent
+    // an accidental double-tap from cancelling playback before it starts.
+    if (isLoading) return;
     if (isPlaying) {
       audio.pause();
       setIsPlaying(false);
     } else {
-      audio.play().then(() => setIsPlaying(true)).catch(() => {});
+      // Optimistically flip to the playing state so the button instantly
+      // shows Pause and a second tap will pause (not retrigger) playback.
+      setIsPlaying(true);
+      setIsLoading(true);
+      audio
+        .play()
+        .then(() => setIsLoading(false))
+        .catch(() => {
+          setIsPlaying(false);
+          setIsLoading(false);
+        });
     }
   };
 
@@ -80,20 +94,23 @@ const PageAudioPlayer = ({ audioSrc, isVideo = false }: PageAudioPlayerProps) =>
 
   return (
     <>
-      {!isVideo && <audio ref={audioRef} src={sources[0]} preload="none" />}
+      {!isVideo && <audio ref={audioRef} src={sources[0]} preload="auto" />}
       <button
         onClick={toggle}
+        disabled={isLoading}
         className="fixed top-4 right-4 z-50 flex items-center gap-2 px-3 py-2.5 rounded-full bg-black/50 border border-orange-500/40 text-orange-300 hover:bg-orange-500/20 hover:text-orange-200 hover:border-orange-400/60 backdrop-blur-sm transition-all duration-200 group"
-        aria-label={isPlaying ? "Pause audio" : "Listen to this chapter"}
-        title={isPlaying ? "Pause" : "Listen to this chapter"}
+        aria-label={isLoading ? "Loading audio" : isPlaying ? "Pause audio" : "Listen to this chapter"}
+        title={isLoading ? "Loading…" : isPlaying ? "Pause" : "Listen to this chapter"}
       >
-        {isPlaying ? (
+        {isLoading ? (
+          <Loader2 className="w-5 h-5 animate-spin" />
+        ) : isPlaying ? (
           <Pause className="w-5 h-5" />
         ) : (
           <Volume2 className="w-5 h-5" />
         )}
         <span className="text-xs font-medium hidden sm:inline">
-          {isPlaying ? "Pause" : "Listen"}
+          {isLoading ? "Loading…" : isPlaying ? "Pause" : "Listen"}
         </span>
       </button>
 
