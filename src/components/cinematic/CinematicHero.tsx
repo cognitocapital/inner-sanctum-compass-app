@@ -17,7 +17,7 @@ interface CinematicHeroProps {
  * - Mouse parallax + scroll dolly + slow ambient drift.
  * - Falls back to a static image when reduced motion / toggle off.
  */
-export const CinematicHero = ({ image, alt, kicker, title, quote, children }: CinematicHeroProps) => {
+export const CinematicHero = ({ image, alt, kicker, title, quote, children, variant = "cinematic" }: CinematicHeroProps) => {
   const enabled = useCinematic3D();
   const sectionRef = useRef<HTMLElement>(null);
   const backRef = useRef<HTMLDivElement>(null);
