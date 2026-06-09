@@ -1,13 +1,23 @@
 import { useState, useRef, useEffect } from "react";
 import { Volume2, Pause, Play, X, Loader2 } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { READING_ORDER } from "@/components/ui/chapter-nav-arrows";
 
 interface PageAudioPlayerProps {
   audioSrc: string | string[];
   isVideo?: boolean;
+  /**
+   * When true (default), reaching the end of the final audio segment
+   * navigates to the next chapter in READING_ORDER and auto-starts its audio.
+   */
+  autoAdvance?: boolean;
 }
 
-const PageAudioPlayer = ({ audioSrc, isVideo = false }: PageAudioPlayerProps) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+const PageAudioPlayer = ({ audioSrc, isVideo = false, autoAdvance = true }: PageAudioPlayerProps) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const shouldAutoPlay = !isVideo && (location.state as { autoPlay?: boolean } | null)?.autoPlay === true;
+  const [isPlaying, setIsPlaying] = useState(shouldAutoPlay);
   const [isLoading, setIsLoading] = useState(false);
   const [currentPart, setCurrentPart] = useState(0);
   const [showVideo, setShowVideo] = useState(false);
@@ -15,6 +25,25 @@ const PageAudioPlayer = ({ audioSrc, isVideo = false }: PageAudioPlayerProps) =>
   const videoRef = useRef<HTMLVideoElement>(null);
   const preloadRef = useRef<HTMLAudioElement | null>(null);
   const sources = Array.isArray(audioSrc) ? audioSrc : [audioSrc];
+
+  // Auto-play when arriving from a previous chapter's auto-advance.
+  useEffect(() => {
+    if (!shouldAutoPlay) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.playbackRate = 0.92;
+    setIsLoading(true);
+    audio
+      .play()
+      .then(() => setIsLoading(false))
+      .catch(() => {
+        setIsPlaying(false);
+        setIsLoading(false);
+      });
+    // Clear the state so a manual reload doesn't auto-play again.
+    navigate(location.pathname, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -26,12 +55,20 @@ const PageAudioPlayer = ({ audioSrc, isVideo = false }: PageAudioPlayerProps) =>
       } else {
         setIsPlaying(false);
         setCurrentPart(0);
+        // Auto-advance to the next chapter (if any) and resume playback there.
+        if (autoAdvance) {
+          const idx = READING_ORDER.findIndex((c) => c.path === location.pathname);
+          const next = idx >= 0 ? READING_ORDER[idx + 1] : null;
+          if (next) {
+            navigate(next.path, { state: { autoPlay: true } });
+          }
+        }
       }
     };
 
     audio.addEventListener("ended", handleEnded);
     return () => audio.removeEventListener("ended", handleEnded);
-  }, [currentPart, sources.length, isVideo]);
+  }, [currentPart, sources.length, isVideo, autoAdvance, location.pathname, navigate]);
 
   useEffect(() => {
     const audio = audioRef.current;
