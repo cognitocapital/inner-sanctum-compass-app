@@ -7,12 +7,13 @@ import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import heroImage from "@/assets/chapter19-hero.jpg";
+import chapter19Audio from "@/assets/chapter19.mp3.asset.json";
 
 const Chapter19 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter19.mp3"]} />
+      <PageAudioPlayer audioSrc={chapter19Audio.url} />
       <ChapterNavArrows currentPath="/chapter-19" />
       <SEOHead title="Chapter 19: A New Resource - What a Journey" description="Discovering new resources and support for TBI recovery." path="/chapter-19" />
       <ChapterSchema title="Chapter 19: A New Resource" path="/chapter-19" />
