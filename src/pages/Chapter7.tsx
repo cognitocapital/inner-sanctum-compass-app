@@ -7,12 +7,13 @@ import ChapterSchema from "@/components/seo/ChapterSchema";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import PageAudioPlayer from "@/components/ui/page-audio-player";
 import chapter7Hero from "@/assets/chapter7-hero.jpg";
+import chapter7Audio from "@/assets/chapter7.mp3.asset.json";
 
 const Chapter7 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={["/audio/chapter7.mp3"]} />
+      <PageAudioPlayer audioSrc={chapter7Audio.url} />
       <ChapterNavArrows currentPath="/chapter-7" />
       <SEOHead title="Chapter 7: Mind Games - What a Journey" description="Confronting the cognitive challenges of brain injury recovery." path="/chapter-7" />
       <ChapterSchema title="Chapter 7: Mind Games" path="/chapter-7" />
