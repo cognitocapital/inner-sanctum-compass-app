@@ -32,15 +32,7 @@ const Disclaimer = () => {
     audio.addEventListener('loadedmetadata', handleLoadedMetadata);
     audio.addEventListener('ended', handleEnded);
 
-    const FIRST_VISIT_KEY = 'disclaimer-autoplayed';
-    if (!localStorage.getItem(FIRST_VISIT_KEY)) {
-      audio.play()
-        .then(() => {
-          setIsPlaying(true);
-          localStorage.setItem(FIRST_VISIT_KEY, 'true');
-        })
-        .catch(() => {});
-    }
+    audio.play().then(() => setIsPlaying(true)).catch(() => {});
 
     return () => {
       audio.removeEventListener('timeupdate', handleTimeUpdate);
@@ -85,26 +77,6 @@ const Disclaimer = () => {
       <SEOHead title="Disclaimer - What a Journey" description="Important disclaimer for What a Journey, a TBI recovery memoir by Michael Heron." path="/disclaimer" />
       <audio ref={audioRef} src="/audio/disclaimer.mp3" preload="auto" />
 
-      {/* Official header — no hero image */}
-      <header className="relative w-full pt-8 pb-12 px-6 border-b border-white/10 bg-[#0a0a0f]">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center gap-2 mb-6">
-            <Button asChild variant="ghost" className="text-white/60 hover:text-white hover:bg-white/5 -ml-3">
-              <Link to="/">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Home
-              </Link>
-            </Button>
-          </div>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="h-px w-8 bg-white/30" />
-            <p className="text-xs uppercase text-white/50 tracking-[0.2em] font-normal">Before We Begin</p>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-white font-sans tracking-tight">Disclaimer</h1>
-          <p className="mt-3 text-base md:text-lg text-white/60 font-sans max-w-2xl">Please read and listen to this important message before proceeding.</p>
-        </div>
-      </header>
-
       {/* Animated background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-20 left-10 w-3 h-3 bg-orange-500 rounded-full animate-float opacity-80 shadow-lg shadow-orange-500/50" />
@@ -115,8 +87,29 @@ const Disclaimer = () => {
       </div>
 
       <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
+        {/* Back navigation */}
+        <div className="mb-8">
+          <Button asChild variant="ghost" className="text-orange-300 hover:text-orange-200 hover:bg-orange-500/20">
+            <Link to="/"><ArrowLeft className="mr-2 h-4 w-4" />Back</Link>
+          </Button>
+        </div>
+
         <div className="max-w-3xl mx-auto">
+          {/* Phoenix icon */}
           <div className="text-center mb-8">
+            <div className="relative mx-auto w-32 h-32 mb-6">
+              <div 
+                className="w-full h-full rounded-full border-2 border-orange-500/40 shadow-xl"
+                style={{
+                  backgroundImage: `url('/lovable-uploads/5d3e9ae0-c18d-4e9a-9d2b-95582494f6bd.png')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+              />
+              <div className="absolute inset-0 rounded-full bg-orange-500/20 blur-xl -z-10" />
+            </div>
+
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4 drop-shadow-lg">Disclaimer</h1>
             <p className="text-lg text-gray-300 leading-relaxed">
               Before we begin this journey together, please take a moment to listen to and read this important message.
             </p>

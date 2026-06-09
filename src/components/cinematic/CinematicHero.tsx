@@ -8,7 +8,6 @@ interface CinematicHeroProps {
   title: string;
   quote: ReactNode;
   children?: ReactNode;
-  variant?: "cinematic" | "official";
 }
 
 /**
@@ -17,7 +16,7 @@ interface CinematicHeroProps {
  * - Mouse parallax + scroll dolly + slow ambient drift.
  * - Falls back to a static image when reduced motion / toggle off.
  */
-export const CinematicHero = ({ image, alt, kicker, title, quote, children, variant = "cinematic" }: CinematicHeroProps) => {
+export const CinematicHero = ({ image, alt, kicker, title, quote, children }: CinematicHeroProps) => {
   const enabled = useCinematic3D();
   const sectionRef = useRef<HTMLElement>(null);
   const backRef = useRef<HTMLDivElement>(null);
@@ -165,16 +164,16 @@ export const CinematicHero = ({ image, alt, kicker, title, quote, children, vari
 
       <div className="absolute inset-x-0 bottom-0 px-6 pb-16 md:pb-24 z-20">
         <div className={`max-w-4xl mx-auto transition-all duration-1000 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
-          <div className={`flex items-center gap-3 ${variant === "cinematic" ? "mb-5" : "mb-3"}`}>
-            <div className={`h-px ${variant === "cinematic" ? "w-12 bg-amber-400/60" : "w-8 bg-white/40"}`} />
-            <p className={`text-xs md:text-sm uppercase ${variant === "cinematic" ? "text-amber-300/90 tracking-[0.4em] font-light" : "text-white/70 tracking-[0.2em] font-normal"}`}>
+          <div className="flex items-center gap-3 mb-5">
+            <div className="h-px w-12 bg-amber-400/60" />
+            <p className="text-amber-300/90 text-xs md:text-sm tracking-[0.4em] uppercase font-light">
               {kicker}
             </p>
           </div>
-          <h1 className={`font-bold text-white ${variant === "cinematic" ? "font-serif text-5xl md:text-7xl lg:text-8xl drop-shadow-2xl leading-[1.05]" : "font-sans text-4xl md:text-6xl drop-shadow-sm leading-tight"}`}>
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white drop-shadow-2xl leading-[1.05]">
             {title}
           </h1>
-          <p className={`max-w-2xl leading-relaxed ${variant === "cinematic" ? "mt-6 text-lg md:text-2xl text-white/85 italic font-serif" : "mt-4 text-base md:text-lg text-white/70 font-sans"}`}>
+          <p className="mt-6 text-lg md:text-2xl text-white/85 italic max-w-2xl font-serif leading-relaxed">
             {quote}
           </p>
         </div>
