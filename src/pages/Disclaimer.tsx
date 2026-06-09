@@ -5,6 +5,8 @@ import { useState, useRef, useEffect } from "react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
 import { useSoundscape } from "@/contexts/SoundscapeContext";
+import CinematicHero from "@/components/cinematic/CinematicHero";
+import disclaimerHero from "@/assets/disclaimer-hero.jpg";
 
 const Disclaimer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -77,6 +79,24 @@ const Disclaimer = () => {
       <SEOHead title="Disclaimer - What a Journey" description="Important disclaimer for What a Journey, a TBI recovery memoir by Michael Heron." path="/disclaimer" />
       <audio ref={audioRef} src="/audio/disclaimer.mp3" preload="auto" />
 
+      {/* Cinematic 3D hero */}
+      <CinematicHero
+        image={disclaimerHero}
+        alt="A luminous phoenix rises from glowing embers under volumetric golden light — a cinematic emblem of rebirth introducing the disclaimer."
+        kicker="Before We Begin"
+        title="Disclaimer"
+        quote={<>A moment of clarity before the journey — please read and listen.</>}
+      >
+        <div className="absolute top-4 left-4 md:top-6 md:left-6 z-30">
+          <Button asChild variant="ghost" className="text-white/80 hover:text-white hover:bg-white/10 backdrop-blur-sm rounded-full">
+            <Link to="/">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Home
+            </Link>
+          </Button>
+        </div>
+      </CinematicHero>
+
       {/* Animated background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-20 left-10 w-3 h-3 bg-orange-500 rounded-full animate-float opacity-80 shadow-lg shadow-orange-500/50" />
@@ -87,29 +107,8 @@ const Disclaimer = () => {
       </div>
 
       <div className="container mx-auto px-4 py-12 md:py-20 relative z-10">
-        {/* Back navigation */}
-        <div className="mb-8">
-          <Button asChild variant="ghost" className="text-orange-300 hover:text-orange-200 hover:bg-orange-500/20">
-            <Link to="/"><ArrowLeft className="mr-2 h-4 w-4" />Back</Link>
-          </Button>
-        </div>
-
         <div className="max-w-3xl mx-auto">
-          {/* Phoenix icon */}
           <div className="text-center mb-8">
-            <div className="relative mx-auto w-32 h-32 mb-6">
-              <div 
-                className="w-full h-full rounded-full border-2 border-orange-500/40 shadow-xl"
-                style={{
-                  backgroundImage: `url('/lovable-uploads/5d3e9ae0-c18d-4e9a-9d2b-95582494f6bd.png')`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                }}
-              />
-              <div className="absolute inset-0 rounded-full bg-orange-500/20 blur-xl -z-10" />
-            </div>
-
-            <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4 drop-shadow-lg">Disclaimer</h1>
             <p className="text-lg text-gray-300 leading-relaxed">
               Before we begin this journey together, please take a moment to listen to and read this important message.
             </p>
