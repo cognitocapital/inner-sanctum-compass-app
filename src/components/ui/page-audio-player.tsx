@@ -13,7 +13,7 @@ interface PageAudioPlayerProps {
   autoAdvance?: boolean;
 }
 
-const PageAudioPlayer = ({ audioSrc, isVideo = false, autoAdvance = true }: PageAudioPlayerProps) => {
+const PageAudioPlayer = ({ audioSrc, isVideo = false, autoAdvance = false }: PageAudioPlayerProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const shouldAutoPlay = !isVideo && (location.state as { autoPlay?: boolean } | null)?.autoPlay === true;
