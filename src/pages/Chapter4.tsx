@@ -13,7 +13,7 @@ const Chapter4 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={chapter4Audio.url} />
+      <PageAudioPlayer audioSrc={[chapter4Audio.url, "/audio/chapter4-part2.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-4" />
       <SEOHead title="Chapter 4: Finding My Footing - What a Journey" description="Learning to navigate the new reality after a brain injury." path="/chapter-4" />
       <ChapterSchema title="Chapter 4: Finding My Footing" path="/chapter-4" />
