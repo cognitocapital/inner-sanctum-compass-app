@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { Volume2, Pause, Play, X, Loader2 } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { READING_ORDER } from "@/components/ui/chapter-nav-arrows";
@@ -24,7 +24,7 @@ const PageAudioPlayer = ({ audioSrc, isVideo = false, autoAdvance = true }: Page
   const audioRef = useRef<HTMLAudioElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const preloadRef = useRef<HTMLAudioElement | null>(null);
-  const sources = Array.isArray(audioSrc) ? audioSrc : [audioSrc];
+  const sources = useMemo(() => (Array.isArray(audioSrc) ? audioSrc : [audioSrc]), [audioSrc]);
 
   // Auto-play when arriving from a previous chapter's auto-advance.
   useEffect(() => {
@@ -50,18 +50,28 @@ const PageAudioPlayer = ({ audioSrc, isVideo = false, autoAdvance = true }: Page
     if (!audio || isVideo) return;
 
     const handleEnded = () => {
-      if (currentPart < sources.length - 1) {
-        setCurrentPart((p) => p + 1);
-      } else {
-        setIsPlaying(false);
-        setCurrentPart(0);
-        // Auto-advance to the next chapter (if any) and resume playback there.
-        if (autoAdvance) {
-          const idx = READING_ORDER.findIndex((c) => c.path === location.pathname);
-          const next = idx >= 0 ? READING_ORDER[idx + 1] : null;
-          if (next) {
-            navigate(next.path, { state: { autoPlay: true } });
-          }
+      const isLastPart = currentPart >= sources.length - 1;
+
+      if (!isLastPart) {
+        setCurrentPart((p) => Math.min(p + 1, sources.length - 1));
+        return;
+      }
+
+      const hasFiniteDuration = Number.isFinite(audio.duration) && audio.duration > 0;
+      const reachedPlayableEnd = audio.ended || !hasFiniteDuration || audio.currentTime >= audio.duration - 0.35;
+
+      if (!reachedPlayableEnd) return;
+
+      setIsPlaying(false);
+      setCurrentPart(0);
+
+      // Auto-advance to the next chapter only after the final audio segment
+      // has emitted its natural ended event.
+      if (autoAdvance) {
+        const idx = READING_ORDER.findIndex((c) => c.path === location.pathname);
+        const next = idx >= 0 ? READING_ORDER[idx + 1] : null;
+        if (next) {
+          navigate(next.path, { state: { autoPlay: true } });
         }
       }
     };
@@ -85,7 +95,7 @@ const PageAudioPlayer = ({ audioSrc, isVideo = false, autoAdvance = true }: Page
     if (isPlaying) {
       audio.play().catch(() => setIsPlaying(false));
     }
-  }, [currentPart, isVideo]);
+  }, [currentPart, isVideo, isPlaying, sources]);
 
   // Prefetch next segment for seamless multi-part playback
   useEffect(() => {
