@@ -14,7 +14,7 @@ const Chapter11 = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
-      <PageAudioPlayer audioSrc={[chapter11Part1.url, chapter11Part2.url]} />
+      <PageAudioPlayer audioSrc={[chapter11Part1.url, chapter11Part2.url, "/audio/chapter11-part3.mp3", "/audio/chapter11-part4.mp3"]} />
       <ChapterNavArrows currentPath="/chapter-11" />
       <SEOHead title="Chapter 11: The Inner Work - What a Journey" description="Exploring the inner journey of healing after brain injury." path="/chapter-11" />
       <ChapterSchema title="Chapter 11: The Inner Work" path="/chapter-11" />
