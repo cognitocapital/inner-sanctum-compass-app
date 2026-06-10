@@ -13,7 +13,7 @@ interface PageAudioPlayerProps {
   autoAdvance?: boolean;
 }
 
-const PageAudioPlayer = ({ audioSrc, isVideo = false, autoAdvance = false }: PageAudioPlayerProps) => {
+const PageAudioPlayer = ({ audioSrc, isVideo = false, autoAdvance = true }: PageAudioPlayerProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const shouldAutoPlay = !isVideo && (location.state as { autoPlay?: boolean } | null)?.autoPlay === true;
@@ -65,13 +65,15 @@ const PageAudioPlayer = ({ audioSrc, isVideo = false, autoAdvance = false }: Pag
       setIsPlaying(false);
       setCurrentPart(0);
 
-      // Auto-advance to the next chapter only after the final audio segment
-      // has emitted its natural ended event.
+      // Auto-advance to the next chapter after a 5s pause so the listener
+      // can absorb the final lines before the next chapter image + audio loads.
       if (autoAdvance) {
         const idx = READING_ORDER.findIndex((c) => c.path === location.pathname);
         const next = idx >= 0 ? READING_ORDER[idx + 1] : null;
         if (next) {
-          navigate(next.path, { state: { autoPlay: true } });
+          window.setTimeout(() => {
+            navigate(next.path, { state: { autoPlay: true } });
+          }, 5000);
         }
       }
     };
