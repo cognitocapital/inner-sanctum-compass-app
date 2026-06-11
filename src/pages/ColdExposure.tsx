@@ -235,6 +235,16 @@ const ColdExposure = () => {
   };
 
   const startSession = (duration: number) => {
+    // Hard-enforced clearance gate — never start a session without a passed safety quiz.
+    if (!safetyPassed) {
+      toast({
+        title: "Safety check required",
+        description: "Please complete the safety check before starting a Frost Forge session.",
+        variant: "destructive",
+      });
+      setShowSafetyQuiz(true);
+      return;
+    }
     setSelectedDuration(duration);
     setTimeLeft(duration);
     setPhase('prepare');
