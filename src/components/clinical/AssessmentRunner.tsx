@@ -138,7 +138,10 @@ export const AssessmentRunner = ({ instrument, onComplete, onCancel }: Props) =>
       }
 
       try { localStorage.removeItem(STORAGE_KEY(instrument.id)); } catch { /* ignore */ }
-      toast.success(`${instrument.shortName} saved`, { description: `${result.score}/${result.maxScore} — ${result.severity.label}` });
+      toast.success(`${instrument.shortName} saved`, {
+        description: `${result.score}/${result.maxScore} — ${result.severity.label}. This is a screening result, not a diagnosis. Please discuss with your clinician.`,
+        duration: 8000,
+      });
       onComplete(result);
     } catch (e) {
       console.error(e);
