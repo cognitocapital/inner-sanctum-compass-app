@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,13 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { 
   Brain, Heart, Moon, Zap, Cloud, Activity, 
   ArrowRight, ArrowLeft, Check, Sparkles, Flame,
-  Calendar, Clock, Target, Mountain, Snowflake
+  Calendar, Clock, Target, Mountain, Snowflake, ShieldCheck
 } from "lucide-react";
 
 interface OnboardingFlowProps {
@@ -77,6 +78,7 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
   const [cognitiveLevel, setCognitiveLevel] = useState(3);
   const [painLevel, setPainLevel] = useState(3);
   const [dailyCommitment, setDailyCommitment] = useState(10);
+  const [privacyAcknowledged, setPrivacyAcknowledged] = useState(false);
 
   const selectedPath = PROTOCOL_PATHS.find(p => p.id === selectedProtocol);
   const isTBIPath = selectedProtocol === 'tbi_survivor';
@@ -157,7 +159,7 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
 
   const canProceed = () => {
     switch (currentStep) {
-      case 0: return true;
+      case 0: return privacyAcknowledged;
       case 1: return selectedProtocol !== "";
       case 2: return selectedGoals.length > 0;
       case 3: return true; // Injury info or current state - both optional
@@ -251,6 +253,49 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
                         Progress tracking and insights
                       </li>
                     </ul>
+                  </div>
+
+                  {/* Privacy acknowledgement gate */}
+                  <div className="rounded-lg p-4 border border-amber-400/25 bg-amber-500/[0.05]">
+                    <div className="flex items-start gap-3">
+                      <ShieldCheck className="w-5 h-5 text-amber-300 mt-0.5 shrink-0" />
+                      <div className="flex-1">
+                        <h4 className="text-amber-100 font-medium text-sm">
+                          A quick note about your data
+                        </h4>
+                        <p className="text-white/65 text-[13px] mt-1 leading-relaxed">
+                          Your check-ins, journal, assessments and Phoenix
+                          conversations are stored privately to your account
+                          and protected by row-level security. You can export
+                          or delete everything at any time, and any clinician
+                          access is opt-in and revocable.
+                        </p>
+                        <label
+                          htmlFor="privacy-ack"
+                          className="mt-3 flex items-start gap-2.5 cursor-pointer group"
+                        >
+                          <Checkbox
+                            id="privacy-ack"
+                            checked={privacyAcknowledged}
+                            onCheckedChange={(v) => setPrivacyAcknowledged(v === true)}
+                            className="mt-0.5 border-amber-300/50 data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500"
+                          />
+                          <span className="text-[13px] text-white/75 leading-snug group-hover:text-white/90">
+                            I've read the{" "}
+                            <Link
+                              to="/privacy"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-amber-200 underline underline-offset-2 hover:text-amber-100"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              Privacy notes
+                            </Link>{" "}
+                            and I'm comfortable continuing.
+                          </span>
+                        </label>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
