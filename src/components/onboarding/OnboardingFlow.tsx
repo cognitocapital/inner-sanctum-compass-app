@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,13 +7,14 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { 
   Brain, Heart, Moon, Zap, Cloud, Activity, 
   ArrowRight, ArrowLeft, Check, Sparkles, Flame,
-  Calendar, Clock, Target, Mountain, Snowflake
+  Calendar, Clock, Target, Mountain, Snowflake, ShieldCheck
 } from "lucide-react";
 
 interface OnboardingFlowProps {
@@ -77,6 +78,7 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
   const [cognitiveLevel, setCognitiveLevel] = useState(3);
   const [painLevel, setPainLevel] = useState(3);
   const [dailyCommitment, setDailyCommitment] = useState(10);
+  const [privacyAcknowledged, setPrivacyAcknowledged] = useState(false);
 
   const selectedPath = PROTOCOL_PATHS.find(p => p.id === selectedProtocol);
   const isTBIPath = selectedProtocol === 'tbi_survivor';
@@ -157,7 +159,7 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
 
   const canProceed = () => {
     switch (currentStep) {
-      case 0: return true;
+      case 0: return privacyAcknowledged;
       case 1: return selectedProtocol !== "";
       case 2: return selectedGoals.length > 0;
       case 3: return true; // Injury info or current state - both optional
