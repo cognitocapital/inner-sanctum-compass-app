@@ -60,6 +60,7 @@ import BrainCompass from "./pages/BrainCompass";
 import Settings from "./pages/Settings";
 import ClinicianPortal from "./pages/ClinicianPortal";
 import CarerCircle from "./pages/CarerCircle";
+import Privacy from "./pages/Privacy";
 
 const queryClient = new QueryClient();
 
@@ -133,6 +134,7 @@ const AppContent = () => {
           <Route path="/install" element={<Install />} />
           <Route path="/soundscapes" element={<Soundscapes />} />
           <Route path="/brain-compass" element={<BrainCompass />} />
+          <Route path="/privacy" element={<Privacy />} />
           
           {/* Protected routes - require auth or guest mode */}
           <Route path="/daily-protocol" element={
