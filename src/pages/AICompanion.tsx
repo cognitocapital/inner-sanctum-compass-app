@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import ReactMarkdown from "react-markdown";
 import SEOHead from "@/components/seo/SEOHead";
+import { CrisisSupport } from "@/components/ui/crisis-support";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -371,6 +372,9 @@ const AICompanion = () => {
 
       {/* Input */}
       <div className="sticky bottom-0 bg-gray-950/95 backdrop-blur-md border-t border-white/[0.04] p-4">
+        <div className="max-w-lg mx-auto mb-2">
+          <CrisisSupport variant="compact" />
+        </div>
         <div className="max-w-lg mx-auto flex gap-2">
           <textarea
             ref={inputRef}
