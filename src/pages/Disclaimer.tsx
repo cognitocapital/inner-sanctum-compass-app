@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowLeft, Play, Pause, Volume2, VolumeX, AlertTriangle, Shield, Heart, Scale, BookOpen, Phone } from "lucide-react";
+import { ArrowRight, ArrowLeft, Play, Pause, Volume2, VolumeX, AlertTriangle, Shield, Heart, Scale, BookOpen, Phone, Snowflake, Activity } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import SEOHead from "@/components/seo/SEOHead";
 import ChapterNavArrows from "@/components/ui/chapter-nav-arrows";
@@ -158,8 +158,42 @@ const Disclaimer = () => {
                 <h2 className="text-xl font-semibold text-white">Not Medical Advice</h2>
               </div>
               <p className="text-gray-300 leading-relaxed">
-                <em>What a Journey</em> is a personal memoir and recovery journal. It is <strong className="text-white">not</strong> a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of a qualified healthcare provider with any questions regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read or experienced in this application.
+                <em>What a Journey</em> is a personal memoir and recovery journal. It is <strong className="text-white">not</strong> a substitute for professional medical advice, diagnosis, or treatment, and it <strong className="text-white">does not replace your treating team</strong> (neurologist, GP, neuropsychologist, OT, speech pathologist, physiotherapist, or care coordinator). Always seek the advice of a qualified healthcare provider with any questions regarding a medical condition. Never disregard professional medical advice or delay in seeking it because of something you have read or experienced in this application.
               </p>
+              <p className="text-gray-300 leading-relaxed mt-3">
+                <strong className="text-white">Before starting any protocol in this app</strong> — including breathwork, cold exposure, physical exercise, sleep changes, or supplement-adjacent suggestions — please clear it with your doctor or treating clinician. They know your full medical picture; this app does not.
+              </p>
+            </section>
+
+            {/* Protocol-specific safety */}
+            <section className="p-6 rounded-xl bg-amber-500/10 border border-amber-500/30">
+              <div className="flex items-start gap-3 mb-3">
+                <AlertTriangle className="w-6 h-6 text-amber-400 flex-shrink-0 mt-0.5" />
+                <h2 className="text-xl font-semibold text-amber-300">Protocol-specific safety</h2>
+              </div>
+
+              <div className="space-y-4 text-gray-300 leading-relaxed">
+                <div className="flex items-start gap-3">
+                  <Snowflake className="w-5 h-5 text-cyan-300 flex-shrink-0 mt-1" />
+                  <p>
+                    <strong className="text-white">Cold exposure (Resilient Frost Forge)</strong> is a powerful but high-stakes practice. It is <strong className="text-white">contraindicated</strong> if you have a heart condition, uncontrolled high or low blood pressure, arrhythmia, Raynaud's, cold urticaria, are pregnant, have recent or unstable TBI/post-traumatic amnesia, vestibular symptoms (vertigo, dizziness), or are taking medications that affect heart rate or blood pressure. <strong className="text-white">Do not begin cold exposure without medical clearance from your doctor.</strong> Always practise with a sober companion present and never alone in open water.
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Activity className="w-5 h-5 text-orange-300 flex-shrink-0 mt-1" />
+                  <p>
+                    <strong className="text-white">Physical exercises post-TBI</strong> — including breathwork retention, balance work, and progressive cognitive load — should be cleared with your treating team before you begin. Brain injury can change exercise tolerance, blood pressure response, seizure risk, and recovery time. Stop immediately and seek advice if you experience worsening headache, vision changes, vomiting, new neurological symptoms, chest pain, fainting, or symptoms that persist beyond your usual baseline.
+                  </p>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Heart className="w-5 h-5 text-rose-300 flex-shrink-0 mt-1" />
+                  <p>
+                    <strong className="text-white">Assessments, AI companion, and journaling</strong> in this app are <strong className="text-white">screening and reflection tools, not diagnostic instruments</strong>. Discuss any results with your clinician — they're the ones who can interpret them in the context of your full history.
+                  </p>
+                </div>
+              </div>
             </section>
 
             {/* No Guarantee of Outcomes */}

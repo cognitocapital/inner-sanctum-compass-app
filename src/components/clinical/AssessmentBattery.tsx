@@ -138,6 +138,10 @@ export const AssessmentBattery = () => {
               <div className="text-[11px] text-white/45">
                 <strong className="text-white/70">Use:</strong> {historyFor.copyrightNote}
               </div>
+              <div className="text-[11px] text-amber-200/80 leading-relaxed mt-2 p-2.5 rounded-md border border-amber-400/25 bg-amber-500/[0.06]">
+                <strong className="text-amber-100">Screening tool, not a diagnosis.</strong>{" "}
+                Severity bands describe your responses on a validated questionnaire — they are not a clinical diagnosis. Please discuss these results with your treating clinician (GP, neurologist, psychologist, or care team) so they can interpret them in the context of your full history.
+              </div>
             </div>
           )}
         </DialogContent>

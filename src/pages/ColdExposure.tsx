@@ -235,6 +235,16 @@ const ColdExposure = () => {
   };
 
   const startSession = (duration: number) => {
+    // Hard-enforced clearance gate — never start a session without a passed safety quiz.
+    if (!safetyPassed) {
+      toast({
+        title: "Safety check required",
+        description: "Please complete the safety check before starting a Frost Forge session.",
+        variant: "destructive",
+      });
+      setShowSafetyQuiz(true);
+      return;
+    }
     setSelectedDuration(duration);
     setTimeLeft(duration);
     setPhase('prepare');
@@ -310,6 +320,59 @@ const ColdExposure = () => {
             onComplete={handleSafetyComplete}
             onCancel={() => window.history.back()}
           />
+        </div>
+      </div>
+    );
+  }
+
+  // Hard-enforced "not cleared today" screen — user must retake the quiz or leave.
+  // This is the component-level gate; navigation alone is not sufficient.
+  if (!safetyPassed) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-blue-950 to-cyan-950 relative overflow-hidden">
+        <IceCavernBackground intensity={10} isActive={false} phase="prepare" />
+        <div className="relative z-10 container mx-auto px-4 py-10 max-w-lg">
+          <Button asChild variant="ghost" className="text-cyan-300 hover:text-white mb-6">
+            <Link to="/dashboard">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Dashboard
+            </Link>
+          </Button>
+
+          <Card className="bg-slate-900/90 border-amber-500/40 backdrop-blur-sm">
+            <CardContent className="p-6 sm:p-8 space-y-5 text-center">
+              <div className="w-14 h-14 mx-auto rounded-full bg-amber-500/15 border border-amber-500/40 flex items-center justify-center">
+                <AlertTriangle className="w-7 h-7 text-amber-300" aria-hidden="true" />
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-xl font-semibold text-white">
+                  Cold exposure isn't recommended for you today
+                </h2>
+                <p className="text-sm text-white/65 leading-relaxed">
+                  Based on your safety check, a Frost Forge session is being held back to keep you safe. This is by design — cold work has real cardiovascular and vestibular risks, especially after a brain injury.
+                </p>
+                {safetyRecommendations[0] && (
+                  <p className="text-sm text-amber-200/90 leading-relaxed pt-1">
+                    {safetyRecommendations[0]}
+                  </p>
+                )}
+                <p className="text-xs text-white/45 leading-relaxed pt-2">
+                  Please discuss cold exposure with your treating clinician before continuing, and re-take the safety check on a day when symptoms have settled.
+                </p>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-2 pt-2">
+                <Button
+                  onClick={() => { setSafetyPassed(false); setSafetyRecommendations([]); setShowSafetyQuiz(true); }}
+                  className="flex-1 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold"
+                >
+                  Re-take safety check
+                </Button>
+                <Button asChild variant="outline" className="flex-1 bg-white/[0.04] border-white/15 text-white hover:bg-white/10">
+                  <Link to="/breathing">Try breathwork instead</Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     );
