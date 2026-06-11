@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Download, FileText, Film, Loader2, LogOut, ShieldAlert, Stethoscope, Trash2, Users } from "lucide-react";
+import { ArrowLeft, Download, FileText, Film, Loader2, LogOut, ShieldAlert, ShieldCheck, Stethoscope, Trash2, Users } from "lucide-react";
 import { ClinicianLinkManager } from "@/components/clinical/ClinicianLinkManager";
 import { useUserRoles } from "@/hooks/use-clinician";
 import { useAuth } from "@/contexts/AuthContext";
@@ -213,6 +213,24 @@ const Settings = () => {
           >
             <LogOut className="h-4 w-4 mr-2" />
             Sign out
+          </Button>
+        </section>
+
+        {/* Privacy */}
+        <section className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 flex items-start justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <ShieldCheck className="h-5 w-5 text-orange-300 mt-0.5" />
+            <div>
+              <h2 className="font-serif text-xl text-white">Privacy &amp; your data</h2>
+              <p className="text-sm text-white/60 mt-1">
+                Plain-English notes on what we store, who can see it, how the
+                AI companion uses your messages, and how to export or delete
+                everything.
+              </p>
+            </div>
+          </div>
+          <Button asChild variant="outline" size="sm" className="bg-white/[0.04] border-white/15 text-white hover:bg-white/10 shrink-0">
+            <Link to="/privacy">Read</Link>
           </Button>
         </section>
 
