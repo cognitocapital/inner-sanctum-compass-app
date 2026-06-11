@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import SEOHead from "@/components/seo/SEOHead";
 import resourcesIllustration from "@/assets/resources-illustration.jpg";
+import { CrisisSupport } from "@/components/ui/crisis-support";
 
 const Resources = () => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
@@ -126,6 +127,11 @@ const Resources = () => {
         description="Resources for TBI recovery and personal growth, curated by Michael Heron."
         path="/resources"
       />
+
+      {/* Always-available crisis support — calm, never alarming */}
+      <div className="relative z-20 px-4 pt-4 max-w-3xl mx-auto w-full">
+        <CrisisSupport />
+      </div>
 
       {/* ============ CINEMATIC HERO ============ */}
       <section className="relative min-h-[100svh] w-full overflow-hidden flex flex-col">
