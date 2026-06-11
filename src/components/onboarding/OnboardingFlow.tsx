@@ -254,6 +254,49 @@ export const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
                       </li>
                     </ul>
                   </div>
+
+                  {/* Privacy acknowledgement gate */}
+                  <div className="rounded-lg p-4 border border-amber-400/25 bg-amber-500/[0.05]">
+                    <div className="flex items-start gap-3">
+                      <ShieldCheck className="w-5 h-5 text-amber-300 mt-0.5 shrink-0" />
+                      <div className="flex-1">
+                        <h4 className="text-amber-100 font-medium text-sm">
+                          A quick note about your data
+                        </h4>
+                        <p className="text-white/65 text-[13px] mt-1 leading-relaxed">
+                          Your check-ins, journal, assessments and Phoenix
+                          conversations are stored privately to your account
+                          and protected by row-level security. You can export
+                          or delete everything at any time, and any clinician
+                          access is opt-in and revocable.
+                        </p>
+                        <label
+                          htmlFor="privacy-ack"
+                          className="mt-3 flex items-start gap-2.5 cursor-pointer group"
+                        >
+                          <Checkbox
+                            id="privacy-ack"
+                            checked={privacyAcknowledged}
+                            onCheckedChange={(v) => setPrivacyAcknowledged(v === true)}
+                            className="mt-0.5 border-amber-300/50 data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500"
+                          />
+                          <span className="text-[13px] text-white/75 leading-snug group-hover:text-white/90">
+                            I've read the{" "}
+                            <Link
+                              to="/privacy"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-amber-200 underline underline-offset-2 hover:text-amber-100"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              Privacy notes
+                            </Link>{" "}
+                            and I'm comfortable continuing.
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
             )}
