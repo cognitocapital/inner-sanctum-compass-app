@@ -209,6 +209,13 @@ The user is asking about this specific brain region. Tie your answer to their ac
       context_snapshot: { energy: todaysCheckin?.energy_level, mood: todaysCheckin?.mood, streak: progress?.current_streak },
     });
 
+    // Fire-and-forget red-flag logging — must never block the supportive reply.
+    if (redFlag) {
+      logRedFlag(supabase, userId, latestUserMessage, redFlag).catch((err) => {
+        console.error("red-flag logging failed:", err);
+      });
+    }
+
     // Stream from Lovable AI
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -291,3 +298,118 @@ The user is asking about this specific brain region. Tie your answer to their ac
     );
   }
 });
+
+// ---------- Crisis detection (v1: keyword/phrase heuristic) ----------
+type RedFlagResult = {
+  severity: "high" | "critical";
+  flag_type: string;
+  matched: string[];
+};
+
+function detectRedFlag(raw: string): RedFlagResult | null {
+  if (!raw || typeof raw !== "string") return null;
+  const text = raw.toLowerCase();
+
+  // Critical: active intent, plan, or medical emergency.
+  const critical: RegExp[] = [
+    /\bkill (myself|me)\b/,
+    /\bend (my|this) life\b/,
+    /\btake my (own )?life\b/,
+    /\bsuicid(e|al)\b/,
+    /\b(i (want|wish|plan|am going|am about) to) (die|kill myself|end it|not be here)\b/,
+    /\bdon'?t want to (be (alive|here)|live|wake up)\b/,
+    /\b(no (point|reason) (in )?living)\b/,
+    /\b(overdose|overdosed|overdosing)\b/,
+    /\b(stroke|heart attack|chest pain|can'?t breathe|unconscious|seizure)\b/,
+  ];
+
+  // High: passive ideation, self-harm, deep hopelessness.
+  const high: RegExp[] = [
+    /\b(self[-\s]?harm|hurt (myself|me)|cut(ting)? myself)\b/,
+    /\b(hopeless|worthless|burden to (everyone|anyone|my family))\b/,
+    /\b(better off (without me|dead))\b/,
+    /\b(can'?t (go on|do this anymore|keep going))\b/,
+    /\bgive up on (life|everything)\b/,
+    /\b(disappear|vanish) forever\b/,
+  ];
+
+  const criticalMatches = critical.map((r) => r.exec(text)?.[0]).filter(Boolean) as string[];
+  if (criticalMatches.length > 0) {
+    return { severity: "critical", flag_type: "ai_companion_crisis_disclosure", matched: criticalMatches };
+  }
+
+  const highMatches = high.map((r) => r.exec(text)?.[0]).filter(Boolean) as string[];
+  if (highMatches.length > 0) {
+    return { severity: "high", flag_type: "ai_companion_distress", matched: highMatches };
+  }
+
+  return null;
+}
+
+async function logRedFlag(
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
+  userId: string,
+  userMessage: string,
+  flag: RedFlagResult,
+) {
+  const excerpt = userMessage.length > 500 ? `${userMessage.slice(0, 500)}…` : userMessage;
+
+  const { data: inserted, error: rfErr } = await supabase
+    .from("clinical_red_flag_events")
+    .insert({
+      user_id: userId,
+      flag_type: flag.flag_type,
+      severity: flag.severity,
+      message: excerpt,
+      metadata: {
+        source: "ai_companion",
+        matched_terms: flag.matched,
+        detected_at: new Date().toISOString(),
+      },
+    })
+    .select("id")
+    .single();
+
+  if (rfErr) {
+    console.error("red-flag insert error:", rfErr);
+    return;
+  }
+
+  // Look up an accepted/active clinician link and alert them too.
+  const { data: links, error: linkErr } = await supabase
+    .from("patient_clinician_links")
+    .select("clinician_id, consent_scope")
+    .eq("patient_id", userId)
+    .eq("status", "active")
+    .not("clinician_id", "is", null);
+
+  if (linkErr) {
+    console.error("clinician link lookup error:", linkErr);
+    return;
+  }
+
+  if (!links || links.length === 0) return;
+
+  const alertRows = links
+    .filter((l: { consent_scope?: { red_flags?: boolean } }) => l.consent_scope?.red_flags !== false)
+    .map((l: { clinician_id: string }) => ({
+      clinician_id: l.clinician_id,
+      patient_id: userId,
+      alert_type: "ai_companion_red_flag",
+      severity: flag.severity === "critical" ? "high" : "medium",
+      title:
+        flag.severity === "critical"
+          ? "Patient disclosed crisis content to AI companion"
+          : "Patient showed distress in AI companion chat",
+      message: excerpt,
+      source_table: "clinical_red_flag_events",
+      source_id: inserted?.id ?? null,
+      metadata: { matched_terms: flag.matched, source: "ai_companion" },
+    }));
+
+  if (alertRows.length === 0) return;
+
+  const { error: alertErr } = await supabase.from("clinician_alerts").insert(alertRows);
+  if (alertErr) console.error("clinician alert insert error:", alertErr);
+}
