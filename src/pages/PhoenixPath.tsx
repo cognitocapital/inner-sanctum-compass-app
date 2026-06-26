@@ -54,6 +54,29 @@ const PhoenixPath = () => {
     return status === 'available' || status === 'in_progress';
   });
 
+  useEffect(() => {
+    if (!profileLoading && user && !isGuest && profile && !profile.onboarding_completed) {
+      setShowOnboarding(true);
+    }
+  }, [profile, profileLoading, user, isGuest]);
+
+  useEffect(() => {
+    if (!profileLoading && user && !isGuest && profile?.onboarding_completed && !hasCheckedInToday) {
+      const t = setTimeout(() => setShowCheckIn(true), 1500);
+      return () => clearTimeout(t);
+    }
+  }, [profile, profileLoading, user, isGuest, hasCheckedInToday]);
+
+  const handleOnboardingComplete = async () => {
+    setShowOnboarding(false);
+    await refetchProfile();
+    toast.success("Welcome — your journey starts here.", {
+      description: "One gentle step at a time.",
+    });
+  };
+
+  if (showOnboarding) return <OnboardingFlow onComplete={handleOnboardingComplete} />;
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
