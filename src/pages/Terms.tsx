@@ -33,7 +33,6 @@ const Terms = () => {
       <SEOHead
         title="Terms of Service — What a Journey"
         description="Terms of service for What a Journey, the Phoenix Journey TBI recovery platform."
-        url="https://whatajourney.app/terms"
       />
       <header className="border-b border-white/10 px-4 py-4">
         <Link to="/" className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm">
