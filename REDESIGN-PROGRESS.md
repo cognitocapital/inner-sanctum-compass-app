@@ -13,5 +13,7 @@ Open decisions still to confirm:
 - A) Rehab modules (ADL/GMT/Spaced-Repetition/Speech) → Practice→Train, or Progress→Rehab?
 - B) Journal home → Book, Today, or both?
 
+Tech-debt / later slice: remove the old MobileBottomNav from BreathingExercise.tsx and INCOG.tsx (now superseded by PrimaryNav). Stacked bars on those two routes until then.
+
 Notes / commit checkpoints:
 - (record the commit hash or branch before each slice here)
