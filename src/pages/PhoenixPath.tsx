@@ -519,6 +519,12 @@ const PhoenixPath = () => {
           </span>
         </Link>
       </motion.div>
+
+      <SimpleCheckIn
+        isOpen={showCheckIn}
+        onClose={() => setShowCheckIn(false)}
+        onComplete={() => { setShowCheckIn(false); refetchCheckin(); }}
+      />
     </div>
   );
 };
