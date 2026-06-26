@@ -44,7 +44,6 @@ import Chapter18 from "./pages/Chapter18";
 import Chapter19 from "./pages/Chapter19";
 import Chapter20 from "./pages/Chapter20";
 import Chapter21 from "./pages/Chapter21";
-import ChallengeTracker from "./pages/ChallengeTracker";
 import MindTraining from "./pages/MindTraining";
 import GratitudeJourney from "./pages/GratitudeJourney";
 import UnwrittenChapters from "./pages/UnwrittenChapters";
