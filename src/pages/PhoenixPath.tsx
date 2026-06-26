@@ -20,10 +20,13 @@ import { toast } from "sonner";
 const PhoenixPath = () => {
   const navigate = useNavigate();
   const { user, isGuest } = useAuth();
-  const { profile } = useProfile();
+  const { profile, isLoading: profileLoading, refetch: refetchProfile } = useProfile();
+  const { hasCheckedInToday, refetch: refetchCheckin } = useDailyCheckin();
   const { currentPhase, flameStrength, isLoading, totalXp, completedCount, getQuestStatus } = usePhoenixPath();
   const [selectedQuest, setSelectedQuest] = useState<QuestDefinition | null>(null);
   const [expandedPhase, setExpandedPhase] = useState<number | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showCheckIn, setShowCheckIn] = useState(false);
 
   const displayName =
     profile?.display_name?.split(" ")[0] ||
