@@ -64,6 +64,7 @@ import Terms from "./pages/Terms";
 import PracticeRoom from "./pages/rooms/PracticeRoom";
 import ProgressRoom from "./pages/rooms/ProgressRoom";
 import BookRoom from "./pages/rooms/BookRoom";
+import Today from "./pages/Today";
 import { PrimaryNav } from "./components/navigation/PrimaryNav";
 
 const queryClient = new QueryClient();
@@ -241,6 +242,11 @@ const AppContent = () => {
           <Route path="/book" element={
             <ProtectedRoute>
               <BookRoom />
+            </ProtectedRoute>
+          } />
+          <Route path="/today" element={
+            <ProtectedRoute>
+              <Today />
             </ProtectedRoute>
           } />
 
