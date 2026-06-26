@@ -1,25 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Home, Settings as SettingsIcon, Flame, Zap, BookHeart, ExternalLink, ChevronDown, ChevronUp, MessageCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/use-profile";
+import { useDailyCheckin } from "@/hooks/use-daily-checkin";
 import { usePhoenixPath } from "@/hooks/use-phoenix-path";
 import { PHOENIX_QUESTS, PHASES, getQuestsForPhase, type QuestDefinition } from "@/data/phoenixQuests";
 import { FlameStrength } from "@/components/path/FlameStrength";
 import { QuestNode } from "@/components/path/QuestNode";
 import { QuestCard } from "@/components/path/QuestCard";
+import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
+import { SimpleCheckIn } from "@/components/protocol/SimpleCheckIn";
 import phoenixPathHero from "@/assets/phoenix-path-hero.jpg";
 import SEOHead from "@/components/seo/SEOHead";
+import { toast } from "sonner";
 
 const PhoenixPath = () => {
   const navigate = useNavigate();
   const { user, isGuest } = useAuth();
-  const { profile } = useProfile();
+  const { profile, isLoading: profileLoading, refetch: refetchProfile } = useProfile();
+  const { hasCheckedInToday, refetch: refetchCheckin } = useDailyCheckin();
   const { currentPhase, flameStrength, isLoading, totalXp, completedCount, getQuestStatus } = usePhoenixPath();
   const [selectedQuest, setSelectedQuest] = useState<QuestDefinition | null>(null);
   const [expandedPhase, setExpandedPhase] = useState<number | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showCheckIn, setShowCheckIn] = useState(false);
 
   const displayName =
     profile?.display_name?.split(" ")[0] ||
@@ -46,6 +53,29 @@ const PhoenixPath = () => {
     const status = getQuestStatus(q.key);
     return status === 'available' || status === 'in_progress';
   });
+
+  useEffect(() => {
+    if (!profileLoading && user && !isGuest && profile && !profile.onboarding_completed) {
+      setShowOnboarding(true);
+    }
+  }, [profile, profileLoading, user, isGuest]);
+
+  useEffect(() => {
+    if (!profileLoading && user && !isGuest && profile?.onboarding_completed && !hasCheckedInToday) {
+      const t = setTimeout(() => setShowCheckIn(true), 1500);
+      return () => clearTimeout(t);
+    }
+  }, [profile, profileLoading, user, isGuest, hasCheckedInToday]);
+
+  const handleOnboardingComplete = async () => {
+    setShowOnboarding(false);
+    await refetchProfile();
+    toast.success("Welcome — your journey starts here.", {
+      description: "One gentle step at a time.",
+    });
+  };
+
+  if (showOnboarding) return <OnboardingFlow onComplete={handleOnboardingComplete} />;
 
   if (isLoading) {
     return (
@@ -489,6 +519,12 @@ const PhoenixPath = () => {
           </span>
         </Link>
       </motion.div>
+
+      <SimpleCheckIn
+        isOpen={showCheckIn}
+        onClose={() => setShowCheckIn(false)}
+        onComplete={() => { setShowCheckIn(false); refetchCheckin(); }}
+      />
     </div>
   );
 };
