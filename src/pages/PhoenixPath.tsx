@@ -1,17 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Home, Settings as SettingsIcon, Flame, Zap, BookHeart, ExternalLink, ChevronDown, ChevronUp, MessageCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProfile } from "@/hooks/use-profile";
+import { useDailyCheckin } from "@/hooks/use-daily-checkin";
 import { usePhoenixPath } from "@/hooks/use-phoenix-path";
 import { PHOENIX_QUESTS, PHASES, getQuestsForPhase, type QuestDefinition } from "@/data/phoenixQuests";
 import { FlameStrength } from "@/components/path/FlameStrength";
 import { QuestNode } from "@/components/path/QuestNode";
 import { QuestCard } from "@/components/path/QuestCard";
+import { OnboardingFlow } from "@/components/onboarding/OnboardingFlow";
+import { SimpleCheckIn } from "@/components/protocol/SimpleCheckIn";
 import phoenixPathHero from "@/assets/phoenix-path-hero.jpg";
 import SEOHead from "@/components/seo/SEOHead";
+import { toast } from "sonner";
 
 const PhoenixPath = () => {
   const navigate = useNavigate();
