@@ -24,11 +24,13 @@ const BetaDisclaimerBanner = () => {
       <div className="container mx-auto flex items-center justify-between gap-3">
         <div className="flex items-center gap-2 text-sm text-amber-100">
           <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0" />
-          <span>
-            This is a beta prototype for demonstration purposes. Content is not medical advice.{" "}
-            <Link to="/disclaimer" className="underline text-amber-300 hover:text-amber-200">
-              See full disclaimer
-            </Link>.
+          <span className="leading-snug">
+            Beta prototype — not medical advice.{" "}
+            <Link to="/disclaimer" className="underline text-amber-300 hover:text-amber-200">Disclaimer</Link>
+            <span className="text-amber-300/60"> · </span>
+            <Link to="/privacy" className="underline text-amber-300 hover:text-amber-200">Privacy</Link>
+            <span className="text-amber-300/60"> · </span>
+            <Link to="/terms" className="underline text-amber-300 hover:text-amber-200">Terms</Link>
           </span>
         </div>
         <button
