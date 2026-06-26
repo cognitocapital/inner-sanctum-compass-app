@@ -61,6 +61,10 @@ import ClinicianPortal from "./pages/ClinicianPortal";
 import CarerCircle from "./pages/CarerCircle";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import PracticeRoom from "./pages/rooms/PracticeRoom";
+import ProgressRoom from "./pages/rooms/ProgressRoom";
+import BookRoom from "./pages/rooms/BookRoom";
+import { PrimaryNav } from "./components/navigation/PrimaryNav";
 
 const queryClient = new QueryClient();
 
@@ -224,10 +228,26 @@ const AppContent = () => {
               <ClinicianPortal />
             </ProtectedRoute>
           } />
-          
+          <Route path="/practice" element={
+            <ProtectedRoute>
+              <PracticeRoom />
+            </ProtectedRoute>
+          } />
+          <Route path="/progress" element={
+            <ProtectedRoute>
+              <ProgressRoom />
+            </ProtectedRoute>
+          } />
+          <Route path="/book" element={
+            <ProtectedRoute>
+              <BookRoom />
+            </ProtectedRoute>
+          } />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
         <GlobalSoundscapePlayer />
+        <PrimaryNav />
       </BrowserRouter>
       
       {/* Global Audiobook Player */}
