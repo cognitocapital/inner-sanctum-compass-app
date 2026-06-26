@@ -61,6 +61,7 @@ import Settings from "./pages/Settings";
 import ClinicianPortal from "./pages/ClinicianPortal";
 import CarerCircle from "./pages/CarerCircle";
 import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 
 const queryClient = new QueryClient();
 
@@ -135,6 +136,7 @@ const AppContent = () => {
           <Route path="/soundscapes" element={<Soundscapes />} />
           <Route path="/brain-compass" element={<BrainCompass />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
           
           {/* Protected routes - require auth or guest mode */}
           <Route path="/daily-protocol" element={

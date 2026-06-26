@@ -113,14 +113,20 @@ export const AssessmentRunner = ({ instrument, onComplete, onCancel }: Props) =>
         .single();
       if (error) throw error;
 
-      // Audit log
-      await supabase.from("clinical_audit_log").insert({
-        actor_id: user.id,
-        action: "assessment.completed",
-        target_type: "clinical_assessments",
-        target_id: data?.id ?? null,
-        metadata: { instrument: instrument.code, score: result.score, severity: result.severity.label, red_flags: result.redFlags.length },
-      });
+      // Audit log (server-side via service role to preserve audit-trail integrity)
+      try {
+        await supabase.functions.invoke("log-audit", {
+          body: {
+            action: "assessment.completed",
+            target_type: "clinical_assessments",
+            target_id: data?.id ?? null,
+            metadata: { instrument: instrument.code, score: result.score, severity: result.severity.label, red_flags: result.redFlags.length },
+          },
+        });
+      } catch (auditErr) {
+        // Never block the user flow on audit logging
+        console.warn("audit log failed", auditErr);
+      }
 
       // Persist red flag events for blocking flags
       if (result.redFlags.length > 0) {
