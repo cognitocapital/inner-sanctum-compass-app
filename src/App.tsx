@@ -189,11 +189,6 @@ const AppContent = () => {
               <INCOG />
             </ProtectedRoute>
           } />
-          <Route path="/challenges" element={
-            <ProtectedRoute>
-              <ChallengeTracker />
-            </ProtectedRoute>
-          } />
           <Route path="/mind" element={
             <ProtectedRoute>
               <MindTraining />
