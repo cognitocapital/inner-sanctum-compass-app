@@ -45,7 +45,7 @@ const PracticeRoom = () => {
       <SEOHead
         title="Practice — What a Journey"
         description="Self-directed practice: breathing, soundscapes, cold exposure, and cognitive training."
-        canonicalUrl="https://whatajourney.app/practice"
+        path="/practice"
       />
       <div className="max-w-2xl mx-auto space-y-8">
         <header className="space-y-1">
