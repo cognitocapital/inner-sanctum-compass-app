@@ -18,7 +18,7 @@ const TABS: Tab[] = [
 ];
 
 // Hide the primary nav on public entry surfaces.
-const HIDE_ON = new Set<string>(["/", "/auth"]);
+const HIDE_ON = new Set<string>(["/", "/auth", "/ai-companion"]);
 
 export const PrimaryNav = () => {
   const { pathname } = useLocation();

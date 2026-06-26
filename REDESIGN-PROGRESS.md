@@ -3,7 +3,7 @@
 Status key: ⬜ not started · 🟡 in progress · ✅ done & reviewed
 
 - ✅ Slice 1 — Cuts (delete dead code)
-- ⬜ Slice 2 — Navigation shell (five rooms, existing pages re-routed)
+- ✅ Slice 2 — Navigation shell (five rooms, existing pages re-routed)
 - ⬜ Slice 3 — Consolidate journaling → one Journal
 - ⬜ Slice 4 — Build the new Today (two-layer engine)
 - ⬜ Slice 5 — Dissolve the old homes (after Today exists)
