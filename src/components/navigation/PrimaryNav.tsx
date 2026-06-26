@@ -10,7 +10,7 @@ type Tab = {
 };
 
 const TABS: Tab[] = [
-  { to: "/dashboard",    label: "Today",     Icon: Sparkles,       match: (p) => p === "/dashboard" || p === "/phoenix-path" || p.startsWith("/quest") },
+  { to: "/today",        label: "Today",     Icon: Sparkles,       match: (p) => p === "/today" || p === "/dashboard" || p === "/phoenix-path" || p.startsWith("/quest") },
   { to: "/practice",     label: "Practice",  Icon: HeartPulse,     match: (p) => p.startsWith("/practice") },
   { to: "/progress",     label: "Progress",  Icon: Activity,       match: (p) => p.startsWith("/progress") },
   { to: "/ai-companion", label: "Companion", Icon: MessageCircle,  match: (p) => p.startsWith("/ai-companion") },
